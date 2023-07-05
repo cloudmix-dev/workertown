@@ -1,0 +1,11 @@
+{
+  "name": "@workertown/search-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "wrangler dev"
+  },
+  "dependencies": {
+    "@workertown/search": "~0.0.1"
+  }
+}

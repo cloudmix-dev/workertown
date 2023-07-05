@@ -1,0 +1,22 @@
+{
+  "name": "@workertown/middleware",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "ava"
+  },
+  "dependencies": {
+    "jose": "~4.14.4",
+    "lodash.merge": "~4.6.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "~4.20230518.0",
+    "ava": "~5.3.0",
+    "hono": "~3.2.2",
+    "tsx": "~3.12.7",
+    "typescript": "~5.1.3"
+  }
+}

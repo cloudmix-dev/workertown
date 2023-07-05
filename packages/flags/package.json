@@ -1,0 +1,12 @@
+{
+  "name": "@workertown/flags",
+  "version": "0.0.1",
+  "dependencies": {
+    "@workertown/middleware": "~0.0.1",
+    "hono": "~3.2.5",
+    "lodash.merge": "~4.6.2"
+  },
+  "devDependencies": {
+    "@workertown/internal-types": "~0.0.1"
+  }
+}
