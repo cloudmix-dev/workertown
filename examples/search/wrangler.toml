@@ -2,6 +2,15 @@ name = "search"
 main = "src/worker.ts"
 compatibility_date = "2023-05-30"
 
+[[kv_namespaces]]
+binding = "CACHE"
+id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "search_example"
+database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
 # # KV Namespace binding - For more information: https://developers.cloudflare.com/workers/runtime-apis/kv
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"

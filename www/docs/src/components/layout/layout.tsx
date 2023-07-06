@@ -3,12 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
-import { Hero } from "./Hero";
-import { MobileNavigation } from "./MobileNavigation";
-import { Navigation } from "./Navigation";
-import { Prose } from "./Prose";
-import { Search } from "./Search";
-import { ThemeSelector } from "./ThemeSelector";
+import { Prose } from "../prose/prose";
+import { ThemeProvider } from "../theme/theme-provider";
+import { ThemeSelector } from "../theme/theme-selector";
+import { Hero } from "./hero";
+import { MobileNavigation } from "./mobile-navigation";
+import { Navigation } from "./navigation";
+import { Search } from "./search";
 
 export const navigation = [
   {
@@ -22,16 +23,6 @@ export const navigation = [
     title: "Core concepts",
     links: [
       { title: "Understanding caching", href: "/docs/understanding-caching" },
-      {
-        title: "Predicting user behavior",
-        href: "/docs/predicting-user-behavior",
-      },
-      { title: "Basics of time-travel", href: "/docs/basics-of-time-travel" },
-      {
-        title: "Introduction to string theory",
-        href: "/docs/introduction-to-string-theory",
-      },
-      { title: "The butterfly effect", href: "/docs/the-butterfly-effect" },
     ],
   },
   {
@@ -82,8 +73,11 @@ function Header({ navigation }) {
     function onScroll() {
       setIsScrolled(window.scrollY > 0);
     }
+
     onScroll();
+
     window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
@@ -92,28 +86,33 @@ function Header({ navigation }) {
   return (
     <header
       className={clsx(
-        "sticky top-0 z-50 flex flex-wrap items-center justify-between bg-white px-4 py-5 shadow-md shadow-slate-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8",
+        "sticky top-0 z-50 bg-white shadow-md shadow-zinc-900/5 transition duration-500 dark:shadow-none",
         isScrolled
-          ? "dark:bg-slate-900/95 dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-slate-900/75"
+          ? "dark:bg-zinc-900/95 dark:backdrop-blur dark:[@supports(backdrop-filter:blur(0))]:bg-zinc-900/75"
           : "dark:bg-transparent"
       )}
     >
-      <div className="mr-6 flex lg:hidden">
-        <MobileNavigation navigation={navigation} />
-      </div>
-      <div className="relative flex flex-grow basis-0 items-center">
-        <Link href="/" aria-label="Home page">
-          {/* Logo goes here... */}
-        </Link>
-      </div>
-      <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
-        <Search />
-      </div>
-      <div className="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
-        <ThemeSelector className="relative z-10" />
-        <Link href="https://github.com" className="group" aria-label="GitHub">
-          <GitHubIcon className="h-6 w-6 fill-slate-400 group-hover:fill-slate-500 dark:group-hover:fill-slate-300" />
-        </Link>
+      <div className="flex flex-wrap items-center justify-between m-auto max-w-2xl lg:max-w-8xl px-4 py-5 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mr-6 flex lg:hidden">
+          <MobileNavigation navigation={navigation} />
+        </div>
+        <div className="relative flex flex-grow basis-0 items-center">
+          <Link href="/" aria-label="Home page">
+            <span className="font-display uppercase text-zinc-900 text-xl leading-none dark:text-zinc-50 ">
+              W<span className="hidden lg:inline">orker</span>t
+              <span className="hidden lg:inline">own</span>
+            </span>
+          </Link>
+        </div>
+        <div className="-my-5 mr-6 sm:mr-8 md:mr-0">
+          <Search />
+        </div>
+        <div className="relative flex basis-0 justify-end items-center gap-4 sm:gap-6 md:flex-grow">
+          <ThemeSelector />
+          <Link href="https://github.com" className="group" aria-label="GitHub">
+            <GitHubIcon className="h-6 w-6 fill-zinc-400 group-hover:fill-zinc-500 dark:group-hover:fill-zinc-300" />
+          </Link>
+        </div>
       </div>
     </header>
   );
@@ -185,16 +184,16 @@ export function Layout({ children, title, tableOfContents }) {
   }
 
   return (
-    <>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <Header navigation={navigation} />
 
       {isHomePage && <Hero />}
 
       <div className="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
         <div className="hidden lg:relative lg:block lg:flex-none">
-          <div className="absolute inset-y-0 right-0 w-[50vw] bg-slate-50 dark:hidden" />
-          <div className="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-slate-800 dark:block" />
-          <div className="absolute bottom-0 right-0 top-28 hidden w-px bg-slate-800 dark:block" />
+          <div className="absolute inset-y-0 right-0 w-[50vw] bg-zinc-50 dark:hidden" />
+          <div className="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-zinc-800 dark:block" />
+          <div className="absolute bottom-0 right-0 top-28 hidden w-px bg-zinc-800 dark:block" />
           <div className="sticky top-[4.5rem] -ml-0.5 h-[calc(100vh-4.5rem)] w-64 overflow-y-auto overflow-x-hidden py-16 pl-0.5 pr-8 xl:w-72 xl:pr-16">
             <Navigation navigation={navigation} />
           </div>
@@ -204,12 +203,12 @@ export function Layout({ children, title, tableOfContents }) {
             {(title || section) && (
               <header className="mb-9 space-y-1">
                 {section && (
-                  <p className="font-display text-sm font-medium text-sky-500">
+                  <p className="font-display text-sm font-medium text-indigo-500">
                     {section.title}
                   </p>
                 )}
                 {title && (
-                  <h1 className="font-display text-3xl tracking-tight text-slate-900 dark:text-white">
+                  <h1 className="font-display text-3xl tracking-tight text-zinc-900 dark:text-white">
                     {title}
                   </h1>
                 )}
@@ -217,16 +216,16 @@ export function Layout({ children, title, tableOfContents }) {
             )}
             <Prose>{children}</Prose>
           </article>
-          <dl className="mt-12 flex border-t border-slate-200 pt-6 dark:border-slate-800">
+          <dl className="mt-12 flex border-t border-zinc-200 pt-6 dark:border-zinc-800">
             {previousPage && (
               <div>
-                <dt className="font-display text-sm font-medium text-slate-900 dark:text-white">
+                <dt className="font-display text-sm font-medium text-zinc-900 dark:text-white">
                   Previous
                 </dt>
                 <dd className="mt-1">
                   <Link
                     href={previousPage.href}
-                    className="text-base font-semibold text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300"
+                    className="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                   >
                     <span aria-hidden="true">&larr;</span> {previousPage.title}
                   </Link>
@@ -235,13 +234,13 @@ export function Layout({ children, title, tableOfContents }) {
             )}
             {nextPage && (
               <div className="ml-auto text-right">
-                <dt className="font-display text-sm font-medium text-slate-900 dark:text-white">
+                <dt className="font-display text-sm font-medium text-zinc-900 dark:text-white">
                   Next
                 </dt>
                 <dd className="mt-1">
                   <Link
                     href={nextPage.href}
-                    className="text-base font-semibold text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300"
+                    className="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                   >
                     {nextPage.title} <span aria-hidden="true">&rarr;</span>
                   </Link>
@@ -256,7 +255,7 @@ export function Layout({ children, title, tableOfContents }) {
               <>
                 <h2
                   id="on-this-page-title"
-                  className="font-display text-sm font-medium text-slate-900 dark:text-white"
+                  className="font-display text-sm font-medium text-zinc-900 dark:text-white"
                 >
                   On this page
                 </h2>
@@ -268,8 +267,8 @@ export function Layout({ children, title, tableOfContents }) {
                           href={`#${section.id}`}
                           className={clsx(
                             isActive(section)
-                              ? "text-sky-500"
-                              : "font-normal text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
+                              ? "text-indigo-500"
+                              : "font-normal text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
                           )}
                         >
                           {section.title}
@@ -278,7 +277,7 @@ export function Layout({ children, title, tableOfContents }) {
                       {section.children.length > 0 && (
                         <ol
                           role="list"
-                          className="mt-2 space-y-3 pl-5 text-slate-500 dark:text-slate-400"
+                          className="mt-2 space-y-3 pl-5 text-zinc-500 dark:text-zinc-400"
                         >
                           {section.children.map((subSection) => (
                             <li key={subSection.id}>
@@ -286,8 +285,8 @@ export function Layout({ children, title, tableOfContents }) {
                                 href={`#${subSection.id}`}
                                 className={
                                   isActive(subSection)
-                                    ? "text-sky-500"
-                                    : "hover:text-slate-600 dark:hover:text-slate-300"
+                                    ? "text-indigo-500"
+                                    : "hover:text-zinc-600 dark:hover:text-zinc-300"
                                 }
                               >
                                 {subSection.title}
@@ -304,6 +303,6 @@ export function Layout({ children, title, tableOfContents }) {
           </nav>
         </div>
       </div>
-    </>
+    </ThemeProvider>
   );
 }

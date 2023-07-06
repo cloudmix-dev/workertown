@@ -1,6 +1,6 @@
-import { DarkMode, Gradient, LightMode } from "../Icon";
+import { DarkMode, Gradient, LightMode } from "../icons/icon";
 
-export function IdentificationIcon({ id, color }) {
+export function PubSubIcon({ id, color }) {
   return (
     <>
       <defs>
@@ -18,7 +18,7 @@ export function IdentificationIcon({ id, color }) {
       <LightMode>
         <circle cx={12} cy={12} r={12} fill={`url(#${id}-gradient)`} />
         <path
-          d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+          d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
           strokeLinecap="round"
           strokeLinejoin="round"
           fillOpacity={0.5}
@@ -28,11 +28,12 @@ export function IdentificationIcon({ id, color }) {
       </LightMode>
       <DarkMode>
         <path
-          d="M4.5 3.75a3 3 0 00-3 3v10.5a3 3 0 003 3h15a3 3 0 003-3V6.75a3 3 0 00-3-3h-15zm4.125 3a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm-3.873 8.703a4.126 4.126 0 017.746 0 .75.75 0 01-.351.92 7.47 7.47 0 01-3.522.877 7.47 7.47 0 01-3.522-.877.75.75 0 01-.351-.92zM15 8.25a.75.75 0 000 1.5h3.75a.75.75 0 000-1.5H15zM14.25 12a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H15a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3.75a.75.75 0 000-1.5H15z"
+          d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z"
           fill={`url(#${id}-gradient-dark)`}
           stroke={`url(#${id}-gradient-dark)`}
           fillRule="evenodd"
           clipRule="evenodd"
+          strokeWidth={0}
         />
       </DarkMode>
     </>

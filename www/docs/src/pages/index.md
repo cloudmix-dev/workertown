@@ -16,19 +16,19 @@ Workertown currently provides...
 
 {% quick-links %}
 
-{% quick-link title="Search" icon="identification" href="/" description="Full text search indexing for small to medium datasets." /%}
+{% quick-link title="Auth" icon="auth" href="/" description="OAuth 2 and SAML, but easy to understand." /%}
 
-{% quick-link title="Flags" icon="presets" href="/" description="Feature flags made simple." /%}
+{% quick-link title="Events" icon="events" href="/" description="Kafka-like events streaming." /%}
 
-{% quick-link title="Events" icon="plugins" href="/" description="Kafka-like events streaming." /%}
+{% quick-link title="Flags" icon="flags" href="/" description="Feature flags made simple." /%}
 
-{% quick-link title="KV" icon="theming" href="/" description="Simple key/value storage." /%}
+{% quick-link title="KV" icon="kv" href="/" description="Simple key/value storage." /%}
 
-{% quick-link title="Auth" icon="theming" href="/" description="OAuth 2 and SAML, but easy to understand." /%}
+{% quick-link title="Pub/sub" icon="pubsub" href="/" description="Webhook based system messaging." /%}
 
-{% quick-link title="Pub/sub" icon="theming" href="/" description="Webhook based system messaging." /%}
+{% quick-link title="Queues" icon="queues" href="/" description="Distributed, prioritized task processing." /%}
 
-{% quick-link title="Queues" icon="theming" href="/" description="Distributed, prioritized task processing." /%}
+{% quick-link title="Search" icon="search" href="/" description="Full text search indexing for small to medium datasets." /%}
 
 {% /quick-links %}
 

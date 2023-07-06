@@ -2,7 +2,7 @@ import { slugifyWithCounter } from "@sindresorhus/slugify";
 import "focus-visible";
 import Head from "next/head";
 
-import { Layout } from "../components/Layout";
+import { Layout } from "../components/layout/layout";
 import "../styles/tailwind.css";
 
 function getNodeText(node) {

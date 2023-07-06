@@ -3,6 +3,10 @@
   "style": "new-york",
   "rsc": true,
   "tsx": true,
+  "aliases": {
+    "utils": "@/lib/utils",
+    "components": "@/components"
+  },
   "tailwind": {
     "config": "tailwind.config.js",
     "css": "src/styles/tailwind.css",

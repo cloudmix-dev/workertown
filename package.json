@@ -1,4 +1,5 @@
 {
+  "name": "@cloudmix-dev/workertown",
   "private": true,
   "workspaces": [
     "examples/*",

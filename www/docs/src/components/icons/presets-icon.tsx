@@ -1,4 +1,4 @@
-import { DarkMode, Gradient, LightMode } from "../Icon";
+import { DarkMode, Gradient, LightMode } from "../icons/icon";
 
 export function PresetsIcon({ id, color }) {
   return (
