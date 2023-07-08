@@ -1,14 +1,62 @@
 "use client";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import {
-  CheckIcon,
-  ChevronRightIcon,
-  DotFilledIcon,
-} from "@radix-ui/react-icons";
 import * as React from "react";
 
 import { cn } from "../../lib/utils";
+
+function CheckIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-4 h-4"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.5 12.75l6 6 9-13.5"
+      />
+    </svg>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-4 h-4 ml-auto"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+      />
+    </svg>
+  );
+}
+
+function DotFilledIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 15 15"
+      className="h-4 w-4 fill-current"
+    >
+      <path
+        d="M9.875 7.5C9.875 8.81168 8.81168 9.875 7.5 9.875C6.18832 9.875 5.125 8.81168 5.125 7.5C5.125 6.18832 6.18832 5.125 7.5 5.125C8.81168 5.125 9.875 6.18832 9.875 7.5Z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  );
+}
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -38,7 +86,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <ChevronRightIcon className="ml-auto h-4 w-4" />
+    <ChevronRightIcon />
   </DropdownMenuPrimitive.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName =
@@ -88,7 +136,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 cursor-pointer data-[disabled]:cursor-not-allowed data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50",
+      "relative flex select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors cursor-pointer focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:cursor-not-allowed data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50",
       inset && "pl-8",
       className
     )}
@@ -104,7 +152,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50",
+      "relative flex select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors cursor-pointer focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50",
       className
     )}
     checked={checked}
@@ -112,7 +160,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <CheckIcon className="h-4 w-4" />
+        <CheckIcon />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -128,14 +176,14 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50",
+      "relative flex select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors cursor-pointer focus:bg-zinc-100 focus:text-zinc-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-zinc-800 dark:focus:text-zinc-50",
       className
     )}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <DropdownMenuPrimitive.ItemIndicator>
-        <DotFilledIcon className="h-4 w-4 fill-current" />
+        <DotFilledIcon />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
