@@ -39,7 +39,8 @@
     "@types/node": "~20.4.1",
     "@types/react": "18.2.12",
     "autoprefixer": "~10.4.12",
-    "sharp": "~0.32.0",
+    "js-yaml": "~4.1.0",
+    "sharp": "~0.32.1",
     "tailwindcss": "~3.3.0",
     "typescript": "~5.1.6"
   }
