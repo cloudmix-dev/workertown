@@ -96,7 +96,13 @@ const server = search({
 // ...
 ```
 
-### Configuration
+---
+
+## Configuration
+
+### Storage
+
+### Cache
 
 ---
 
