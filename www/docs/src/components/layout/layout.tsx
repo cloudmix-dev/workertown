@@ -18,7 +18,6 @@ export const navigation = [
     title: "Introduction",
     links: [
       { title: "What is Workertown?", href: "/" },
-      { title: "Installation", href: "/docs/installation" },
       { title: "Tutorial", href: "/docs/tutorial" },
     ],
   },
