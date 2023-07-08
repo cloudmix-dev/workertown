@@ -11,7 +11,7 @@ on:
     paths:
       - www/docs
       - .github/workflows/website.yml
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   deploy-docs-website:
