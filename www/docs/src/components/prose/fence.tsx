@@ -81,36 +81,42 @@ function CopyButton({ text }: CopyButtonProps) {
 
 export function Fence({ children, language }) {
   return (
-    <Highlight
-      {...defaultProps}
-      code={children.trimEnd()}
-      language={language}
-      theme={undefined}
-    >
-      {({ className, style, tokens, getTokenProps }) => {
-        const text = tokens
-          .map((line) => line.map((token) => token.content).join(""))
-          .join("\n");
-        const onCopy = () => navigator.clipboard.writeText(text);
+    <div className="relative">
+      <Highlight
+        {...defaultProps}
+        code={children.trimEnd()}
+        language={language}
+        theme={undefined}
+      >
+        {({ className, style, tokens, getTokenProps }) => {
+          const text = tokens
+            .map((line) => line.map((token) => token.content).join(""))
+            .join("\n");
 
-        return (
-          <pre className={cn("relative", className)} style={style}>
-            <code>
-              {tokens.map((line, lineIndex) => (
-                <Fragment key={lineIndex}>
-                  {line
-                    .filter((token) => !token.empty)
-                    .map((token, tokenIndex) => (
-                      <span key={tokenIndex} {...getTokenProps({ token })} />
-                    ))}
-                  {"\n"}
-                </Fragment>
-              ))}
-            </code>
-            <CopyButton text={text} />
-          </pre>
-        );
-      }}
-    </Highlight>
+          return (
+            <>
+              <pre className={cn(className, "pr-14")} style={style}>
+                <code>
+                  {tokens.map((line, lineIndex) => (
+                    <Fragment key={lineIndex}>
+                      {line
+                        .filter((token) => !token.empty)
+                        .map((token, tokenIndex) => (
+                          <span
+                            key={tokenIndex}
+                            {...getTokenProps({ token })}
+                          />
+                        ))}
+                      {"\n"}
+                    </Fragment>
+                  ))}
+                </code>
+              </pre>
+              <CopyButton text={text} />
+            </>
+          );
+        }}
+      </Highlight>
+    </div>
   );
 }
