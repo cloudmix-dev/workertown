@@ -14,6 +14,7 @@ export interface CreateServerOptions {
     jwt?: JwtOptions | false;
     apiKey?: ApiKeyOptions | false;
   };
+  basePath: string;
   cache?: CacheAdapter;
   env: {
     cache: string;

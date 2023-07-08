@@ -14,6 +14,7 @@ import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants";
 import {
   adminRouter,
   itemsRouter,
+  publicRouter,
   searchRouter,
   suggestRouter,
   tagsRouter,
@@ -41,12 +42,12 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
       env: {
         jwksUrl: "SEARCH_JWKS_URL",
         secret: "SEARCH_JWT_SECRET",
-        cache: "SEARCH_JWKS_CACHE",
         audience: "SEARCH_JWT_AUDIENCE",
         issuer: "SEARCH_JWT_ISSUER",
       },
     },
   },
+  basePath: "/",
   env: {
     cache: "SEARCH_CACHE",
     database: "SEARCH_DB",
@@ -63,10 +64,19 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   stopWords: DEFAUlT_STOP_WORDS,
 };
 
+function createRoute(basePath: string, route: string) {
+  const prefix = basePath.startsWith("/") ? "" : "/";
+  const formattedBasePath = basePath.endsWith("/") ? basePath : `${basePath}/`;
+  const formattedRoute = route.startsWith("/") ? route.slice(1) : route;
+
+  return `${prefix}${formattedBasePath}${formattedRoute}`;
+}
+
 export function createSearchServer(options?: CreateServerOptionsOptional) {
   const config = merge(DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,
+    basePath,
     cache,
     prefixes,
     env: { cache: cacheEnvKey, database: dbEnvKey },
@@ -120,16 +130,12 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     app.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
-  app.route(prefixes.admin, adminRouter);
-  app.route(prefixes.items, itemsRouter);
-  app.route(prefixes.public, searchRouter);
-  app.route(prefixes.search, searchRouter);
-  app.route(prefixes.suggest, suggestRouter);
-  app.route(prefixes.tags, tagsRouter);
-
-  app.get("/health", async (ctx) =>
-    ctx.json({ status: 200, success: true, data: "OK" })
-  );
+  app.route(createRoute(basePath, prefixes.admin), adminRouter);
+  app.route(createRoute(basePath, prefixes.items), itemsRouter);
+  app.route(createRoute(basePath, prefixes.public), publicRouter);
+  app.route(createRoute(basePath, prefixes.search), searchRouter);
+  app.route(createRoute(basePath, prefixes.suggest), suggestRouter);
+  app.route(createRoute(basePath, prefixes.tags), tagsRouter);
 
   return app;
 }

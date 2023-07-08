@@ -10,7 +10,11 @@ import {
   type IndexItemRoute,
   router as itemsRouter,
 } from "./items";
-import { type OpenApiRoute, router as publicRouter } from "./public";
+import {
+  type HealthRoute,
+  type OpenApiRoute,
+  router as publicRouter,
+} from "./public";
 import { type SearchRoute, router as searchRouter } from "./search";
 import { type SuggestRoute, router as suggestRouter } from "./suggest";
 import { type GetTagsRoute, router as tagsRouter } from "./tags";
@@ -26,6 +30,7 @@ export {
   type GetItemRoute,
   type GetMigrationsRoute,
   type GetTagsRoute,
+  type HealthRoute,
   type IndexItemRoute,
   type InfoRoute,
   type OpenApiRoute,
