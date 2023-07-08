@@ -16,7 +16,7 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "turbo build --filter='./packages/*' && changeset publish",
-    "prepare": "husky install"
+    "postinstall": "husky install"
   },
   "devDependencies": {
     "@changesets/cli": "~2.26.1",
