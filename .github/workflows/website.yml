@@ -1,4 +1,4 @@
-name: Deploy website
+name: Deploy docs website
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -23,7 +23,7 @@ jobs:
       - name: Pull Vercel environment information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Install project dependencies
-        run: npm install
+        run: npm -w @workertown/docs install
       - name: Build project artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy project artifacts to Vercel
