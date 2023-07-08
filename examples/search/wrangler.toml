@@ -2,11 +2,16 @@ name = "search"
 main = "src/worker.ts"
 compatibility_date = "2023-05-30"
 
+[vars]
+SEARCH_API_KEY = "super_secret_api"
+
 [[kv_namespaces]]
 binding = "SEARCH_CACHE"
 id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [[d1_databases]]
 binding = "SEARCH_DB"
 database_name = "search_example"
 database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

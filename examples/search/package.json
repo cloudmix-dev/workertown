@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "wrangler dev"
+    "start": "NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
     "@workertown/search": "~0.0.1"
