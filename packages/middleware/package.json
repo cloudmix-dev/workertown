@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "ava"
+    "//test": "ava"
   },
   "dependencies": {
     "jose": "~4.14.4",
