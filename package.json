@@ -15,12 +15,13 @@
     "fmt": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "turbo build --filter='./packages/*' && changeset publish"
+    "release": "turbo build --filter='./packages/*' && changeset publish",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@changesets/cli": "~2.26.1",
-    "@commitlint/cli": "~17.6.3",
-    "@commitlint/config-conventional": "~17.6.3",
+    "@commitlint/cli": "~17.6.6",
+    "@commitlint/config-conventional": "~17.6.6",
     "@trivago/prettier-plugin-sort-imports": "~4.1.1",
     "@types/eslint": "~8.40.0",
     "@types/prettier": "~2.7.2",
