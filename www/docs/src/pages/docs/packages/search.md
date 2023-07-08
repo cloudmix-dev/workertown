@@ -1,10 +1,6 @@
 ---
 title: "@workertown/search"
-description: Quidem magni aut exercitationem maxime rerum eos.
----
-
-Quasi sapiente voluptates aut minima non doloribus similique quisquam. In quo expedita ipsum nostrum corrupti incidunt. Et aut eligendi ea perferendis.
-
+description: Production-ready text search at the edge
 ---
 
 ## What is it?
