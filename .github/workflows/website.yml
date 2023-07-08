@@ -10,6 +10,8 @@ on:
       - main
     paths:
       - www/docs
+      - .github/workflows/website.yml
+
 jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
