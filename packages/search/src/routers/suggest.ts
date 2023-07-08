@@ -56,7 +56,7 @@ const suggest = router.get(
             stopWords.has(term) ? null : term.toLowerCase(),
         });
 
-        miniSearch.addAll(items.map((item) => JSON.parse(item.data)));
+        miniSearch.addAll(items.map((item) => ({ id: item.id, ...item.data })));
 
         results = miniSearch.autoSuggest(term);
       }
