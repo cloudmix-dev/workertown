@@ -23,7 +23,7 @@ jobs:
       - name: Pull Vercel environment information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Install project dependencies
-        run: npm -w @workertown/docs install
+        run: npm install
       - name: Build project artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy project artifacts to Vercel
