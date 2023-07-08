@@ -354,7 +354,7 @@ export function Layout({ children, title, tableOfContents }) {
       {showWarning && (
         <div className="fixed bottom-0 left-0 right-0 p-4 z-10 sm:p-6">
           <div className="m-auto max-w-lg">
-            <Alert className="bg-zinc-900 shadow-md">
+            <Alert className="bg-zinc-100 shadow-lg dark:bg-zinc-900">
               <AlertTitle>Be careful where you tread...</AlertTitle>
               <AlertDescription>
                 <div className="flex justify-between items-center space-x-4">
