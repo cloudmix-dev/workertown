@@ -102,19 +102,25 @@ const server = search({
 
 ## Using the API
 
-### Indexing a document
+### REST API
 
-#### Tags
+#### Indexing a document
 
-### Searching for documents
+#### Searching for documents
 
-#### Tags
+#### Suggesting documents
 
-### Suggesting documents
+#### Admin
 
-#### Tags
+### `@workertown/search/client`
 
-### Admin
+#### Indexing a document
+
+#### Searching for documents
+
+#### Suggesting documents
+
+#### Admin
 
 ---
 
@@ -158,7 +164,7 @@ there are some limitations to be aware of when deciding whether
 - You can utilise tags to limit the number of documents that need to be loaded
   into memory
 
-## The "EJECT" button
+### The "EJECT" button
 
 Things don't always work out.. and software doesn't always scale with your
 business, or stand against the general test of time. That's OK - it's actually
