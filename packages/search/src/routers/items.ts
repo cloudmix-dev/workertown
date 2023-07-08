@@ -33,8 +33,12 @@ const indexItem = router.put(
   async (ctx) => {
     const id = ctx.req.param("id");
     const storage = ctx.get("storage");
+    const cache = ctx.get("cache");
     const { tenant, index, data, tags } = ctx.req.valid("json");
     const item = await storage.indexItem({ id, tenant, index, data }, tags);
+
+    await cache.delete(`items_${tenant}_ALL`);
+    await cache.delete(`items_${tenant}_${index}`);
 
     return ctx.jsonT({ status: 200, success: true, data: item });
   }
@@ -45,8 +49,14 @@ export type IndexItemRoute = typeof indexItem;
 const deleteItem = router.delete("/:id", async (ctx) => {
   const id = ctx.req.param("id");
   const storage = ctx.get("storage");
+  const cache = ctx.get("cache");
+  const item = await storage.getItem(id);
 
-  await storage.deleteItem(id);
+  if (item) {
+    await storage.deleteItem(id);
+    await cache.delete(`items_${item.tenant}_ALL`);
+    await cache.delete(`items_${item.tenant}_${item.index}`);
+  }
 
   return ctx.jsonT({ status: 200, success: true, data: true });
 });

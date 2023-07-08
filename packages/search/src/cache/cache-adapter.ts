@@ -7,11 +7,7 @@ export class CacheAdapter {
     throw new TypeError("'set()' not implemented");
   }
 
-  async delete(key: string): Promise<void> {
-    throw new TypeError("'delete()' not implemented");
-  }
-
-  async clear(): Promise<void> {
+  async delete(key?: string): Promise<void> {
     throw new TypeError("'clear()' not implemented");
   }
 }

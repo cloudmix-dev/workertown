@@ -36,16 +36,12 @@ export class KVCacheAdapter extends CacheAdapter {
     await this._kv.put(this._prefixKey(key), JSON.stringify(value));
   }
 
-  async delete(key: string) {
-    await this._kv.delete(this._prefixKey(key));
-  }
-
-  async clear() {
+  async delete(key?: string) {
     let done = false;
 
     while (!done) {
       const { keys, list_complete: listComplete } = await this._kv.list({
-        prefix: this._prefix,
+        prefix: key ? this._prefixKey(key) : this._prefix,
       });
 
       for (const key of keys) {

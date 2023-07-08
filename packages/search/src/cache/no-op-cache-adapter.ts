@@ -7,7 +7,5 @@ export class NoOpCacheAdapter extends CacheAdapter {
 
   async set(key: string, value: unknown): Promise<void> {}
 
-  async delete(key: string): Promise<void> {}
-
-  async clear(): Promise<void> {}
+  async delete(key?: string): Promise<void> {}
 }
