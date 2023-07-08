@@ -19,6 +19,18 @@
     "./storage": {
       "default": "./dist/storage/index.js",
       "types": "./dist/storage/index.d.ts"
+    },
+    "./storage/d1-storage-adapter": {
+      "default": "./dist/storage/d1-storage-adapter.js",
+      "types": "./dist/storage/d1-storage-adapter.d.ts"
+    },
+    "./storage/planetscale-storage-adapter": {
+      "default": "./dist/storage/planetscale-storage-adapter.js",
+      "types": "./dist/storage/planetscale-storage-adapter.d.ts"
+    },
+    "./storage/migrations": {
+      "default": "./dist/storage/migrations.js",
+      "types": "./dist/storage/migrations.d.ts"
     }
   },
   "scripts": {
@@ -28,10 +40,12 @@
   },
   "dependencies": {
     "@hono/zod-validator": "~0.1.3",
+    "@planetscale/database": "~1.8.0",
     "@workertown/middleware": "~0.0.1",
     "hono": "~3.2.7",
-    "kysely": "~0.25.0",
+    "kysely": "~0.26.0",
     "kysely-d1": "~0.3.0",
+    "kysely-planetscale": "~1.3.0",
     "lodash.merge": "~4.6.2",
     "minisearch": "~6.1.0",
     "zod": "~3.21.4"

@@ -108,7 +108,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
         });
       }
 
-      storageAdapter = new D1StorageAdapter(db);
+      storageAdapter = new D1StorageAdapter({ db });
     }
 
     ctx.set("cache", cacheAdapter);

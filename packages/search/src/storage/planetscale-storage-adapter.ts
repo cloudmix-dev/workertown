@@ -1,4 +1,3 @@
-import { D1Database } from "@cloudflare/workers-types";
 import {
   type ColumnType,
   type Insertable,
@@ -8,9 +7,9 @@ import {
   type Selectable,
   type Updateable,
 } from "kysely";
-import { D1Dialect } from "kysely-d1";
-import { DEFAULT_SORT_FIELD } from "src/constants";
+import { PlanetScaleDialect } from "kysely-planetscale";
 
+import { DEFAULT_SORT_FIELD } from "../constants";
 import { DefaultMigrationProvider } from "./migrations";
 import { GetItemsOptions, Item, StorageAdapter } from "./storage-adapter";
 
@@ -19,8 +18,8 @@ interface SearchItemTable {
   tenant: string;
   index: string;
   data: string;
-  created_at: ColumnType<Date | number, number, never>;
-  updated_at: ColumnType<Date | number, number, number>;
+  created_at: ColumnType<Date | string, string, never>;
+  updated_at: ColumnType<Date | string, string, string>;
 }
 
 export type SearchItem = Selectable<SearchItemTable>;
@@ -45,19 +44,19 @@ const MIGRATIONS: MigrationInfo[] = [
         await db.schema
           .createTable("search_items")
           .ifNotExists()
-          .addColumn("id", "text", (col) => col.notNull())
-          .addColumn("tenant", "text", (col) => col.notNull())
-          .addColumn("index", "text", (col) => col.notNull())
-          .addColumn("data", "text", (col) => col.notNull())
-          .addColumn("created_at", "integer", (col) => col.notNull())
-          .addColumn("updated_at", "integer", (col) => col.notNull())
+          .addColumn("id", "varchar", (col) => col.notNull())
+          .addColumn("tenant", "varchar", (col) => col.notNull())
+          .addColumn("index", "varchar", (col) => col.notNull())
+          .addColumn("data", "varchar", (col) => col.notNull())
+          .addColumn("created_at", "timestamp", (col) => col.notNull())
+          .addColumn("updated_at", "timestamp", (col) => col.notNull())
           .execute();
 
         await db.schema
           .createTable("search_tags")
           .ifNotExists()
-          .addColumn("id", "text", (col) => col.notNull())
-          .addColumn("search_item_id", "text", (col) => col.notNull())
+          .addColumn("id", "varchar", (col) => col.notNull())
+          .addColumn("search_item_id", "varchar", (col) => col.notNull())
           .execute();
 
         await db.schema
@@ -116,18 +115,20 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
+interface PlanetscaleStorageAdapterOptions {
+  url?: string;
+  username?: string;
+  password?: string;
 }
 
-export class D1StorageAdapter extends StorageAdapter {
+export class PlanetscaleStorageAdapter extends StorageAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
-  constructor(options: D1StorageAdapterOptions) {
+  constructor(options: PlanetscaleStorageAdapterOptions = {}) {
     super();
 
     this._client = new Kysely<DatabaseSchema>({
-      dialect: new D1Dialect({ database: options.db }),
+      dialect: new PlanetScaleDialect(options),
     });
   }
 
@@ -135,8 +136,8 @@ export class D1StorageAdapter extends StorageAdapter {
     return {
       ...item,
       data: JSON.parse(item.data),
-      createdAt: new Date(item.created_at as unknown as number),
-      updatedAt: new Date(item.updated_at as unknown as number),
+      createdAt: new Date(item.created_at as unknown as string),
+      updatedAt: new Date(item.updated_at as unknown as string),
     };
   }
 
@@ -209,14 +210,14 @@ export class D1StorageAdapter extends StorageAdapter {
       .values({
         ...item,
         data: JSON.stringify(item.data),
-        created_at: now.getTime(),
-        updated_at: now.getTime(),
+        created_at: now.toISOString(),
+        updated_at: now.toISOString(),
       })
       .onConflict((oc) =>
         oc.columns(["id", "tenant", "index"]).doUpdateSet({
           ...item,
           data: JSON.stringify(item.data),
-          updated_at: now.getTime(),
+          updated_at: now.toISOString(),
         })
       )
       .execute();

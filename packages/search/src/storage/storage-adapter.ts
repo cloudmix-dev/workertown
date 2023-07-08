@@ -54,8 +54,4 @@ export class StorageAdapter {
   }
 
   async runMigrations(): Promise<void> {}
-
-  getMigrations(): string | null {
-    return null;
-  }
 }

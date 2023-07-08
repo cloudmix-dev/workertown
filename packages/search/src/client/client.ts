@@ -7,7 +7,6 @@ import { type MatchInfo, type Suggestion } from "minisearch";
 import {
   type DeleteItemRoute,
   type GetItemRoute,
-  type GetMigrationsRoute,
   type GetTagsRoute,
   type IndexItemRoute,
   type OpenApiRoute,
@@ -60,15 +59,6 @@ export class SearchClient {
 
   get admin() {
     return {
-      getMigrations: async () => {
-        const client = this._createClient<GetMigrationsRoute>(
-          this._options.prefixes.admin
-        );
-        const res = await client.migrate.$get();
-        const { data } = await res.json();
-
-        return data;
-      },
       openApi: async () => {
         const client = this._createClient<OpenApiRoute>(
           this._options.prefixes.admin

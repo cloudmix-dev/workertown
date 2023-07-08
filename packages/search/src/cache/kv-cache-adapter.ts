@@ -9,7 +9,7 @@ interface KVCacheAdapterOptions {
 export class KVCacheAdapter extends CacheAdapter {
   private _prefix = "wt_search_cache";
 
-  private _kv: KVNamespace;
+  private readonly _kv: KVNamespace;
 
   constructor(kv: KVNamespace, options?: KVCacheAdapterOptions) {
     super();

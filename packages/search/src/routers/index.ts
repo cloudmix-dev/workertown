@@ -1,5 +1,4 @@
 import {
-  type GetMigrationsRoute,
   type InfoRoute,
   type RunMigrationsRoute,
   router as adminRouter,
@@ -28,7 +27,6 @@ export {
   tagsRouter,
   type DeleteItemRoute,
   type GetItemRoute,
-  type GetMigrationsRoute,
   type GetTagsRoute,
   type HealthRoute,
   type IndexItemRoute,
