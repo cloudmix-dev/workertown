@@ -34,13 +34,16 @@ export function basic(options?: BasicOptionsOptional) {
     if (user === null) {
       const authHeader = ctx.req.headers.get("Authorization");
 
-      if (typeof authHeader === "string") {
-        const credentials = authHeader.replace("Basic ", "");
-        const decodedAuthHeader = atob(credentials);
-        const [headerUsername, headerPassword] = decodedAuthHeader.split(":");
+      if (typeof authHeader === "string" && authHeader.startsWith("Basic ")) {
+        const [credentials] = authHeader.split(" ");
 
-        if (headerUsername === username && headerPassword === password) {
-          ctx.set("user", { id: username });
+        if (credentials) {
+          const decodedAuthHeader = atob(credentials);
+          const [headerUsername, headerPassword] = decodedAuthHeader.split(":");
+
+          if (headerUsername === username && headerPassword === password) {
+            ctx.set("user", { id: username });
+          }
         }
       }
     }
