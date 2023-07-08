@@ -9,6 +9,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev --no-cache --continue",
+    "test": "turbo test",
     "lint": "turbo lint",
     "clean": "turbo clean && rm -rf node_modules",
     "fmt": "prettier --write \"**/*.{ts,tsx,md}\"",
