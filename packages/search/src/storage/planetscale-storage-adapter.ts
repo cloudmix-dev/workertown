@@ -6,6 +6,7 @@ import {
   Migrator,
   type Selectable,
   type Updateable,
+  sql,
 } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 
@@ -48,8 +49,12 @@ const MIGRATIONS: MigrationInfo[] = [
           .addColumn("tenant", "varchar", (col) => col.notNull())
           .addColumn("index", "varchar", (col) => col.notNull())
           .addColumn("data", "varchar", (col) => col.notNull())
-          .addColumn("created_at", "timestamp", (col) => col.notNull())
-          .addColumn("updated_at", "timestamp", (col) => col.notNull())
+          .addColumn("created_at", "timestamp", (col) =>
+            col.defaultTo(sql`now()`).notNull()
+          )
+          .addColumn("updated_at", "timestamp", (col) =>
+            col.defaultTo(sql`now()`).notNull()
+          )
           .execute();
 
         await db.schema
