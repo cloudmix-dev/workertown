@@ -1,3 +1,7 @@
-import { StorageAdapter } from "./storage-adapter";
+import {
+  type GetItemsOptions,
+  type Item,
+  StorageAdapter,
+} from "./storage-adapter";
 
-export { StorageAdapter };
+export { StorageAdapter, type GetItemsOptions, type Item };
