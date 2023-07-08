@@ -6,14 +6,11 @@ const config = {
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ],
       files: ["*.ts", "*.tsx"],
-      parserOptions: {
-        project: ["./tsconfig.json"], // Specify it only for TypeScript files
-      },
     },
   ],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
-  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  extends: ["plugin:@typescript-eslint/recommended"],
   rules: {
     "@typescript-eslint/consistent-type-imports": [
       "warn",
