@@ -139,7 +139,9 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
 
   private _formatItem(item: SearchItem): Item {
     return {
-      ...item,
+      id: item.id,
+      tenant: item.tenant,
+      index: item.index,
       data: JSON.parse(item.data),
       createdAt: new Date(item.created_at as unknown as string),
       updatedAt: new Date(item.updated_at as unknown as string),
@@ -209,23 +211,36 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
     tags: string[] = []
   ) {
     const now = new Date();
+    const existing = await this._client
+      .selectFrom("search_items")
+      .select(["id", "created_at"])
+      .where("id", "=", item.id)
+      .where("tenant", "=", item.tenant)
+      .where("index", "=", item.index)
+      .executeTakeFirst();
 
-    await this._client
-      .insertInto("search_items")
-      .values({
-        ...item,
-        data: JSON.stringify(item.data),
-        created_at: now.toISOString(),
-        updated_at: now.toISOString(),
-      })
-      .onConflict((oc) =>
-        oc.columns(["id", "tenant", "index"]).doUpdateSet({
+    if (!existing) {
+      await this._client
+        .insertInto("search_items")
+        .values({
           ...item,
+          data: JSON.stringify(item.data),
+          created_at: now.toISOString(),
+          updated_at: now.toISOString(),
+        })
+        .execute();
+    } else {
+      await this._client
+        .updateTable("search_items")
+        .where("id", "=", item.id)
+        .where("tenant", "=", item.tenant)
+        .where("index", "=", item.index)
+        .set({
           data: JSON.stringify(item.data),
           updated_at: now.toISOString(),
         })
-      )
-      .execute();
+        .execute();
+    }
 
     if (tags.length > 0) {
       await this._client
