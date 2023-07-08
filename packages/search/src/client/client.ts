@@ -2,6 +2,7 @@ import { type DeepPartial } from "@workertown/internal-types";
 import { Hono } from "hono";
 import { hc } from "hono/client";
 import merge from "lodash.merge";
+import { type MatchInfo, type Suggestion } from "minisearch";
 
 import {
   type DeleteItemRoute,
@@ -16,7 +17,7 @@ import {
 } from "../routers";
 
 interface ClientOptions {
-  url: string;
+  fetch?: typeof fetch;
   prefixes: {
     admin: string;
     items: string;
@@ -29,7 +30,6 @@ interface ClientOptions {
 type ClientOptionsOptional = DeepPartial<ClientOptions>;
 
 const DEFAULT_OPTIONS: ClientOptions = {
-  url: "http://localhost:8787/",
   prefixes: {
     admin: "/v1/admin",
     items: "/v1/items",
@@ -40,17 +40,22 @@ const DEFAULT_OPTIONS: ClientOptions = {
 };
 
 export class SearchClient {
-  private readonly _url: string;
-
   private readonly _options: ClientOptions;
 
-  constructor(options?: ClientOptionsOptional) {
+  private readonly _url: string;
+
+  constructor(url: string, options?: ClientOptionsOptional) {
+    this._url = url.replace(/\/$/, "");
     this._options = merge(DEFAULT_OPTIONS, options);
-    this._url = this._options.url.replace(/\/$/, "");
   }
 
   private _createClient<T extends Hono<any, any, any>>(route: string) {
-    return hc<T>(`${this._url}${route}`);
+    const formattedUrl = this._url.endsWith("/") ? this._url : `${this._url}/`;
+    const formattedRoute = route.startsWith("/") ? route.slice(1) : route;
+
+    return hc<T>(`${formattedUrl}${formattedRoute}`, {
+      fetch: this._options.fetch ?? fetch,
+    });
   }
 
   get admin() {
@@ -105,37 +110,99 @@ export class SearchClient {
 
         return data;
       },
-      // indexItem: hc.put(this._options.prefixes.items + "/{id}"),
+      indexItem: async (
+        id: string,
+        item: {
+          data: Record<string, unknown>;
+          index: string;
+          tenant: string;
+          tags?: string[];
+        }
+      ) => {
+        const client = this._createClient<IndexItemRoute>(
+          this._options.prefixes.items
+        );
+        const res = await client[":id"].$put({ param: { id }, json: item });
+        const { data } = await res.json();
+
+        return data;
+      },
     };
   }
 
-  // get search() {
-  //   return {
-  //     search: async (query: string) => {
-  //       const client = this._createClient<SearchRoute>(
-  //         this._options.prefixes.search
-  //       );
-  //       const res = await client.search.$get({ query: { query } });
-  //       const { data } = await res.json();
+  get search() {
+    return {
+      search: async (
+        term: string,
+        options: {
+          tenant: string;
+          index?: string;
+          fields?: string[];
+          tags?: [];
+          orderBy?: string;
+        }
+      ) => {
+        const { tenant, index, fields, tags, orderBy } = options;
+        const client = this._createClient<SearchRoute>(
+          this._options.prefixes.search
+        );
+        // TODO: Fix this `any` when Hono fixes type inference
+        const res = await (client as any)[":tenant"][":index?"].$get({
+          param: { tenant, index },
+          query: {
+            term,
+            fields: fields?.join(","),
+            tags: tags?.join(","),
+            order_by: orderBy,
+          },
+        });
+        const { data } = await res.json();
 
-  //       return data;
-  //     },
-  //   };
-  // }
+        // TODO: remove this hard coded typing when above is fixed
+        return data as {
+          id: any;
+          item: any;
+          score: number;
+          terms: string[];
+          match: MatchInfo;
+        }[];
+      },
+    };
+  }
 
-  // get suggest() {
-  //   return {
-  //     suggest: async (query: string) => {
-  //       const client = this._createClient<SuggestRoute>(
-  //         this._options.prefixes.suggest
-  //       );
-  //       const res = await client.suggest.$get({ query: { query } });
-  //       const { data } = await res.json();
+  get suggest() {
+    return {
+      suggest: async (
+        term: string,
+        options: {
+          tenant: string;
+          index?: string;
+          fields?: string[];
+          tags?: [];
+          orderBy?: string;
+        }
+      ) => {
+        const { tenant, index, fields, tags, orderBy } = options;
+        const client = this._createClient<SuggestRoute>(
+          this._options.prefixes.suggest
+        );
+        // TODO: Fix this `any` when Hono fixes type inference
+        const res = await (client as any)[":tenant"][":index?"].$get({
+          param: { tenant, index },
+          query: {
+            term,
+            fields: fields?.join(","),
+            tags: tags?.join(","),
+            order_by: orderBy,
+          },
+        });
+        const { data } = await res.json();
 
-  //       return data;
-  //     },
-  //   };
-  // }
+        // TODO: remove this hard coded typing when above is fixed
+        return data as Suggestion[];
+      },
+    };
+  }
 
   get tags() {
     return {
@@ -152,6 +219,9 @@ export class SearchClient {
   }
 }
 
-export function createSearchClient(options?: ClientOptionsOptional) {
-  return new SearchClient(options);
+export function createSearchClient(
+  url: string,
+  options?: ClientOptionsOptional
+) {
+  return new SearchClient(url, options);
 }

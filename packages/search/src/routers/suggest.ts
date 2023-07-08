@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { authenticated } from "@workertown/middleware";
 import { Hono } from "hono";
-import MiniSearch from "minisearch";
+import MiniSearch, { type Suggestion } from "minisearch";
 import { z } from "zod";
 
 import { DEFAULT_SORT_FIELD } from "../constants";
@@ -35,35 +35,32 @@ const suggest = router.get(
     const { scanRange, stopWords } = ctx.get("config");
     const { term, tags, fields, order_by: orderBy } = ctx.req.valid("query");
     let items: any[] = [];
+    let results: Suggestion[] = [];
 
-    if (!term) {
-      return ctx.json({ status: 200, success: true, data: [] });
+    if (term) {
+      if (tags?.length && tags.length > 0) {
+        items = await storage.getItemsByTags(tags, {
+          tenant,
+          index,
+          limit: scanRange,
+          orderBy,
+        });
+      } else {
+        items = await storage.getItems({ tenant, index, limit: scanRange });
+      }
+
+      if (items.length > 0) {
+        const miniSearch = new MiniSearch({
+          fields: fields ?? [],
+          processTerm: (term, _fieldName) =>
+            stopWords.has(term) ? null : term.toLowerCase(),
+        });
+
+        miniSearch.addAll(items.map((item) => JSON.parse(item.data)));
+
+        results = miniSearch.autoSuggest(term);
+      }
     }
-
-    if (tags?.length && tags.length > 0) {
-      items = await storage.getItemsByTags(tags, {
-        tenant,
-        index,
-        limit: scanRange,
-        orderBy,
-      });
-    } else {
-      items = await storage.getItems({ tenant, index, limit: scanRange });
-    }
-
-    if (items.length === 0) {
-      return ctx.json({ status: 200, success: true, data: [] });
-    }
-
-    const miniSearch = new MiniSearch({
-      fields: fields ?? [],
-      processTerm: (term, _fieldName) =>
-        stopWords.has(term) ? null : term.toLowerCase(),
-    });
-
-    miniSearch.addAll(items.map((item) => JSON.parse(item.data)));
-
-    const results = miniSearch.autoSuggest(term);
 
     return ctx.jsonT({ status: 200, success: true, data: results });
   }

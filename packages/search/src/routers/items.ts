@@ -21,7 +21,6 @@ export type GetItemRoute = typeof getItem;
 
 const indexItem = router.put(
   "/:id",
-
   zValidator(
     "json",
     z.object({
