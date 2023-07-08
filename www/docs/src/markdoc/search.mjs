@@ -1,48 +1,48 @@
-import { createLoader } from 'simple-functional-loader'
-import glob from 'fast-glob'
-import * as url from 'url'
-import * as path from 'path'
-import * as fs from 'fs'
-import { slugifyWithCounter } from '@sindresorhus/slugify'
-import Markdoc from '@markdoc/markdoc'
+import Markdoc from "@markdoc/markdoc";
+import { slugifyWithCounter } from "@sindresorhus/slugify";
+import glob from "fast-glob";
+import * as fs from "fs";
+import * as path from "path";
+import { createLoader } from "simple-functional-loader";
+import * as url from "url";
 
-const __filename = url.fileURLToPath(import.meta.url)
-const slugify = slugifyWithCounter()
+const __filename = url.fileURLToPath(import.meta.url);
+const slugify = slugifyWithCounter();
 
 function toString(node) {
   let str =
-    node.type === 'text' && typeof node.attributes?.content === 'string'
+    node.type === "text" && typeof node.attributes?.content === "string"
       ? node.attributes.content
-      : ''
-  if ('children' in node) {
+      : "";
+  if ("children" in node) {
     for (let child of node.children) {
-      str += toString(child)
+      str += toString(child);
     }
   }
-  return str
+  return str;
 }
 
 function extractSections(node, sections, isRoot = true) {
   if (isRoot) {
-    slugify.reset()
+    slugify.reset();
   }
-  if (node.type === 'heading' || node.type === 'paragraph') {
-    let content = toString(node).trim()
-    if (node.type === 'heading' && node.attributes.level <= 2) {
-      let hash = node.attributes?.id ?? slugify(content)
-      sections.push([content, hash, []])
+  if (node.type === "heading" || node.type === "paragraph") {
+    let content = toString(node).trim();
+    if (node.type === "heading" && node.attributes.level <= 2) {
+      let hash = node.attributes?.id ?? slugify(content);
+      sections.push([content, hash, []]);
     } else {
-      sections.at(-1)[2].push(content)
+      sections.at(-1)[2].push(content);
     }
-  } else if ('children' in node) {
+  } else if ("children" in node) {
     for (let child of node.children) {
-      extractSections(child, sections, false)
+      extractSections(child, sections, false);
     }
   }
 }
 
 export default function (nextConfig = {}) {
-  let cache = new Map()
+  let cache = new Map();
 
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
@@ -50,32 +50,32 @@ export default function (nextConfig = {}) {
         test: __filename,
         use: [
           createLoader(function () {
-            let pagesDir = path.resolve('./src/pages')
-            this.addContextDependency(pagesDir)
+            let pagesDir = path.resolve("./src/pages");
+            this.addContextDependency(pagesDir);
 
-            let files = glob.sync('**/*.md', { cwd: pagesDir })
+            let files = glob.sync("**/*.md", { cwd: pagesDir });
             let data = files.map((file) => {
               let url =
-                file === 'index.md' ? '/' : `/${file.replace(/\.md$/, '')}`
-              let md = fs.readFileSync(path.join(pagesDir, file), 'utf8')
+                file === "index.md" ? "/" : `/${file.replace(/\.md$/, "")}`;
+              let md = fs.readFileSync(path.join(pagesDir, file), "utf8");
 
-              let sections
+              let sections;
 
               if (cache.get(file)?.[0] === md) {
-                sections = cache.get(file)[1]
+                sections = cache.get(file)[1];
               } else {
-                let ast = Markdoc.parse(md)
+                let ast = Markdoc.parse(md);
                 let title =
                   ast.attributes?.frontmatter?.match(
                     /^title:\s*(.*?)\s*$/m
-                  )?.[1]
-                sections = [[title, null, []]]
-                extractSections(ast, sections)
-                cache.set(file, [md, sections])
+                  )?.[1];
+                sections = [[title, null, []]];
+                extractSections(ast, sections);
+                cache.set(file, [md, sections]);
               }
 
-              return { url, sections }
-            })
+              return { url, sections };
+            });
 
             // When this file is imported within the application
             // the following module is loaded:
@@ -123,16 +123,16 @@ export default function (nextConfig = {}) {
                   pageTitle: item.doc.pageTitle,
                 }))
               }
-            `
+            `;
           }),
         ],
-      })
+      });
 
-      if (typeof nextConfig.webpack === 'function') {
-        return nextConfig.webpack(config, options)
+      if (typeof nextConfig.webpack === "function") {
+        return nextConfig.webpack(config, options);
       }
 
-      return config
+      return config;
     },
-  })
+  });
 }

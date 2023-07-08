@@ -20,6 +20,7 @@ pre[class*="language-"] {
   color: theme("colors.zinc.300");
 }
 
+.token.keyword,
 .token.module {
   color: theme("colors.indigo.400");
 }
@@ -49,4 +50,8 @@ pre[class*="language-"] {
 .token.operator,
 .token.combinator {
   color: theme("colors.zinc.400");
+}
+
+.token.number {
+  color: theme("colors.orange.400");
 }

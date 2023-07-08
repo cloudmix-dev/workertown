@@ -25,20 +25,22 @@ function SearchIcon(props) {
 function useAutocomplete() {
   const id = useId();
   const router = useRouter();
-  const [autocompleteState, setAutocompleteState] = useState({});
+  const [autocompleteState, setAutocompleteState] = useState<{
+    [x: string]: unknown;
+  }>({});
   const [autocomplete] = useState(() =>
     createAutocomplete({
       id,
       placeholder: "Find something...",
       defaultActiveItemId: 0,
       onStateChange({ state }) {
-        setAutocompleteState(state);
+        setAutocompleteState(state as any);
       },
       shouldPanelOpen({ state }) {
         return state.query !== "";
       },
       getSources({ query }) {
-        return import("../../markdoc/search.mjs").then(({ search }) => {
+        return import("../../markdoc/search.mjs").then(({ search }: any) => {
           return [
             {
               sourceId: "documentation",
@@ -46,7 +48,7 @@ function useAutocomplete() {
                 return search(query, { limit: 5 });
               },
               getItemUrl({ item }) {
-                return item.url;
+                return item.url as string;
               },
               onSelect({ itemUrl }) {
                 router.push(itemUrl);
@@ -178,8 +180,14 @@ function SearchResults({ autocomplete, query, collection }) {
   );
 }
 
+interface SearchInputProps {
+  autocomplete: any;
+  autocompleteState: { [x: string]: unknown };
+  onClose: () => void;
+}
+
 const SearchInput = forwardRef(function SearchInput(
-  { autocomplete, autocompleteState, onClose },
+  { autocomplete, autocompleteState, onClose }: SearchInputProps,
   inputRef
 ) {
   const inputProps = autocomplete.getInputProps({});
@@ -202,7 +210,7 @@ const SearchInput = forwardRef(function SearchInput(
           ) {
             // In Safari, closing the dialog with the escape key can sometimes cause the scroll position to jump to the
             // bottom of the page. This is a workaround for that until we can figure out a proper fix in Headless UI.
-            document.activeElement?.blur();
+            (document.activeElement as HTMLInputElement)?.blur();
 
             onClose();
           } else {
@@ -219,7 +227,13 @@ const SearchInput = forwardRef(function SearchInput(
   );
 });
 
-function SearchDialog({ open, setOpen, className }) {
+interface SearchDialogProps {
+  open?: boolean;
+  setOpen: (value: boolean) => void;
+  className?: string;
+}
+
+function SearchDialog({ open, setOpen, className }: SearchDialogProps) {
   const router = useRouter();
   const formRef = useRef();
   const panelRef = useRef();
@@ -279,9 +293,9 @@ function SearchDialog({ open, setOpen, className }) {
           <div {...autocomplete.getRootProps({})}>
             <form
               ref={formRef}
-              {...autocomplete.getFormProps({
+              {...(autocomplete.getFormProps({
                 inputElement: inputRef.current,
-              })}
+              }) as any)}
             >
               <SearchInput
                 ref={inputRef}
@@ -292,7 +306,7 @@ function SearchDialog({ open, setOpen, className }) {
               <div
                 ref={panelRef}
                 className="border-t border-zinc-200 bg-white px-2 py-3 empty:hidden dark:border-zinc-400/10 dark:bg-zinc-800"
-                {...autocomplete.getPanelProps({})}
+                {...(autocomplete.getPanelProps({}) as any)}
               >
                 {autocompleteState.isOpen && (
                   <SearchResults
@@ -324,9 +338,14 @@ function useSearchProps() {
     dialogProps: {
       open,
       setOpen(open) {
-        const { width, height } = buttonRef.current.getBoundingClientRect();
-        if (!open || (width !== 0 && height !== 0)) {
-          setOpen(open);
+        const el = buttonRef.current;
+
+        if (el) {
+          const { width, height } = (el as HTMLElement).getBoundingClientRect();
+
+          if (!open || (width !== 0 && height !== 0)) {
+            setOpen(open);
+          }
         }
       },
     },
@@ -334,7 +353,7 @@ function useSearchProps() {
 }
 
 export function Search() {
-  const [modifierKey, setModifierKey] = useState();
+  const [modifierKey, setModifierKey] = useState<string | undefined>();
   const { buttonProps, dialogProps } = useSearchProps();
 
   useEffect(() => {

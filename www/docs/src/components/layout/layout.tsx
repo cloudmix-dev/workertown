@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
+import { Alert, AlertDescription, AlertTitle } from "../atoms/alert";
+import { Button } from "../atoms/button";
 import { Prose } from "../prose/prose";
 import { ThemeProvider } from "../theme/theme-provider";
 import { ThemeSelector } from "../theme/theme-selector";
@@ -15,45 +17,61 @@ export const navigation = [
   {
     title: "Introduction",
     links: [
-      { title: "Getting started", href: "/" },
+      { title: "What is Workertown?", href: "/" },
       { title: "Installation", href: "/docs/installation" },
+      { title: "Tutorial", href: "/docs/tutorial" },
     ],
   },
   {
     title: "Core concepts",
     links: [
-      { title: "Understanding caching", href: "/docs/understanding-caching" },
+      { title: "REST", href: "/docs/core-concepts/rest" },
+      { title: "Configuration", href: "/docs/core-concepts/configuration" },
+      { title: "Authentication", href: "/docs/core-concepts/authentication" },
+      { title: "Storage", href: "/docs/core-concepts/storage" },
+      { title: "Cache", href: "/docs/core-concepts/cache" },
+      { title: "Open API", href: "/docs/core-concepts/open-api" },
     ],
   },
   {
-    title: "Advanced guides",
+    title: "Packages",
     links: [
-      { title: "Writing plugins", href: "/docs/writing-plugins" },
-      { title: "Neuralink integration", href: "/docs/neuralink-integration" },
-      { title: "Temporal paradoxes", href: "/docs/temporal-paradoxes" },
-      { title: "Testing", href: "/docs/testing" },
-      { title: "Compile-time caching", href: "/docs/compile-time-caching" },
+      { title: "Auth", href: "/docs/packages/auth" },
+      { title: "CMS", href: "/docs/packages/cms" },
+      { title: "Events", href: "/docs/packages/events" },
+      { title: "Feature Flags", href: "/docs/packages/feature-flags" },
+      { title: "KV", href: "/docs/packages/kv" },
+      { title: "Pub Sub", href: "/docs/packages/pub-sub" },
+      { title: "Queues", href: "/docs/packages/queues" },
+      { title: "Search", href: "/docs/packages/search" },
+    ],
+  },
+  {
+    title: "Advanced concepts",
+    links: [
       {
-        title: "Predictive data generation",
-        href: "/docs/predictive-data-generation",
+        title: "Combining APIs",
+        href: "/docs/advanced-concepts/combining-apis",
       },
-    ],
-  },
-  {
-    title: "API reference",
-    links: [
-      { title: "CacheAdvance.predict()", href: "/docs/cacheadvance-predict" },
-      { title: "CacheAdvance.flush()", href: "/docs/cacheadvance-flush" },
-      { title: "CacheAdvance.revert()", href: "/docs/cacheadvance-revert" },
-      { title: "CacheAdvance.regret()", href: "/docs/cacheadvance-regret" },
+      { title: "Node runtime", href: "/docs/advanced-concepts/node-runtime" },
+      { title: "Docker", href: "/docs/advanced-concepts/docker" },
     ],
   },
   {
     title: "Contributing",
     links: [
-      { title: "How to contribute", href: "/docs/how-to-contribute" },
-      { title: "Architecture guide", href: "/docs/architecture-guide" },
-      { title: "Design principles", href: "/docs/design-principles" },
+      {
+        title: "How to contribute",
+        href: "/docs/contributing/how-to-contribute",
+      },
+      {
+        title: "Architecture guide",
+        href: "/docs/contributing/architecture-guide",
+      },
+      {
+        title: "Design principles",
+        href: "/docs/contributing/design-principles",
+      },
     ],
   },
 ];
@@ -67,16 +85,15 @@ function GitHubIcon(props) {
 }
 
 function Header({ navigation }) {
-  let [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     function onScroll() {
       setIsScrolled(window.scrollY > 0);
     }
 
-    onScroll();
-
     window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
     return () => {
       window.removeEventListener("scroll", onScroll);
@@ -109,7 +126,12 @@ function Header({ navigation }) {
         </div>
         <div className="relative flex basis-0 justify-end items-center gap-4 sm:gap-6 md:flex-grow">
           <ThemeSelector />
-          <Link href="https://github.com" className="group" aria-label="GitHub">
+          <Link
+            href="https://github.com/cloudmix-dev/workertown"
+            target="_blank"
+            className="group"
+            aria-label="GitHub"
+          >
             <GitHubIcon className="h-6 w-6 fill-zinc-400 group-hover:fill-zinc-500 dark:group-hover:fill-zinc-300" />
           </Link>
         </div>
@@ -119,40 +141,51 @@ function Header({ navigation }) {
 }
 
 function useTableOfContents(tableOfContents) {
-  let [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id);
+  const [currentSection, setCurrentSection] = useState(tableOfContents[0]?.id);
 
-  let getHeadings = useCallback((tableOfContents) => {
+  const getHeadings = useCallback((tableOfContents) => {
     return tableOfContents
       .flatMap((node) => [node.id, ...node.children.map((child) => child.id)])
       .map((id) => {
-        let el = document.getElementById(id);
-        if (!el) return;
+        const el = document.getElementById(id);
 
-        let style = window.getComputedStyle(el);
-        let scrollMt = parseFloat(style.scrollMarginTop);
+        if (!el) {
+          return;
+        }
 
-        let top = window.scrollY + el.getBoundingClientRect().top - scrollMt;
+        const style = window.getComputedStyle(el);
+        const scrollMt = parseFloat(style.scrollMarginTop);
+
+        const top = window.scrollY + el.getBoundingClientRect().top - scrollMt;
         return { id, top };
       });
   }, []);
 
   useEffect(() => {
-    if (tableOfContents.length === 0) return;
-    let headings = getHeadings(tableOfContents);
+    if (tableOfContents.length === 0) {
+      return;
+    }
+
+    const headings = getHeadings(tableOfContents);
+
     function onScroll() {
-      let top = window.scrollY;
+      const top = window.scrollY;
       let current = headings[0].id;
-      for (let heading of headings) {
+
+      for (const heading of headings) {
         if (top >= heading.top) {
           current = heading.id;
         } else {
           break;
         }
       }
+
       setCurrentSection(current);
     }
+
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
@@ -162,24 +195,27 @@ function useTableOfContents(tableOfContents) {
 }
 
 export function Layout({ children, title, tableOfContents }) {
-  let router = useRouter();
-  let isHomePage = router.pathname === "/";
-  let allLinks = navigation.flatMap((section) => section.links);
-  let linkIndex = allLinks.findIndex((link) => link.href === router.pathname);
-  let previousPage = allLinks[linkIndex - 1];
-  let nextPage = allLinks[linkIndex + 1];
-  let section = navigation.find((section) =>
+  const router = useRouter();
+  const isHomePage = router.pathname === "/";
+  const allLinks = navigation.flatMap((section) => section.links);
+  const linkIndex = allLinks.findIndex((link) => link.href === router.pathname);
+  const previousPage = allLinks[linkIndex - 1];
+  const nextPage = allLinks[linkIndex + 1];
+  const section = navigation.find((section) =>
     section.links.find((link) => link.href === router.pathname)
   );
-  let currentSection = useTableOfContents(tableOfContents);
+  const currentSection = useTableOfContents(tableOfContents);
+  const [showWarning, setShowWarning] = useState(true);
 
   function isActive(section) {
     if (section.id === currentSection) {
       return true;
     }
+
     if (!section.children) {
       return false;
     }
+
     return section.children.findIndex(isActive) > -1;
   }
 
@@ -216,7 +252,7 @@ export function Layout({ children, title, tableOfContents }) {
             )}
             <Prose>{children}</Prose>
           </article>
-          <dl className="mt-12 flex border-t border-zinc-200 pt-6 dark:border-zinc-800">
+          <dl className="mt-12 flex border-t border-zinc-200 py-6 dark:border-zinc-800">
             {previousPage && (
               <div>
                 <dt className="font-display text-sm font-medium text-zinc-900 dark:text-white">
@@ -248,6 +284,18 @@ export function Layout({ children, title, tableOfContents }) {
               </div>
             )}
           </dl>
+          <div className="flex justify-center items-center pt-6 border-t border-zinc-200 dark:border-zinc-800">
+            <p className="text-xs text-zinc-500">
+              See a problem with this page?{" "}
+              <Link
+                href={`https://github.com/cloudmix-dev/workertown/issues/new?labels=docs&title=Issue+with+docs&body=I+have+found+an+issue+with+the+docs+at+%60${router.pathname}%60&template=docs_issue_template.md`}
+                target="_blank"
+                className="underline"
+              >
+                Submit an issue
+              </Link>
+            </p>
+          </div>
         </div>
         <div className="hidden xl:sticky xl:top-[4.5rem] xl:-mr-6 xl:block xl:h-[calc(100vh-4.5rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
           <nav aria-labelledby="on-this-page-title" className="w-56">
@@ -303,6 +351,30 @@ export function Layout({ children, title, tableOfContents }) {
           </nav>
         </div>
       </div>
+      {showWarning && (
+        <div className="fixed bottom-0 left-0 right-0 p-4 z-10 sm:p-6">
+          <div className="m-auto max-w-lg">
+            <Alert className="bg-zinc-900 shadow-md">
+              <AlertTitle>Be careful where you tread...</AlertTitle>
+              <AlertDescription>
+                <div className="flex justify-between items-center space-x-4">
+                  <p>
+                    These docs are very much a work in progress. Check back for
+                    regular updates before we launch!
+                  </p>
+                  <Button
+                    size="sm"
+                    onClick={() => setShowWarning(false)}
+                    className="flex-shrink-0"
+                  >
+                    Got it
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
+          </div>
+        </div>
+      )}
     </ThemeProvider>
   );
 }

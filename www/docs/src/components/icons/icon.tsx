@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useId } from "react";
 
 import { AuthIcon } from "./auth-icon";
+import { CMSIcon } from "./cms-icon";
 import { EventsIcon } from "./events-icon";
 import { FlagsIcon } from "./flags-icon";
 import { InstallationIcon } from "./installation-icon";
@@ -17,18 +18,19 @@ import { WarningIcon } from "./warning-icon";
 
 const icons = {
   auth: AuthIcon,
+  cms: CMSIcon,
   events: EventsIcon,
   flags: FlagsIcon,
+  installation: InstallationIcon,
   kv: KVIcon,
+  lightbulb: LightbulbIcon,
+  plugins: PluginsIcon,
+  presets: PresetsIcon,
   pubsub: PubSubIcon,
   queues: QueuesIcon,
-  installation: InstallationIcon,
-  presets: PresetsIcon,
-  plugins: PluginsIcon,
-  theming: ThemingIcon,
-  lightbulb: LightbulbIcon,
-  warning: WarningIcon,
   search: SearchIcon,
+  theming: ThemingIcon,
+  warning: WarningIcon,
 };
 
 const iconStyles = {

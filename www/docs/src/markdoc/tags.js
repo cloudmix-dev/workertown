@@ -23,7 +23,6 @@ const tags = {
     },
     render: ({ src, alt = "", caption }) => (
       <figure>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt} />
         <figcaption>{caption}</figcaption>
       </figure>

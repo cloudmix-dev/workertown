@@ -36,11 +36,13 @@ function CloseIcon(props) {
 }
 
 export function MobileNavigation({ navigation }) {
-  let router = useRouter();
-  let [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return;
+    }
 
     function onRouteChange() {
       setIsOpen(false);
