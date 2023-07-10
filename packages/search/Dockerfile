@@ -10,27 +10,19 @@ ENV JWT_SECRET=search
 
 WORKDIR /usr/src/app
 
-RUN npm i -g wrangler
-
 # Create package.json
 RUN echo "{" \
   "\"name\": \"workertown-search-local\"," \
   "\"private\": true," \
   "\"dependencies\": {" \
   "\"@workertown/search\": \"${VERSION}}\"" \
+  "\"@workertown/utils\": \"${VERSION}}\"" \
   "}" \
   "}" > package.json
-# Create wrangler.toml
-RUN echo "name = \"search\"" \
-  "main = \"src/worker.js\"" \
-  "compatibility_date = \"2023-05-30\"" \
-  "[[d1_databases]]" \
-  "binding = \"SEARCH_DB\"" \
-  "database_name = \"search\"" \
-  "database_id = \"local\"" \
-  "database_preview_id = \"local\"" > wrangler.toml
-# Create worker script
-RUN echo "import search from \"./search\";" \
-  "export default search();" > src/worker.js
+# Create server script
+RUN echo "const { search } = require(\"./search\");" \
+  "const { SqliteStorageAdapter } = require(\"@workertown/search/storage/sqlite-storage-adapter\");" \
+  "const { serve } = require(\"@workertown/utils\");" \
+  "server(search({ storage: new FeatureFlagsStorageAdapter() }));" > index.js
 
-CMD ["wrangler", "dev", "--var", "SEARCH_API_KEY:${API_KEY}", "SEARCH_USERNAME:${USERNAME}", "SEARCH_PASSWORD:${PASSWORD}", "SEARCH_JWKS_URL:${JWKS_URL}", "SEARCH_JWT_SECRET:${JWT_SECRET}"],
+CMD ["SEARCH_API_KEY=${API_KEY}", "SEARCH_USERNAME=${USERNAME}", "SEARCH_PASSWORD=${PASSWORD}", "SEARCH_JWKS_URL=${JWKS_URL}", "SEARCH_JWT_SECRET=${JWT_SECRET}", "node", "./index.js"],

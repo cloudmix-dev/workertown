@@ -10,9 +10,12 @@
     "@workertown/search": "0.0.0",
     "@workertown/internal-types": "0.0.0",
     "@workertown/utils": "0.0.0",
-    "@workertown/docs": "0.0.0"
+    "@workertown/docs": "0.0.0",
+    "@workertown/kv-example": "0.0.0",
+    "@workertown/nodejs-example": "0.0.0"
   },
   "changesets": [
+    "hot-adults-tell",
     "plenty-dolls-decide"
   ]
 }
