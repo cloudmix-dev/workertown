@@ -8,6 +8,7 @@
   "ignore": [
     "@workertown/docs",
     "@workertown/feature-flags-example",
+    "@workertown/nodejs-example",
     "@workertown/search-example"
   ],
   "linked": [],

@@ -20,21 +20,21 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   auth: {
     apiKey: {
       env: {
-        apiKey: "FLAGS_API_KEY",
+        apiKey: "KV_API_KEY",
       },
     },
     basic: {
       env: {
-        username: "FLAGS_USERNAME",
-        password: "FLAGS_PASSWORD",
+        username: "KV_USERNAME",
+        password: "KV_PASSWORD",
       },
     },
     jwt: {
       env: {
-        jwksUrl: "FLAGS_JWKS_URL",
-        secret: "FLAGS_JWT_SECRET",
-        audience: "FLAGS_JWT_AUDIENCE",
-        issuer: "FLAGS_JWT_ISSUER",
+        jwksUrl: "KV_JWKS_URL",
+        secret: "KV_JWT_SECRET",
+        audience: "KV_JWT_AUDIENCE",
+        issuer: "KV_JWT_ISSUER",
       },
     },
   },
@@ -50,9 +50,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   },
 };
 
-export function createFeatureFlagsServer(
-  options?: CreateServerOptionsOptional
-) {
+export function createKvServer(options?: CreateServerOptionsOptional) {
   const config = merge(DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,

@@ -1,0 +1,11 @@
+name = "kv-example"
+main = "src/worker.ts"
+compatibility_date = "2023-05-30"
+
+[vars]
+KV_API_KEY = "super_secret_api"
+
+[[kv_namespaces]]
+binding = "KV_KV"
+id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

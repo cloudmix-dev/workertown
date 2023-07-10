@@ -1,0 +1,12 @@
+{
+  "name": "@workertown/kv-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "NO_D1_WARNING=true && wrangler dev"
+  },
+  "dependencies": {
+    "@workertown/kv": "~0.0.1-alpha.0"
+  }
+}
