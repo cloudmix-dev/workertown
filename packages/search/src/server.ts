@@ -64,14 +64,6 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   stopWords: DEFAUlT_STOP_WORDS,
 };
 
-function createRoute(basePath: string, route: string) {
-  const prefix = basePath.startsWith("/") ? "" : "/";
-  const formattedBasePath = basePath.endsWith("/") ? basePath : `${basePath}/`;
-  const formattedRoute = route.startsWith("/") ? route.slice(1) : route;
-
-  return `${prefix}${formattedBasePath}${formattedRoute}`;
-}
-
 export function createSearchServer(options?: CreateServerOptionsOptional) {
   const config = merge(DEFAULT_OPTIONS, options);
   const {
@@ -83,7 +75,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     storage,
   } = config;
 
-  const app = new Hono<ContextBindings>();
+  const app = new Hono<ContextBindings>().basePath(basePath);
 
   app.use(async (ctx, next) => {
     let cacheAdapter: CacheAdapter | undefined = cache;
@@ -130,12 +122,12 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     app.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
-  app.route(createRoute(basePath, prefixes.admin), adminRouter);
-  app.route(createRoute(basePath, prefixes.items), itemsRouter);
-  app.route(createRoute(basePath, prefixes.public), publicRouter);
-  app.route(createRoute(basePath, prefixes.search), searchRouter);
-  app.route(createRoute(basePath, prefixes.suggest), suggestRouter);
-  app.route(createRoute(basePath, prefixes.tags), tagsRouter);
+  app.route(prefixes.admin, adminRouter);
+  app.route(prefixes.items, itemsRouter);
+  app.route(prefixes.search, searchRouter);
+  app.route(prefixes.suggest, suggestRouter);
+  app.route(prefixes.tags, tagsRouter);
+  app.route(prefixes.public, publicRouter);
 
   app.notFound((ctx) =>
     ctx.json(
