@@ -3,7 +3,7 @@ import { authenticated } from "@workertown/middleware";
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { FlagContext } from "../storage/storage-adapter";
+import { FlagCondition } from "../storage/storage-adapter";
 import { ContextBindings } from "../types";
 
 const router = new Hono<ContextBindings>();
@@ -12,54 +12,58 @@ router.use("*", authenticated());
 
 function validateContext(
   context: Record<string, unknown>,
-  flagContexts: FlagContext[]
+  conditions: FlagCondition[]
 ) {
   let result = true;
 
-  for (const flagContext of flagContexts) {
-    const value = context[flagContext.field];
+  for (const flagCondition of conditions) {
+    const value = context[flagCondition.field];
 
-    switch (flagContext.operator) {
+    switch (flagCondition.operator) {
       case "eq":
-        result = value === flagContext.value;
+        result = value === flagCondition.value;
 
         break;
       case "neq":
-        result = value !== flagContext.value;
+        result = value !== flagCondition.value;
 
         break;
       case "gt":
-        result = Boolean(value && value > flagContext.value);
+        result = Boolean(value && value > flagCondition.value);
 
         break;
       case "gte":
-        result = Boolean(value && value >= flagContext.value);
+        result = Boolean(value && value >= flagCondition.value);
 
         break;
       case "lt":
-        result = Boolean(value && value < flagContext.value);
+        result = Boolean(value && value < flagCondition.value);
 
         break;
       case "lte":
-        result = Boolean(value && value <= flagContext.value);
+        result = Boolean(value && value <= flagCondition.value);
 
         break;
       case "in":
         result =
-          Array.isArray(flagContext.value) &&
+          Array.isArray(flagCondition.value) &&
           // @ts-ignore
-          flagContext.value.includes(value);
+          flagCondition.value.includes(value);
 
         break;
       case "nin":
         result =
-          Array.isArray(flagContext.value) &&
+          Array.isArray(flagCondition.value) &&
           // @ts-ignore
-          !flagContext.value?.includes(value);
+          !flagCondition.value?.includes(value);
 
         break;
       default:
         result = false;
+    }
+
+    if (!result) {
+      break;
     }
   }
 
@@ -84,7 +88,7 @@ const ask = router.post(
       : flags;
     const result = applicableFlags
       .filter((flag) => {
-        if (!flag.context) {
+        if (!flag.conditions?.length) {
           return true;
         }
 
@@ -92,7 +96,7 @@ const ask = router.post(
           return false;
         }
 
-        return validateContext(context, flag.context);
+        return validateContext(context, flag.conditions);
       })
       .map((flag) => flag.name);
 

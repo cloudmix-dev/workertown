@@ -48,7 +48,7 @@ const upsertFlag = router.put(
     z.object({
       description: z.string().optional(),
       enabled: z.boolean().optional(),
-      context: z
+      conditions: z
         .array(
           z.object({
             field: z.string(),
@@ -79,12 +79,12 @@ const upsertFlag = router.put(
   async (ctx) => {
     const storage = ctx.get("storage");
     const name = ctx.req.param("name");
-    const { description, enabled, context } = ctx.req.valid("json");
+    const { description, enabled, conditions } = ctx.req.valid("json");
     const flag = await storage.upsertFlag({
       name,
       description,
       enabled: enabled ?? true,
-      context,
+      conditions,
     });
 
     return ctx.jsonT({ status: 200, success: true, data: flag });

@@ -9,13 +9,13 @@ import {
 import { D1Dialect } from "kysely-d1";
 
 import { DefaultMigrationProvider } from "./migrations";
-import { Flag, FlagContext, StorageAdapter } from "./storage-adapter";
+import { Flag, FlagCondition, StorageAdapter } from "./storage-adapter";
 
 interface FlagTable {
   name: string;
-  description?: string;
-  context?: string;
-  disabled_at?: ColumnType<Date | number, number, number>;
+  description: string | null;
+  conditions: string | null;
+  disabled_at: ColumnType<Date | number, number, number> | null;
   created_at: ColumnType<Date | number, number, never>;
   updated_at: ColumnType<Date | number, number, number>;
 }
@@ -36,7 +36,7 @@ const MIGRATIONS: MigrationInfo[] = [
           .ifNotExists()
           .addColumn("name", "text", (col) => col.notNull())
           .addColumn("description", "text")
-          .addColumn("context", "text", (col) => col.notNull())
+          .addColumn("conditions", "text")
           .addColumn("disabled_at", "integer")
           .addColumn("created_at", "integer", (col) => col.notNull())
           .addColumn("updated_at", "integer", (col) => col.notNull())
@@ -86,10 +86,10 @@ export class D1StorageAdapter extends StorageAdapter {
   private _formatItem(flag: FlagRow): Flag {
     return {
       name: flag.name,
-      description: flag.description,
+      description: flag.description === null ? undefined : flag.description,
       enabled: !Boolean(flag.disabled_at),
-      context: flag.context
-        ? (JSON.parse(flag.context) as FlagContext[])
+      conditions: flag.conditions
+        ? (JSON.parse(flag.conditions) as FlagCondition[])
         : undefined,
       createdAt: new Date(flag.created_at as unknown as number),
       updatedAt: new Date(flag.updated_at as unknown as number),
@@ -97,13 +97,13 @@ export class D1StorageAdapter extends StorageAdapter {
   }
 
   async getFlags(disabled?: boolean) {
-    let query = this._client.selectFrom("flags");
+    let query = this._client.selectFrom("flags").selectAll();
 
     if (!disabled) {
-      query = query.where("disabled_at", "=", null);
+      query = query.where("disabled_at", "is", null);
     }
 
-    const records = await query.selectAll().execute();
+    const records = await query.execute();
 
     return records.map((record) => this._formatItem(record));
   }
@@ -123,7 +123,7 @@ export class D1StorageAdapter extends StorageAdapter {
   }
 
   async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "context">
+    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
   ) {
     const now = new Date();
     const existing = await this._client
@@ -138,7 +138,9 @@ export class D1StorageAdapter extends StorageAdapter {
         .values({
           name: flag.name,
           description: flag.description,
-          context: flag.context ? JSON.stringify(flag.context) : undefined,
+          conditions: flag.conditions
+            ? JSON.stringify(flag.conditions)
+            : undefined,
           disabled_at: flag.enabled ? undefined : now.getTime(),
           created_at: now.getTime(),
           updated_at: now.getTime(),
@@ -150,7 +152,9 @@ export class D1StorageAdapter extends StorageAdapter {
         .where("name", "=", flag.name)
         .set({
           description: flag.description,
-          context: flag.context ? JSON.stringify(flag.context) : undefined,
+          conditions: flag.conditions
+            ? JSON.stringify(flag.conditions)
+            : undefined,
           disabled_at: flag.enabled ? undefined : now.getTime(),
           updated_at: now.getTime(),
         })

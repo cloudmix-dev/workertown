@@ -1,4 +1,4 @@
-export interface FlagContext {
+export interface FlagCondition {
   field: string;
   operator: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "in" | "nin";
   value: string | number | boolean | string[] | number[] | boolean[];
@@ -8,7 +8,7 @@ export interface Flag {
   name: string;
   description?: string;
   enabled: boolean;
-  context?: FlagContext[];
+  conditions?: FlagCondition[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,7 +23,7 @@ export class StorageAdapter {
   }
 
   async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "context">
+    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
   ): Promise<Flag> {
     throw new Error("'upsertFlag()' not implemented");
   }

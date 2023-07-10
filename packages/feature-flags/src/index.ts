@@ -1,4 +1,4 @@
-import { createFlagsServer } from "./server";
+import { createFeatureFlagsServer } from "./server";
 
-export default createFlagsServer;
-export { createFlagsServer, createFlagsServer as flags };
+export default createFeatureFlagsServer;
+export { createFeatureFlagsServer, createFeatureFlagsServer as featureFlags };

@@ -58,7 +58,9 @@ function createRoute(basePath: string, route: string) {
   return `${prefix}${formattedBasePath}${formattedRoute}`;
 }
 
-export function createSearchServer(options?: CreateServerOptionsOptional) {
+export function createFeatureFlagsServer(
+  options?: CreateServerOptionsOptional
+) {
   const config = merge(DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,
