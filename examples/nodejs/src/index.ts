@@ -1,12 +1,22 @@
 import { featureFlags } from "@workertown/feature-flags";
+import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/feature-flags/storage/sqlite-storage-adapter";
 import { search } from "@workertown/search";
+import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite-storage-adapter";
 import { combine, serve } from "@workertown/utils";
 
+const { PORT = "3000" } = process.env;
+
 const api = combine(
-  featureFlags({ basePath: "/flags" }),
-  search({ basePath: "/search" })
+  featureFlags({
+    basePath: "/flags",
+    storage: new FeatureFlagsStorageAdapter({ db: "flags.sqlite" }),
+  }),
+  search({
+    basePath: "/search",
+    storage: new SearchStorageAdapter({ db: "search.sqlite" }),
+  })
 );
 
-serve(api, { port: 3000 });
+serve(api, { port: parseInt(PORT, 10) });
 
-console.log("Server running at http://localhost:3000/");
+console.log(`Server running at http://localhost:${PORT}`);
