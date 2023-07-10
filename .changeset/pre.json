@@ -1,0 +1,18 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "@workertown/feature-flags-example": "0.0.0",
+    "@workertown/search-example": "0.0.0",
+    "@workertown/feature-flags": "0.0.0",
+    "@workertown/kv": "0.0.0",
+    "@workertown/middleware": "0.0.0",
+    "@workertown/search": "0.0.0",
+    "@workertown/internal-types": "0.0.0",
+    "@workertown/utils": "0.0.0",
+    "@workertown/docs": "0.0.0"
+  },
+  "changesets": [
+    "plenty-dolls-decide"
+  ]
+}

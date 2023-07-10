@@ -1,6 +1,6 @@
 {
   "name": "@workertown/kv",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@hono/zod-validator": "~0.1.3",
-    "@workertown/middleware": "~0.0.0",
+    "@workertown/middleware": "~0.0.1-alpha.0",
     "hono": "~3.2.5",
     "kysely": "~0.26.1",
     "kysely-d1": "~0.3.0",
@@ -43,7 +43,7 @@
     "zod": "~3.21.4"
   },
   "devDependencies": {
-    "@workertown/internal-types": "~0.0.0"
+    "@workertown/internal-types": "~0.0.1-alpha.0"
   },
   "engines": {
     "node": ">=16.0.0"

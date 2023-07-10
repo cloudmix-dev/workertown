@@ -7,6 +7,6 @@
     "start": "NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/feature-flags": "~0.0.0"
+    "@workertown/feature-flags": "~0.0.1-alpha.0"
   }
 }
