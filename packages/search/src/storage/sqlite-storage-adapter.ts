@@ -1,12 +1,12 @@
-import { D1Database } from "@cloudflare/workers-types";
+import Database from "better-sqlite3";
 import {
   type ColumnType,
   Kysely,
   type MigrationInfo,
   Migrator,
   type Selectable,
+  SqliteDialect,
 } from "kysely";
-import { D1Dialect } from "kysely-d1";
 
 import { DEFAULT_SORT_FIELD } from "../constants";
 import { DefaultMigrationProvider } from "./migrations";
@@ -112,18 +112,20 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
+interface SqliteStorageAdapterOptions {
+  db: string;
 }
 
-export class D1StorageAdapter extends StorageAdapter {
+export class SqliteStorageAdapter extends StorageAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
-  constructor(options: D1StorageAdapterOptions) {
+  constructor(options?: SqliteStorageAdapterOptions) {
     super();
 
     this._client = new Kysely<DatabaseSchema>({
-      dialect: new D1Dialect({ database: options.db }),
+      dialect: new SqliteDialect({
+        database: new Database(options?.db ?? "db.sqlite"),
+      }),
     });
   }
 
