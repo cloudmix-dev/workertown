@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node ./src/index.ts"
+    "start": "NODE_NO_WARNINGS=1 ts-node ./src/index.ts"
   },
   "dependencies": {
     "@workertown/feature-flags": "~0.0.1-alpha.0",
