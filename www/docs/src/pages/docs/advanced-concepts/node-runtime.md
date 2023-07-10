@@ -23,8 +23,8 @@ serve(search());
 
 The above will run a Node.js HTTP server on port `3000`.
 
-To configure some options of the HTTP server, you can instead pass an `options`
-argument instead with various options to customise the server:
+To configure some options of the HTTP server, you can also pass an `options`
+argument with various options to customise the server:
 
 ```typescript
 import { search } from "@workertown/search";
@@ -32,14 +32,12 @@ import { serve } from "@workertown/utils";
 
 const api = search();
 
-serve({
-  fetch: api.fetch,
-  port: 8080,
-  hostname: "api.local",
-});
+serve(api, { port: 3000, hostname: "api.local" });
+
+console.log("Server running at http://localhost:3000");
 ```
 
-The above will run a Node.js HTTP server on port `8080` and set the hostname to
+The above will run a Node.js HTTP server on port `3000` and set the hostname to
 `api.local`.
 
 {% callout type="warning" title="You'll need to set some options" %}
