@@ -50,14 +50,6 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   },
 };
 
-function createRoute(basePath: string, route: string) {
-  const prefix = basePath.startsWith("/") ? "" : "/";
-  const formattedBasePath = basePath.endsWith("/") ? basePath : `${basePath}/`;
-  const formattedRoute = route.startsWith("/") ? route.slice(1) : route;
-
-  return `${prefix}${formattedBasePath}${formattedRoute}`;
-}
-
 export function createFeatureFlagsServer(
   options?: CreateServerOptionsOptional
 ) {
@@ -70,7 +62,7 @@ export function createFeatureFlagsServer(
     storage,
   } = config;
 
-  const app = new Hono<ContextBindings>();
+  const app = new Hono<ContextBindings>().basePath(basePath);
 
   app.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;
@@ -105,10 +97,10 @@ export function createFeatureFlagsServer(
     app.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
-  app.route(createRoute(basePath, prefixes.admin), adminRouter);
-  app.route(createRoute(basePath, prefixes.ask), askRouter);
-  app.route(createRoute(basePath, prefixes.flags), flagsRouter);
-  app.route(createRoute(basePath, prefixes.public), publicRouter);
+  app.route(prefixes.admin, adminRouter);
+  app.route(prefixes.ask, askRouter);
+  app.route(prefixes.flags, flagsRouter);
+  app.route(prefixes.public, publicRouter);
 
   app.notFound((ctx) =>
     ctx.json(
