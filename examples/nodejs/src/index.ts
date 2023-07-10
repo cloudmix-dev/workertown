@@ -3,17 +3,22 @@ import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite-storage-adapter";
 import { combine, serve } from "@workertown/utils";
+import * as path from "node:path";
 
 const { PORT = "3000" } = process.env;
 
 const api = combine(
   featureFlags({
     basePath: "/flags",
-    storage: new FeatureFlagsStorageAdapter({ db: "flags.sqlite" }),
+    storage: new FeatureFlagsStorageAdapter({
+      db: path.resolve(__dirname, "../db/flags.sqlite"),
+    }),
   }),
   search({
     basePath: "/search",
-    storage: new SearchStorageAdapter({ db: "search.sqlite" }),
+    storage: new SearchStorageAdapter({
+      db: path.resolve(__dirname, "../db/search.sqlite"),
+    }),
   })
 );
 

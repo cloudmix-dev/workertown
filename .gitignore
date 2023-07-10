@@ -47,6 +47,9 @@ yarn-error.log*
 # Wrangler
 .wrangler
 
+# SQLite files
+*.sqlite
+
 # Temp files
 *.tmp
 *.temp
