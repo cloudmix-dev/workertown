@@ -24,7 +24,18 @@ export type GetKvRoute = typeof getKv;
 
 const setKv = router.put(
   "/*",
-  zValidator("json", z.object({ value: z.any() })),
+  zValidator(
+    "json",
+    z.object({
+      value: z.union([
+        z.string(),
+        z.number(),
+        z.boolean(),
+        z.record(z.string(), z.unknown()),
+        z.array(z.unknown()),
+      ]),
+    })
+  ),
   async (ctx) => {
     const config = ctx.get("config");
     const storage = ctx.get("storage");
@@ -35,7 +46,7 @@ const setKv = router.put(
 
     await storage.setValue(key, value);
 
-    return ctx.jsonT({ status: 200, success: true, data: value });
+    return ctx.jsonT({ status: 200, success: true, data: value as any });
   }
 );
 
