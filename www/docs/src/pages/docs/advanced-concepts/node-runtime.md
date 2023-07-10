@@ -41,3 +41,12 @@ serve({
 
 The above will run a Node.js HTTP server on port `8080` and set the hostname to
 `api.local`.
+
+{% callout type="warning" title="You'll need to set some options" %}
+The Workertown packages all come with a default config that assumes the service
+is running in a (correctly configured) Cloudflare Workers environment.
+
+When running in Node.js, you'll need to change your storage and cache adapters
+to ones that work in Node.js. Every package comes with a [Planetscale]() storage
+adapter and an [Upstash Redis]() cache adapter, but you can also write your own.
+{% /callout %}
