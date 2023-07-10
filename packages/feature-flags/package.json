@@ -44,5 +44,8 @@
   },
   "devDependencies": {
     "@workertown/internal-types": "~0.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
