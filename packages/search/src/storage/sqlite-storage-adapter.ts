@@ -122,9 +122,15 @@ export class SqliteStorageAdapter extends StorageAdapter {
   constructor(options?: SqliteStorageAdapterOptions) {
     super();
 
+    const db = new Database(options?.db ?? "db.sqlite");
+
+    if (globalThis.process) {
+      process.on("exit", () => db.close());
+    }
+
     this._client = new Kysely<DatabaseSchema>({
       dialect: new SqliteDialect({
-        database: new Database(options?.db ?? "db.sqlite"),
+        database: db,
       }),
     });
   }
