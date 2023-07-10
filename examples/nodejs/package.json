@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@workertown/feature-flags": "~0.0.1-alpha.0",
+    "@workertown/kv": "~0.0.1-alpha.0",
     "@workertown/search": "~0.0.1-alpha.0",
     "@workertown/utils": "~0.0.1-alpha.0"
   },

@@ -1,5 +1,7 @@
 import { featureFlags } from "@workertown/feature-flags";
 import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/feature-flags/storage/sqlite-storage-adapter";
+import { kv } from "@workertown/kv";
+import { SqliteStorageAdapter as KvStorageAdapter } from "@workertown/kv/storage/sqlite-storage-adapter";
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite-storage-adapter";
 import { combine, serve } from "@workertown/utils";
@@ -12,6 +14,12 @@ const api = combine(
     basePath: "/flags",
     storage: new FeatureFlagsStorageAdapter({
       db: path.resolve(__dirname, "../db/flags.sqlite"),
+    }),
+  }),
+  kv({
+    basePath: "/kv",
+    storage: new KvStorageAdapter({
+      db: path.resolve(__dirname, "../db/kv.sqlite"),
     }),
   }),
   search({
