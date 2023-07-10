@@ -5,7 +5,7 @@ export interface GetItemsOptions {
   orderBy?: string;
 }
 
-export interface Item {
+export interface SearchItem {
   id: string;
   tenant: string;
   index: string;
@@ -15,25 +15,25 @@ export interface Item {
 }
 
 export class StorageAdapter {
-  async getItems(options: GetItemsOptions): Promise<Item[]> {
+  async getItems(options: GetItemsOptions): Promise<SearchItem[]> {
     throw new TypeError("'getItems()' not implemented");
   }
 
   async getItemsByTags(
     tags: string[],
     options: GetItemsOptions
-  ): Promise<Item[]> {
+  ): Promise<SearchItem[]> {
     throw new TypeError("'getItemsByTags()' not implemented");
   }
 
-  async getItem(id: string): Promise<Item | null> {
+  async getItem(id: string): Promise<SearchItem | null> {
     throw new TypeError("'getItem()' not implemented");
   }
 
   async indexItem(
-    item: Pick<Item, "id" | "tenant" | "index" | "data">,
+    item: Pick<SearchItem, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
-  ): Promise<Item> {
+  ): Promise<SearchItem> {
     throw new TypeError("'indexItem()' not implemented");
   }
 

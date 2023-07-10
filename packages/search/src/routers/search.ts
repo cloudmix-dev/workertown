@@ -20,11 +20,11 @@ const search = router.get(
       fields: z
         .string()
         .optional()
-        .transform((val) => val?.split(/(,|\s)/)),
+        .transform((val) => val?.split(/,\s?/)),
       tags: z
         .string()
         .optional()
-        .transform((val) => val?.split(/(,|\s)/)),
+        .transform((val) => val?.split(/,\s?/)),
       order_by: z.string().optional().default(DEFAULT_SORT_FIELD),
     })
   ),

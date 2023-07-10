@@ -1,18 +1,16 @@
 import {
   type ColumnType,
-  type Insertable,
   Kysely,
   type MigrationInfo,
   Migrator,
   type Selectable,
-  type Updateable,
   sql,
 } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 
 import { DEFAULT_SORT_FIELD } from "../constants";
 import { DefaultMigrationProvider } from "./migrations";
-import { GetItemsOptions, Item, StorageAdapter } from "./storage-adapter";
+import { GetItemsOptions, SearchItem, StorageAdapter } from "./storage-adapter";
 
 interface SearchItemTable {
   id: string;
@@ -23,9 +21,7 @@ interface SearchItemTable {
   updated_at: ColumnType<Date | string, string, string>;
 }
 
-export type SearchItem = Selectable<SearchItemTable>;
-export type NewSearchItem = Insertable<SearchItemTable>;
-export type SearchItemUpdate = Updateable<SearchItemTable>;
+export type SearchItemRow = Selectable<SearchItemTable>;
 
 interface SearchTagTable {
   tag: string;
@@ -137,7 +133,7 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
     });
   }
 
-  private _formatItem(item: SearchItem): Item {
+  private _formatItem(item: SearchItemRow): SearchItem {
     return {
       id: item.id,
       tenant: item.tenant,
@@ -148,7 +144,7 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
     };
   }
 
-  async getItems(options: GetItemsOptions): Promise<Item[]> {
+  async getItems(options: GetItemsOptions): Promise<SearchItem[]> {
     const sortField = (options?.orderBy ?? "updated_at") as "updated_at";
     let query = this._client
       .selectFrom("search_items")
@@ -184,6 +180,8 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
     }
 
     const records = await query
+      .groupBy("search_items.id")
+      .having((eb) => eb.fn.count("search_items.id"), "=", tags.length)
       .selectAll("search_items")
       .orderBy(`search_items.${sortField}`, "desc")
       .limit(options?.limit)
@@ -207,7 +205,7 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
   }
 
   async indexItem(
-    item: Pick<Item, "id" | "tenant" | "index" | "data">,
+    item: Pick<SearchItem, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
   ) {
     const now = new Date();
@@ -243,11 +241,39 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
     }
 
     if (tags.length > 0) {
-      await this._client
-        .insertInto("search_tags")
-        .ignore()
-        .values(tags.map((tag) => ({ tag, search_item_id: item.id })))
+      const existingTags = await this._client
+        .selectFrom("search_tags")
+        .selectAll()
+        .where("search_item_id", "=", item.id)
         .execute();
+      const tagsToAdd = tags.filter(
+        (tag) =>
+          existingTags.find((existingTag) => existingTag.tag === tag) ===
+          undefined
+      );
+      const tagsToRemove = existingTags.filter(
+        (existingTag) =>
+          tags.find((tag) => tag === existingTag.tag) === undefined
+      );
+
+      if (tagsToAdd.length > 0) {
+        await this._client
+          .insertInto("search_tags")
+          .values(tags.map((tag) => ({ tag, search_item_id: item.id })))
+          .execute();
+      }
+
+      if (tagsToRemove.length > 0) {
+        await this._client
+          .deleteFrom("search_tags")
+          .where("search_item_id", "=", item.id)
+          .where(
+            "tag",
+            "in",
+            tagsToRemove.map((tag) => tag.tag)
+          )
+          .execute();
+      }
     }
 
     return {
