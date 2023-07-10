@@ -1,6 +1,6 @@
 {
   "name": "@workertown/feature-flags",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -44,7 +44,7 @@
   "dependencies": {
     "@hono/zod-validator": "~0.1.3",
     "@planetscale/database": "~1.8.0",
-    "@workertown/middleware": "~0.0.1-alpha.2",
+    "@workertown/middleware": "~0.0.1-alpha.3",
     "better-sqlite3": "~8.4.0",
     "hono": "~3.2.5",
     "kysely": "~0.26.1",
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@types/better-sqlite3": "~7.6.4",
-    "@workertown/internal-types": "~0.0.1-alpha.2"
+    "@workertown/internal-types": "~0.0.1-alpha.3"
   },
   "engines": {
     "node": ">=18.0.0"
