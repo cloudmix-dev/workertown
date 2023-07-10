@@ -78,6 +78,13 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
   const app = new Hono<ContextBindings>().basePath(basePath);
 
   app.use(async (ctx, next) => {
+    if (!ctx.env && globalThis.process.env) {
+      ctx.env = globalThis.process.env;
+    }
+
+    return next();
+  });
+  app.use(async (ctx, next) => {
     let cacheAdapter: CacheAdapter | undefined = cache;
     let storageAdapter: StorageAdapter | undefined = storage;
 
