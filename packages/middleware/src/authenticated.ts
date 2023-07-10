@@ -5,7 +5,15 @@ export function authenticated() {
     const user = ctx.get("user") ?? null;
 
     if (user === null) {
-      return new Response("Forbidden", { status: 403 });
+      return ctx.json(
+        {
+          success: false,
+          status: 403,
+          data: null,
+          error: "Forbidden",
+        },
+        403
+      );
     }
 
     return next();
