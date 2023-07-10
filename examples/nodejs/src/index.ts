@@ -7,22 +7,37 @@ import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search
 import { combine, serve } from "@workertown/utils";
 import * as path from "node:path";
 
-const { PORT = "3000" } = process.env;
+const { PORT = "3000", API_KEY = "super_secret_api" } = process.env;
 
 const api = combine(
   featureFlags({
+    auth: {
+      apiKey: {
+        apiKey: API_KEY,
+      },
+    },
     basePath: "/flags",
     storage: new FeatureFlagsStorageAdapter({
       db: path.resolve(__dirname, "../db/flags.sqlite"),
     }),
   }),
   kv({
+    auth: {
+      apiKey: {
+        apiKey: API_KEY,
+      },
+    },
     basePath: "/kv",
     storage: new KvStorageAdapter({
       db: path.resolve(__dirname, "../db/kv.sqlite"),
     }),
   }),
   search({
+    auth: {
+      apiKey: {
+        apiKey: API_KEY,
+      },
+    },
     basePath: "/search",
     storage: new SearchStorageAdapter({
       db: path.resolve(__dirname, "../db/search.sqlite"),
