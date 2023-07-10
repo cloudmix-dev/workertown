@@ -106,9 +106,9 @@ export function createFeatureFlagsServer(
   }
 
   app.route(createRoute(basePath, prefixes.admin), adminRouter);
-  app.route(createRoute(basePath, prefixes.public), publicRouter);
   app.route(createRoute(basePath, prefixes.ask), askRouter);
   app.route(createRoute(basePath, prefixes.flags), flagsRouter);
+  app.route(createRoute(basePath, prefixes.public), publicRouter);
 
   app.notFound((ctx) =>
     ctx.json(
