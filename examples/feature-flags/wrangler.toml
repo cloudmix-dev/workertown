@@ -1,0 +1,12 @@
+name = "feature-flags-example"
+main = "src/worker.ts"
+compatibility_date = "2023-05-30"
+
+[vars]
+FLAGS_API_KEY = "super_secret_api"
+
+[[d1_databases]]
+binding = "FLAGS_DB"
+database_name = "feature-flags-example"
+database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

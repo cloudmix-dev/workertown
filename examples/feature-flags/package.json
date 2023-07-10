@@ -1,0 +1,11 @@
+{
+  "name": "@workertown/feature-flags-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "NO_D1_WARNING=true && wrangler dev"
+  },
+  "dependencies": {
+    "@workertown/feature-flags": "~0.0.1"
+  }
+}
