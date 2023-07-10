@@ -1,4 +1,3 @@
-import { D1Database } from "@cloudflare/workers-types";
 import {
   type ColumnType,
   Kysely,
@@ -6,7 +5,7 @@ import {
   Migrator,
   type Selectable,
 } from "kysely";
-import { D1Dialect } from "kysely-d1";
+import { PlanetScaleDialect } from "kysely-planetscale";
 
 import { DefaultMigrationProvider } from "./migrations";
 import { Flag, FlagCondition, StorageAdapter } from "./storage-adapter";
@@ -15,9 +14,9 @@ interface FlagTable {
   name: string;
   description: string | null;
   conditions: string | null;
-  disabled_at: ColumnType<Date | number, number, number> | null;
-  created_at: ColumnType<Date | number, number, never>;
-  updated_at: ColumnType<Date | number, number, number>;
+  disabled_at: ColumnType<Date | string, string, string> | null;
+  created_at: ColumnType<Date | string, string, never>;
+  updated_at: ColumnType<Date | string, string, string>;
 }
 
 type FlagRow = Selectable<FlagTable>;
@@ -34,12 +33,12 @@ const MIGRATIONS: MigrationInfo[] = [
         await db.schema
           .createTable("flags")
           .ifNotExists()
-          .addColumn("name", "text", (col) => col.notNull())
-          .addColumn("description", "text")
-          .addColumn("conditions", "text")
-          .addColumn("disabled_at", "integer")
-          .addColumn("created_at", "integer", (col) => col.notNull())
-          .addColumn("updated_at", "integer", (col) => col.notNull())
+          .addColumn("name", "varchar", (col) => col.notNull())
+          .addColumn("description", "varchar")
+          .addColumn("conditions", "varchar")
+          .addColumn("disabled_at", "timestamp")
+          .addColumn("created_at", "timestamp", (col) => col.notNull())
+          .addColumn("updated_at", "timestamp", (col) => col.notNull())
           .execute();
 
         await db.schema
@@ -68,18 +67,20 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
+interface PlanetscaleStorageAdapterOptions {
+  url?: string;
+  username?: string;
+  password?: string;
 }
 
-export class D1StorageAdapter extends StorageAdapter {
+export class PlanetscaleStorageAdapter extends StorageAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
-  constructor(options: D1StorageAdapterOptions) {
+  constructor(options: PlanetscaleStorageAdapterOptions) {
     super();
 
     this._client = new Kysely<DatabaseSchema>({
-      dialect: new D1Dialect({ database: options.db }),
+      dialect: new PlanetScaleDialect(options),
     });
   }
 
@@ -141,9 +142,9 @@ export class D1StorageAdapter extends StorageAdapter {
           conditions: flag.conditions
             ? JSON.stringify(flag.conditions)
             : undefined,
-          disabled_at: flag.enabled ? undefined : now.getTime(),
-          created_at: now.getTime(),
-          updated_at: now.getTime(),
+          disabled_at: flag.enabled ? undefined : now.toISOString(),
+          created_at: now.toISOString(),
+          updated_at: now.toISOString(),
         })
         .execute();
     } else {
@@ -155,8 +156,8 @@ export class D1StorageAdapter extends StorageAdapter {
           conditions: flag.conditions
             ? JSON.stringify(flag.conditions)
             : undefined,
-          disabled_at: flag.enabled ? undefined : now.getTime(),
-          updated_at: now.getTime(),
+          disabled_at: flag.enabled ? undefined : now.toISOString(),
+          updated_at: now.toISOString(),
         })
         .execute();
     }
