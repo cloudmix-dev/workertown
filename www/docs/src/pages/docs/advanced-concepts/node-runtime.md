@@ -19,6 +19,8 @@ import { search } from "@workertown/search";
 import { serve } from "@workertown/utils";
 
 serve(search());
+
+console.log("Server running at http://localhost:3000");
 ```
 
 The above will run a Node.js HTTP server on port `3000`.
@@ -32,12 +34,12 @@ import { serve } from "@workertown/utils";
 
 const api = search();
 
-serve(api, { port: 3000, hostname: "api.local" });
+serve(api, { port: 8080, hostname: "api.local" });
 
-console.log("Server running at http://localhost:3000");
+console.log("Server running at http://localhost:8080");
 ```
 
-The above will run a Node.js HTTP server on port `3000` and set the hostname to
+The above will run a Node.js HTTP server on port `8080` and set the hostname to
 `api.local`.
 
 {% callout type="warning" title="You'll need to set some options" %}
