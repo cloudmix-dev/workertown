@@ -1,6 +1,6 @@
 FROM node:current-buster
 
-ARG VERSION=0.0.1-alpha.2
+ARG VERSION=0.0.1-alpha.3
 
 ENV PORT=3000
 
