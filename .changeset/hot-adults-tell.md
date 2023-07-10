@@ -1,6 +1,5 @@
 ---
 "@workertown/search": patch
-"@workertown/kv-example": patch
 "@workertown/feature-flags": patch
 "@workertown/kv": patch
 "@workertown/middleware": patch
