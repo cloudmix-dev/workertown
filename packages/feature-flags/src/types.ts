@@ -5,7 +5,6 @@ import {
   type JwtOptions,
 } from "@workertown/middleware";
 
-import { type CacheAdapter } from "./cache";
 import { type StorageAdapter } from "./storage";
 
 export interface CreateServerOptions {
@@ -14,14 +13,15 @@ export interface CreateServerOptions {
     jwt?: JwtOptions | false;
     apiKey?: ApiKeyOptions | false;
   };
-  cache?: CacheAdapter;
+  basePath: string;
   env: {
-    cache: string;
     database: string;
   };
   prefixes: {
     admin: string;
+    ask: string;
     flags: string;
+    public: string;
   };
   storage?: StorageAdapter;
 }
@@ -29,7 +29,6 @@ export interface CreateServerOptions {
 export type ContextBindings = {
   Bindings: Env;
   Variables: {
-    cache: CacheAdapter;
     config: CreateServerOptions;
     storage: StorageAdapter;
   };

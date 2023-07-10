@@ -1,4 +1,4 @@
-import { type D1Database, type KVNamespace } from "@cloudflare/workers-types";
+import { type D1Database } from "@cloudflare/workers-types";
 import { type DeepPartial } from "@workertown/internal-types";
 import {
   apiKey as apiKeyMiddleware,
@@ -9,16 +9,7 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
-import { CacheAdapter, KVCacheAdapter, NoOpCacheAdapter } from "./cache";
-import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants";
-import {
-  adminRouter,
-  itemsRouter,
-  publicRouter,
-  searchRouter,
-  suggestRouter,
-  tagsRouter,
-} from "./routers";
+import { adminRouter, askRouter, flagsRouter, publicRouter } from "./routers";
 import { StorageAdapter } from "./storage";
 import { D1StorageAdapter } from "./storage/d1-storage-adapter";
 import { type ContextBindings, type CreateServerOptions } from "./types";
@@ -29,39 +20,34 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   auth: {
     apiKey: {
       env: {
-        apiKey: "SEARCH_API_KEY",
+        apiKey: "FLAGS_API_KEY",
       },
     },
     basic: {
       env: {
-        username: "SEARCH_USERNAME",
-        password: "SEARCH_PASSWORD",
+        username: "FLAGS_USERNAME",
+        password: "FLAGS_PASSWORD",
       },
     },
     jwt: {
       env: {
-        jwksUrl: "SEARCH_JWKS_URL",
-        secret: "SEARCH_JWT_SECRET",
-        audience: "SEARCH_JWT_AUDIENCE",
-        issuer: "SEARCH_JWT_ISSUER",
+        jwksUrl: "FLAGS_JWKS_URL",
+        secret: "FLAGS_JWT_SECRET",
+        audience: "FLAGS_JWT_AUDIENCE",
+        issuer: "FLAGS_JWT_ISSUER",
       },
     },
   },
   basePath: "/",
   env: {
-    cache: "SEARCH_CACHE",
-    database: "SEARCH_DB",
+    database: "FLAGS_DB",
   },
   prefixes: {
     admin: "/v1/admin",
-    items: "/v1/items",
+    ask: "/v1/ask",
+    flags: "/v1/flags",
     public: "/",
-    search: "/v1/search",
-    suggest: "/v1/suggest",
-    tags: "/v1/tags",
   },
-  scanRange: DEFAULT_SCAN_RANGE,
-  stopWords: DEFAUlT_STOP_WORDS,
 };
 
 function createRoute(basePath: string, route: string) {
@@ -77,27 +63,15 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
   const {
     auth: authOptions,
     basePath,
-    cache,
     prefixes,
-    env: { cache: cacheEnvKey, database: dbEnvKey },
+    env: { database: dbEnvKey },
     storage,
   } = config;
 
   const app = new Hono<ContextBindings>();
 
   app.use(async (ctx, next) => {
-    let cacheAdapter: CacheAdapter | undefined = cache;
     let storageAdapter: StorageAdapter | undefined = storage;
-
-    if (!cacheAdapter) {
-      const kv = ctx.env[cacheEnvKey] as KVNamespace | undefined;
-
-      if (!kv) {
-        cacheAdapter = new NoOpCacheAdapter();
-      } else {
-        cacheAdapter = new KVCacheAdapter(kv);
-      }
-    }
 
     if (!storageAdapter) {
       const db = ctx.env[dbEnvKey] as D1Database | undefined;
@@ -111,7 +85,6 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
       storageAdapter = new D1StorageAdapter({ db });
     }
 
-    ctx.set("cache", cacheAdapter);
     ctx.set("config", config);
     ctx.set("storage", storageAdapter);
 
@@ -131,11 +104,9 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
   }
 
   app.route(createRoute(basePath, prefixes.admin), adminRouter);
-  app.route(createRoute(basePath, prefixes.items), itemsRouter);
   app.route(createRoute(basePath, prefixes.public), publicRouter);
-  app.route(createRoute(basePath, prefixes.search), searchRouter);
-  app.route(createRoute(basePath, prefixes.suggest), suggestRouter);
-  app.route(createRoute(basePath, prefixes.tags), tagsRouter);
+  app.route(createRoute(basePath, prefixes.ask), askRouter);
+  app.route(createRoute(basePath, prefixes.flags), flagsRouter);
 
   app.notFound((ctx) =>
     ctx.json(

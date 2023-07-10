@@ -15,18 +15,6 @@ const info = router.get("/info", (ctx) => {
 
 export type InfoRoute = typeof info;
 
-const getMigrations = router.get("/migrate", async (ctx) => {
-  const storage = ctx.get("storage");
-
-  return ctx.jsonT({
-    status: 200,
-    success: true,
-    data: storage.getMigrations(),
-  });
-});
-
-export type GetMigrationsRoute = typeof getMigrations;
-
 const runMigrations = router.post("/migrate", async (ctx) => {
   const storage = ctx.get("storage");
   let success = true;
