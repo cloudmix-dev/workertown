@@ -1,11 +1,12 @@
 {
   "name": "@workertown/search-example",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/search": "~0.0.1"
+    "@workertown/search": "~0.0.0"
   }
 }

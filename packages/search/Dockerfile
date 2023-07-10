@@ -1,6 +1,6 @@
 FROM node:current-alpine
 
-ARG VERSION=0.0.1
+ARG VERSION=0.0.0
 
 ENV API_KEY=search
 ENV USERNAME=search

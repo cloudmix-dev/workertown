@@ -5,7 +5,11 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [["@workertown/*"]],
-  "ignore": ["@workertown/docs", "@workertown/search-example"],
+  "ignore": [
+    "@workertown/docs",
+    "@workertown/feature-flags-example",
+    "@workertown/search-example"
+  ],
   "linked": [],
   "updateInternalDependencies": "patch"
 }
