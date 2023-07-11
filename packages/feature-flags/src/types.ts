@@ -1,5 +1,7 @@
-import { type D1Database } from "@cloudflare/workers-types";
-import { type CreateServerOptions as BaseCreateServerOptions } from "@workertown/hono";
+import {
+  type CreateServerOptions as BaseCreateServerOptions,
+  type Context as WorkertownContext,
+} from "@workertown/hono";
 
 import { type StorageAdapter } from "./storage";
 
@@ -16,14 +18,7 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   storage?: StorageAdapter;
 }
 
-export type ContextBindings = {
-  Bindings: Env;
-  Variables: {
-    config: CreateServerOptions;
-    storage: StorageAdapter;
-  };
-};
-
-export interface Env {
-  [x: string]: string | D1Database | undefined;
-}
+export type Context = WorkertownContext<{
+  config: CreateServerOptions;
+  storage: StorageAdapter;
+}>;

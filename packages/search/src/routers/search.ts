@@ -3,9 +3,9 @@ import MiniSearch, { type MatchInfo } from "minisearch";
 import { z } from "zod";
 
 import { DEFAULT_SORT_FIELD } from "../constants";
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>();
+const router = createRouter<Context>();
 
 const search = router.get(
   "/:tenant/:index?",

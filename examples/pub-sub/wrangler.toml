@@ -1,0 +1,22 @@
+name = "search-example"
+main = "src/worker.ts"
+compatibility_date = "2023-05-30"
+
+[vars]
+PUBSUB_API_KEY = "super_secret_api"
+
+[[d1_databases]]
+binding = "PUBSUB_DB"
+database_name = "pub-sub-example"
+database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[[queues.producers]]
+  queue = "pub-sub-queue"
+  binding = "PUBSUB_QUEUE"
+
+[[queues.consumers]]
+  queue = "pub-sub-queue"
+  max_batch_size = 100
+  max_batch_timeout = 30
+  max_concurrency = 10

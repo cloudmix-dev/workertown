@@ -2,9 +2,9 @@ import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
 import { FlagCondition } from "../storage/storage-adapter";
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>();
+const router = createRouter<Context>();
 
 function validateContext(
   context: Record<string, unknown>,

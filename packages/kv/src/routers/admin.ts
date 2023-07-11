@@ -1,8 +1,8 @@
 import { createRouter } from "@workertown/hono";
 
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>();
+const router = createRouter<Context>();
 
 const info = router.get("/info", (ctx) => {
   const config = ctx.get("config");

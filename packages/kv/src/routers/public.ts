@@ -1,8 +1,8 @@
 import { createRouter } from "@workertown/hono";
 
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>({ public: true });
+const router = createRouter<Context>({ public: true });
 
 const openApi = router.get("/open-api.json", (ctx) => {
   const { prefixes } = ctx.get("config");

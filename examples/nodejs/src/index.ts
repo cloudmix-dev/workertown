@@ -2,9 +2,10 @@ import { featureFlags } from "@workertown/feature-flags";
 import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/feature-flags/storage/sqlite-storage-adapter";
 import { kv } from "@workertown/kv";
 import { SqliteStorageAdapter as KvStorageAdapter } from "@workertown/kv/storage/sqlite-storage-adapter";
+import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite-storage-adapter";
-import { combine, serve } from "@workertown/utils";
+import { combine } from "@workertown/utils";
 import * as path from "node:path";
 
 const { PORT = "3000", API_KEY = "super_secret_api" } = process.env;

@@ -1,8 +1,8 @@
 import { createRouter } from "@workertown/hono";
 
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>();
+const router = createRouter<Context>();
 
 const getTags = router.get("/", async (ctx) => {
   const storage = ctx.get("storage");

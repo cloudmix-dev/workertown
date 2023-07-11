@@ -1,12 +1,15 @@
 import { authenticated } from "@workertown/middleware";
-import { Hono, type Env as HonoEnv } from "hono";
+import { Hono } from "hono";
+
+import { type WorkertownHono } from "./create-server";
+import { type Context } from "./types";
 
 interface CreateRouterOptions {
   public: boolean;
 }
 
-export function createRouter<T extends HonoEnv>(options?: CreateRouterOptions) {
-  const router = new Hono<T>();
+export function createRouter<T extends Context>(options?: CreateRouterOptions) {
+  const router = new Hono<T>() as WorkertownHono<T>;
 
   if (!options?.public) {
     router.use("*", authenticated());

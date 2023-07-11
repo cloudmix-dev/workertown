@@ -14,7 +14,7 @@ import {
   type SearchRoute,
   type SuggestRoute,
 } from "../routers";
-import { type ContextBindings } from "../types";
+import { type Context } from "../types";
 
 interface ClientOptions {
   fetch?: typeof fetch;
@@ -49,9 +49,7 @@ export class SearchClient {
     this._options = merge(DEFAULT_OPTIONS, options);
   }
 
-  private _createClient<T extends WorkertownHono<ContextBindings>>(
-    route: string
-  ) {
+  private _createClient<T extends WorkertownHono<Context>>(route: string) {
     const formattedUrl = this._url.endsWith("/") ? this._url : `${this._url}/`;
     const formattedRoute = route.startsWith("/") ? route.slice(1) : route;
 

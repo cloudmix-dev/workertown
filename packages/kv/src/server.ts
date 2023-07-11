@@ -7,7 +7,7 @@ import merge from "lodash.merge";
 import { adminRouter, kvRouter, publicRouter } from "./routers";
 import { StorageAdapter } from "./storage";
 import { KVStorageAdapter } from "./storage/kv-storage-adapter";
-import { type ContextBindings, type CreateServerOptions } from "./types";
+import { type Context, type CreateServerOptions } from "./types";
 
 type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 
@@ -55,7 +55,7 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
     storage,
   } = config;
 
-  const server = createServer<ContextBindings>({ basePath, auth: authOptions });
+  const server = createServer<Context>({ basePath, auth: authOptions });
 
   server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;

@@ -1,9 +1,9 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>();
+const router = createRouter<Context>();
 
 const getKv = router.get("/*", async (ctx) => {
   const config = ctx.get("config");

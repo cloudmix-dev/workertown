@@ -1,9 +1,9 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { ContextBindings } from "../types";
+import { Context } from "../types";
 
-const router = createRouter<ContextBindings>();
+const router = createRouter<Context>();
 
 const getItem = router.get("/:id", async (ctx) => {
   const id = ctx.req.param("id");

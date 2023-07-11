@@ -10,6 +10,7 @@
     "@workertown/feature-flags-example",
     "@workertown/kv-example",
     "@workertown/nodejs-example",
+    "@workertown/pub-sub-example",
     "@workertown/search-example"
   ],
   "linked": [],

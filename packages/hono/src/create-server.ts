@@ -13,7 +13,9 @@ import {
 } from "@workertown/middleware";
 import { type Env, Hono } from "hono";
 
-export type WorkertownHono<T extends Env = Env> = Hono<T> & {
+import { Context } from "./types";
+
+export class WorkertownHono<T extends Context> extends Hono<T> {
   queue?: (
     batch: MessageBatch<any>,
     env: Env["Bindings"],
@@ -24,7 +26,7 @@ export type WorkertownHono<T extends Env = Env> = Hono<T> & {
     env: Env["Bindings"],
     ctx: ExecutionContext
   ) => void | Promise<void>;
-};
+}
 
 export interface CreateServerOptions {
   auth?: {
@@ -35,7 +37,9 @@ export interface CreateServerOptions {
   basePath?: string;
 }
 
-export function createServer<T extends Env>(options: CreateServerOptions = {}) {
+export function createServer<T extends Context>(
+  options: CreateServerOptions = {}
+) {
   const { basePath = "/", auth: authOptions } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
 

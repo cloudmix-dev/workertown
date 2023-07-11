@@ -17,7 +17,7 @@ import {
 } from "./routers";
 import { StorageAdapter } from "./storage";
 import { D1StorageAdapter } from "./storage/d1-storage-adapter";
-import { type ContextBindings, type CreateServerOptions } from "./types";
+import { type Context, type CreateServerOptions } from "./types";
 
 type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 
@@ -67,7 +67,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     storage,
   } = config;
 
-  const server = createServer<ContextBindings>({ auth: authOptions, basePath });
+  const server = createServer<Context>({ auth: authOptions, basePath });
 
   server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;

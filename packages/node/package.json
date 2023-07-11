@@ -1,0 +1,16 @@
+{
+  "name": "@workertown/node",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@hono/node-server": "~1.0.2"
+  },
+  "devDependencies": {
+    "@workertown/hono": "~0.0.1-alpha.4"
+  }
+}

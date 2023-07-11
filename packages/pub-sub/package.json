@@ -3,6 +3,36 @@
   "version": "0.0.1-alpha.4",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./queue": {
+      "default": "./dist/queue/index.js",
+      "types": "./dist/queue/index.d.ts"
+    },
+    "./queue/cf-queues-queue-adapter": {
+      "default": "./dist/queue/cf-queues-queue-adapter/index.js",
+      "types": "./dist/queue/cf-queues-queue-adapter/index.d.ts"
+    },
+    "./storage": {
+      "default": "./dist/storage/index.js",
+      "types": "./dist/storage/index.d.ts"
+    },
+    "./storage/d1-storage-adapter": {
+      "default": "./dist/storage/d1-storage-adapter.js",
+      "types": "./dist/storage/d1-storage-adapter.d.ts"
+    },
+    "./storage/sqlite-storage-adapter": {
+      "default": "./dist/storage/sqlite-storage-adapter.js",
+      "types": "./dist/storage/sqlite-storage-adapter.d.ts"
+    },
+    "./storage/migrations": {
+      "default": "./dist/storage/migrations.js",
+      "types": "./dist/storage/migrations.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
