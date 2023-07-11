@@ -79,7 +79,7 @@ interface SqliteStorageAdapterOptions {
 export class SqliteStorageAdapter extends StorageAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
-  constructor(options: SqliteStorageAdapterOptions) {
+  constructor(options?: SqliteStorageAdapterOptions) {
     super();
 
     const db = new Database(options?.db ?? "db.sqlite");
