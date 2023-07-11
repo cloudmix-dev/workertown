@@ -27,7 +27,9 @@ const publish = router.post(
       body: message ?? undefined,
     }));
 
-    await queue.sendMessages(messages.map((message) => ({ message })));
+    if (messages.length > 0) {
+      await queue.sendMessages(messages);
+    }
 
     return ctx.jsonT({ status: 200, success: true, data: true });
   }
