@@ -6,11 +6,11 @@
     "start": "NODE_NO_WARNINGS=1 ts-node ./src/index.ts"
   },
   "dependencies": {
-    "@workertown/feature-flags": "~0.0.1-alpha.4",
-    "@workertown/kv": "~0.0.1-alpha.4",
-    "@workertown/node": "~0.0.0",
-    "@workertown/search": "~0.0.1-alpha.4",
-    "@workertown/utils": "~0.0.1-alpha.4"
+    "@workertown/feature-flags": "~0.0.1-alpha.5",
+    "@workertown/kv": "~0.0.1-alpha.5",
+    "@workertown/node": "~0.0.1-alpha.5",
+    "@workertown/search": "~0.0.1-alpha.5",
+    "@workertown/utils": "~0.0.1-alpha.5"
   },
   "devDependencies": {
     "@types/node": "~20.4.1",

@@ -1,6 +1,6 @@
 {
   "name": "@workertown/utils",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -8,7 +8,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@workertown/hono": "~0.0.1-alpha.4"
+    "@workertown/hono": "~0.0.1-alpha.5"
   },
   "devDependencies": {
     "@types/node": "~20.4.0",
