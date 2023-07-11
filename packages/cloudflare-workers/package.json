@@ -1,0 +1,16 @@
+{
+  "name": "@workertown/cloudflare-workers",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "~4.20230628.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
