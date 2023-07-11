@@ -13,9 +13,9 @@ import {
 } from "@workertown/middleware";
 import { type Env, Hono } from "hono";
 
-export type WorkertownHono<T extends Env> = Hono<T> & {
+export type WorkertownHono<T extends Env = Env> = Hono<T> & {
   queue?: (
-    messages: MessageBatch<any>,
+    batch: MessageBatch<any>,
     env: Env["Bindings"],
     ctx: ExecutionContext
   ) => void | Promise<void>;
@@ -41,7 +41,7 @@ export function createServer<T extends Env>(options: CreateServerOptions = {}) {
 
   // This sets `ctx.env` to NodeJS' `process.env` if we're in that environment
   server.use(async (ctx, next) => {
-    if (!ctx.env && globalThis.process.env) {
+    if (!ctx.env && globalThis.process?.env) {
       ctx.env = globalThis.process.env;
     }
 

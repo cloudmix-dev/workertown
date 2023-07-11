@@ -1,4 +1,4 @@
-import { type Hono } from "@workertown/hono";
+import { type WorkertownHono } from "@workertown/hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import { hc } from "hono/client";
 import merge from "lodash.merge";
@@ -14,6 +14,7 @@ import {
   type SearchRoute,
   type SuggestRoute,
 } from "../routers";
+import { type ContextBindings } from "../types";
 
 interface ClientOptions {
   fetch?: typeof fetch;
@@ -48,7 +49,9 @@ export class SearchClient {
     this._options = merge(DEFAULT_OPTIONS, options);
   }
 
-  private _createClient<T extends Hono<any, any, any>>(route: string) {
+  private _createClient<T extends WorkertownHono<ContextBindings>>(
+    route: string
+  ) {
     const formattedUrl = this._url.endsWith("/") ? this._url : `${this._url}/`;
     const formattedRoute = route.startsWith("/") ? route.slice(1) : route;
 
