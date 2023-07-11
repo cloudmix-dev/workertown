@@ -1,5 +1,14 @@
 # @workertown/feature-flags
 
+## 0.0.1-alpha.4
+
+### Patch Changes
+
+- Alpha.4 Release
+- Updated dependencies
+  - @workertown/hono@0.0.1-alpha.4
+  - @workertown/middleware@0.0.1-alpha.4
+
 ## 0.0.1-alpha.3
 
 ### Patch Changes
