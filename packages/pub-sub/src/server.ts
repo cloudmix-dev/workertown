@@ -1,9 +1,13 @@
-import { type D1Database, Queue } from "@cloudflare/workers-types";
+import {
+  type D1Database,
+  type MessageBatch,
+  type Queue,
+} from "@cloudflare/workers-types";
 import { createServer } from "@workertown/hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
-import { QueueAdapter } from "./queue";
+import { QueueAdapter, QueueMessage } from "./queue";
 import { CfQueuesQueueAdapter } from "./queue/cf-queues-queue-adapter";
 import {
   adminRouter,
@@ -116,6 +120,51 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   server.route(prefixes.public, publicRouter);
   server.route(prefixes.publish, publishRouter);
   server.route(prefixes.subscriptions, subscriptionsRouter);
+
+  server.queue = async (batch: MessageBatch<QueueMessage>) => {
+    const results = await Promise.allSettled(
+      batch.messages.map(async (message) => {
+        const { topic, endpoint, headers, queryParameters, body } =
+          message.body;
+        const url = new URL(endpoint);
+        const reqHeaders = new Headers({
+          "content-type": "application/json",
+        });
+
+        if (headers) {
+          for (const [key, value] of Object.entries(headers)) {
+            reqHeaders.set(key, value);
+          }
+        }
+
+        if (queryParameters) {
+          for (const [key, value] of Object.entries(queryParameters)) {
+            url.searchParams.set(key, value);
+          }
+        }
+
+        const res = await fetch(url.toString(), {
+          method: "POST",
+          headers: reqHeaders,
+          body: JSON.stringify({ topic, message: body }),
+        });
+
+        if (!res.ok) {
+          throw new Error();
+        }
+      })
+    );
+
+    for (const [index, result] of results.entries()) {
+      const message = batch.messages[index];
+
+      if (result.status === "rejected") {
+        message?.retry();
+      } else {
+        message?.ack();
+      }
+    }
+  };
 
   return server;
 }
