@@ -70,9 +70,9 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     storage,
   } = config;
 
-  const app = createServer<ContextBindings>({ basePath, auth: authOptions });
+  const server = createServer<ContextBindings>({ basePath, auth: authOptions });
 
-  app.use(async (ctx, next) => {
+  server.use(async (ctx, next) => {
     let cacheAdapter: CacheAdapter | undefined = cache;
     let storageAdapter: StorageAdapter | undefined = storage;
 
@@ -105,12 +105,12 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     return next();
   });
 
-  app.route(prefixes.admin, adminRouter);
-  app.route(prefixes.items, itemsRouter);
-  app.route(prefixes.search, searchRouter);
-  app.route(prefixes.suggest, suggestRouter);
-  app.route(prefixes.tags, tagsRouter);
-  app.route(prefixes.public, publicRouter);
+  server.route(prefixes.admin, adminRouter);
+  server.route(prefixes.items, itemsRouter);
+  server.route(prefixes.search, searchRouter);
+  server.route(prefixes.suggest, suggestRouter);
+  server.route(prefixes.tags, tagsRouter);
+  server.route(prefixes.public, publicRouter);
 
-  return app;
+  return server;
 }

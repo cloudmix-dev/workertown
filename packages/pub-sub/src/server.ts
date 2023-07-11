@@ -4,7 +4,7 @@ import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
 import { QueueAdapter } from "./queue";
-import { CfQueuesQueueAdapter } from "./queue/cf-queues-queue-dapater";
+import { CfQueuesQueueAdapter } from "./queue/cf-queues-queue-adapter";
 import {
   adminRouter,
   publicRouter,

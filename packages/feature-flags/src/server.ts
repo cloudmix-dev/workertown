@@ -57,9 +57,9 @@ export function createFeatureFlagsServer(
     storage,
   } = config;
 
-  const app = createServer<ContextBindings>({ basePath, auth: authOptions });
+  const server = createServer<ContextBindings>({ basePath, auth: authOptions });
 
-  app.use(async (ctx, next) => {
+  server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!storageAdapter) {
@@ -80,10 +80,10 @@ export function createFeatureFlagsServer(
     return next();
   });
 
-  app.route(prefixes.admin, adminRouter);
-  app.route(prefixes.ask, askRouter);
-  app.route(prefixes.flags, flagsRouter);
-  app.route(prefixes.public, publicRouter);
+  server.route(prefixes.admin, adminRouter);
+  server.route(prefixes.ask, askRouter);
+  server.route(prefixes.flags, flagsRouter);
+  server.route(prefixes.public, publicRouter);
 
-  return app;
+  return server;
 }

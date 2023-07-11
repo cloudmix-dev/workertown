@@ -1,5 +1,4 @@
-import { serve as honoServe } from "@hono/node-server";
-import { type Hono } from "hono";
+import { type Hono, serve as honoServe } from "@workertown/hono";
 
 interface ServeOptions {
   port?: number;

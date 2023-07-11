@@ -55,9 +55,9 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
     storage,
   } = config;
 
-  const app = createServer<ContextBindings>({ basePath, auth: authOptions });
+  const server = createServer<ContextBindings>({ basePath, auth: authOptions });
 
-  app.use(async (ctx, next) => {
+  server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!storageAdapter) {
@@ -78,9 +78,9 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
     return next();
   });
 
-  app.route(prefixes.admin, adminRouter);
-  app.route(prefixes.kv, kvRouter);
-  app.route(prefixes.public, publicRouter);
+  server.route(prefixes.admin, adminRouter);
+  server.route(prefixes.kv, kvRouter);
+  server.route(prefixes.public, publicRouter);
 
-  return app;
+  return server;
 }

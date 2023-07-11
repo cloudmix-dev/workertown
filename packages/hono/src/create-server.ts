@@ -13,7 +13,7 @@ import {
 } from "@workertown/middleware";
 import { type Env, Hono } from "hono";
 
-type WorkertownHono<T extends Env> = Hono<T> & {
+export type WorkertownHono<T extends Env> = Hono<T> & {
   queue?: (
     messages: MessageBatch<any>,
     env: Env["Bindings"],
