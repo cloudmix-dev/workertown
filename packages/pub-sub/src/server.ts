@@ -44,6 +44,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     },
   },
   basePath: "/",
+  cors: false,
   env: {
     database: "PUBSUB_DB",
     queue: "PUBSUB_QUEUE",
@@ -61,13 +62,14 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   const {
     auth: authOptions,
     basePath,
+    cors,
     prefixes,
     env: { database: dbEnvKey, queue: queueEnvKey },
     queue,
     storage,
   } = config;
 
-  const server = createServer<Context>({ auth: authOptions, basePath });
+  const server = createServer<Context>({ auth: authOptions, basePath, cors });
 
   server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;

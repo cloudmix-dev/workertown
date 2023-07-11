@@ -35,12 +35,17 @@ export interface CreateServerOptions {
     apiKey?: ApiKeyOptions | false;
   };
   basePath?: string;
+  cors?:
+    | {
+        origin: string | string[] | ((req: Request) => string | false);
+      }
+    | false;
 }
 
 export function createServer<T extends Context>(
   options: CreateServerOptions = {}
 ) {
-  const { basePath = "/", auth: authOptions } = options;
+  const { auth: authOptions, basePath = "/", cors } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
 
   // This sets `ctx.env` to NodeJS' `process.env` if we're in that environment
@@ -64,6 +69,40 @@ export function createServer<T extends Context>(
     server.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
+  if (cors && cors.origin) {
+    server.use("*", (ctx, next) => {
+      let origin: string | false = false;
+
+      if (typeof cors.origin === "string") {
+        origin = cors.origin;
+      } else if (Array.isArray(cors.origin)) {
+        origin = ctx.req.headers.get("origin") ?? false;
+
+        if (origin && !cors.origin.includes(origin)) {
+          origin = false;
+        }
+      } else if (typeof cors.origin === "function") {
+        origin = cors.origin(ctx.req as unknown as Request);
+      }
+
+      if (origin) {
+        ctx.res.headers.set("access-control-allow-origin", origin);
+        ctx.res.headers.set(
+          "access-control-allow-methods",
+          "GET, POST, PUT, DELETE, OPTIONS"
+        );
+        ctx.res.headers.set(
+          "access-control-allow-headers",
+          "Content-Type, Authorization"
+        );
+        ctx.res.headers.set("access-control-allow-private-network", "true");
+      }
+
+      return next();
+    });
+    server.options("*", (ctx) => ctx.text("OK"));
+  }
+
   server.notFound((ctx) =>
     ctx.json(
       { success: false, status: 404, data: null, error: "Not found" },
@@ -71,8 +110,10 @@ export function createServer<T extends Context>(
     )
   );
 
-  server.onError((error, ctx) =>
-    ctx.json(
+  server.onError((error, ctx) => {
+    console.error(error);
+
+    return ctx.json(
       {
         success: false,
         status: 500,
@@ -80,8 +121,8 @@ export function createServer<T extends Context>(
         error: (error.cause as any)?.message ?? error.message,
       },
       500
-    )
-  );
+    );
+  });
 
   return server as WorkertownHono<T>;
 }

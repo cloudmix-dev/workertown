@@ -43,6 +43,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     },
   },
   basePath: "/",
+  cors: false,
   env: {
     cache: "SEARCH_CACHE",
     database: "SEARCH_DB",
@@ -65,12 +66,13 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     auth: authOptions,
     basePath,
     cache,
+    cors,
     prefixes,
     env: { cache: cacheEnvKey, database: dbEnvKey },
     storage,
   } = config;
 
-  const server = createServer<Context>({ basePath, auth: authOptions });
+  const server = createServer<Context>({ auth: authOptions, basePath, cors });
 
   server.use(async (ctx, next) => {
     let cacheAdapter: CacheAdapter | undefined = cache;

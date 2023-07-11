@@ -34,6 +34,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     },
   },
   basePath: "/",
+  cors: false,
   env: {
     kv: "KV_KV",
     database: "KV_DB",
@@ -50,12 +51,13 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
   const {
     auth: authOptions,
     basePath,
+    cors,
     prefixes,
     env: { database: dbEnvKey },
     storage,
   } = config;
 
-  const server = createServer<Context>({ basePath, auth: authOptions });
+  const server = createServer<Context>({ auth: authOptions, basePath, cors });
 
   server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;

@@ -34,6 +34,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     },
   },
   basePath: "/",
+  cors: false,
   env: {
     database: "FLAGS_DB",
   },
@@ -52,12 +53,13 @@ export function createFeatureFlagsServer(
   const {
     auth: authOptions,
     basePath,
+    cors,
     prefixes,
     env: { database: dbEnvKey },
     storage,
   } = config;
 
-  const server = createServer<Context>({ basePath, auth: authOptions });
+  const server = createServer<Context>({ auth: authOptions, basePath, cors });
 
   server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;
