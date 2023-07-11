@@ -12,11 +12,11 @@ choice uses Node.js.
 
 ## Usage
 
-Install the `@workertown/utils` package and call the `serve` export:
+Install the `@workertown/node` package and call the `serve` export:
 
 ```typescript
+import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
-import { serve } from "@workertown/utils";
 
 serve(search());
 
@@ -29,8 +29,8 @@ To configure some options of the HTTP server, you can also pass an `options`
 argument with various options to customise the server:
 
 ```typescript
+import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
-import { serve } from "@workertown/utils";
 
 const api = search();
 
