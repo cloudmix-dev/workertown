@@ -1,11 +1,6 @@
 import { type D1Database, type KVNamespace } from "@cloudflare/workers-types";
+import { createServer } from "@workertown/hono";
 import { type DeepPartial } from "@workertown/internal-types";
-import {
-  apiKey as apiKeyMiddleware,
-  basic as basicMiddleware,
-  jwt as jwtMiddleware,
-} from "@workertown/middleware";
-import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
@@ -75,15 +70,8 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     storage,
   } = config;
 
-  const app = new Hono<ContextBindings>().basePath(basePath);
+  const app = createServer<ContextBindings>({ basePath, auth: authOptions });
 
-  app.use(async (ctx, next) => {
-    if (!ctx.env && globalThis.process.env) {
-      ctx.env = globalThis.process.env;
-    }
-
-    return next();
-  });
   app.use(async (ctx, next) => {
     let cacheAdapter: CacheAdapter | undefined = cache;
     let storageAdapter: StorageAdapter | undefined = storage;
@@ -117,43 +105,12 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     return next();
   });
 
-  if (authOptions?.basic !== false) {
-    app.use("*", basicMiddleware(authOptions?.basic));
-  }
-
-  if (authOptions?.apiKey !== false) {
-    app.use("*", apiKeyMiddleware(authOptions?.apiKey));
-  }
-
-  if (authOptions?.jwt !== false) {
-    app.use("*", jwtMiddleware(authOptions?.jwt));
-  }
-
   app.route(prefixes.admin, adminRouter);
   app.route(prefixes.items, itemsRouter);
   app.route(prefixes.search, searchRouter);
   app.route(prefixes.suggest, suggestRouter);
   app.route(prefixes.tags, tagsRouter);
   app.route(prefixes.public, publicRouter);
-
-  app.notFound((ctx) =>
-    ctx.json(
-      { success: false, status: 404, data: null, error: "Not found" },
-      404
-    )
-  );
-
-  app.onError((error, ctx) =>
-    ctx.json(
-      {
-        success: false,
-        status: 500,
-        data: null,
-        error: (error.cause as any)?.message ?? error.message,
-      },
-      500
-    )
-  );
 
   return app;
 }

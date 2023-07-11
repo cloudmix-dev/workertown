@@ -1,17 +1,13 @@
-import { zValidator } from "@hono/zod-validator";
-import { authenticated } from "@workertown/middleware";
-import { Hono } from "hono";
+import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
-
-router.use("*", authenticated());
+const router = createRouter<ContextBindings>();
 
 const getFlags = router.get(
   "/",
-  zValidator(
+  validate(
     "query",
     z.object({
       include_disabled: z
@@ -43,7 +39,7 @@ export type GetFlagRoute = typeof getFlag;
 
 const upsertFlag = router.put(
   "/:name",
-  zValidator(
+  validate(
     "json",
     z.object({
       description: z.string().optional(),

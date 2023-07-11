@@ -1,13 +1,9 @@
-import { zValidator } from "@hono/zod-validator";
-import { authenticated } from "@workertown/middleware";
-import { Hono } from "hono";
+import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
-
-router.use("*", authenticated());
+const router = createRouter<ContextBindings>();
 
 const getKv = router.get("/*", async (ctx) => {
   const config = ctx.get("config");
@@ -24,7 +20,7 @@ export type GetKvRoute = typeof getKv;
 
 const setKv = router.put(
   "/*",
-  zValidator(
+  validate(
     "json",
     z.object({
       value: z.union([

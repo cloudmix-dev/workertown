@@ -1,19 +1,9 @@
 import { type D1Database } from "@cloudflare/workers-types";
-import {
-  type ApiKeyOptions,
-  type BasicOptions,
-  type JwtOptions,
-} from "@workertown/middleware";
+import { type CreateServerOptions as BaseCreateServerOptions } from "@workertown/hono";
 
 import { type StorageAdapter } from "./storage";
 
-export interface CreateServerOptions {
-  auth?: {
-    basic?: BasicOptions | false;
-    jwt?: JwtOptions | false;
-    apiKey?: ApiKeyOptions | false;
-  };
-  basePath: string;
+export interface CreateServerOptions extends BaseCreateServerOptions {
   env: {
     kv: string;
     database: string;

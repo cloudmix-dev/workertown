@@ -9,9 +9,13 @@ import {
 import { D1Dialect } from "kysely-d1";
 
 import { DefaultMigrationProvider } from "./migrations";
-import { Flag, FlagCondition, StorageAdapter } from "./storage-adapter";
+import {
+  type Flag,
+  type FlagCondition,
+  StorageAdapter,
+} from "./storage-adapter";
 
-interface FlagTable {
+interface FlagsTable {
   name: string;
   description: string | null;
   conditions: string | null;
@@ -20,10 +24,10 @@ interface FlagTable {
   updated_at: ColumnType<Date | number, number, number>;
 }
 
-type FlagRow = Selectable<FlagTable>;
+type FlagRow = Selectable<FlagsTable>;
 
 export interface DatabaseSchema {
-  flags: FlagTable;
+  flags: FlagsTable;
 }
 
 const MIGRATIONS: MigrationInfo[] = [
@@ -83,7 +87,7 @@ export class D1StorageAdapter extends StorageAdapter {
     });
   }
 
-  private _formatItem(flag: FlagRow): Flag {
+  private _formatFlag(flag: FlagRow): Flag {
     return {
       name: flag.name,
       description: flag.description === null ? undefined : flag.description,
@@ -105,7 +109,7 @@ export class D1StorageAdapter extends StorageAdapter {
 
     const records = await query.execute();
 
-    return records.map((record) => this._formatItem(record));
+    return records.map((record) => this._formatFlag(record));
   }
 
   async getFlag(name: string) {
@@ -119,7 +123,7 @@ export class D1StorageAdapter extends StorageAdapter {
       return null;
     }
 
-    return this._formatItem(record);
+    return this._formatFlag(record);
   }
 
   async upsertFlag(

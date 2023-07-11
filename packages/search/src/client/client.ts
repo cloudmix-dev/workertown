@@ -1,5 +1,5 @@
+import { type Hono } from "@workertown/hono";
 import { type DeepPartial } from "@workertown/internal-types";
-import { Hono } from "hono";
 import { hc } from "hono/client";
 import merge from "lodash.merge";
 import { type MatchInfo, type Suggestion } from "minisearch";

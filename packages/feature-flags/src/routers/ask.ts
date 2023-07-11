@@ -1,14 +1,10 @@
-import { zValidator } from "@hono/zod-validator";
-import { authenticated } from "@workertown/middleware";
-import { Hono } from "hono";
+import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
 import { FlagCondition } from "../storage/storage-adapter";
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
-
-router.use("*", authenticated());
+const router = createRouter<ContextBindings>();
 
 function validateContext(
   context: Record<string, unknown>,
@@ -72,7 +68,7 @@ function validateContext(
 
 const ask = router.post(
   "/",
-  zValidator(
+  validate(
     "json",
     z.object({
       flags: z.array(z.string()).nonempty().optional(),

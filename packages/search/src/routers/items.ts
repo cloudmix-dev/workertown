@@ -1,13 +1,9 @@
-import { zValidator } from "@hono/zod-validator";
-import { authenticated } from "@workertown/middleware";
-import { Hono } from "hono";
+import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
-
-router.use("*", authenticated());
+const router = createRouter<ContextBindings>();
 
 const getItem = router.get("/:id", async (ctx) => {
   const id = ctx.req.param("id");
@@ -21,7 +17,7 @@ export type GetItemRoute = typeof getItem;
 
 const indexItem = router.put(
   "/:id",
-  zValidator(
+  validate(
     "json",
     z.object({
       tenant: z.string(),

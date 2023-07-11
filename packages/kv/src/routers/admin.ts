@@ -1,11 +1,8 @@
-import { authenticated } from "@workertown/middleware";
-import { Hono } from "hono";
+import { createRouter } from "@workertown/hono";
 
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
-
-router.use("*", authenticated());
+const router = createRouter<ContextBindings>();
 
 const info = router.get("/info", (ctx) => {
   const config = ctx.get("config");

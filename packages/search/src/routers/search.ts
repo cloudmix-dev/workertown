@@ -1,19 +1,15 @@
-import { zValidator } from "@hono/zod-validator";
-import { authenticated } from "@workertown/middleware";
-import { Hono } from "hono";
+import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type MatchInfo } from "minisearch";
 import { z } from "zod";
 
 import { DEFAULT_SORT_FIELD } from "../constants";
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
-
-router.use("*", authenticated());
+const router = createRouter<ContextBindings>();
 
 const search = router.get(
   "/:tenant/:index?",
-  zValidator(
+  validate(
     "query",
     z.object({
       term: z.string(),

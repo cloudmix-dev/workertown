@@ -1,8 +1,8 @@
-import { Hono } from "hono";
+import { createRouter } from "@workertown/hono";
 
 import { ContextBindings } from "../types";
 
-const router = new Hono<ContextBindings>();
+const router = createRouter<ContextBindings>({ public: true });
 
 const openApi = router.get("/open-api.json", (ctx) => {
   const { prefixes } = ctx.get("config");
