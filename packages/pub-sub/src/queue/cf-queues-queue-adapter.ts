@@ -15,32 +15,26 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     message: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >,
-    attempts: number = 0
+    >
   ) {
     const id = crypto.randomUUID();
 
     await this._queue.send({
       ...message,
       id,
-      attempts,
     });
   }
 
   async sendMessages(
-    messages: {
-      message: Pick<
-        QueueMessage,
-        "topic" | "endpoint" | "headers" | "queryParameters"
-      >;
-      attempts?: number | undefined;
-    }[]
+    messages: Pick<
+      QueueMessage,
+      "topic" | "endpoint" | "headers" | "queryParameters"
+    >[]
   ) {
-    const messagesToSend = messages.map(({ message, attempts = 0 }) => ({
+    const messagesToSend = messages.map((message) => ({
       body: {
         id: crypto.randomUUID(),
         ...message,
-        attempts,
       },
     }));
 

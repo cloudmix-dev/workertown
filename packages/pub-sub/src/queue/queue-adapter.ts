@@ -5,31 +5,32 @@ export interface QueueMessage {
   headers?: Record<string, string>;
   queryParameters?: Record<string, string>;
   body?: Record<any, unknown>;
-  attempts: number;
 }
 
 export class QueueAdapter {
-  sendMessage(
+  async sendMessage(
     message: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >,
-    attempts: number = 0
+    >
   ): Promise<void> {
     throw new Error("'sendMessage()' not implemented");
   }
 
   async sendMessages(
-    messages: {
-      message: Pick<
-        QueueMessage,
-        "topic" | "endpoint" | "headers" | "queryParameters"
-      >;
-      attempts?: number;
-    }[]
+    messages: Pick<
+      QueueMessage,
+      "topic" | "endpoint" | "headers" | "queryParameters"
+    >[]
   ): Promise<void> {
     throw new Error("'sendMessages()' not implemented");
   }
 
-  async pullMessages(): Promise<void> {}
+  async ackMessage(id: string): Promise<void> {}
+
+  async rescheduleMessage(id: string, delay?: number): Promise<void> {}
+
+  async pullMessages(): Promise<QueueMessage[]> {
+    return [];
+  }
 }

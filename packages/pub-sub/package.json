@@ -13,8 +13,12 @@
       "types": "./dist/queue/index.d.ts"
     },
     "./queue/cf-queues-queue-adapter": {
-      "default": "./dist/queue/cf-queues-queue-adapter/index.js",
-      "types": "./dist/queue/cf-queues-queue-adapter/index.d.ts"
+      "default": "./dist/queue/cf-queues-queue-adapter.js",
+      "types": "./dist/queue/cf-queues-queue-adapter.d.ts"
+    },
+    "./queue/sqlite-queue-adapter": {
+      "default": "./dist/queue/sqlite-queue-adapter.js",
+      "types": "./dist/queue/sqlite-queue-adapter.d.ts"
     },
     "./storage": {
       "default": "./dist/storage/index.js",

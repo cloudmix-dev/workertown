@@ -1,3 +1,4 @@
 import { QueueAdapter, type QueueMessage } from "./queue-adapter";
+import { createQueueProcessor } from "./queue-processor";
 
-export { QueueAdapter, type QueueMessage };
+export { createQueueProcessor, QueueAdapter, type QueueMessage };
