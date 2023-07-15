@@ -29,7 +29,7 @@ Workertown provides...
 
 {% quick-link title="Queues" icon="queues" href="/docs/packages/queues" description="Distributed, prioritized task processing." /%}
 
-{% quick-link title="Search" icon="search" href="/docs/packages/search" description="Full text search indexing for small to medium datasets." /%}
+{% quick-link title="Search" icon="search" href="/docs/packages/search/introduction" description="Full text search indexing for small to medium datasets." /%}
 
 {% /quick-links %}
 

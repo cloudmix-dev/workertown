@@ -13,7 +13,13 @@ import { MobileNavigation } from "./mobile-navigation";
 import { Navigation } from "./navigation";
 import { Search } from "./search";
 
-export const navigation = [
+export const navigation: {
+  title: string;
+  links: {
+    title: string;
+    href: string;
+  }[];
+}[] = [
   {
     title: "Introduction",
     links: [
@@ -30,6 +36,39 @@ export const navigation = [
       { title: "Storage", href: "/docs/core-concepts/storage" },
       { title: "Cache", href: "/docs/core-concepts/cache" },
       { title: "Open API", href: "/docs/core-concepts/open-api" },
+    ],
+  },
+  {
+    title: "Search",
+    links: [
+      {
+        title: "Introduction",
+        href: "/docs/packages/search/introduction",
+      },
+      {
+        title: "Getting started",
+        href: "/docs/packages/search/getting-started",
+      },
+      {
+        title: "Using the API",
+        href: "/docs/packages/search/using-the-api",
+      },
+      {
+        title: "Configuration",
+        href: "/docs/packages/search/configuration",
+      },
+      {
+        title: "Storage",
+        href: "/docs/packages/search/storage",
+      },
+      {
+        title: "Cache",
+        href: "/docs/packages/search/cache",
+      },
+      {
+        title: "Tutorial",
+        href: "/docs/packages/search/tutorial",
+      },
     ],
   },
   {
@@ -221,9 +260,7 @@ export function Layout({ children, title, tableOfContents }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <Header navigation={navigation} />
-
       {isHomePage && <Hero />}
-
       <div className="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
         <div className="hidden lg:relative lg:block lg:flex-none">
           <div className="absolute inset-y-0 right-0 w-[50vw] bg-zinc-50 dark:hidden" />
@@ -351,10 +388,12 @@ export function Layout({ children, title, tableOfContents }) {
         </div>
       </div>
       {showWarning && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 z-10 sm:p-6">
+        <div className="fixed bottom-0 left-0 right-0 p-4 z-10 bg-gradient-to-b from-transparent to-white sm:p-6 dark:to-zinc-900">
           <div className="m-auto max-w-lg">
             <Alert className="bg-zinc-100 shadow-lg dark:bg-zinc-900">
-              <AlertTitle>Be careful where you tread...</AlertTitle>
+              <AlertTitle className="font-bold">
+                Be careful where you tread...
+              </AlertTitle>
               <AlertDescription>
                 <div className="flex justify-between items-center space-x-4">
                   <p>
