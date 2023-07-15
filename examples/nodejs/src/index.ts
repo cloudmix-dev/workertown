@@ -11,8 +11,10 @@ import { search } from "@workertown/search";
 import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite-storage-adapter";
 import { combine } from "@workertown/utils";
 import * as path from "node:path";
+import * as url from "node:url";
 
 const { PORT = "3000", API_KEY = "super_secret_api" } = process.env;
+const DIRNAME = url.fileURLToPath(new URL(".", import.meta.url));
 
 const flagsApi = featureFlags({
   auth: {
@@ -22,7 +24,7 @@ const flagsApi = featureFlags({
   },
   basePath: "/flags",
   storage: new FeatureFlagsStorageAdapter({
-    db: path.resolve(__dirname, "../db/flags.sqlite"),
+    db: path.resolve(DIRNAME, "../db/flags.sqlite"),
   }),
 });
 
@@ -34,12 +36,12 @@ const kvApi = kv({
   },
   basePath: "/kv",
   storage: new KvStorageAdapter({
-    db: path.resolve(__dirname, "../db/kv.sqlite"),
+    db: path.resolve(DIRNAME, "../db/kv.sqlite"),
   }),
 });
 
 const pubSubQueueAdapter = new SqliteQueueAdapter({
-  db: path.resolve(__dirname, "../db/pub-sub-queue.sqlite"),
+  db: path.resolve(DIRNAME, "../db/pub-sub-queue.sqlite"),
 });
 const pubSubApi = pubSub({
   auth: {
@@ -50,7 +52,7 @@ const pubSubApi = pubSub({
   basePath: "/pub-sub",
   queue: pubSubQueueAdapter,
   storage: new PubSubStorageAdapter({
-    db: path.resolve(__dirname, "../db/pub-sub.sqlite"),
+    db: path.resolve(DIRNAME, "../db/pub-sub.sqlite"),
   }),
 });
 
@@ -62,7 +64,7 @@ const searchApi = search({
   },
   basePath: "/search",
   storage: new SearchStorageAdapter({
-    db: path.resolve(__dirname, "../db/search.sqlite"),
+    db: path.resolve(DIRNAME, "../db/search.sqlite"),
   }),
 });
 
