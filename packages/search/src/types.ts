@@ -3,16 +3,19 @@ import {
   type WorkertownContext,
   type WorkertownRequest,
 } from "@workertown/hono";
+import { type SearchResult } from "minisearch";
 
 import { type CacheAdapter } from "./cache/index.js";
-import { type StorageAdapter } from "./storage/index.js";
+import { type SearchItem, type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
+  boostItem?: (item: SearchItem, term: string) => number;
   cache?: CacheAdapter;
   env: {
     cache: string;
     database: string;
   };
+  filter?: (item: SearchItem, result: SearchResult) => boolean;
   prefixes: {
     admin: string;
     items: string;

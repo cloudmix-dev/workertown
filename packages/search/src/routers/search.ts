@@ -2,6 +2,7 @@ import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type MatchInfo } from "minisearch";
 import { z } from "zod";
 
+import { type SearchItem } from "../storage/index.js";
 import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
@@ -34,16 +35,43 @@ router.get(
           return limit;
         }),
       after: z.string().optional(),
+      fuzzy: z
+        .string()
+        .optional()
+        .transform((val) => {
+          if (val) {
+            const fuzzy = parseFloat(val);
+
+            if (Number.isNaN(fuzzy)) {
+              return undefined;
+            }
+
+            return fuzzy;
+          }
+        }),
+      prefix: z
+        .string()
+        .optional()
+        .transform((val) => val === "1" || val === "true"),
+      exact: z
+        .string()
+        .optional()
+        .transform((val) => val === "1" || val === "true"),
     })
   ),
   async (ctx) => {
     const cache = ctx.get("cache");
     const storage = ctx.get("storage");
-    const { scanRange: scanRangeRn, stopWords: stopWordsFn } =
-      ctx.get("config");
+    const {
+      boostItem,
+      filter,
+      scanRange: scanRangeRn,
+      stopWords: stopWordsFn,
+    } = ctx.get("config");
     const tenant = ctx.req.param("tenant")!;
     const index = ctx.req.param("index");
-    const { term, tags, fields, limit, after } = ctx.req.valid("query");
+    const { term, tags, fields, limit, after, fuzzy, prefix, exact } =
+      ctx.req.valid("query");
     const scanRange =
       typeof scanRangeRn === "function"
         ? await scanRangeRn(ctx.req)
@@ -99,16 +127,39 @@ router.get(
       }
 
       if (items.length > 0) {
+        const itemsMap = new Map<string, SearchItem>(
+          items.map((item) => [item.id, item])
+        );
         const miniSearch = new MiniSearch({
           fields: fields ?? [],
           processTerm: (term, _fieldName) =>
             stopWords.has(term) ? null : term.toLowerCase(),
+          searchOptions: {
+            boostDocument:
+              typeof boostItem === "function"
+                ? (id, term) => {
+                    const item = itemsMap.get(id);
+
+                    return boostItem(item!, term);
+                  }
+                : undefined,
+            combineWith: exact ? "AND" : "OR",
+            filter:
+              typeof filter === "function"
+                ? (result) => {
+                    const item = itemsMap.get(result.id);
+
+                    return filter(item!, result);
+                  }
+                : undefined,
+            fuzzy,
+            prefix,
+          },
         });
 
         miniSearch.addAll(items.map((item) => ({ id: item.id, ...item.data })));
 
         const matches = miniSearch.search(term);
-        const itemsMap = new Map(items.map((item) => [item.id, item]));
 
         results = matches.map((match) => {
           const item = itemsMap.get(match.id);
