@@ -13,7 +13,7 @@ import {
 } from "@workertown/middleware";
 import { type Env, Hono } from "hono";
 
-import { Context } from "./types";
+import { type Context } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
   queue?: (

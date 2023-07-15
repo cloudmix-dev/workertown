@@ -8,8 +8,8 @@ import {
   SqliteDialect,
 } from "kysely";
 
-import { DefaultMigrationProvider } from "./migrations";
-import { StorageAdapter, type Subscription } from "./storage-adapter";
+import { DefaultMigrationProvider } from "./migrations.js";
+import { StorageAdapter, type Subscription } from "./storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;

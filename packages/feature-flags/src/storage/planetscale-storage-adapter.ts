@@ -7,8 +7,8 @@ import {
 } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 
-import { DefaultMigrationProvider } from "./migrations";
-import { Flag, FlagCondition, StorageAdapter } from "./storage-adapter";
+import { DefaultMigrationProvider } from "./migrations.js";
+import { Flag, FlagCondition, StorageAdapter } from "./storage-adapter.js";
 
 interface FlagTable {
   name: string;

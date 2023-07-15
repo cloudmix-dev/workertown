@@ -2,12 +2,12 @@ import { zValidator } from "@hono/zod-validator";
 import { createRouter } from "@workertown/hono";
 import { z } from "zod";
 
-import { Subscription } from "../storage";
-import { Context } from "../types";
+import { type Subscription } from "../storage/index.js";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const getSubscriptions = router.get(
+router.get(
   "/",
   zValidator(
     "query",
@@ -30,9 +30,7 @@ const getSubscriptions = router.get(
   }
 );
 
-export type GetSubscriptionsRoute = typeof getSubscriptions;
-
-const createSubscription = router.post(
+router.post(
   "/",
   zValidator(
     "json",
@@ -66,9 +64,7 @@ const createSubscription = router.post(
   }
 );
 
-export type CreateSubscriptionRoute = typeof createSubscription;
-
-const deleteSubscription = router.delete("/:id", async (ctx) => {
+router.delete("/:id", async (ctx) => {
   const storage = ctx.get("storage");
   const id = ctx.req.param("id");
 
@@ -76,7 +72,5 @@ const deleteSubscription = router.delete("/:id", async (ctx) => {
 
   return ctx.jsonT({ status: 200, success: true, data: true });
 });
-
-export type DeleteSubscriptionRoute = typeof deleteSubscription;
 
 export { router };

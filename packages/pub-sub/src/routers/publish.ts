@@ -1,11 +1,11 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { Context } from "../types";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const publish = router.post(
+router.post(
   "/:topic",
   validate(
     "json",
@@ -34,7 +34,5 @@ const publish = router.post(
     return ctx.jsonT({ status: 200, success: true, data: true });
   }
 );
-
-export type PublishRoute = typeof publish;
 
 export { router };

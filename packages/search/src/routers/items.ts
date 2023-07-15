@@ -1,11 +1,11 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { Context } from "../types";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const getItem = router.get("/:id", async (ctx) => {
+router.get("/:id", async (ctx) => {
   const id = ctx.req.param("id");
   const storage = ctx.get("storage");
   const item = await storage.getItem(id);
@@ -13,9 +13,7 @@ const getItem = router.get("/:id", async (ctx) => {
   return ctx.jsonT({ status: 200, success: true, data: item });
 });
 
-export type GetItemRoute = typeof getItem;
-
-const indexItem = router.put(
+router.put(
   "/:id",
   validate(
     "json",
@@ -40,9 +38,7 @@ const indexItem = router.put(
   }
 );
 
-export type IndexItemRoute = typeof indexItem;
-
-const deleteItem = router.delete("/:id", async (ctx) => {
+router.delete("/:id", async (ctx) => {
   const id = ctx.req.param("id");
   const storage = ctx.get("storage");
   const cache = ctx.get("cache");
@@ -56,7 +52,5 @@ const deleteItem = router.delete("/:id", async (ctx) => {
 
   return ctx.jsonT({ status: 200, success: true, data: true });
 });
-
-export type DeleteItemRoute = typeof deleteItem;
 
 export { router };

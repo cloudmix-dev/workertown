@@ -4,10 +4,15 @@ import { type DeepPartial } from "@workertown/internal-types";
 import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
-import { adminRouter, askRouter, flagsRouter, publicRouter } from "./routers";
-import { StorageAdapter } from "./storage";
-import { D1StorageAdapter } from "./storage/d1-storage-adapter";
-import { type Context, type CreateServerOptions } from "./types";
+import {
+  adminRouter,
+  askRouter,
+  flagsRouter,
+  publicRouter,
+} from "./routers/index.js";
+import { D1StorageAdapter } from "./storage/d1-storage-adapter.js";
+import { StorageAdapter } from "./storage/index.js";
+import { type Context, type CreateServerOptions } from "./types.js";
 
 type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 

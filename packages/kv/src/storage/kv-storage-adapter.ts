@@ -1,6 +1,6 @@
 import { KVNamespace } from "@cloudflare/workers-types";
 
-import { StorageAdapter } from "./storage-adapter";
+import { StorageAdapter } from "./storage-adapter.js";
 
 interface KVAdapterOptions {
   kv: KVNamespace;

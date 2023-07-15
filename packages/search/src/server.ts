@@ -4,8 +4,10 @@ import { type DeepPartial } from "@workertown/internal-types";
 import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
-import { CacheAdapter, KVCacheAdapter, NoOpCacheAdapter } from "./cache";
-import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants";
+import { CacheAdapter } from "./cache/index.js";
+import { KVCacheAdapter } from "./cache/kv-cache-adapter.js";
+import { NoOpCacheAdapter } from "./cache/no-op-cache-adapter.js";
+import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants.js";
 import {
   adminRouter,
   itemsRouter,
@@ -13,10 +15,10 @@ import {
   searchRouter,
   suggestRouter,
   tagsRouter,
-} from "./routers";
-import { StorageAdapter } from "./storage";
-import { D1StorageAdapter } from "./storage/d1-storage-adapter";
-import { type Context, type CreateServerOptions } from "./types";
+} from "./routers/index.js";
+import { D1StorageAdapter } from "./storage/d1-storage-adapter.js";
+import { StorageAdapter } from "./storage/index.js";
+import { type Context, type CreateServerOptions } from "./types.js";
 
 export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 

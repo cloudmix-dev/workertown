@@ -1,11 +1,11 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { Context } from "../types";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const getFlags = router.get(
+router.get(
   "/",
   validate(
     "query",
@@ -25,9 +25,7 @@ const getFlags = router.get(
   }
 );
 
-export type GetFlagsRoute = typeof getFlags;
-
-const getFlag = router.get("/:name", async (ctx) => {
+router.get("/:name", async (ctx) => {
   const storage = ctx.get("storage");
   const name = ctx.req.param("name");
   const flag = await storage.getFlag(name);
@@ -35,9 +33,7 @@ const getFlag = router.get("/:name", async (ctx) => {
   return ctx.jsonT({ status: 200, success: true, data: flag });
 });
 
-export type GetFlagRoute = typeof getFlag;
-
-const upsertFlag = router.put(
+router.put(
   "/:name",
   validate(
     "json",
@@ -87,9 +83,7 @@ const upsertFlag = router.put(
   }
 );
 
-export type UpsertFlagRoute = typeof upsertFlag;
-
-const deleteFlag = router.delete("/:name", async (ctx) => {
+router.delete("/:name", async (ctx) => {
   const storage = ctx.get("storage");
   const name = ctx.req.param("name");
 
@@ -97,7 +91,5 @@ const deleteFlag = router.delete("/:name", async (ctx) => {
 
   return ctx.jsonT({ status: 200, success: true, data: true });
 });
-
-export type DeleteFlagRoute = typeof deleteFlag;
 
 export { router };

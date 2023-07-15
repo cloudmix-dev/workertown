@@ -2,11 +2,11 @@ import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type MatchInfo } from "minisearch";
 import { z } from "zod";
 
-import { Context } from "../types";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const search = router.get(
+router.get(
   "/:tenant/:index?",
   validate(
     "query",
@@ -150,7 +150,5 @@ const search = router.get(
     return ctx.jsonT({ status: 200, success: true, data: results, pagination });
   }
 );
-
-export type SearchRoute = typeof search;
 
 export { router };

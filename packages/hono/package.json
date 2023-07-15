@@ -1,6 +1,7 @@
 {
   "name": "@workertown/hono",
   "version": "0.0.1-alpha.5",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {

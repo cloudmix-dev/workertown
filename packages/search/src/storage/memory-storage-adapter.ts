@@ -2,7 +2,7 @@ import {
   type GetItemsOptions,
   type SearchItem,
   StorageAdapter,
-} from "./storage-adapter";
+} from "./storage-adapter.js";
 
 export class MemoryStorageAdapter extends StorageAdapter {
   private _itemStore = new Map<string, SearchItem>();

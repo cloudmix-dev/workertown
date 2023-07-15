@@ -1,0 +1,35 @@
+{
+  "name": "@workertown/cache",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./kv-cache-adapter": {
+      "default": "./dist/kv-cache-adapter.js",
+      "types": "./dist/kv-cache-adapter.d.ts"
+    },
+    "./memory-cache-adapter": {
+      "default": "./dist/memory-cache-adapter.js",
+      "types": "./dist/memory-cache-adapter.d.ts"
+    },
+    "./no-op-cache-adapter": {
+      "default": "./dist/no-op-cache-adapter.js",
+      "types": "./dist/no-op-cache-adapter.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "~4.20230710.1"
+  }
+}

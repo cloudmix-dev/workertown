@@ -1,22 +1,9 @@
-import {
-  type InfoRoute,
-  type RunMigrationsRoute,
-  router as adminRouter,
-} from "./admin";
-import {
-  type DeleteItemRoute,
-  type GetItemRoute,
-  type IndexItemRoute,
-  router as itemsRouter,
-} from "./items";
-import {
-  type HealthRoute,
-  type OpenApiRoute,
-  router as publicRouter,
-} from "./public";
-import { type SearchRoute, router as searchRouter } from "./search";
-import { type SuggestRoute, router as suggestRouter } from "./suggest";
-import { type GetTagsRoute, router as tagsRouter } from "./tags";
+import { router as adminRouter } from "./admin.js";
+import { router as itemsRouter } from "./items.js";
+import { router as publicRouter } from "./public.js";
+import { router as searchRouter } from "./search.js";
+import { router as suggestRouter } from "./suggest.js";
+import { router as tagsRouter } from "./tags.js";
 
 export {
   adminRouter,
@@ -25,14 +12,4 @@ export {
   searchRouter,
   suggestRouter,
   tagsRouter,
-  type DeleteItemRoute,
-  type GetItemRoute,
-  type GetTagsRoute,
-  type HealthRoute,
-  type IndexItemRoute,
-  type InfoRoute,
-  type OpenApiRoute,
-  type RunMigrationsRoute,
-  type SearchRoute,
-  type SuggestRoute,
 };

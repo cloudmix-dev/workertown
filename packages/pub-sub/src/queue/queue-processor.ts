@@ -1,8 +1,8 @@
 import { type Message, type MessageBatch } from "@cloudflare/workers-types";
 import { WorkertownHono } from "@workertown/hono";
 
-import { Context } from "../types";
-import { QueueAdapter, type QueueMessage } from "./queue-adapter";
+import { type Context } from "../types.js";
+import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface CreateQueueProcessorOptions {
   adapter: QueueAdapter;

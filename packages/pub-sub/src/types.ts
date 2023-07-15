@@ -3,8 +3,8 @@ import {
   type Context as WorkertownContext,
 } from "@workertown/hono";
 
-import { type QueueAdapter } from "./queue";
-import { type StorageAdapter } from "./storage";
+import { type QueueAdapter } from "./queue/index.js";
+import { type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
   env: {

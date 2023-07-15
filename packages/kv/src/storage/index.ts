@@ -1,3 +1,3 @@
-import { StorageAdapter } from "./storage-adapter";
+import { StorageAdapter } from "./storage-adapter.js";
 
 export { StorageAdapter };

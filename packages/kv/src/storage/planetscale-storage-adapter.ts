@@ -1,8 +1,8 @@
 import { type ColumnType, Kysely, type MigrationInfo, Migrator } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 
-import { DefaultMigrationProvider } from "./migrations";
-import { StorageAdapter } from "./storage-adapter";
+import { DefaultMigrationProvider } from "./migrations.js";
+import { StorageAdapter } from "./storage-adapter.js";
 
 interface KeyValueTable {
   name: string;

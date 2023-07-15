@@ -1,18 +1,16 @@
 import { createRouter } from "@workertown/hono";
 
-import { Context } from "../types";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const info = router.get("/info", (ctx) => {
+router.get("/info", (ctx) => {
   const config = ctx.get("config");
 
   return ctx.jsonT({ status: 200, success: true, data: config });
 });
 
-export type InfoRoute = typeof info;
-
-const runMigrations = router.post("/migrate", async (ctx) => {
+router.post("/migrate", async (ctx) => {
   const storage = ctx.get("storage");
   let success = true;
 
@@ -27,7 +25,5 @@ const runMigrations = router.post("/migrate", async (ctx) => {
     success ? 200 : 500
   );
 });
-
-export type RunMigrationsRoute = typeof runMigrations;
 
 export { router };

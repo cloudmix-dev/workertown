@@ -4,10 +4,10 @@ import { type DeepPartial } from "@workertown/internal-types";
 import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
-import { adminRouter, kvRouter, publicRouter } from "./routers";
-import { StorageAdapter } from "./storage";
-import { KVStorageAdapter } from "./storage/kv-storage-adapter";
-import { type Context, type CreateServerOptions } from "./types";
+import { adminRouter, kvRouter, publicRouter } from "./routers/index.js";
+import { StorageAdapter } from "./storage/index.js";
+import { KVStorageAdapter } from "./storage/kv-storage-adapter.js";
+import { type Context, type CreateServerOptions } from "./types.js";
 
 type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 

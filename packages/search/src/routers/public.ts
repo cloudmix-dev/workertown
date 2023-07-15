@@ -1,7 +1,7 @@
 import { createRouter } from "@workertown/hono";
 
-import { OPEN_API_SPEC } from "../constants";
-import { Context } from "../types";
+import { OPEN_API_SPEC } from "../constants.js";
+import { type Context } from "../types.js";
 
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
@@ -17,7 +17,7 @@ router.options("*", (ctx) =>
   })
 );
 
-const openApi = router.get("/open-api.json", (ctx) => {
+router.get("/open-api.json", (ctx) => {
   const { auth, basePath, prefixes } = ctx.get("config");
   const url = new URL(ctx.req.url);
   const searchPath = `${`${basePath}${prefixes.search}`.replace(
@@ -52,15 +52,11 @@ const openApi = router.get("/open-api.json", (ctx) => {
   });
 });
 
-export type OpenApiRoute = typeof openApi;
-
-const health = router.get("/health", async (ctx) =>
+router.get("/health", async (ctx) =>
   ctx.json(
     { status: 200, success: true, data: "OK" },
     { headers: CORS_HEADERS }
   )
 );
-
-export type HealthRoute = typeof health;
 
 export { router };

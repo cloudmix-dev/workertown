@@ -1,8 +1,8 @@
 import { authenticated } from "@workertown/middleware";
 import { Hono } from "hono";
 
-import { type WorkertownHono } from "./create-server";
-import { type Context } from "./types";
+import { type WorkertownHono } from "./create-server.js";
+import { type Context } from "./types.js";
 
 interface CreateRouterOptions {
   public: boolean;

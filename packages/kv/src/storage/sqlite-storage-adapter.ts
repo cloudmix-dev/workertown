@@ -7,8 +7,8 @@ import {
   SqliteDialect,
 } from "kysely";
 
-import { DefaultMigrationProvider } from "./migrations";
-import { StorageAdapter } from "./storage-adapter";
+import { DefaultMigrationProvider } from "./migrations.js";
+import { StorageAdapter } from "./storage-adapter.js";
 
 interface KeyValueTable {
   name: string;

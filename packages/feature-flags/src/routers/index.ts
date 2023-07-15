@@ -1,34 +1,6 @@
-import {
-  type InfoRoute,
-  type RunMigrationsRoute,
-  router as adminRouter,
-} from "./admin";
-import { type AskRoute, router as askRouter } from "./ask";
-import {
-  type DeleteFlagRoute,
-  type GetFlagRoute,
-  type GetFlagsRoute,
-  type UpsertFlagRoute,
-  router as flagsRouter,
-} from "./flags";
-import {
-  type HealthRoute,
-  type OpenApiRoute,
-  router as publicRouter,
-} from "./public";
+import { router as adminRouter } from "./admin.js";
+import { router as askRouter } from "./ask.js";
+import { router as flagsRouter } from "./flags.js";
+import { router as publicRouter } from "./public.js";
 
-export {
-  adminRouter,
-  askRouter,
-  flagsRouter,
-  publicRouter,
-  type AskRoute,
-  type DeleteFlagRoute,
-  type GetFlagRoute,
-  type GetFlagsRoute,
-  type HealthRoute,
-  type InfoRoute,
-  type OpenApiRoute,
-  type RunMigrationsRoute,
-  type UpsertFlagRoute,
-};
+export { adminRouter, askRouter, flagsRouter, publicRouter };

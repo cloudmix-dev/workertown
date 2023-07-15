@@ -1,4 +1,7 @@
-import { type CreateServerOptionsOptional, createSearchServer } from "./server";
+import {
+  type CreateServerOptionsOptional,
+  createSearchServer,
+} from "./server.js";
 
 export default createSearchServer;
 export {

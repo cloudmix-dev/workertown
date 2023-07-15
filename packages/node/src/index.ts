@@ -1,3 +1,3 @@
-import { serve } from "./serve";
+import { serve } from "./serve.js";
 
 export { serve };

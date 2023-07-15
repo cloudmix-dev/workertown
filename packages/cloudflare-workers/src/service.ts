@@ -6,7 +6,7 @@ import {
   type Response,
 } from "@cloudflare/workers-types";
 
-import { type Service } from "./types";
+import { type Service } from "./types.js";
 
 interface ServiceOptions {
   fetch?: Fetcher["fetch"];

@@ -1,4 +1,4 @@
-import { StorageAdapter } from "./storage-adapter";
+import { StorageAdapter } from "./storage-adapter.js";
 
 export class MemoryStorageAdapter extends StorageAdapter {
   private _itemStore = new Map<string, string>();

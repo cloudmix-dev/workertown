@@ -1,3 +1,3 @@
-import { combine } from "./combine";
+import { combine } from "./combine.js";
 
 export { combine };

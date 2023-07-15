@@ -1,6 +1,7 @@
 import { D1Database } from "@cloudflare/workers-types";
 import {
   type ColumnType,
+  type Dialect,
   Kysely,
   type MigrationInfo,
   Migrator,
@@ -8,8 +9,8 @@ import {
 } from "kysely";
 import { D1Dialect } from "kysely-d1";
 
-import { DefaultMigrationProvider } from "./migrations";
-import { StorageAdapter, type Subscription } from "./storage-adapter";
+import { DefaultMigrationProvider } from "./migrations.js";
+import { StorageAdapter, type Subscription } from "./storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;
@@ -83,7 +84,9 @@ export class D1StorageAdapter extends StorageAdapter {
     super();
 
     this._client = new Kysely<DatabaseSchema>({
-      dialect: new D1Dialect({ database: options.db }),
+      // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
+      // types
+      dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
     });
   }
 

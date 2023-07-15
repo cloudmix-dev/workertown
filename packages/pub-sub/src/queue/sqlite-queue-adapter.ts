@@ -9,8 +9,8 @@ import {
   SqliteDialect,
 } from "kysely";
 
-import { DefaultMigrationProvider } from "../storage/migrations";
-import { QueueAdapter, type QueueMessage } from "./queue-adapter";
+import { DefaultMigrationProvider } from "../storage/migrations.js";
+import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface QueueMessagesTable {
   id: string;

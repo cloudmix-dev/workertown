@@ -4,23 +4,14 @@ import { hc } from "hono/client";
 import merge from "lodash.merge";
 import { type MatchInfo, type Suggestion } from "minisearch";
 
-import {
-  type DeleteItemRoute,
-  type GetItemRoute,
-  type GetTagsRoute,
-  type IndexItemRoute,
-  type OpenApiRoute,
-  type RunMigrationsRoute,
-  type SearchRoute,
-  type SuggestRoute,
-} from "../routers";
-import { type Context } from "../types";
+import { type Context } from "../types.js";
 
 interface ClientOptions {
   fetch?: typeof fetch;
   prefixes: {
     admin: string;
     items: string;
+    public: string;
     search: string;
     suggest: string;
     tags: string;
@@ -33,6 +24,7 @@ const DEFAULT_OPTIONS: ClientOptions = {
   prefixes: {
     admin: "/v1/admin",
     items: "/v1/items",
+    public: "/",
     search: "/v1/search",
     suggest: "/v1/suggest",
     tags: "/v1/tags",
@@ -60,20 +52,16 @@ export class SearchClient {
 
   get admin() {
     return {
-      openApi: async () => {
-        const client = this._createClient<OpenApiRoute>(
-          this._options.prefixes.admin
-        );
-        const res = await client["open-api.json"].$get();
-        const result = await res.json();
+      getInfo: async () => {
+        const client = this._createClient(this._options.prefixes.admin);
+        const res = await (client as any).info.$get();
+        const { data } = await res.json();
 
-        return result;
+        return data;
       },
       runMigrations: async () => {
-        const client = this._createClient<RunMigrationsRoute>(
-          this._options.prefixes.admin
-        );
-        const res = await client.migrate.$post();
+        const client = this._createClient(this._options.prefixes.admin);
+        const res = await (client as any).migrate.$post();
         const { data } = await res.json();
 
         return data;
@@ -81,22 +69,37 @@ export class SearchClient {
     };
   }
 
+  get public() {
+    return {
+      openApi: async () => {
+        const client = this._createClient(this._options.prefixes.public);
+        const res = await (client as any)["open-api.json"].$get();
+        const result = await res.json();
+
+        return result;
+      },
+      health: async () => {
+        const client = this._createClient(this._options.prefixes.public);
+        const res = await (client as any).health.$get();
+        const result = await res.json();
+
+        return result;
+      },
+    };
+  }
+
   get items() {
     return {
       deleteItem: async (id: string) => {
-        const client = this._createClient<DeleteItemRoute>(
-          this._options.prefixes.items
-        );
-        const res = await client[":id"].$delete({ param: { id } });
+        const client = this._createClient(this._options.prefixes.items);
+        const res = await (client as any)[":id"].$delete({ param: { id } });
         const { data } = await res.json();
 
         return data;
       },
       getItem: async (id: string) => {
-        const client = this._createClient<GetItemRoute>(
-          this._options.prefixes.items
-        );
-        const res = await client[":id"].$get({ param: { id } });
+        const client = this._createClient(this._options.prefixes.items);
+        const res = await (client as any)[":id"].$get({ param: { id } });
         const { data } = await res.json();
 
         return data;
@@ -110,10 +113,11 @@ export class SearchClient {
           tags?: string[];
         }
       ) => {
-        const client = this._createClient<IndexItemRoute>(
-          this._options.prefixes.items
-        );
-        const res = await client[":id"].$put({ param: { id }, json: item });
+        const client = this._createClient(this._options.prefixes.items);
+        const res = await (client as any)[":id"].$put({
+          param: { id },
+          json: item,
+        });
         const { data } = await res.json();
 
         return data;
@@ -133,9 +137,7 @@ export class SearchClient {
         }
       ) => {
         const { tenant, index, fields, tags } = options;
-        const client = this._createClient<SearchRoute>(
-          this._options.prefixes.search
-        );
+        const client = this._createClient(this._options.prefixes.search);
         // TODO: Fix this `any` when Hono fixes type inference
         const res = await (client as any)[":tenant"][":index?"].$get({
           param: { tenant, index },
@@ -171,9 +173,7 @@ export class SearchClient {
         }
       ) => {
         const { tenant, index, fields, tags } = options;
-        const client = this._createClient<SuggestRoute>(
-          this._options.prefixes.suggest
-        );
+        const client = this._createClient(this._options.prefixes.suggest);
         // TODO: Fix this `any` when Hono fixes type inference
         const res = await (client as any)[":tenant"][":index?"].$get({
           param: { tenant, index },
@@ -194,10 +194,8 @@ export class SearchClient {
   get tags() {
     return {
       getTags: async () => {
-        const client = this._createClient<GetTagsRoute>(
-          this._options.prefixes.tags
-        );
-        const res = await client.index.$get();
+        const client = this._createClient(this._options.prefixes.tags);
+        const res = await (client as any).index.$get();
         const { data } = await res.json();
 
         return data;

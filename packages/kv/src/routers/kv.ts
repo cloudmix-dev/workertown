@@ -1,11 +1,11 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { Context } from "../types";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
-const getKv = router.get("/*", async (ctx) => {
+router.get("/*", async (ctx) => {
   const config = ctx.get("config");
   const storage = ctx.get("storage");
   const { kv: kvPrefix } = config.prefixes;
@@ -16,9 +16,7 @@ const getKv = router.get("/*", async (ctx) => {
   return ctx.jsonT({ status: 200, success: true, data: value });
 });
 
-export type GetKvRoute = typeof getKv;
-
-const setKv = router.put(
+router.put(
   "/*",
   validate(
     "json",
@@ -46,9 +44,7 @@ const setKv = router.put(
   }
 );
 
-export type SetKvRoute = typeof setKv;
-
-const deleteKv = router.delete("/*", async (ctx) => {
+router.delete("/*", async (ctx) => {
   const config = ctx.get("config");
   const storage = ctx.get("storage");
   const { kv: kvPrefix } = config.prefixes;
@@ -59,7 +55,5 @@ const deleteKv = router.delete("/*", async (ctx) => {
 
   return ctx.jsonT({ status: 200, success: true, data: true });
 });
-
-export type DeleteKvRoute = typeof deleteKv;
 
 export { router };

@@ -1,8 +1,8 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { FlagCondition } from "../storage/storage-adapter";
-import { Context } from "../types";
+import { FlagCondition } from "../storage/storage-adapter.js";
+import { type Context } from "../types.js";
 
 const router = createRouter<Context>();
 
@@ -66,7 +66,7 @@ function validateContext(
   return result;
 }
 
-const ask = router.post(
+router.post(
   "/",
   validate(
     "json",
@@ -99,7 +99,5 @@ const ask = router.post(
     return ctx.jsonT({ status: 200, success: true, data: result });
   }
 );
-
-export type AskRoute = typeof ask;
 
 export { router };

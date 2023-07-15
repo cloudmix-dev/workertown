@@ -8,9 +8,13 @@ import {
 } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 
-import { DEFAULT_SORT_FIELD } from "../constants";
-import { DefaultMigrationProvider } from "./migrations";
-import { GetItemsOptions, SearchItem, StorageAdapter } from "./storage-adapter";
+import { DEFAULT_SORT_FIELD } from "../constants.js";
+import { DefaultMigrationProvider } from "./migrations.js";
+import {
+  GetItemsOptions,
+  SearchItem,
+  StorageAdapter,
+} from "./storage-adapter.js";
 
 interface SearchItemTable {
   id: string;

@@ -5,14 +5,14 @@ import {
 } from "@workertown/middleware";
 import { type HonoRequest } from "hono";
 
-import { createRouter } from "./create-router";
+import { createRouter } from "./create-router.js";
 import {
   type CreateServerOptions,
   type WorkertownHono,
   createServer,
-} from "./create-server";
-import { type Context } from "./types";
-import { validate } from "./validate";
+} from "./create-server.js";
+import { type Context } from "./types.js";
+import { validate } from "./validate.js";
 
 export {
   createRouter,

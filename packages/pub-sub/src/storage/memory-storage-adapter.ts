@@ -1,4 +1,4 @@
-import { StorageAdapter, type Subscription } from "./storage-adapter";
+import { StorageAdapter, type Subscription } from "./storage-adapter.js";
 
 export class MemoryStorageAdapter extends StorageAdapter {
   private _itemStore = new Map<string, Subscription>();

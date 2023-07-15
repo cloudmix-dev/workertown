@@ -1,4 +1,4 @@
-import { service } from "./service";
-import { type Service } from "./types";
+import { service } from "./service.js";
+import { type Service } from "./types.js";
 
 export { service, type Service };

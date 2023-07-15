@@ -4,8 +4,8 @@ import {
   type WorkertownRequest,
 } from "@workertown/hono";
 
-import { type CacheAdapter } from "./cache";
-import { type StorageAdapter } from "./storage";
+import { type CacheAdapter } from "./cache/index.js";
+import { type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
   cache?: CacheAdapter;
