@@ -1,7 +1,7 @@
 import {
   type CreateServerOptions as BaseCreateServerOptions,
-  type Context as WorkertownContext,
-  type Request as WorkertownRequest,
+  type WorkertownContext,
+  type WorkertownRequest,
 } from "@workertown/hono";
 
 import { type CacheAdapter } from "./cache";

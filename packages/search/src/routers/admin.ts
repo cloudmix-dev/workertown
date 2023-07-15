@@ -4,10 +4,24 @@ import { Context } from "../types";
 
 const router = createRouter<Context>();
 
-const info = router.get("/info", (ctx) => {
+const info = router.get("/info", async (ctx) => {
   const config = ctx.get("config");
 
-  return ctx.jsonT({ status: 200, success: true, data: config });
+  if (typeof config.scanRange === "function") {
+    // @ts-ignore
+    delete config.scanRange;
+  }
+
+  if (typeof config.stopWords === "function") {
+    // @ts-ignore
+    delete config.stopWords;
+  }
+
+  return ctx.jsonT({
+    status: 200,
+    success: true,
+    data: config as any,
+  });
 });
 
 export type InfoRoute = typeof info;
