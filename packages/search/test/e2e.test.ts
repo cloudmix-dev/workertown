@@ -1,6 +1,6 @@
 import test from "ava";
 
-import { createTestService, makeRequest } from "./_util";
+import { createTestService, makeRequest } from "./_utils";
 
 interface SuccessfulResponse {
   status: 200;

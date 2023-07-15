@@ -13,9 +13,6 @@
     "hono": "~3.2.7",
     "zod": "~3.21.4"
   },
-  "devDependencies": {
-    "typescript": "~5.1.3"
-  },
   "engines": {
     "node": ">=18.0.0"
   }
