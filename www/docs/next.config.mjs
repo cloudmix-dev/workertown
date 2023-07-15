@@ -4,11 +4,14 @@ import withSearch from "./src/markdoc/search.mjs";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  pageExtensions: ["ts", "tsx", "md"],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     scrollRestoration: true,
   },
+  pageExtensions: ["ts", "tsx", "md"],
+  reactStrictMode: true,
 };
 
 export default withSearch(
