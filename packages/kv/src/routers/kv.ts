@@ -13,7 +13,7 @@ router.get("/*", async (ctx) => {
   const key = url.pathname.replace(kvPrefix, "");
   const value = await storage.getValue(key);
 
-  return ctx.jsonT({ status: 200, success: true, data: value });
+  return ctx.json({ status: 200, success: true, data: value });
 });
 
 router.put(
@@ -40,7 +40,7 @@ router.put(
 
     await storage.setValue(key, value);
 
-    return ctx.jsonT({ status: 200, success: true, data: value as any });
+    return ctx.json({ status: 200, success: true, data: value as any });
   }
 );
 
@@ -53,7 +53,7 @@ router.delete("/*", async (ctx) => {
 
   await storage.deleteValue(key);
 
-  return ctx.jsonT({ status: 200, success: true, data: true });
+  return ctx.json({ status: 200, success: true, data: true });
 });
 
 export { router };

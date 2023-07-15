@@ -10,7 +10,7 @@ router.get("/:id", async (ctx) => {
   const storage = ctx.get("storage");
   const item = await storage.getItem(id);
 
-  return ctx.jsonT({ status: 200, success: true, data: item });
+  return ctx.json({ status: 200, success: true, data: item });
 });
 
 router.put(
@@ -34,7 +34,7 @@ router.put(
     await cache.delete(`items_${tenant}_ALL`);
     await cache.delete(`items_${tenant}_${index}`);
 
-    return ctx.jsonT({ status: 200, success: true, data: item });
+    return ctx.json({ status: 200, success: true, data: item });
   }
 );
 
@@ -50,7 +50,7 @@ router.delete("/:id", async (ctx) => {
     await cache.delete(`items_${item.tenant}_${item.index}`);
   }
 
-  return ctx.jsonT({ status: 200, success: true, data: true });
+  return ctx.json({ status: 200, success: true, data: true });
 });
 
 export { router };

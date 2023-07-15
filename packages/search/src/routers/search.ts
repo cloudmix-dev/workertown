@@ -147,7 +147,7 @@ router.get(
       pagination.endCursor = btoa(results[results.length - 1]!.id);
     }
 
-    return ctx.jsonT({ status: 200, success: true, data: results, pagination });
+    return ctx.json({ status: 200, success: true, data: results, pagination });
   }
 );
 

@@ -7,7 +7,7 @@ const router = createRouter<Context>({ public: true });
 router.get("/open-api.json", (ctx) => {
   const { prefixes } = ctx.get("config");
 
-  return ctx.jsonT({ prefixes });
+  return ctx.json({ prefixes });
 });
 
 router.get("/health", async (ctx) =>

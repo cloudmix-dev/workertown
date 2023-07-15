@@ -81,7 +81,7 @@ router.get(
       results = results.slice(0, limit);
     }
 
-    return ctx.jsonT({ status: 200, success: true, data: results });
+    return ctx.json({ status: 200, success: true, data: results });
   }
 );
 

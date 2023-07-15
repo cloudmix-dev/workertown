@@ -8,7 +8,7 @@ router.get("/", async (ctx) => {
   const storage = ctx.get("storage");
   const tagRecords = await storage.getTags();
 
-  return ctx.jsonT({ status: 200, success: true, data: tagRecords });
+  return ctx.json({ status: 200, success: true, data: tagRecords });
 });
 
 export { router };

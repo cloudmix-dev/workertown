@@ -96,7 +96,7 @@ router.post(
       })
       .map((flag) => flag.name);
 
-    return ctx.jsonT({ status: 200, success: true, data: result });
+    return ctx.json({ status: 200, success: true, data: result });
   }
 );
 

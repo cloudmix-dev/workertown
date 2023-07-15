@@ -7,7 +7,7 @@ const router = createRouter<Context>();
 router.get("/info", async (ctx) => {
   const config = ctx.get("config");
 
-  return ctx.jsonT({
+  return ctx.json({
     status: 200,
     success: true,
     data: config as any,
@@ -24,7 +24,7 @@ router.post("/migrate", async (ctx) => {
     success = false;
   }
 
-  return ctx.jsonT(
+  return ctx.json(
     { status: success ? 200 : 500, success, data: success },
     success ? 200 : 500
   );

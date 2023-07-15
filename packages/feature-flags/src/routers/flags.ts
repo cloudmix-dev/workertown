@@ -21,7 +21,7 @@ router.get(
     const { include_disabled: includeDisabled } = ctx.req.valid("query");
     const flags = await storage.getFlags(includeDisabled);
 
-    return ctx.jsonT({ status: 200, success: true, data: flags });
+    return ctx.json({ status: 200, success: true, data: flags });
   }
 );
 
@@ -30,7 +30,7 @@ router.get("/:name", async (ctx) => {
   const name = ctx.req.param("name");
   const flag = await storage.getFlag(name);
 
-  return ctx.jsonT({ status: 200, success: true, data: flag });
+  return ctx.json({ status: 200, success: true, data: flag });
 });
 
 router.put(
@@ -79,7 +79,7 @@ router.put(
       conditions,
     });
 
-    return ctx.jsonT({ status: 200, success: true, data: flag });
+    return ctx.json({ status: 200, success: true, data: flag });
   }
 );
 
@@ -89,7 +89,7 @@ router.delete("/:name", async (ctx) => {
 
   await storage.deleteFlag(name);
 
-  return ctx.jsonT({ status: 200, success: true, data: true });
+  return ctx.json({ status: 200, success: true, data: true });
 });
 
 export { router };

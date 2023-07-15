@@ -26,7 +26,7 @@ router.get(
       subscriptions = await storage.getSubscriptions();
     }
 
-    return ctx.jsonT({ status: 200, success: true, data: subscriptions });
+    return ctx.json({ status: 200, success: true, data: subscriptions });
   }
 );
 
@@ -57,7 +57,7 @@ router.post(
 
     const status = subscription ? 200 : 400;
 
-    return ctx.jsonT(
+    return ctx.json(
       { status, success: subscription ? true : null, data: subscription },
       status
     );
@@ -70,7 +70,7 @@ router.delete("/:id", async (ctx) => {
 
   await storage.deleteSubscription(id);
 
-  return ctx.jsonT({ status: 200, success: true, data: true });
+  return ctx.json({ status: 200, success: true, data: true });
 });
 
 export { router };

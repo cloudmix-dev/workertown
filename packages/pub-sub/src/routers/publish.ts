@@ -31,7 +31,7 @@ router.post(
       await queue.sendMessages(messages);
     }
 
-    return ctx.jsonT({ status: 200, success: true, data: true });
+    return ctx.json({ status: 200, success: true, data: true });
   }
 );
 
