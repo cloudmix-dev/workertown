@@ -37,6 +37,8 @@ RUN echo "{" \
 
 # Install dependencies
 RUN npm install 
+# Install this package for SQLite support
+RUN npm i better-sqlite3
 
 # Create server script
 RUN echo "const { search } = require(\"@workertown/search\");\n" \
