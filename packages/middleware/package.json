@@ -13,8 +13,8 @@
     "lodash.merge": "~4.6.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "~4.20230710.1",
     "@workertown/internal-types": "~0.0.1-alpha.5",
-    "@cloudflare/workers-types": "~4.20230518.0",
     "ava": "~5.3.0",
     "hono": "~3.2.2",
     "tsx": "~3.12.7",
