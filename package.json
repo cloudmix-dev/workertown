@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --no-cache --continue",
+    "dev": "turbo dev --no-cache --continue --concurrency=30",
     "test": "turbo test",
     "lint": "turbo lint",
     "clean": "turbo clean && rm -rf node_modules",
