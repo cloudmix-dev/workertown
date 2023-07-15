@@ -134,6 +134,22 @@ test("search w/ tenant, index, single field, tags", async (t) => {
   t.is(result.data[0].id, "item_1");
 });
 
+test("search w/ tenant, index, single field, fuzzy", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test/test?term=tist&fields=content&fuzzy=1"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 2);
+  t.is(result.data[0].id, "item_1");
+  t.is(result.data[1].id, "item_2");
+});
+
 test("search w/ custom endpoint", async (t) => {
   const service = createTestService({
     prefixes: {
@@ -265,6 +281,23 @@ test("suggest w/ tenant, index, single field, tags", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
+test("suggest w/ tenant, index, single field, fuzzy", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test/test?term=tist&fields=content&fuzzy=1"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
 test("suggest w/ custom endpoint", async (t) => {
   const service = createTestService({
     prefixes: {
@@ -306,6 +339,7 @@ test("tags", async (t) => {
   t.is(result.data[0], "test");
   t.is(result.data[1], "other");
 });
+
 test("tags w/ custom endpoint", async (t) => {
   const service = createTestService({
     prefixes: {
@@ -346,6 +380,7 @@ test("admin info", async (t) => {
 
   t.is(result.data.prefixes.search, "/custom-search");
 });
+
 test("admin w/ custom endpoint", async (t) => {
   const service = createTestService({
     prefixes: {
