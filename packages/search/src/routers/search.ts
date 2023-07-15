@@ -39,10 +39,19 @@ const search = router.get(
   async (ctx) => {
     const cache = ctx.get("cache");
     const storage = ctx.get("storage");
-    const { scanRange, stopWords } = ctx.get("config");
+    const { scanRange: scanRangeRn, stopWords: stopWordsFn } =
+      ctx.get("config");
     const tenant = ctx.req.param("tenant")!;
     const index = ctx.req.param("index");
     const { term, tags, fields, limit, after } = ctx.req.valid("query");
+    const scanRange =
+      typeof scanRangeRn === "function"
+        ? await scanRangeRn(ctx.req)
+        : scanRangeRn;
+    const stopWords =
+      typeof stopWordsFn === "function"
+        ? await stopWordsFn(ctx.req)
+        : stopWordsFn;
     let items: any[] = [];
     let results: {
       id: any;

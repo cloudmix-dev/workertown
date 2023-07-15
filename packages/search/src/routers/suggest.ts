@@ -39,8 +39,17 @@ const suggest = router.get(
     const tenant = ctx.req.param("tenant") as string;
     const index = ctx.req.param("index");
     const storage = ctx.get("storage");
-    const { scanRange, stopWords } = ctx.get("config");
+    const { scanRange: scanRangeFn, stopWords: stopWordsFn } =
+      ctx.get("config");
     const { term, tags, fields, limit } = ctx.req.valid("query");
+    const scanRange =
+      typeof scanRangeFn === "function"
+        ? await scanRangeFn(ctx.req)
+        : scanRangeFn;
+    const stopWords =
+      typeof stopWordsFn === "function"
+        ? await stopWordsFn(ctx.req)
+        : stopWordsFn;
     let items: any[] = [];
     let results: Suggestion[] = [];
 

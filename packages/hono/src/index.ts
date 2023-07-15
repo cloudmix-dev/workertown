@@ -1,3 +1,5 @@
+import { type HonoRequest } from "hono";
+
 import { createRouter } from "./create-router";
 import {
   type CreateServerOptions,
@@ -15,4 +17,5 @@ export {
   type CreateServerOptions,
   type WorkertownHono as Hono,
   type WorkertownHono,
+  type HonoRequest as Request,
 };

@@ -1,6 +1,7 @@
 import {
   type CreateServerOptions as BaseCreateServerOptions,
   type Context as WorkertownContext,
+  type Request as WorkertownRequest,
 } from "@workertown/hono";
 
 import { type CacheAdapter } from "./cache";
@@ -20,8 +21,14 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     suggest: string;
     tags: string;
   };
-  scanRange: number;
-  stopWords: Set<string>;
+  scanRange:
+    | number
+    | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
+  stopWords:
+    | Set<string>
+    | ((
+        req: WorkertownRequest<any, any>
+      ) => Set<string> | Promise<Set<string>>);
   storage?: StorageAdapter;
 }
 
