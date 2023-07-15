@@ -1,7 +1,6 @@
 import { type KVNamespace } from "@cloudflare/workers-types";
 import { createServer } from "@workertown/hono";
 import { type DeepPartial } from "@workertown/internal-types";
-import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
 import { adminRouter, kvRouter, publicRouter } from "./routers/index.js";
@@ -53,7 +52,7 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
     basePath,
     cors,
     prefixes,
-    env: { database: dbEnvKey },
+    env: { kv: kvEnvKey },
     storage,
   } = config;
 
@@ -63,11 +62,14 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!storageAdapter) {
-      const kv = ctx.env[dbEnvKey] as KVNamespace | undefined;
+      const kv = ctx.env[kvEnvKey] as KVNamespace | undefined;
 
       if (!kv) {
-        throw new HTTPException(500, {
-          message: `Database not found at env.${dbEnvKey}`,
+        return ctx.json({
+          status: 500,
+          success: false,
+          data: null,
+          error: `KV not found at env.${kvEnvKey}`,
         });
       }
 

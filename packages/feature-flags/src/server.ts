@@ -1,7 +1,6 @@
 import { type D1Database } from "@cloudflare/workers-types";
 import { createServer } from "@workertown/hono";
 import { type DeepPartial } from "@workertown/internal-types";
-import { HTTPException } from "hono/http-exception";
 import merge from "lodash.merge";
 
 import {
@@ -73,8 +72,11 @@ export function createFeatureFlagsServer(
       const db = ctx.env[dbEnvKey] as D1Database | undefined;
 
       if (!db) {
-        throw new HTTPException(500, {
-          message: `Database not found at env.${dbEnvKey}`,
+        return ctx.json({
+          status: 500,
+          success: false,
+          data: null,
+          error: `Database not found at env.${dbEnvKey}`,
         });
       }
 
