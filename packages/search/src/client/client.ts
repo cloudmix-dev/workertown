@@ -130,10 +130,9 @@ export class SearchClient {
           index?: string;
           fields?: string[];
           tags?: [];
-          orderBy?: string;
         }
       ) => {
-        const { tenant, index, fields, tags, orderBy } = options;
+        const { tenant, index, fields, tags } = options;
         const client = this._createClient<SearchRoute>(
           this._options.prefixes.search
         );
@@ -144,7 +143,6 @@ export class SearchClient {
             term,
             fields: fields?.join(","),
             tags: tags?.join(","),
-            order_by: orderBy,
           },
         });
         const { data } = await res.json();
@@ -170,10 +168,9 @@ export class SearchClient {
           index?: string;
           fields?: string[];
           tags?: [];
-          orderBy?: string;
         }
       ) => {
-        const { tenant, index, fields, tags, orderBy } = options;
+        const { tenant, index, fields, tags } = options;
         const client = this._createClient<SuggestRoute>(
           this._options.prefixes.suggest
         );
@@ -184,7 +181,6 @@ export class SearchClient {
             term,
             fields: fields?.join(","),
             tags: tags?.join(","),
-            order_by: orderBy,
           },
         });
         const { data } = await res.json();

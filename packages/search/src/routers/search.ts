@@ -2,7 +2,6 @@ import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type MatchInfo } from "minisearch";
 import { z } from "zod";
 
-import { DEFAULT_SORT_FIELD } from "../constants";
 import { Context } from "../types";
 
 const router = createRouter<Context>();
@@ -21,7 +20,20 @@ const search = router.get(
         .string()
         .optional()
         .transform((val) => val?.split(/,\s?/)),
-      order_by: z.string().optional().default(DEFAULT_SORT_FIELD),
+      limit: z
+        .string()
+        .optional()
+        .default("100")
+        .transform((val) => {
+          const limit = parseInt(val, 10);
+
+          if (Number.isNaN(limit)) {
+            return 100;
+          }
+
+          return limit;
+        }),
+      after: z.string().optional(),
     })
   ),
   async (ctx) => {
@@ -30,7 +42,7 @@ const search = router.get(
     const { scanRange, stopWords } = ctx.get("config");
     const tenant = ctx.req.param("tenant")!;
     const index = ctx.req.param("index");
-    const { term, tags, fields, order_by: orderBy } = ctx.req.valid("query");
+    const { term, tags, fields, limit, after } = ctx.req.valid("query");
     let items: any[] = [];
     let results: {
       id: any;
@@ -39,6 +51,13 @@ const search = router.get(
       terms: string[];
       match: MatchInfo;
     }[] = [];
+    let pagination: {
+      hasNextPage: boolean;
+      endCursor: string | null;
+    } = {
+      hasNextPage: false,
+      endCursor: null,
+    };
 
     if (term) {
       const cacheKey = `items_${tenant}_${index ?? "ALL"}`;
@@ -54,7 +73,6 @@ const search = router.get(
             tenant,
             index,
             limit: scanRange,
-            orderBy,
           });
 
           await cache.set(tagCacheKey, items);
@@ -97,7 +115,30 @@ const search = router.get(
       }
     }
 
-    return ctx.jsonT({ status: 200, success: true, data: results });
+    const resultCount = results.length;
+
+    if (resultCount > 0) {
+      if (after) {
+        const afterId = atob(after);
+        const afterIndex = results.findIndex((result) => result.id === afterId);
+
+        if (afterIndex !== -1) {
+          const startIndex = afterIndex + 1;
+
+          results = results.slice(startIndex, startIndex + limit);
+
+          pagination.hasNextPage = resultCount - (startIndex + limit) > 0;
+        }
+      } else {
+        results = results.slice(0, limit);
+
+        pagination.hasNextPage = resultCount - limit > 0;
+      }
+
+      pagination.endCursor = btoa(results[results.length - 1]!.id);
+    }
+
+    return ctx.jsonT({ status: 200, success: true, data: results, pagination });
   }
 );
 

@@ -191,15 +191,6 @@ export const OPEN_API_SPEC = {
               type: "string",
             },
           },
-          {
-            name: "order_by",
-            in: "query",
-            description: "The field to order the results by",
-            required: false,
-            schema: {
-              type: "string",
-            },
-          },
         ],
         responses: {
           "200": {
@@ -272,15 +263,6 @@ export const OPEN_API_SPEC = {
             name: "tags",
             in: "query",
             description: "Comma separated list of tags to filter the search by",
-            required: false,
-            schema: {
-              type: "string",
-            },
-          },
-          {
-            name: "order_by",
-            in: "query",
-            description: "The field to order the results by",
             required: false,
             schema: {
               type: "string",

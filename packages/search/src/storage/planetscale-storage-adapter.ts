@@ -72,14 +72,14 @@ const MIGRATIONS: MigrationInfo[] = [
           .createIndex("search_items_tenant_idx")
           .ifNotExists()
           .on("search_items")
-          .columns(["tenant", DEFAULT_SORT_FIELD])
+          .columns(["tenant", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
         await db.schema
           .createIndex("search_items_tenant_index_idx")
           .ifNotExists()
           .on("search_items")
-          .columns(["tenant", "index", DEFAULT_SORT_FIELD])
+          .columns(["tenant", "index", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
         await db.schema
@@ -145,7 +145,6 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
   }
 
   async getItems(options: GetItemsOptions): Promise<SearchItem[]> {
-    const sortField = (options?.orderBy ?? "updated_at") as "updated_at";
     let query = this._client
       .selectFrom("search_items")
       .where("search_items.tenant", "=", options.tenant);
@@ -156,7 +155,7 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
 
     const records = await query
       .selectAll()
-      .orderBy(`search_items.${sortField}`, "desc")
+      .orderBy("search_items.updated_at", "desc")
       .limit(options?.limit)
       .execute();
 
@@ -164,7 +163,6 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
   }
 
   async getItemsByTags(tags: string[], options: GetItemsOptions) {
-    const sortField = (options?.orderBy ?? "updated_at") as "updated_at";
     let query = this._client
       .selectFrom("search_tags")
       .innerJoin(
@@ -183,7 +181,7 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
       .groupBy("search_items.id")
       .having((eb) => eb.fn.count("search_items.id"), "=", tags.length)
       .selectAll("search_items")
-      .orderBy(`search_items.${sortField}`, "desc")
+      .orderBy("search_items.updated_at", "desc")
       .limit(options?.limit)
       .execute();
 

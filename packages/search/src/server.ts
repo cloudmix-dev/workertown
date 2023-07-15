@@ -18,7 +18,7 @@ import { StorageAdapter } from "./storage";
 import { D1StorageAdapter } from "./storage/d1-storage-adapter";
 import { type Context, type CreateServerOptions } from "./types";
 
-type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
+export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 
 const DEFAULT_OPTIONS: CreateServerOptions = {
   auth: {

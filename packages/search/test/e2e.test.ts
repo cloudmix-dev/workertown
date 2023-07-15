@@ -1,177 +1,393 @@
-import anyTest, { TestFn } from "ava";
-import { UnstableDevWorker, unstable_dev } from "wrangler";
+import test from "ava";
 
-interface SearchResponse {
+import { createTestService, makeRequest } from "./_util";
+
+interface SuccessfulResponse {
+  status: 200;
+  success: true;
+}
+
+// Search
+interface SearchResponse extends SuccessfulResponse {
   data: {
     id: string;
     item: Record<string, unknown>;
     score: number;
     terms: string[];
   }[];
-  status: number;
-  success: boolean;
+  pagination: {
+    hasMore: boolean;
+    cursor: string | null;
+  };
 }
 
-const test = anyTest as TestFn<{ worker: UnstableDevWorker }>;
+test("search w/ tenant, single field", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test?term=test&fields=content"
+  );
 
-test.before(async (t) => {
-  const worker = await unstable_dev("./test/fixtures/worker.ts", {
-    vars: {
-      SEARCH_API_KEY: "test",
-    },
-    experimental: {
-      d1Databases: [
-        {
-          binding: "SEARCH_DB",
-          database_id: "test",
-          database_name: "search",
-        },
-      ],
-      disableExperimentalWarning: true,
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 2);
+  t.is(result.data[0].id, "item_1");
+  t.is(result.data[1].id, "item_2");
+});
+
+test("search w/ tenant, multiple fields", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test?term=test&fields=content,title"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 4);
+  t.is(result.data[0].id, "item_1");
+  t.is(result.data[1].id, "item_2");
+  t.is(result.data[2].id, "item_4");
+  t.is(result.data[3].id, "item_3");
+});
+
+test("search w/ tenant, index, single field", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test/test?term=test&fields=content"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 2);
+  t.is(result.data[0].id, "item_1");
+  t.is(result.data[1].id, "item_2");
+});
+
+test("search w/ tenant, index, multiple fields", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test/test?term=test&fields=content,title"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 3);
+  t.is(result.data[0].id, "item_1");
+  t.is(result.data[1].id, "item_2");
+  t.is(result.data[2].id, "item_3");
+});
+
+test("search w/ tenant, index, single field, limit", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test/test?term=test&fields=content&limit=1"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].id, "item_1");
+});
+
+test("search w/ tenant, index, single field, cursor", async (t) => {
+  const service = createTestService();
+  const cursor = btoa("item_1");
+  const res = await makeRequest(
+    service,
+    `/v1/search/test/test?term=test&fields=content&limit=1&after=${cursor}`
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].id, "item_2");
+});
+
+test("search w/ tenant, index, single field, tags", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/search/test/test?term=test&fields=content&tags=test"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SearchResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].id, "item_1");
+});
+
+test("search w/ custom endpoint", async (t) => {
+  const service = createTestService({
+    prefixes: {
+      search: "/custom-search",
     },
   });
-
-  // Run migrations
-  const migrateRes = await worker.fetch(
-    "http://search.local/v1/admin/migrate",
-    {
-      method: "POST",
-      headers: {
-        authorization: "Bearer test",
-      },
-    }
+  const res = await makeRequest(
+    service,
+    "/custom-search/test/test?term=test&fields=content"
   );
 
-  t.is(migrateRes.status, 200);
+  t.is(res.status, 200);
 
-  const [indexRes1, indexRes2, indexRes3] = await Promise.all([
-    worker.fetch("http://search.local/v1/items/1", {
-      method: "PUT",
-      headers: {
-        authorization: "Bearer test",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        tenant: "test",
-        index: "test",
-        data: {
-          title: "Test item 1",
-          content: "This is some test content",
-        },
-      }),
-    }),
-    worker.fetch("http://search.local/v1/items/2", {
-      method: "PUT",
-      headers: {
-        authorization: "Bearer test",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        tenant: "test",
-        index: "test",
-        data: {
-          title: "Test item 2",
-          content: "This is some more test content",
-        },
-      }),
-    }),
-    worker.fetch("http://search.local/v1/items/3", {
-      method: "PUT",
-      headers: {
-        authorization: "Bearer test",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        tenant: "test",
-        index: "test",
-        data: {
-          title: "Test item 3",
-          content: "This doesn't contain that t word",
-        },
-      }),
-    }),
-  ]);
+  const result = (await res.json()) as SearchResponse;
 
-  t.is(indexRes1.status, 200);
-  t.is(indexRes2.status, 200);
-  t.is(indexRes3.status, 200);
-
-  t.context.worker = worker;
+  t.is(result.data.length, 2);
+  t.is(result.data[0].id, "item_1");
+  t.is(result.data[1].id, "item_2");
 });
 
-test.serial("performs search correctly", async (t) => {
-  const { worker } = t.context;
+// Suggest
+interface SuggestResponse extends SuccessfulResponse {
+  data: {
+    suggestion: string;
+    terms: string[];
+    score: number;
+  }[];
+}
 
-  // Check the item appears in a valid search
-  const [searchTenantRes, searchIndexRes] = await Promise.all([
-    worker.fetch(
-      "http://search.local/v1/search/test?term=test&fields=content",
-      {
-        headers: {
-          authorization: "Bearer test",
-        },
-      }
-    ),
-    worker.fetch(
-      "http://search.local/v1/search/test/test?term=test&fields=content",
-      {
-        headers: {
-          authorization: "Bearer test",
-        },
-      }
-    ),
-  ]);
-
-  t.is(searchTenantRes.status, 200);
-  t.is(searchIndexRes.status, 200);
-
-  const searchTenantResult = (await searchTenantRes.json()) as SearchResponse;
-  const searchIndexResult = (await searchIndexRes.json()) as SearchResponse;
-
-  t.is(searchTenantResult?.data?.length, 2);
-  t.is(searchIndexResult?.data?.length, 2);
-
-  t.true(
-    searchTenantResult?.data?.[0].score > searchTenantResult?.data?.[1].score
+test("suggest w/ tenant, single field", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test?term=test&fields=content"
   );
 
-  // Check the item does not appear in an invalid search
-  const incorrectSearchRes = await worker.fetch(
-    "http://search.local/v1/search/test/test?term=invalid&fields=content",
-    {
-      headers: {
-        authorization: "Bearer test",
-      },
-    }
-  );
+  t.is(res.status, 200);
 
-  t.is(incorrectSearchRes.status, 200);
+  const result = (await res.json()) as SuggestResponse;
 
-  const incorrectSearchResult =
-    (await incorrectSearchRes.json()) as SearchResponse;
-
-  t.is(incorrectSearchResult?.data?.length, 0);
-
-  // Check the item doesn't appear in a valid search against a different index
-  const incorrectTenantSearchRes = await worker.fetch(
-    "http://search.local/v1/search/test/invalid?term=invalid&fields=content",
-    {
-      headers: {
-        authorization: "Bearer test",
-      },
-    }
-  );
-
-  t.is(incorrectTenantSearchRes.status, 200);
-
-  const incorrectTenantSearchResult =
-    (await incorrectTenantSearchRes.json()) as SearchResponse;
-
-  t.is(incorrectTenantSearchResult?.data?.length, 0);
-
-  // Check the item doesn't appear in a valid search against a different field
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
 });
 
-// test.serial("indexes items correctly 2", async (t) => {
-//   const { worker } = t.context;
-// });
+test("suggest w/ tenant, multiple fields", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test?term=test&fields=content,title"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
+test("suggest w/ tenant, index, single field", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test/test?term=test&fields=content"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
+test("suggest w/ tenant, index, multiple fields", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test/test?term=test&fields=content,title"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
+test("suggest w/ tenant, index, single field, limit", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test/test?term=test&fields=content&limit=1"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
+test("suggest w/ tenant, index, single field, tags", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(
+    service,
+    "/v1/suggest/test/test?term=test&fields=content&tags=test"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
+test("suggest w/ custom endpoint", async (t) => {
+  const service = createTestService({
+    prefixes: {
+      suggest: "/custom-suggest",
+    },
+  });
+  const res = await makeRequest(
+    service,
+    "/custom-suggest/test/test?term=test&fields=content"
+  );
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as SuggestResponse;
+
+  t.is(result.data.length, 1);
+  t.is(result.data[0].suggestion, "test");
+  t.is(result.data[0].terms.length, 1);
+  t.is(result.data[0].terms[0], "test");
+});
+
+// Items
+// Items (custom endpoint)
+
+// Tags
+interface TagsResponse extends SuccessfulResponse {
+  data: string[];
+}
+
+test("tags", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(service, "/v1/tags");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as TagsResponse;
+
+  t.is(result.data.length, 2);
+  t.is(result.data[0], "test");
+  t.is(result.data[1], "other");
+});
+test("tags w/ custom endpoint", async (t) => {
+  const service = createTestService({
+    prefixes: {
+      tags: "/custom-tags",
+    },
+  });
+  const res = await makeRequest(service, "/custom-tags");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as TagsResponse;
+
+  t.is(result.data.length, 2);
+  t.is(result.data[0], "test");
+  t.is(result.data[1], "other");
+});
+
+// Admin
+interface AdminInfoResponse extends SuccessfulResponse {
+  data: {
+    prefixes: {
+      search: string;
+    };
+  };
+}
+
+test("admin info", async (t) => {
+  const service = createTestService({
+    prefixes: {
+      search: "/custom-search",
+    },
+  });
+  const res = await makeRequest(service, "/v1/admin/info");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as AdminInfoResponse;
+
+  t.is(result.data.prefixes.search, "/custom-search");
+});
+test("admin w/ custom endpoint", async (t) => {
+  const service = createTestService({
+    prefixes: {
+      admin: "/custom-admin",
+      search: "/custom-search",
+    },
+  });
+  const res = await makeRequest(service, "/custom-admin/info");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as AdminInfoResponse;
+
+  t.is(result.data.prefixes.search, "/custom-search");
+});
+
+// Public
+interface PublicResponse {
+  openapi: "3.0.0";
+}
+
+test("public open-api.json", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(service, "/open-api.json");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as PublicResponse;
+
+  t.is(result.openapi, "3.0.0");
+});
+test("public w/ custom endpoint", async (t) => {
+  const service = createTestService({
+    prefixes: {
+      public: "/custom-public",
+    },
+  });
+  const res = await makeRequest(service, "/custom-public/open-api.json");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as PublicResponse;
+
+  t.is(result.openapi, "3.0.0");
+});

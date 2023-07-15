@@ -1,4 +1,8 @@
-import { createSearchServer } from "./server";
+import { type CreateServerOptionsOptional, createSearchServer } from "./server";
 
 export default createSearchServer;
-export { createSearchServer, createSearchServer as search };
+export {
+  createSearchServer,
+  createSearchServer as search,
+  type CreateServerOptionsOptional as CreateServerOptions,
+};

@@ -2,7 +2,6 @@ import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type Suggestion } from "minisearch";
 import { z } from "zod";
 
-import { DEFAULT_SORT_FIELD } from "../constants";
 import { Context } from "../types";
 
 const router = createRouter<Context>();
@@ -21,7 +20,19 @@ const suggest = router.get(
         .string()
         .optional()
         .transform((val) => val?.split(/,\s?/)),
-      order_by: z.string().optional().default(DEFAULT_SORT_FIELD),
+      limit: z
+        .string()
+        .optional()
+        .default("100")
+        .transform((val) => {
+          const limit = parseInt(val, 10);
+
+          if (Number.isNaN(limit)) {
+            return 100;
+          }
+
+          return limit;
+        }),
     })
   ),
   async (ctx) => {
@@ -29,7 +40,7 @@ const suggest = router.get(
     const index = ctx.req.param("index");
     const storage = ctx.get("storage");
     const { scanRange, stopWords } = ctx.get("config");
-    const { term, tags, fields, order_by: orderBy } = ctx.req.valid("query");
+    const { term, tags, fields, limit } = ctx.req.valid("query");
     let items: any[] = [];
     let results: Suggestion[] = [];
 
@@ -39,7 +50,6 @@ const suggest = router.get(
           tenant,
           index,
           limit: scanRange,
-          orderBy,
         });
       } else {
         items = await storage.getItems({ tenant, index, limit: scanRange });
@@ -56,6 +66,10 @@ const suggest = router.get(
 
         results = miniSearch.autoSuggest(term);
       }
+    }
+
+    if (results.length > limit) {
+      results = results.slice(0, limit);
     }
 
     return ctx.jsonT({ status: 200, success: true, data: results });

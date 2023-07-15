@@ -2,7 +2,6 @@ export interface GetItemsOptions {
   limit: number;
   index?: string;
   tenant: string;
-  orderBy?: string;
 }
 
 export interface SearchItem {
