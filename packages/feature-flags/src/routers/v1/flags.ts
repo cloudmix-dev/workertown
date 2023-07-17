@@ -29,8 +29,9 @@ router.get("/:name", async (ctx) => {
   const storage = ctx.get("storage");
   const name = ctx.req.param("name");
   const flag = await storage.getFlag(name);
+  const status = flag ? 200 : 404;
 
-  return ctx.json({ status: 200, success: true, data: flag });
+  return ctx.json({ status, success: true, data: flag }, status);
 });
 
 router.put(
@@ -39,7 +40,7 @@ router.put(
     "json",
     z.object({
       description: z.string().optional(),
-      enabled: z.boolean().optional(),
+      enabled: z.boolean().default(true),
       conditions: z
         .array(
           z.object({

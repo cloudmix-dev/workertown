@@ -1,11 +1,216 @@
 import test from "ava";
 
+import { type Flag } from "../src/storage";
 import { createTestService, makeRequest } from "./_utils";
 
 interface SuccessfulResponse {
   status: 200;
   success: true;
 }
+
+// Flags
+interface GetFlagsResponse extends SuccessfulResponse {
+  data: Flag[];
+}
+
+interface GetFlagResponse extends SuccessfulResponse {
+  data: Flag | null;
+}
+
+interface UpsertFlagResponse extends SuccessfulResponse {
+  data: Flag;
+}
+
+interface DeleteFlagResponse extends SuccessfulResponse {
+  data: true;
+}
+
+test("flags", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(service, "/v1/flags");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as GetFlagsResponse;
+
+  t.is(result.data.length, 9);
+  t.is(result.data[0]?.name, "eq");
+  t.is(result.data[1]?.name, "gt");
+  t.is(result.data[2]?.name, "gte");
+  t.is(result.data[3]?.name, "in");
+  t.is(result.data[4]?.name, "lt");
+  t.is(result.data[5]?.name, "lte");
+  t.is(result.data[6]?.name, "neq");
+  t.is(result.data[7]?.name, "nin");
+  t.is(result.data[8]?.name, "on");
+});
+
+test("flags w/ disabled", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(service, "/v1/flags?include_disabled=1");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as GetFlagsResponse;
+
+  t.is(result.data.length, 10);
+  t.is(result.data[0]?.name, "eq");
+  t.is(result.data[1]?.name, "gt");
+  t.is(result.data[2]?.name, "gte");
+  t.is(result.data[3]?.name, "in");
+  t.is(result.data[4]?.name, "lt");
+  t.is(result.data[5]?.name, "lte");
+  t.is(result.data[6]?.name, "neq");
+  t.is(result.data[7]?.name, "nin");
+  t.is(result.data[8]?.name, "off");
+  t.is(result.data[9]?.name, "on");
+});
+
+test("upsert flag", async (t) => {
+  const service = createTestService();
+  const res1 = await makeRequest(service, "/v1/flags/test", {
+    method: "PUT",
+    body: {
+      description: "A test flag",
+      conditions: [
+        {
+          field: "test",
+          operator: "eq",
+          value: "test",
+        },
+      ],
+    },
+  });
+
+  t.is(res1.status, 200);
+
+  const result1 = (await res1.json()) as UpsertFlagResponse;
+
+  t.is(result1.data.name, "test");
+  t.is(result1.data.description, "A test flag");
+  t.is(result1.data.enabled, true);
+  t.is(result1.data.conditions?.length, 1);
+
+  const res2 = await makeRequest(service, "/v1/flags/test");
+
+  t.is(res2.status, 200);
+
+  const result2 = (await res2.json()) as GetFlagResponse;
+
+  t.is(result2.data?.name, "test");
+  t.is(result2.data?.description, "A test flag");
+  t.is(result2.data?.enabled, true);
+  t.is(result2.data?.conditions?.length, 1);
+});
+
+test("upsert flag w/ update", async (t) => {
+  const service = createTestService();
+  const res1 = await makeRequest(service, "/v1/flags/test", {
+    method: "PUT",
+    body: {
+      description: "A test flag",
+      conditions: [
+        {
+          field: "test",
+          operator: "eq",
+          value: "test",
+        },
+      ],
+    },
+  });
+
+  t.is(res1.status, 200);
+
+  const result1 = (await res1.json()) as UpsertFlagResponse;
+
+  t.is(result1.data.name, "test");
+  t.is(result1.data.description, "A test flag");
+  t.is(result1.data.enabled, true);
+  t.is(result1.data.conditions?.length, 1);
+
+  const res2 = await makeRequest(service, "/v1/flags/test");
+
+  t.is(res2.status, 200);
+
+  const result2 = (await res2.json()) as GetFlagResponse;
+
+  t.is(result2.data?.name, "test");
+  t.is(result2.data?.description, "A test flag");
+  t.is(result2.data?.enabled, true);
+  t.is(result2.data?.conditions?.length, 1);
+
+  const res3 = await makeRequest(service, "/v1/flags/test", {
+    method: "PUT",
+    body: {
+      description: "A test flag",
+      enabled: false,
+      conditions: [
+        {
+          field: "test",
+          operator: "eq",
+          value: "test",
+        },
+      ],
+    },
+  });
+
+  t.is(res3.status, 200);
+
+  const res4 = await makeRequest(service, "/v1/flags/test");
+
+  t.is(res4.status, 200);
+
+  const result4 = (await res4.json()) as GetFlagResponse;
+
+  t.is(result4.data?.name, "test");
+  t.is(result4.data?.description, "A test flag");
+  t.is(result4.data?.enabled, false);
+  t.is(result4.data?.conditions?.length, 1);
+});
+
+test("delete flag", async (t) => {
+  const service = createTestService();
+  const res1 = await makeRequest(service, "/v1/flags/test", {
+    method: "PUT",
+    body: {
+      description: "A test flag",
+      conditions: [
+        {
+          field: "test",
+          operator: "eq",
+          value: "test",
+        },
+      ],
+    },
+  });
+
+  t.is(res1.status, 200);
+
+  const result1 = (await res1.json()) as UpsertFlagResponse;
+
+  t.is(result1.data.name, "test");
+  t.is(result1.data.description, "A test flag");
+  t.is(result1.data.enabled, true);
+  t.is(result1.data.conditions?.length, 1);
+
+  const res2 = await makeRequest(service, "/v1/flags/test", {
+    method: "DELETE",
+  });
+
+  t.is(res2.status, 200);
+
+  const result2 = (await res2.json()) as DeleteFlagResponse;
+
+  t.is(result2.data, true);
+
+  const res3 = await makeRequest(service, "/v1/flags/test");
+
+  t.is(res3.status, 404);
+
+  const result3 = (await res3.json()) as GetFlagResponse;
+
+  t.is(result3.data, null);
+});
 
 // Ask
 interface AskResponse extends SuccessfulResponse {
