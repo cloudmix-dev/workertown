@@ -1,9 +1,9 @@
 import { createRouter, validate } from "@workertown/hono";
-import MiniSearch, { type MatchInfo } from "minisearch";
+import MiniSearch, { type Suggestion } from "minisearch";
 import { z } from "zod";
 
-import { type SearchItem } from "../storage/index.js";
-import { type Context } from "../types.js";
+import { type SearchItem } from "../../storage/storage-adapter.js";
+import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
@@ -34,7 +34,6 @@ router.get(
 
           return limit;
         }),
-      after: z.string().optional(),
       fuzzy: z
         .string()
         .optional()
@@ -60,70 +59,37 @@ router.get(
     })
   ),
   async (ctx) => {
-    const cache = ctx.get("cache");
+    const tenant = ctx.req.param("tenant") as string;
+    const index = ctx.req.param("index");
     const storage = ctx.get("storage");
     const {
       boostItem,
       filter,
-      scanRange: scanRangeRn,
+      scanRange: scanRangeFn,
       stopWords: stopWordsFn,
     } = ctx.get("config");
-    const tenant = ctx.req.param("tenant")!;
-    const index = ctx.req.param("index");
-    const { term, tags, fields, limit, after, fuzzy, prefix, exact } =
+    const { term, tags, fields, limit, fuzzy, prefix, exact } =
       ctx.req.valid("query");
     const scanRange =
-      typeof scanRangeRn === "function"
-        ? await scanRangeRn(ctx.req)
-        : scanRangeRn;
+      typeof scanRangeFn === "function"
+        ? await scanRangeFn(ctx.req)
+        : scanRangeFn;
     const stopWords =
       typeof stopWordsFn === "function"
         ? await stopWordsFn(ctx.req)
         : stopWordsFn;
     let items: any[] = [];
-    let results: {
-      id: any;
-      item: any;
-      score: number;
-      terms: string[];
-      match: MatchInfo;
-    }[] = [];
-    let pagination: {
-      hasNextPage: boolean;
-      endCursor: string | null;
-    } = {
-      hasNextPage: false,
-      endCursor: null,
-    };
+    let results: Suggestion[] = [];
 
     if (term) {
-      const cacheKey = `items_${tenant}_${index ?? "ALL"}`;
-
       if (tags?.length && tags.length > 0) {
-        const tagCacheKey = `${cacheKey}_tags_${tags.sort().join("_")}`;
-        const cachedItems = await cache.get<any[]>(tagCacheKey);
-
-        if (cachedItems) {
-          items = cachedItems;
-        } else {
-          items = await storage.getItemsByTags(tags, {
-            tenant,
-            index,
-            limit: scanRange,
-          });
-
-          await cache.set(tagCacheKey, items);
-        }
+        items = await storage.getItemsByTags(tags, {
+          tenant,
+          index,
+          limit: scanRange,
+        });
       } else {
-        const cachedItems = await cache.get<any[]>(cacheKey);
-
-        if (cachedItems) {
-          items = cachedItems;
-        } else {
-          items = await storage.getItems({ tenant, index, limit: scanRange });
-
-          await cache.set(cacheKey, items);
-        }
+        items = await storage.getItems({ tenant, index, limit: scanRange });
       }
 
       if (items.length > 0) {
@@ -134,7 +100,7 @@ router.get(
           fields: fields ?? [],
           processTerm: (term, _fieldName) =>
             stopWords.has(term) ? null : term.toLowerCase(),
-          searchOptions: {
+          autoSuggestOptions: {
             boostDocument:
               typeof boostItem === "function"
                 ? (id, term) => {
@@ -159,46 +125,15 @@ router.get(
 
         miniSearch.addAll(items.map((item) => ({ id: item.id, ...item.data })));
 
-        const matches = miniSearch.search(term);
-
-        results = matches.map((match) => {
-          const item = itemsMap.get(match.id);
-
-          return {
-            id: match.id,
-            item,
-            score: match.score,
-            terms: match.terms,
-            match: match.match,
-          };
-        });
+        results = miniSearch.autoSuggest(term);
       }
     }
 
-    const resultCount = results.length;
-
-    if (resultCount > 0) {
-      if (after) {
-        const afterId = atob(after);
-        const afterIndex = results.findIndex((result) => result.id === afterId);
-
-        if (afterIndex !== -1) {
-          const startIndex = afterIndex + 1;
-
-          results = results.slice(startIndex, startIndex + limit);
-
-          pagination.hasNextPage = resultCount - (startIndex + limit) > 0;
-        }
-      } else {
-        results = results.slice(0, limit);
-
-        pagination.hasNextPage = resultCount - limit > 0;
-      }
-
-      pagination.endCursor = btoa(results[results.length - 1]!.id);
+    if (results.length > limit) {
+      results = results.slice(0, limit);
     }
 
-    return ctx.json({ status: 200, success: true, data: results, pagination });
+    return ctx.json({ status: 200, success: true, data: results });
   }
 );
 

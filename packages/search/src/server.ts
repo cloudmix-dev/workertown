@@ -7,14 +7,7 @@ import { CacheAdapter } from "./cache/index.js";
 import { KVCacheAdapter } from "./cache/kv-cache-adapter.js";
 import { NoOpCacheAdapter } from "./cache/no-op-cache-adapter.js";
 import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants.js";
-import {
-  adminRouter,
-  itemsRouter,
-  publicRouter,
-  searchRouter,
-  suggestRouter,
-  tagsRouter,
-} from "./routers/index.js";
+import { v1 } from "./routers/index.js";
 import { D1StorageAdapter } from "./storage/d1-storage-adapter.js";
 import { StorageAdapter } from "./storage/index.js";
 import { type Context, type CreateServerOptions } from "./types.js";
@@ -45,17 +38,19 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   },
   basePath: "/",
   cors: false,
+  endpoints: {
+    v1: {
+      admin: "/v1/admin",
+      items: "/v1/items",
+      public: "/",
+      search: "/v1/search",
+      suggest: "/v1/suggest",
+      tags: "/v1/tags",
+    },
+  },
   env: {
     cache: "SEARCH_CACHE",
     database: "SEARCH_DB",
-  },
-  prefixes: {
-    admin: "/v1/admin",
-    items: "/v1/items",
-    public: "/",
-    search: "/v1/search",
-    suggest: "/v1/suggest",
-    tags: "/v1/tags",
   },
   scanRange: DEFAULT_SCAN_RANGE,
   stopWords: DEFAUlT_STOP_WORDS,
@@ -68,7 +63,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     basePath,
     cache,
     cors,
-    prefixes,
+    endpoints,
     env: { cache: cacheEnvKey, database: dbEnvKey },
     storage,
   } = config;
@@ -111,12 +106,12 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     return next();
   });
 
-  server.route(prefixes.admin, adminRouter);
-  server.route(prefixes.items, itemsRouter);
-  server.route(prefixes.search, searchRouter);
-  server.route(prefixes.suggest, suggestRouter);
-  server.route(prefixes.tags, tagsRouter);
-  server.route(prefixes.public, publicRouter);
+  server.route(endpoints.v1.admin, v1.adminRouter);
+  server.route(endpoints.v1.items, v1.itemsRouter);
+  server.route(endpoints.v1.search, v1.searchRouter);
+  server.route(endpoints.v1.suggest, v1.suggestRouter);
+  server.route(endpoints.v1.tags, v1.tagsRouter);
+  server.route(endpoints.v1.public, v1.publicRouter);
 
   return server;
 }

@@ -152,8 +152,10 @@ test("search w/ tenant, index, single field, fuzzy", async (t) => {
 
 test("search w/ custom endpoint", async (t) => {
   const service = createTestService({
-    prefixes: {
-      search: "/custom-search",
+    endpoints: {
+      v1: {
+        search: "/custom-search",
+      },
     },
   });
   const res = await makeRequest(
@@ -300,8 +302,10 @@ test("suggest w/ tenant, index, single field, fuzzy", async (t) => {
 
 test("suggest w/ custom endpoint", async (t) => {
   const service = createTestService({
-    prefixes: {
-      suggest: "/custom-suggest",
+    endpoints: {
+      v1: {
+        suggest: "/custom-suggest",
+      },
     },
   });
   const res = await makeRequest(
@@ -342,8 +346,10 @@ test("tags", async (t) => {
 
 test("tags w/ custom endpoint", async (t) => {
   const service = createTestService({
-    prefixes: {
-      tags: "/custom-tags",
+    endpoints: {
+      v1: {
+        tags: "/custom-tags",
+      },
     },
   });
   const res = await makeRequest(service, "/custom-tags");
@@ -360,16 +366,20 @@ test("tags w/ custom endpoint", async (t) => {
 // Admin
 interface AdminInfoResponse extends SuccessfulResponse {
   data: {
-    prefixes: {
-      search: string;
+    endpoints: {
+      v1: {
+        search: string;
+      };
     };
   };
 }
 
 test("admin info", async (t) => {
   const service = createTestService({
-    prefixes: {
-      search: "/custom-search",
+    endpoints: {
+      v1: {
+        search: "/custom-search",
+      },
     },
   });
   const res = await makeRequest(service, "/v1/admin/info");
@@ -378,14 +388,16 @@ test("admin info", async (t) => {
 
   const result = (await res.json()) as AdminInfoResponse;
 
-  t.is(result.data.prefixes.search, "/custom-search");
+  t.is(result.data.endpoints.v1.search, "/custom-search");
 });
 
 test("admin w/ custom endpoint", async (t) => {
   const service = createTestService({
-    prefixes: {
-      admin: "/custom-admin",
-      search: "/custom-search",
+    endpoints: {
+      v1: {
+        admin: "/custom-admin",
+        search: "/custom-search",
+      },
     },
   });
   const res = await makeRequest(service, "/custom-admin/info");
@@ -394,7 +406,7 @@ test("admin w/ custom endpoint", async (t) => {
 
   const result = (await res.json()) as AdminInfoResponse;
 
-  t.is(result.data.prefixes.search, "/custom-search");
+  t.is(result.data.endpoints.v1.search, "/custom-search");
 });
 
 // Public
@@ -414,8 +426,10 @@ test("public open-api.json", async (t) => {
 });
 test("public w/ custom endpoint", async (t) => {
   const service = createTestService({
-    prefixes: {
-      public: "/custom-public",
+    endpoints: {
+      v1: {
+        public: "/custom-public",
+      },
     },
   });
   const res = await makeRequest(service, "/custom-public/open-api.json");

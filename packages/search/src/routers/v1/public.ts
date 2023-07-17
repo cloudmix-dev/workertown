@@ -1,7 +1,7 @@
 import { createRouter } from "@workertown/hono";
 
-import { OPEN_API_SPEC } from "../constants.js";
-import { type Context } from "../types.js";
+import { OPEN_API_SPEC } from "../../constants.js";
+import { type Context } from "../../types.js";
 
 const CORS_HEADERS = {
   "access-control-allow-origin": "*",
@@ -18,13 +18,13 @@ router.options("*", (ctx) =>
 );
 
 router.get("/open-api.json", (ctx) => {
-  const { auth, basePath, prefixes } = ctx.get("config");
+  const { auth, basePath, endpoints } = ctx.get("config");
   const url = new URL(ctx.req.url);
-  const searchPath = `${`${basePath}${prefixes.search}`.replace(
+  const searchPath = `${`${basePath}${endpoints.v1.search}`.replace(
     "//",
     "/"
   )}/{tenant}`;
-  const searchIndexPath = `${`${basePath}${prefixes.search}`.replace(
+  const searchIndexPath = `${`${basePath}${endpoints.v1.search}`.replace(
     "//",
     "/"
   )}/{tenant}/{index}`;

@@ -1,6 +1,6 @@
 import { createRouter } from "@workertown/hono";
 
-import { type Context } from "../types.js";
+import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 

@@ -15,15 +15,17 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     cache: string;
     database: string;
   };
-  filter?: (item: SearchItem, result: SearchResult) => boolean;
-  prefixes: {
-    admin: string;
-    items: string;
-    public: string;
-    search: string;
-    suggest: string;
-    tags: string;
+  endpoints: {
+    v1: {
+      admin: string;
+      items: string;
+      public: string;
+      search: string;
+      suggest: string;
+      tags: string;
+    };
   };
+  filter?: (item: SearchItem, result: SearchResult) => boolean;
   scanRange:
     | number
     | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
