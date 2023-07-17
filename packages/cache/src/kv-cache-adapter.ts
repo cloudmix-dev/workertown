@@ -7,23 +7,23 @@ interface KVCacheAdapterOptions {
 }
 
 export class KVCacheAdapter extends CacheAdapter {
-  private _prefix = "wt_search_cache";
+  public readonly prefix: string = "wt_search_cache";
 
-  private readonly _kv: KVNamespace;
+  public readonly kv: KVNamespace;
 
   constructor(kv: KVNamespace, options?: KVCacheAdapterOptions) {
     super();
 
-    this._kv = kv;
-    this._prefix = options?.prefix ?? this._prefix;
+    this.kv = kv;
+    this.prefix = options?.prefix ?? this.prefix;
   }
 
   private _prefixKey(key: string) {
-    return `${this._prefix}_${key}`;
+    return `${this.prefix}_${key}`;
   }
 
-  async get<T>(key: string) {
-    const value = await this._kv.get(this._prefixKey(key), "json");
+  public async get<T>(key: string) {
+    const value = await this.kv.get(this._prefixKey(key), "json");
 
     if (value === null) {
       return null;
@@ -32,20 +32,20 @@ export class KVCacheAdapter extends CacheAdapter {
     return value as T;
   }
 
-  async set(key: string, value: unknown) {
-    await this._kv.put(this._prefixKey(key), JSON.stringify(value));
+  public async set(key: string, value: unknown) {
+    await this.kv.put(this._prefixKey(key), JSON.stringify(value));
   }
 
-  async delete(key?: string) {
+  public async delete(key?: string) {
     let done = false;
 
     while (!done) {
-      const { keys, list_complete: listComplete } = await this._kv.list({
-        prefix: key ? this._prefixKey(key) : this._prefix,
+      const { keys, list_complete: listComplete } = await this.kv.list({
+        prefix: key ? this._prefixKey(key) : this.prefix,
       });
 
       for (const key of keys) {
-        await this._kv.delete(key.name);
+        await this.kv.delete(key.name);
       }
 
       done = listComplete;
