@@ -1,19 +1,11 @@
-import {
-  type ColumnType,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
-  type Selectable,
-  sql,
-} from "kysely";
-import { PlanetScaleDialect } from "kysely-planetscale";
+import { type ColumnType, type Selectable, sql } from "@workertown/storage";
+import { type Migrations } from "@workertown/storage";
+import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/storage/planetscale-storage-adapter";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
-import { DefaultMigrationProvider } from "./migrations.js";
 import {
-  GetDocumentsOptions,
-  SearchDocument,
-  StorageAdapter,
+  type GetDocumentsOptions,
+  type SearchDocument,
 } from "./storage-adapter.js";
 
 interface SearchDocumentTable {
@@ -37,7 +29,7 @@ export interface DatabaseSchema {
   search_tags: SearchTagTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -123,23 +115,7 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface PlanetscaleStorageAdapterOptions {
-  url?: string;
-  username?: string;
-  password?: string;
-}
-
-export class PlanetscaleStorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options: PlanetscaleStorageAdapterOptions = {}) {
-    super();
-
-    this._client = new Kysely<DatabaseSchema>({
-      dialect: new PlanetScaleDialect(options),
-    });
-  }
-
+export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<DatabaseSchema> {
   private _formatDocument(document: SearchDocumentRow): SearchDocument {
     return {
       id: document.id,
@@ -323,14 +299,5 @@ export class PlanetscaleStorageAdapter extends StorageAdapter {
       .where("search_document_id", "=", id)
       .where("tag", "=", tag)
       .execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
   }
 }

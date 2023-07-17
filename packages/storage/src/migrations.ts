@@ -1,6 +1,13 @@
-import { type MigrationInfo, type MigrationProvider } from "kysely";
+import {
+  type MigrationProvider as BaseMigrationProvider,
+  type MigrationInfo,
+} from "kysely";
 
-export class DefaultMigrationProvider implements MigrationProvider {
+export { type MigrationInfo as Migration };
+
+export type Migrations = MigrationInfo[];
+
+export class MigrationProvider implements BaseMigrationProvider {
   private readonly _migrations: MigrationInfo[];
 
   constructor(migrations: MigrationInfo[]) {

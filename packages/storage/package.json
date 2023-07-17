@@ -1,0 +1,48 @@
+{
+  "name": "@workertown/storage",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./d1-storage-adapter": {
+      "default": "./dist/d1-storage-adapter.js",
+      "types": "./dist/d1-storage-adapter.d.ts"
+    },
+    "./planetscale-storage-adapter": {
+      "default": "./dist/planetscale-storage-adapter.js",
+      "types": "./dist/planetscale-storage-adapter.d.ts"
+    },
+    "./sqlite-storage-adapter": {
+      "default": "./dist/sqlite-storage-adapter.js",
+      "types": "./dist/sqlite-storage-adapter.d.ts"
+    },
+    "./memory-storage-adapter": {
+      "default": "./dist/memory-storage-adapter.js",
+      "types": "./dist/memory-storage-adapter.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "kysely": "~0.26.1",
+    "kysely-d1": "~0.3.0",
+    "kysely-planetscale": "~1.3.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "~4.20230710.1"
+  },
+  "optionalDependencies": {
+    "@planetscale/database": "~1.8.0",
+    "better-sqlite3": "~8.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

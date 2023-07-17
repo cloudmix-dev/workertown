@@ -1,19 +1,14 @@
-import Database from "better-sqlite3";
 import {
   type ColumnType,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
+  type Migrations,
   type Selectable,
-  SqliteDialect,
-} from "kysely";
+} from "@workertown/storage";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/storage/sqlite-storage-adapter";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
-import { DefaultMigrationProvider } from "./migrations.js";
 import {
-  GetDocumentsOptions,
-  SearchDocument,
-  StorageAdapter,
+  type GetDocumentsOptions,
+  type SearchDocument,
 } from "./storage-adapter.js";
 
 interface SearchDocumentTable {
@@ -37,7 +32,7 @@ export interface DatabaseSchema {
   search_tags: SearchTagTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -119,28 +114,8 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface SqliteStorageAdapterOptions {
-  db: string;
-}
-
-export class SqliteStorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options?: SqliteStorageAdapterOptions) {
-    super();
-
-    const db = new Database(options?.db ?? "db.sqlite");
-
-    if (globalThis.process) {
-      process.on("exit", () => db.close());
-    }
-
-    this._client = new Kysely<DatabaseSchema>({
-      dialect: new SqliteDialect({
-        database: db,
-      }),
-    });
-  }
+export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchema> {
+  protected _migrations = MIGRATIONS;
 
   private _formatDocument(document: SearchDocumentRow): SearchDocument {
     return {
@@ -327,14 +302,5 @@ export class SqliteStorageAdapter extends StorageAdapter {
       .where("search_document_id", "=", id)
       .where("tag", "=", tag)
       .execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
   }
 }

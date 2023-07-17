@@ -1,3 +1,5 @@
+import { StorageAdapter as BaseStorageAdapter } from "@workertown/storage";
+
 export interface GetDocumentsOptions {
   limit: number;
   index?: string;
@@ -13,7 +15,7 @@ export interface SearchDocument {
   updatedAt: Date;
 }
 
-export class StorageAdapter {
+export class StorageAdapter extends BaseStorageAdapter {
   async getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]> {
     throw new TypeError("'getDocuments()' not implemented");
   }
@@ -51,6 +53,4 @@ export class StorageAdapter {
   async untagDocument(id: string, tag: string): Promise<void> {
     throw new TypeError("'untagDocument()' not implemented");
   }
-
-  async runMigrations(): Promise<void> {}
 }

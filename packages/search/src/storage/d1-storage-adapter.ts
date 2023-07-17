@@ -1,20 +1,14 @@
-import { D1Database } from "@cloudflare/workers-types";
 import {
   type ColumnType,
-  type Dialect,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
+  type Migrations,
   type Selectable,
-} from "kysely";
-import { D1Dialect } from "kysely-d1";
+} from "@workertown/storage";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/storage/d1-storage-adapter";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
-import { DefaultMigrationProvider } from "./migrations.js";
 import {
-  GetDocumentsOptions,
-  SearchDocument,
-  StorageAdapter,
+  type GetDocumentsOptions,
+  type SearchDocument,
 } from "./storage-adapter.js";
 
 interface SearchDocumentTable {
@@ -38,7 +32,7 @@ export interface DatabaseSchema {
   search_tags: SearchTagTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -120,22 +114,8 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
-}
-
-export class D1StorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options: D1StorageAdapterOptions) {
-    super();
-
-    this._client = new Kysely<DatabaseSchema>({
-      // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
-      // types
-      dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
-    });
-  }
+export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+  protected _migrations = MIGRATIONS;
 
   private _formatDocument(document: SearchDocumentRow): SearchDocument {
     return {
@@ -322,14 +302,5 @@ export class D1StorageAdapter extends StorageAdapter {
       .where("search_document_id", "=", id)
       .where("tag", "=", tag)
       .execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
   }
 }
