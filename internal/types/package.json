@@ -1,5 +1,6 @@
 {
   "name": "@workertown/internal-types",
+  "description": "Internal TypeScript types for WorkerTown",
   "version": "0.0.1-alpha.5",
   "type": "module",
   "types": "./lib/index.d.ts"
