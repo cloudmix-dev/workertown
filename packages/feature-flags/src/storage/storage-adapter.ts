@@ -1,3 +1,5 @@
+import { StorageAdapter as BaseStorageAdapter } from "@workertown/storage";
+
 export interface FlagCondition {
   field: string;
   operator: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "in" | "nin";
@@ -13,24 +15,22 @@ export interface Flag {
   updatedAt: Date;
 }
 
-export class StorageAdapter {
-  async getFlags(disabled?: boolean): Promise<Flag[]> {
+export class StorageAdapter extends BaseStorageAdapter {
+  public async getFlags(disabled?: boolean): Promise<Flag[]> {
     throw new Error("'getFlags()' not implemented");
   }
 
-  async getFlag(name: string): Promise<Flag | null> {
+  public async getFlag(name: string): Promise<Flag | null> {
     throw new Error("'getFlag()' not implemented");
   }
 
-  async upsertFlag(
+  public async upsertFlag(
     flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
   ): Promise<Flag> {
     throw new Error("'upsertFlag()' not implemented");
   }
 
-  async deleteFlag(name: string): Promise<void> {
+  public async deleteFlag(name: string): Promise<void> {
     throw new Error("'deleteFlag()' not implemented");
   }
-
-  async runMigrations(): Promise<void> {}
 }

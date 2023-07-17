@@ -1,20 +1,11 @@
-import { D1Database } from "@cloudflare/workers-types";
 import {
   type ColumnType,
-  type Dialect,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
+  type Migrations,
   type Selectable,
-} from "kysely";
-import { D1Dialect } from "kysely-d1";
+} from "@workertown/storage";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/storage/d1-storage-adapter";
 
-import { DefaultMigrationProvider } from "./migrations.js";
-import {
-  type Flag,
-  type FlagCondition,
-  StorageAdapter,
-} from "./storage-adapter.js";
+import { type Flag, type FlagCondition } from "./storage-adapter.js";
 
 interface FlagsTable {
   name: string;
@@ -31,7 +22,7 @@ export interface DatabaseSchema {
   flags: FlagsTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -73,22 +64,8 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
-}
-
-export class D1StorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options: D1StorageAdapterOptions) {
-    super();
-
-    this._client = new Kysely<DatabaseSchema>({
-      // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
-      // types
-      dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
-    });
-  }
+export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+  public readonly migrations = MIGRATIONS;
 
   private _formatFlag(flag: FlagRow): Flag {
     return {
@@ -103,8 +80,8 @@ export class D1StorageAdapter extends StorageAdapter {
     };
   }
 
-  async getFlags(disabled?: boolean) {
-    let query = this._client.selectFrom("flags").selectAll();
+  public async getFlags(disabled?: boolean) {
+    let query = this.client.selectFrom("flags").selectAll();
 
     if (!disabled) {
       query = query.where("disabled_at", "is", null);
@@ -115,8 +92,8 @@ export class D1StorageAdapter extends StorageAdapter {
     return records.map((record) => this._formatFlag(record));
   }
 
-  async getFlag(name: string) {
-    const record = await this._client
+  public async getFlag(name: string) {
+    const record = await this.client
       .selectFrom("flags")
       .selectAll()
       .where("name", "=", name)
@@ -129,18 +106,18 @@ export class D1StorageAdapter extends StorageAdapter {
     return this._formatFlag(record);
   }
 
-  async upsertFlag(
+  public async upsertFlag(
     flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
   ) {
     const now = new Date();
-    const existing = await this._client
+    const existing = await this.client
       .selectFrom("flags")
       .selectAll()
       .where("name", "=", flag.name)
       .executeTakeFirst();
 
     if (!existing) {
-      await this._client
+      await this.client
         .insertInto("flags")
         .values({
           name: flag.name,
@@ -154,7 +131,7 @@ export class D1StorageAdapter extends StorageAdapter {
         })
         .execute();
     } else {
-      await this._client
+      await this.client
         .updateTable("flags")
         .where("name", "=", flag.name)
         .set({
@@ -175,16 +152,7 @@ export class D1StorageAdapter extends StorageAdapter {
     };
   }
 
-  async deleteFlag(name: string) {
-    await this._client.deleteFrom("flags").where("name", "=", name).execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
+  public async deleteFlag(name: string) {
+    await this.client.deleteFrom("flags").where("name", "=", name).execute();
   }
 }

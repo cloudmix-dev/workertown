@@ -1,9 +1,11 @@
-import { type Flag, StorageAdapter } from "./storage-adapter.js";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/storage/memory-storage-adapter";
 
-export class MemoryStorageAdapter extends StorageAdapter {
+import { type Flag } from "./storage-adapter.js";
+
+export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   private _itemStore = new Map<string, Flag>();
 
-  async getFlags(disabled?: boolean): Promise<Flag[]> {
+  public async getFlags(disabled?: boolean): Promise<Flag[]> {
     return Array.from(this._itemStore.values()).filter((item) => {
       if (disabled === false && !item.enabled) {
         return false;
@@ -13,11 +15,11 @@ export class MemoryStorageAdapter extends StorageAdapter {
     });
   }
 
-  async getFlag(name: string): Promise<Flag | null> {
+  public async getFlag(name: string): Promise<Flag | null> {
     return this._itemStore.get(name) ?? null;
   }
 
-  async upsertFlag(
+  public async upsertFlag(
     flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
   ): Promise<Flag> {
     const existing = await this.getFlag(flag.name);
@@ -45,7 +47,7 @@ export class MemoryStorageAdapter extends StorageAdapter {
     }
   }
 
-  async deleteFlag(name: string): Promise<void> {
+  public async deleteFlag(name: string): Promise<void> {
     this._itemStore.delete(name);
   }
 }

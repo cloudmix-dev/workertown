@@ -1,3 +1,7 @@
-import { type Flag, StorageAdapter } from "./storage-adapter.js";
+import {
+  type Flag,
+  type FlagCondition,
+  StorageAdapter,
+} from "./storage-adapter.js";
 
-export { StorageAdapter, type Flag };
+export { StorageAdapter, type Flag, type FlagCondition };

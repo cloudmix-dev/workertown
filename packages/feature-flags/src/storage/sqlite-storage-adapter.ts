@@ -1,15 +1,11 @@
-import Database from "better-sqlite3";
 import {
   type ColumnType,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
+  type Migrations,
   type Selectable,
-  SqliteDialect,
-} from "kysely";
+} from "@workertown/storage";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/storage/sqlite-storage-adapter";
 
-import { DefaultMigrationProvider } from "./migrations.js";
-import { Flag, FlagCondition, StorageAdapter } from "./storage-adapter.js";
+import { type Flag, type FlagCondition } from "./storage-adapter.js";
 
 interface FlagTable {
   name: string;
@@ -26,7 +22,7 @@ export interface DatabaseSchema {
   flags: FlagTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -68,30 +64,10 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface SqliteStorageAdapterOptions {
-  db: string;
-}
+export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchema> {
+  public readonly migrations = MIGRATIONS;
 
-export class SqliteStorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options?: SqliteStorageAdapterOptions) {
-    super();
-
-    const db = new Database(options?.db ?? "db.sqlite");
-
-    if (globalThis.process) {
-      process.on("exit", () => db.close());
-    }
-
-    this._client = new Kysely<DatabaseSchema>({
-      dialect: new SqliteDialect({
-        database: db,
-      }),
-    });
-  }
-
-  private _formatItem(flag: FlagRow): Flag {
+  private _formatFlag(flag: FlagRow): Flag {
     return {
       name: flag.name,
       description: flag.description === null ? undefined : flag.description,
@@ -104,8 +80,8 @@ export class SqliteStorageAdapter extends StorageAdapter {
     };
   }
 
-  async getFlags(disabled?: boolean) {
-    let query = this._client.selectFrom("flags").selectAll();
+  public async getFlags(disabled?: boolean) {
+    let query = this.client.selectFrom("flags").selectAll();
 
     if (!disabled) {
       query = query.where("disabled_at", "is", null);
@@ -113,11 +89,11 @@ export class SqliteStorageAdapter extends StorageAdapter {
 
     const records = await query.execute();
 
-    return records.map((record) => this._formatItem(record));
+    return records.map((record) => this._formatFlag(record));
   }
 
-  async getFlag(name: string) {
-    const record = await this._client
+  public async getFlag(name: string) {
+    const record = await this.client
       .selectFrom("flags")
       .selectAll()
       .where("name", "=", name)
@@ -127,21 +103,21 @@ export class SqliteStorageAdapter extends StorageAdapter {
       return null;
     }
 
-    return this._formatItem(record);
+    return this._formatFlag(record);
   }
 
-  async upsertFlag(
+  public async upsertFlag(
     flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
   ) {
     const now = new Date();
-    const existing = await this._client
+    const existing = await this.client
       .selectFrom("flags")
       .selectAll()
       .where("name", "=", flag.name)
       .executeTakeFirst();
 
     if (!existing) {
-      await this._client
+      await this.client
         .insertInto("flags")
         .values({
           name: flag.name,
@@ -155,7 +131,7 @@ export class SqliteStorageAdapter extends StorageAdapter {
         })
         .execute();
     } else {
-      await this._client
+      await this.client
         .updateTable("flags")
         .where("name", "=", flag.name)
         .set({
@@ -176,16 +152,7 @@ export class SqliteStorageAdapter extends StorageAdapter {
     };
   }
 
-  async deleteFlag(name: string) {
-    await this._client.deleteFrom("flags").where("name", "=", name).execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
+  public async deleteFlag(name: string) {
+    await this.client.deleteFrom("flags").where("name", "=", name).execute();
   }
 }
