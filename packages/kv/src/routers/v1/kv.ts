@@ -15,7 +15,7 @@ function getKey(
 ) {
   const { kv: kvPrefix } = config.endpoints.v1;
   const url = new URL(req.url);
-  const key = url.pathname.replace(kvPrefix, "");
+  const key = url.pathname.replace(kvPrefix, "").replace(/^\//, "");
 
   return key;
 }
@@ -25,8 +25,9 @@ router.get("/*", async (ctx) => {
   const storage = ctx.get("storage");
   const key = getKey(ctx.req, config);
   const value = await storage.getValue(key);
+  const status = value === null ? 404 : 200;
 
-  return ctx.json({ status: 200, success: true, data: value });
+  return ctx.json({ status, success: true, data: value }, status);
 });
 
 router.put(

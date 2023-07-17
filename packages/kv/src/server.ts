@@ -8,7 +8,7 @@ import { StorageAdapter } from "./storage/index.js";
 import { KVStorageAdapter } from "./storage/kv-storage-adapter.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
-type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
+export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 
 const DEFAULT_OPTIONS: CreateServerOptions = {
   auth: {
