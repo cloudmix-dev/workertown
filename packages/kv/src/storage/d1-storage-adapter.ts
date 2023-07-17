@@ -1,15 +1,5 @@
-import { D1Database } from "@cloudflare/workers-types";
-import {
-  type ColumnType,
-  type Dialect,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
-} from "kysely";
-import { D1Dialect } from "kysely-d1";
-
-import { DefaultMigrationProvider } from "./migrations.js";
-import { StorageAdapter } from "./storage-adapter.js";
+import { type ColumnType, type Migrations } from "@workertown/internal-storage";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
 interface KeyValueTable {
   name: string;
@@ -21,7 +11,7 @@ export interface DatabaseSchema {
   key_values: KeyValueTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -51,25 +41,11 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
-}
+export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+  public readonly migrations = MIGRATIONS;
 
-export class D1StorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options: D1StorageAdapterOptions) {
-    super();
-
-    this._client = new Kysely<DatabaseSchema>({
-      // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
-      // types
-      dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
-    });
-  }
-
-  async getValue<T = any>(key: string) {
-    const record = await this._client
+  public async getValue<T = any>(key: string) {
+    const record = await this.client
       .selectFrom("key_values")
       .where("name", "=", key)
       .select("value")
@@ -82,15 +58,15 @@ export class D1StorageAdapter extends StorageAdapter {
     return JSON.parse(record.value) as T;
   }
 
-  async setValue<T = any>(key: string, value: T) {
-    const existing = await this._client
+  public async setValue<T = any>(key: string, value: T) {
+    const existing = await this.client
       .selectFrom("key_values")
       .where("name", "=", key)
       .select("value")
       .executeTakeFirst();
 
     if (existing) {
-      await this._client
+      await this.client
         .updateTable("key_values")
         .set({
           value: JSON.stringify(value),
@@ -99,7 +75,7 @@ export class D1StorageAdapter extends StorageAdapter {
         .where("name", "=", key)
         .execute();
     } else {
-      await this._client
+      await this.client
         .insertInto("key_values")
         .values({
           name: key,
@@ -112,19 +88,10 @@ export class D1StorageAdapter extends StorageAdapter {
     return value;
   }
 
-  async deleteValue(key: string) {
-    await this._client
+  public async deleteValue(key: string) {
+    await this.client
       .deleteFrom("key_values")
       .where("name", "=", key)
       .execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
   }
 }

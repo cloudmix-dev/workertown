@@ -1,9 +1,9 @@
-import { StorageAdapter } from "./storage-adapter.js";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
-export class MemoryStorageAdapter extends StorageAdapter {
+export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   private _itemStore = new Map<string, string>();
 
-  async getValue<T = any>(key: string): Promise<T | null> {
+  public async getValue<T = any>(key: string): Promise<T | null> {
     const value = this._itemStore.get(key);
 
     if (!value) {
@@ -13,13 +13,13 @@ export class MemoryStorageAdapter extends StorageAdapter {
     return JSON.parse(value) as T;
   }
 
-  async setValue<T = any>(key: string, value: T): Promise<T> {
+  public async setValue<T = any>(key: string, value: T): Promise<T> {
     this._itemStore.set(key, JSON.stringify(value));
 
     return value;
   }
 
-  async deleteValue(key: string): Promise<void> {
+  public async deleteValue(key: string): Promise<void> {
     this._itemStore.delete(key);
   }
 }
