@@ -6,14 +6,16 @@ import {
 import { type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
+  endpoints: {
+    v1: {
+      admin: string;
+      ask: string;
+      flags: string;
+      public: string;
+    };
+  };
   env: {
     database: string;
-  };
-  prefixes: {
-    admin: string;
-    ask: string;
-    flags: string;
-    public: string;
   };
   storage?: StorageAdapter;
 }

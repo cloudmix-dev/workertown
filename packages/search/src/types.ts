@@ -11,10 +11,6 @@ import { type SearchDocument, type StorageAdapter } from "./storage/index.js";
 export interface CreateServerOptions extends BaseCreateServerOptions {
   boostDocument?: (document: SearchDocument, term: string) => number;
   cache?: CacheAdapter;
-  env: {
-    cache: string;
-    database: string;
-  };
   endpoints: {
     v1: {
       admin: string;
@@ -24,6 +20,10 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
       suggest: string;
       tags: string;
     };
+  };
+  env: {
+    cache: string;
+    database: string;
   };
   filter?: (document: SearchDocument, result: SearchResult) => boolean;
   scanRange:

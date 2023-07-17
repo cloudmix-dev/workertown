@@ -1,8 +1,8 @@
 import { createRouter, validate } from "@workertown/hono";
 import { z } from "zod";
 
-import { FlagCondition } from "../storage/storage-adapter.js";
-import { type Context } from "../types.js";
+import { type FlagCondition } from "../../storage/storage-adapter.js";
+import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
@@ -43,15 +43,15 @@ function validateContext(
       case "in":
         result =
           Array.isArray(flagCondition.value) &&
-          // @ts-ignore
-          flagCondition.value.includes(value);
+          // The `as never` is because of the array union type
+          flagCondition.value.includes(value as never);
 
         break;
       case "nin":
         result =
           Array.isArray(flagCondition.value) &&
-          // @ts-ignore
-          !flagCondition.value?.includes(value);
+          // The `as never` is because of the array union type
+          !flagCondition.value?.includes(value as never);
 
         break;
       default:

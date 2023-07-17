@@ -1,6 +1,3 @@
-import { router as adminRouter } from "./admin.js";
-import { router as askRouter } from "./ask.js";
-import { router as flagsRouter } from "./flags.js";
-import { router as publicRouter } from "./public.js";
+import * as v1 from "./v1/index.js";
 
-export { adminRouter, askRouter, flagsRouter, publicRouter };
+export { v1 };
