@@ -24,7 +24,7 @@ interface KVDeleteResponse extends SuccessfulResponse {
   data: true;
 }
 
-test.serial("kv get", async (t) => {
+test.serial("v1 kv get", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/kv/test/1");
 
@@ -43,7 +43,7 @@ test.serial("kv get", async (t) => {
   t.is(result2.data.test, true);
 });
 
-test.serial("kv set", async (t) => {
+test.serial("v1 kv set", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/kv/test/1", {
     method: "PUT",
@@ -65,7 +65,7 @@ test.serial("kv set", async (t) => {
   t.is(result2.data, "other");
 });
 
-test.serial("kv delete", async (t) => {
+test.serial("v1 kv delete", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/kv/test/1", {
     method: "DELETE",
