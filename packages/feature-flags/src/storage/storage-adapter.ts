@@ -16,7 +16,7 @@ export interface Flag {
 }
 
 export class StorageAdapter extends BaseStorageAdapter {
-  public async getFlags(disabled?: boolean): Promise<Flag[]> {
+  public async getFlags(disabled: boolean = false): Promise<Flag[]> {
     throw new Error("'getFlags()' not implemented");
   }
 

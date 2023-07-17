@@ -3,20 +3,30 @@ import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/st
 import { type Flag } from "./storage-adapter.js";
 
 export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
-  private _itemStore = new Map<string, Flag>();
+  private _flagStore = new Map<string, Flag>();
 
-  public async getFlags(disabled?: boolean): Promise<Flag[]> {
-    return Array.from(this._itemStore.values()).filter((item) => {
-      if (disabled === false && !item.enabled) {
-        return false;
-      }
+  constructor(initialFlags: Flag[] = []) {
+    super();
 
-      return true;
+    initialFlags.forEach((flag) => {
+      this._flagStore.set(flag.name, flag);
     });
   }
 
+  public async getFlags(disabled: boolean = false): Promise<Flag[]> {
+    return Array.from(this._flagStore.values())
+      .filter((flag) => {
+        if (disabled === false && !flag.enabled) {
+          return false;
+        }
+
+        return true;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   public async getFlag(name: string): Promise<Flag | null> {
-    return this._itemStore.get(name) ?? null;
+    return this._flagStore.get(name) ?? null;
   }
 
   public async upsertFlag(
@@ -25,29 +35,29 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     const existing = await this.getFlag(flag.name);
 
     if (existing) {
-      const item = {
+      const flagRecord = {
         ...existing,
         ...flag,
         updatedAt: new Date(),
       };
 
-      this._itemStore.set(flag.name, item);
+      this._flagStore.set(flag.name, flagRecord);
 
-      return item;
+      return flagRecord;
     } else {
-      const item = {
+      const flagRecord = {
         ...flag,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      this._itemStore.set(flag.name, item);
+      this._flagStore.set(flag.name, flagRecord);
 
-      return item;
+      return flagRecord;
     }
   }
 
   public async deleteFlag(name: string): Promise<void> {
-    this._itemStore.delete(name);
+    this._flagStore.delete(name);
   }
 }

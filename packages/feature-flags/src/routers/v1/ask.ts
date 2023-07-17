@@ -25,19 +25,35 @@ function validateContext(
 
         break;
       case "gt":
-        result = Boolean(value && value > flagCondition.value);
+        result = Boolean(
+          typeof value === "number" &&
+            typeof flagCondition.value === "number" &&
+            value > flagCondition.value
+        );
 
         break;
       case "gte":
-        result = Boolean(value && value >= flagCondition.value);
+        result = Boolean(
+          typeof value === "number" &&
+            typeof flagCondition.value === "number" &&
+            value >= flagCondition.value
+        );
 
         break;
       case "lt":
-        result = Boolean(value && value < flagCondition.value);
+        result = Boolean(
+          typeof value === "number" &&
+            typeof flagCondition.value === "number" &&
+            value < flagCondition.value
+        );
 
         break;
       case "lte":
-        result = Boolean(value && value <= flagCondition.value);
+        result = Boolean(
+          typeof value === "number" &&
+            typeof flagCondition.value === "number" &&
+            value <= flagCondition.value
+        );
 
         break;
       case "in":

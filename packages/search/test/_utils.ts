@@ -67,16 +67,16 @@ const TAGS = {
 
 export function createTestService(
   options: CreateServerOptions = {},
-  intialData: SearchDocument[] = SEARCH_DOCUMENTS,
-  tags: Record<string, string[]> = TAGS
+  intialSearchItems: SearchDocument[] = SEARCH_DOCUMENTS,
+  initialTags: Record<string, string[]> = TAGS
 ) {
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
     // The `as unknown` here fixes some weird Typescript bug...
     storage: new MemoryStorageAdapter(
-      intialData,
-      tags
+      intialSearchItems,
+      initialTags
     ) as unknown as StorageAdapter,
   });
 }

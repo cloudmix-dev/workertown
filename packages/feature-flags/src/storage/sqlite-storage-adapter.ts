@@ -80,7 +80,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     };
   }
 
-  public async getFlags(disabled?: boolean) {
+  public async getFlags(disabled: boolean = false) {
     let query = this.client.selectFrom("flags").selectAll();
 
     if (!disabled) {
