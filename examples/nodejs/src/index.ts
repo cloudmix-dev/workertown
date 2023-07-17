@@ -81,10 +81,7 @@ const api = combine(flagsApi, kvApi, pubSubApi, searchApi);
   });
 
   await pubSubQueueAdapter.runMigrations();
-
-  setInterval(async () => {
-    await processor.process();
-  }, 1000);
+  await processor.start();
 
   console.log(`PubSub queue processor running`);
 })();
