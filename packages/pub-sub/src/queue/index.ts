@@ -1,4 +1,7 @@
-import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
-import { createQueueProcessor } from "./queue-processor.js";
+import {
+  QueueAdapter,
+  type QueueMessage,
+  createQueueProcessor,
+} from "@workertown/internal-queue";
 
 export { createQueueProcessor, QueueAdapter, type QueueMessage };
