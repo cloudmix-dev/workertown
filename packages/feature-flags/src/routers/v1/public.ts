@@ -1,6 +1,6 @@
 import { createRouter } from "@workertown/hono";
-import { OPEN_API_SPEC } from "src/constants.js";
 
+import { OPEN_API_SPEC } from "../../constants.js";
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>({ public: true });
