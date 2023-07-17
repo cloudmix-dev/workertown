@@ -6,6 +6,9 @@ interface ServeOptions {
   hostname?: string;
 }
 
-export function serve(server: WorkertownHono<any>, options: ServeOptions) {
+export function serve(
+  server: WorkertownHono<any>,
+  options: ServeOptions = { port: 3000 }
+) {
   return honoServe({ fetch: server.fetch, ...options });
 }
