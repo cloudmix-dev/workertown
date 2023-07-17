@@ -66,7 +66,19 @@ test("flags w/ disabled", async (t) => {
   t.is(result.data[9]?.name, "on");
 });
 
-test("upsert flag", async (t) => {
+test("flags get", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(service, "/v1/flags/on");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as GetFlagResponse;
+
+  t.is(result.data?.name, "on");
+  t.is(result.data?.enabled, true);
+});
+
+test("flags upsert", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/flags/test", {
     method: "PUT",
@@ -103,7 +115,7 @@ test("upsert flag", async (t) => {
   t.is(result2.data?.conditions?.length, 1);
 });
 
-test("upsert flag w/ update", async (t) => {
+test("flags upsert w/ update", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/flags/test", {
     method: "PUT",
@@ -168,7 +180,7 @@ test("upsert flag w/ update", async (t) => {
   t.is(result4.data?.conditions?.length, 1);
 });
 
-test("delete flag", async (t) => {
+test("flags delete", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/flags/test", {
     method: "PUT",
