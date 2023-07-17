@@ -13,9 +13,17 @@
       "default": "./dist/cache/index.js",
       "types": "./dist/cache/index.d.ts"
     },
-    "./client": {
-      "default": "./dist/client/index.js",
-      "types": "./dist/client/index.d.ts"
+    "./cache/kv-cache-adapter": {
+      "default": "./dist/cache/kv-cache-adapter.js",
+      "types": "./dist/cache/kv-cache-adapter.d.ts"
+    },
+    "./cache/memory-cache-adapter": {
+      "default": "./dist/cache/memory-cache-adapter.js",
+      "types": "./dist/cache/memory-cache-adapter.d.ts"
+    },
+    "./cache/no-op-cache-adapter": {
+      "default": "./dist/cache/no-op-cache-adapter.js",
+      "types": "./dist/cache/no-op-cache-adapter.d.ts"
     },
     "./storage": {
       "default": "./dist/storage/index.js",
