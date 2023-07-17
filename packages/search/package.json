@@ -48,10 +48,6 @@
     "./storage/memory-storage-adapter": {
       "default": "./dist/storage/memory-storage-adapter.js",
       "types": "./dist/storage/memory-storage-adapter.d.ts"
-    },
-    "./storage/migrations": {
-      "default": "./dist/storage/migrations.js",
-      "types": "./dist/storage/migrations.d.ts"
     }
   },
   "scripts": {
