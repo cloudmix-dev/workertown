@@ -1,16 +1,29 @@
-import { createRouter, validate } from "@workertown/internal-hono";
+import {
+  type WorkertownRequest,
+  createRouter,
+  validate,
+} from "@workertown/internal-hono";
 import { z } from "zod";
 
-import { type Context } from "../types.js";
+import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
+
+function getKey(
+  req: WorkertownRequest<"/*">,
+  config: Context["Variables"]["config"]
+) {
+  const { kv: kvPrefix } = config.endpoints.v1;
+  const url = new URL(req.url);
+  const key = url.pathname.replace(kvPrefix, "");
+
+  return key;
+}
 
 router.get("/*", async (ctx) => {
   const config = ctx.get("config");
   const storage = ctx.get("storage");
-  const { kv: kvPrefix } = config.prefixes;
-  const url = new URL(ctx.req.url);
-  const key = url.pathname.replace(kvPrefix, "");
+  const key = getKey(ctx.req, config);
   const value = await storage.getValue(key);
 
   return ctx.json({ status: 200, success: true, data: value });
@@ -34,9 +47,7 @@ router.put(
     const config = ctx.get("config");
     const storage = ctx.get("storage");
     const { value } = ctx.req.valid("json");
-    const { kv: kvPrefix } = config.prefixes;
-    const url = new URL(ctx.req.url);
-    const key = url.pathname.replace(kvPrefix, "");
+    const key = getKey(ctx.req, config);
 
     await storage.setValue(key, value);
 
@@ -47,9 +58,7 @@ router.put(
 router.delete("/*", async (ctx) => {
   const config = ctx.get("config");
   const storage = ctx.get("storage");
-  const { kv: kvPrefix } = config.prefixes;
-  const url = new URL(ctx.req.url);
-  const key = url.pathname.replace(kvPrefix, "");
+  const key = getKey(ctx.req, config);
 
   await storage.deleteValue(key);
 

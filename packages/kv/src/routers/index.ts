@@ -1,5 +1,3 @@
-import { router as adminRouter } from "./admin.js";
-import { router as kvRouter } from "./kv.js";
-import { router as publicRouter } from "./public.js";
+import * as v1 from "./v1/index.js";
 
-export { adminRouter, kvRouter, publicRouter };
+export { v1 };
