@@ -2,8 +2,8 @@ import { zValidator } from "@hono/zod-validator";
 import { createRouter } from "@workertown/hono";
 import { z } from "zod";
 
-import { type Subscription } from "../storage/index.js";
-import { type Context } from "../types.js";
+import { type Subscription } from "../../storage/index.js";
+import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 

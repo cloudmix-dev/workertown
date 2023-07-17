@@ -7,6 +7,8 @@ import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 interface CreateQueueProcessorOptions {
   adapter: QueueAdapter;
   server: WorkertownHono<Context>;
+  delay?: number;
+  schedule?: (callback: () => Promise<void>, delay: number) => Promise<void>;
 }
 
 class QueueProcessor {
@@ -14,9 +16,22 @@ class QueueProcessor {
 
   private _server: WorkertownHono<Context>;
 
+  private _delay: number;
+
+  private _schedule: (
+    callback: () => Promise<void>,
+    delay: number
+  ) => Promise<void>;
+
   constructor(options: CreateQueueProcessorOptions) {
     this._queue = options.adapter;
     this._server = options.server;
+    this._delay = options.delay ?? 1000;
+    this._schedule =
+      options.schedule ??
+      (async (callback, delay) => {
+        setTimeout(callback, delay);
+      });
   }
 
   private _wrapMessage(message: QueueMessage): Message {
@@ -29,25 +44,38 @@ class QueueProcessor {
     };
   }
 
-  async process() {
+  private async _processQueue() {
     const messages = await this._queue.pullMessages();
+    let delay = this._delay;
 
     if (messages.length > 0) {
       const batch: MessageBatch = {
         messages: messages.map((message) => this._wrapMessage(message)),
         queue: "main",
         ackAll: () => {
-          messages.forEach((message) => this._queue.ackMessage?.(message.id));
+          Promise.allSettled(
+            messages.map((message) => this._queue.ackMessage?.(message.id))
+          );
         },
         retryAll: () => {
-          messages.forEach((message) =>
-            this._queue.rescheduleMessage?.(message.id)
+          Promise.allSettled(
+            messages.map((message) =>
+              this._queue.rescheduleMessage?.(message.id)
+            )
           );
         },
       };
 
       await this._server.queue?.(batch, {} as any, {} as any);
+
+      delay = 0;
     }
+
+    this._schedule(() => this._processQueue(), delay);
+  }
+
+  async start() {
+    return this._processQueue();
   }
 }
 

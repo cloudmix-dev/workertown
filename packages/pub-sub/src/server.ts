@@ -9,17 +9,12 @@ import merge from "lodash.merge";
 
 import { CfQueuesQueueAdapter } from "./queue/cf-queues-queue-adapter.js";
 import { QueueAdapter, QueueMessage } from "./queue/index.js";
-import {
-  adminRouter,
-  publicRouter,
-  publishRouter,
-  subscriptionsRouter,
-} from "./routers/index.js";
+import { v1 } from "./routers/index.js";
 import { D1StorageAdapter } from "./storage/d1-storage-adapter.js";
 import { StorageAdapter } from "./storage/index.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
-type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
+export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
 
 const DEFAULT_OPTIONS: CreateServerOptions = {
   auth: {
@@ -45,15 +40,17 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   },
   basePath: "/",
   cors: false,
+  endpoints: {
+    v1: {
+      admin: "/v1/admin",
+      public: "/",
+      publish: "/v1/publish",
+      subscriptions: "/v1/subscriptions",
+    },
+  },
   env: {
     database: "PUBSUB_DB",
     queue: "PUBSUB_QUEUE",
-  },
-  prefixes: {
-    admin: "/v1/admin",
-    public: "/",
-    publish: "/v1/publish",
-    subscriptions: "/v1/subscriptions",
   },
 };
 
@@ -63,7 +60,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     auth: authOptions,
     basePath,
     cors,
-    prefixes,
+    endpoints,
     env: { database: dbEnvKey, queue: queueEnvKey },
     queue,
     storage,
@@ -118,10 +115,10 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     return next();
   });
 
-  server.route(prefixes.admin, adminRouter);
-  server.route(prefixes.public, publicRouter);
-  server.route(prefixes.publish, publishRouter);
-  server.route(prefixes.subscriptions, subscriptionsRouter);
+  server.route(endpoints.v1.admin, v1.adminRouter);
+  server.route(endpoints.v1.public, v1.publicRouter);
+  server.route(endpoints.v1.publish, v1.publishRouter);
+  server.route(endpoints.v1.subscriptions, v1.subscriptionsRouter);
 
   server.queue = async (batch: MessageBatch<QueueMessage>) => {
     const results = await Promise.allSettled(
