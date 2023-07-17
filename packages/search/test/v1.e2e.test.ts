@@ -21,7 +21,7 @@ interface SearchResponse extends SuccessfulResponse {
   };
 }
 
-test("search w/ tenant, single field", async (t) => {
+test("v1 search w/ tenant, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -37,7 +37,7 @@ test("search w/ tenant, single field", async (t) => {
   t.is(result.data[1].id, "document_2");
 });
 
-test("search w/ tenant, multiple fields", async (t) => {
+test("v1 search w/ tenant, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -55,7 +55,7 @@ test("search w/ tenant, multiple fields", async (t) => {
   t.is(result.data[3].id, "document_3");
 });
 
-test("search w/ tenant, index, single field", async (t) => {
+test("v1 search w/ tenant, index, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -71,7 +71,7 @@ test("search w/ tenant, index, single field", async (t) => {
   t.is(result.data[1].id, "document_2");
 });
 
-test("search w/ tenant, index, multiple fields", async (t) => {
+test("v1 search w/ tenant, index, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -88,7 +88,7 @@ test("search w/ tenant, index, multiple fields", async (t) => {
   t.is(result.data[2].id, "document_3");
 });
 
-test("search w/ tenant, index, single field, limit", async (t) => {
+test("v1 search w/ tenant, index, single field, limit", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -103,7 +103,7 @@ test("search w/ tenant, index, single field, limit", async (t) => {
   t.is(result.data[0].id, "document_1");
 });
 
-test("search w/ tenant, index, single field, cursor", async (t) => {
+test("v1 search w/ tenant, index, single field, cursor", async (t) => {
   const service = createTestService();
   const cursor = btoa("document_1");
   const res = await makeRequest(
@@ -119,7 +119,7 @@ test("search w/ tenant, index, single field, cursor", async (t) => {
   t.is(result.data[0].id, "document_2");
 });
 
-test("search w/ tenant, index, single field, tags", async (t) => {
+test("v1 search w/ tenant, index, single field, tags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -134,7 +134,7 @@ test("search w/ tenant, index, single field, tags", async (t) => {
   t.is(result.data[0].id, "document_1");
 });
 
-test("search w/ tenant, index, single field, fuzzy", async (t) => {
+test("v1 search w/ tenant, index, single field, fuzzy", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -150,7 +150,7 @@ test("search w/ tenant, index, single field, fuzzy", async (t) => {
   t.is(result.data[1].id, "document_2");
 });
 
-test("search w/ custom endpoint", async (t) => {
+test("v1 search w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -181,7 +181,7 @@ interface SuggestResponse extends SuccessfulResponse {
   }[];
 }
 
-test("suggest w/ tenant, single field", async (t) => {
+test("v1 suggest w/ tenant, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -198,7 +198,7 @@ test("suggest w/ tenant, single field", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ tenant, multiple fields", async (t) => {
+test("v1 suggest w/ tenant, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -215,7 +215,7 @@ test("suggest w/ tenant, multiple fields", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ tenant, index, single field", async (t) => {
+test("v1 suggest w/ tenant, index, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -232,7 +232,7 @@ test("suggest w/ tenant, index, single field", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ tenant, index, multiple fields", async (t) => {
+test("v1 suggest w/ tenant, index, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -249,7 +249,7 @@ test("suggest w/ tenant, index, multiple fields", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ tenant, index, single field, limit", async (t) => {
+test("v1 suggest w/ tenant, index, single field, limit", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -266,7 +266,7 @@ test("suggest w/ tenant, index, single field, limit", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ tenant, index, single field, tags", async (t) => {
+test("v1 suggest w/ tenant, index, single field, tags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -283,7 +283,7 @@ test("suggest w/ tenant, index, single field, tags", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ tenant, index, single field, fuzzy", async (t) => {
+test("v1 suggest w/ tenant, index, single field, fuzzy", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
@@ -300,7 +300,7 @@ test("suggest w/ tenant, index, single field, fuzzy", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-test("suggest w/ custom endpoint", async (t) => {
+test("v1 suggest w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -331,7 +331,7 @@ interface TagsResponse extends SuccessfulResponse {
   data: string[];
 }
 
-test("tags", async (t) => {
+test("v1 tags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/tags");
 
@@ -344,7 +344,7 @@ test("tags", async (t) => {
   t.is(result.data[1], "other");
 });
 
-test("tags w/ custom endpoint", async (t) => {
+test("v1 tags w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -378,7 +378,7 @@ interface AdminMigrateResponse extends SuccessfulResponse {
   data: true;
 }
 
-test("admin info", async (t) => {
+test("v1 admin info", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -395,7 +395,7 @@ test("admin info", async (t) => {
   t.is(result.data.endpoints.v1.search, "/custom-search");
 });
 
-test("admin migrate", async (t) => {
+test("v1 admin migrate", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/admin/migrate", {
     method: "POST",
@@ -408,7 +408,7 @@ test("admin migrate", async (t) => {
   t.true(result.data);
 });
 
-test("admin w/ custom endpoint", async (t) => {
+test("v1 admin w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -431,7 +431,7 @@ interface PublicResponse {
   openapi: "3.0.0";
 }
 
-test("public open-api.json", async (t) => {
+test("v1 public open-api.json", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/open-api.json");
 
@@ -442,7 +442,7 @@ test("public open-api.json", async (t) => {
   t.is(result.openapi, "3.0.0");
 });
 
-test("public w/ custom endpoint", async (t) => {
+test("v1 public w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {

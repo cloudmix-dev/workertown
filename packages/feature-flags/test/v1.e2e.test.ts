@@ -25,7 +25,7 @@ interface DeleteFlagResponse extends SuccessfulResponse {
   data: true;
 }
 
-test("flags", async (t) => {
+test("v1 flags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/flags");
 
@@ -45,7 +45,7 @@ test("flags", async (t) => {
   t.is(result.data[8]?.name, "on");
 });
 
-test("flags w/ disabled", async (t) => {
+test("v1 flags w/ disabled", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/flags?include_disabled=1");
 
@@ -66,7 +66,7 @@ test("flags w/ disabled", async (t) => {
   t.is(result.data[9]?.name, "on");
 });
 
-test("flags get", async (t) => {
+test("v1 flags get", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/flags/on");
 
@@ -78,7 +78,7 @@ test("flags get", async (t) => {
   t.is(result.data?.enabled, true);
 });
 
-test("flags upsert", async (t) => {
+test("v1 flags upsert", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/flags/test", {
     method: "PUT",
@@ -115,7 +115,7 @@ test("flags upsert", async (t) => {
   t.is(result2.data?.conditions?.length, 1);
 });
 
-test("flags upsert w/ update", async (t) => {
+test("v1 flags upsert w/ update", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/flags/test", {
     method: "PUT",
@@ -180,7 +180,7 @@ test("flags upsert w/ update", async (t) => {
   t.is(result4.data?.conditions?.length, 1);
 });
 
-test("flags delete", async (t) => {
+test("v1 flags delete", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/flags/test", {
     method: "PUT",
@@ -229,7 +229,7 @@ interface AskResponse extends SuccessfulResponse {
   data: string[];
 }
 
-test("ask", async (t) => {
+test("v1 ask", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -244,7 +244,7 @@ test("ask", async (t) => {
   t.is(result.data[0], "on");
 });
 
-test("ask w/ on flag", async (t) => {
+test("v1 ask w/ on flag", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -261,7 +261,7 @@ test("ask w/ on flag", async (t) => {
   t.is(result.data[0], "on");
 });
 
-test("ask w/ off flag", async (t) => {
+test("v1 ask w/ off flag", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -277,7 +277,7 @@ test("ask w/ off flag", async (t) => {
   t.is(result.data.length, 0);
 });
 
-test("ask w/ on and off flag", async (t) => {
+test("v1 ask w/ on and off flag", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -294,7 +294,7 @@ test("ask w/ on and off flag", async (t) => {
   t.is(result.data[0], "on");
 });
 
-test("ask w/ eq flag", async (t) => {
+test("v1 ask w/ eq flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -330,7 +330,7 @@ test("ask w/ eq flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ neq flag", async (t) => {
+test("v1 ask w/ neq flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -366,7 +366,7 @@ test("ask w/ neq flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ gt flag", async (t) => {
+test("v1 ask w/ gt flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -402,7 +402,7 @@ test("ask w/ gt flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ gte flag", async (t) => {
+test("v1 ask w/ gte flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -438,7 +438,7 @@ test("ask w/ gte flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ lt flag", async (t) => {
+test("v1 ask w/ lt flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -474,7 +474,7 @@ test("ask w/ lt flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ lte flag", async (t) => {
+test("v1 ask w/ lte flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -510,7 +510,7 @@ test("ask w/ lte flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ in flag", async (t) => {
+test("v1 ask w/ in flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -546,7 +546,7 @@ test("ask w/ in flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ nin flag", async (t) => {
+test("v1 ask w/ nin flag", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -582,7 +582,7 @@ test("ask w/ nin flag", async (t) => {
   t.is(result2.data.length, 0);
 });
 
-test("ask w/ all flags", async (t) => {
+test("v1 ask w/ all flags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/ask", {
     method: "POST",
@@ -619,7 +619,7 @@ interface AdminMigrateResponse extends SuccessfulResponse {
   data: true;
 }
 
-test("admin info", async (t) => {
+test("v1 admin info", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -636,7 +636,7 @@ test("admin info", async (t) => {
   t.is(result.data.endpoints.v1.ask, "/custom-ask");
 });
 
-test("admin migrate", async (t) => {
+test("v1 admin migrate", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/admin/migrate", {
     method: "POST",
@@ -649,7 +649,7 @@ test("admin migrate", async (t) => {
   t.true(result.data);
 });
 
-test("admin w/ custom endpoint", async (t) => {
+test("v1 admin w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -672,7 +672,7 @@ interface PublicResponse {
   openapi: "3.0.0";
 }
 
-test("public open-api.json", async (t) => {
+test("v1 public open-api.json", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/open-api.json");
 
@@ -683,7 +683,7 @@ test("public open-api.json", async (t) => {
   t.is(result.openapi, "3.0.0");
 });
 
-test("public w/ custom endpoint", async (t) => {
+test("v1 public w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
