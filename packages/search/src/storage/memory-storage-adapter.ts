@@ -1,11 +1,11 @@
 import {
-  type GetItemsOptions,
-  type SearchItem,
+  type GetDocumentsOptions,
+  type SearchDocument,
   StorageAdapter,
 } from "./storage-adapter.js";
 
 export class MemoryStorageAdapter extends StorageAdapter {
-  private _itemStore = new Map<string, SearchItem>();
+  private _documentStore = new Map<string, SearchDocument>();
 
   private _tenantIndex = new Map<string, Set<string>>();
 
@@ -16,13 +16,13 @@ export class MemoryStorageAdapter extends StorageAdapter {
   private _deleted = new Set<string>();
 
   constructor(
-    initialItems: SearchItem[] = [],
+    initialDocuments: SearchDocument[] = [],
     tags: Record<string, string[]> = {}
   ) {
     super();
 
-    initialItems.forEach((item) => {
-      this._storeItem(item);
+    initialDocuments.forEach((document) => {
+      this._storeDocument(document);
     });
 
     Object.keys(tags).forEach((tag) => {
@@ -30,33 +30,41 @@ export class MemoryStorageAdapter extends StorageAdapter {
     });
   }
 
-  private _storeItem(item: SearchItem) {
-    this._itemStore.set(item.id, item);
+  private _storeDocument(document: SearchDocument) {
+    this._documentStore.set(document.id, document);
 
-    if (!this._tenantIndex.has(item.tenant)) {
-      this._tenantIndex.set(item.tenant, new Set<string>());
+    if (!this._tenantIndex.has(document.tenant)) {
+      this._tenantIndex.set(document.tenant, new Set<string>());
     }
 
-    this._tenantIndex.get(item.tenant)!.add(item.id);
+    this._tenantIndex.get(document.tenant)!.add(document.id);
 
-    if (!this._tenantIndex.has(`${item.tenant}_${item.index}`)) {
-      this._tenantIndex.set(`${item.tenant}_${item.index}`, new Set<string>());
+    if (!this._tenantIndex.has(`${document.tenant}_${document.index}`)) {
+      this._tenantIndex.set(
+        `${document.tenant}_${document.index}`,
+        new Set<string>()
+      );
     }
 
-    this._tenantIndex.get(`${item.tenant}_${item.index}`)!.add(item.id);
+    this._tenantIndex
+      .get(`${document.tenant}_${document.index}`)!
+      .add(document.id);
 
-    this._updatedIndex.set(`${item.updatedAt.getTime()}_${item.id}`, item.id);
+    this._updatedIndex.set(
+      `${document.updatedAt.getTime()}_${document.id}`,
+      document.id
+    );
   }
 
-  private _getSortedItems() {
-    const sortedItems = Array.from(this._updatedIndex.entries()).sort(
+  private _getSortedDocuments() {
+    const sortedDocuments = Array.from(this._updatedIndex.entries()).sort(
       ([a], [b]) => (b > a ? 1 : -1)
     );
 
-    return sortedItems.map(([, id]) => this._itemStore.get(id)!);
+    return sortedDocuments.map(([, id]) => this._documentStore.get(id)!);
   }
 
-  async getItems(options: GetItemsOptions): Promise<SearchItem[]> {
+  async getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]> {
     const { index, tenant, limit } = options;
     const indexKey = index ? `${tenant}_${index}` : tenant;
     const indexSet = this._tenantIndex.get(indexKey);
@@ -66,25 +74,27 @@ export class MemoryStorageAdapter extends StorageAdapter {
     }
 
     const ids = Array.from(indexSet ?? []);
-    const sortedItems = this._getSortedItems();
-    const bucket = new Array(sortedItems.length).fill(null);
+    const sortedDocuments = this._getSortedDocuments();
+    const bucket = new Array(sortedDocuments.length).fill(null);
 
     ids.forEach((id) => {
       if (!this._deleted.has(id)) {
-        const item = this._itemStore.get(id);
-        const index = sortedItems.findIndex((item) => item.id === id);
+        const document = this._documentStore.get(id);
+        const index = sortedDocuments.findIndex(
+          (document) => document.id === id
+        );
 
-        bucket[index] = item;
+        bucket[index] = document;
       }
     });
 
-    return bucket.filter((item) => item !== null).slice(0, limit);
+    return bucket.filter((document) => document !== null).slice(0, limit);
   }
 
-  async getItemsByTags(
+  async getDocumentsByTags(
     tags: string[],
-    options: GetItemsOptions
-  ): Promise<SearchItem[]> {
+    options: GetDocumentsOptions
+  ): Promise<SearchDocument[]> {
     const { index, tenant, limit } = options;
     const tagSet = new Set(
       tags.flatMap((tag) => Array.from(this._tags.get(tag) ?? []))
@@ -102,40 +112,42 @@ export class MemoryStorageAdapter extends StorageAdapter {
     }
 
     const ids = Array.from(indexSet ?? []);
-    const sortedItems = this._getSortedItems();
-    const bucket = new Array(sortedItems.length).fill(null);
+    const sortedDocuments = this._getSortedDocuments();
+    const bucket = new Array(sortedDocuments.length).fill(null);
 
     ids.forEach((id) => {
       if (!this._deleted.has(id) && tagSet.has(id)) {
-        const item = this._itemStore.get(id);
-        const index = sortedItems.findIndex((item) => item.id === id);
+        const document = this._documentStore.get(id);
+        const index = sortedDocuments.findIndex(
+          (document) => document.id === id
+        );
 
-        bucket[index] = item;
+        bucket[index] = document;
       }
     });
 
-    return bucket.filter((item) => item !== null).slice(0, limit);
+    return bucket.filter((document) => document !== null).slice(0, limit);
   }
 
-  async getItem(id: string): Promise<SearchItem | null> {
-    return this._itemStore.get(id) ?? null;
+  async getDocument(id: string): Promise<SearchDocument | null> {
+    return this._documentStore.get(id) ?? null;
   }
 
-  async indexItem(
-    item: Pick<SearchItem, "id" | "tenant" | "index" | "data">,
+  async indexDocument(
+    document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
-  ): Promise<SearchItem> {
+  ): Promise<SearchDocument> {
     const now = new Date();
-    const existing = this._itemStore.get(item.id);
-    const searchItem = existing ?? {
-      ...item,
+    const existing = this._documentStore.get(document.id);
+    const searchDocument = existing ?? {
+      ...document,
       updatedAt: now,
       createdAt: now,
     };
 
-    searchItem.updatedAt = now;
+    searchDocument.updatedAt = now;
 
-    this._storeItem(searchItem);
+    this._storeDocument(searchDocument);
 
     if (tags.length) {
       tags.forEach((tag) => {
@@ -145,16 +157,16 @@ export class MemoryStorageAdapter extends StorageAdapter {
 
         const tagSet = this._tags.get(tag);
 
-        tagSet!.add(item.id);
+        tagSet!.add(document.id);
       });
     }
 
-    this._deleted.delete(item.id);
+    this._deleted.delete(document.id);
 
-    return searchItem;
+    return searchDocument;
   }
 
-  async deleteItem(id: string): Promise<void> {
+  async deleteDocument(id: string): Promise<void> {
     this._deleted.add(id);
   }
 
@@ -162,7 +174,7 @@ export class MemoryStorageAdapter extends StorageAdapter {
     return Array.from(this._tags.keys());
   }
 
-  async tagItem(id: string, tag: string): Promise<void> {
+  async tagDocument(id: string, tag: string): Promise<void> {
     if (!this._tags.has(tag)) {
       this._tags.set(tag, new Set<string>());
     }
@@ -172,7 +184,7 @@ export class MemoryStorageAdapter extends StorageAdapter {
     tagSet!.add(id);
   }
 
-  async untagItem(id: string, tag: string): Promise<void> {
+  async untagDocument(id: string, tag: string): Promise<void> {
     if (!this._tags.has(tag)) {
       return;
     }
@@ -183,7 +195,7 @@ export class MemoryStorageAdapter extends StorageAdapter {
   }
 
   reset() {
-    this._itemStore.clear();
+    this._documentStore.clear();
     this._tenantIndex.clear();
     this._updatedIndex.clear();
     this._tags.clear();

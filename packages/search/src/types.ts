@@ -6,10 +6,10 @@ import {
 import { type SearchResult } from "minisearch";
 
 import { type CacheAdapter } from "./cache/index.js";
-import { type SearchItem, type StorageAdapter } from "./storage/index.js";
+import { type SearchDocument, type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
-  boostItem?: (item: SearchItem, term: string) => number;
+  boostDocument?: (document: SearchDocument, term: string) => number;
   cache?: CacheAdapter;
   env: {
     cache: string;
@@ -18,14 +18,14 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   endpoints: {
     v1: {
       admin: string;
-      items: string;
+      documents: string;
       public: string;
       search: string;
       suggest: string;
       tags: string;
     };
   };
-  filter?: (item: SearchItem, result: SearchResult) => boolean;
+  filter?: (document: SearchDocument, result: SearchResult) => boolean;
   scanRange:
     | number
     | ((req: WorkertownRequest<any, any>) => number | Promise<number>);

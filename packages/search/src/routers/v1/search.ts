@@ -2,7 +2,7 @@ import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type MatchInfo } from "minisearch";
 import { z } from "zod";
 
-import { type SearchItem } from "../../storage/index.js";
+import { type SearchDocument } from "../../storage/index.js";
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
@@ -63,7 +63,7 @@ router.get(
     const cache = ctx.get("cache");
     const storage = ctx.get("storage");
     const {
-      boostItem,
+      boostDocument,
       filter,
       scanRange: scanRangeRn,
       stopWords: stopWordsFn,
@@ -80,10 +80,10 @@ router.get(
       typeof stopWordsFn === "function"
         ? await stopWordsFn(ctx.req)
         : stopWordsFn;
-    let items: any[] = [];
+    let documents: any[] = [];
     let results: {
       id: any;
-      item: any;
+      document: any;
       score: number;
       terms: string[];
       match: MatchInfo;
@@ -97,38 +97,42 @@ router.get(
     };
 
     if (term) {
-      const cacheKey = `items_${tenant}_${index ?? "ALL"}`;
+      const cacheKey = `documents_${tenant}_${index ?? "ALL"}`;
 
       if (tags?.length && tags.length > 0) {
         const tagCacheKey = `${cacheKey}_tags_${tags.sort().join("_")}`;
-        const cachedItems = await cache.get<any[]>(tagCacheKey);
+        const cachedDocuments = await cache.get<any[]>(tagCacheKey);
 
-        if (cachedItems) {
-          items = cachedItems;
+        if (cachedDocuments) {
+          documents = cachedDocuments;
         } else {
-          items = await storage.getItemsByTags(tags, {
+          documents = await storage.getDocumentsByTags(tags, {
             tenant,
             index,
             limit: scanRange,
           });
 
-          await cache.set(tagCacheKey, items);
+          await cache.set(tagCacheKey, documents);
         }
       } else {
-        const cachedItems = await cache.get<any[]>(cacheKey);
+        const cachedDocuments = await cache.get<any[]>(cacheKey);
 
-        if (cachedItems) {
-          items = cachedItems;
+        if (cachedDocuments) {
+          documents = cachedDocuments;
         } else {
-          items = await storage.getItems({ tenant, index, limit: scanRange });
+          documents = await storage.getDocuments({
+            tenant,
+            index,
+            limit: scanRange,
+          });
 
-          await cache.set(cacheKey, items);
+          await cache.set(cacheKey, documents);
         }
       }
 
-      if (items.length > 0) {
-        const itemsMap = new Map<string, SearchItem>(
-          items.map((item) => [item.id, item])
+      if (documents.length > 0) {
+        const documentsMap = new Map<string, SearchDocument>(
+          documents.map((document) => [document.id, document])
         );
         const miniSearch = new MiniSearch({
           fields: fields ?? [],
@@ -136,20 +140,20 @@ router.get(
             stopWords.has(term) ? null : term.toLowerCase(),
           searchOptions: {
             boostDocument:
-              typeof boostItem === "function"
+              typeof boostDocument === "function"
                 ? (id, term) => {
-                    const item = itemsMap.get(id);
+                    const document = documentsMap.get(id);
 
-                    return boostItem(item!, term);
+                    return boostDocument(document!, term);
                   }
                 : undefined,
             combineWith: exact ? "AND" : "OR",
             filter:
               typeof filter === "function"
                 ? (result) => {
-                    const item = itemsMap.get(result.id);
+                    const document = documentsMap.get(result.id);
 
-                    return filter(item!, result);
+                    return filter(document!, result);
                   }
                 : undefined,
             fuzzy,
@@ -157,16 +161,18 @@ router.get(
           },
         });
 
-        miniSearch.addAll(items.map((item) => ({ id: item.id, ...item.data })));
+        miniSearch.addAll(
+          documents.map((document) => ({ id: document.id, ...document.data }))
+        );
 
         const matches = miniSearch.search(term);
 
         results = matches.map((match) => {
-          const item = itemsMap.get(match.id);
+          const document = documentsMap.get(match.id);
 
           return {
             id: match.id,
-            item,
+            document,
             score: match.score,
             terms: match.terms,
             match: match.match,

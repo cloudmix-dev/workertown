@@ -1,58 +1,58 @@
 import search, { type CreateServerOptions } from "../src";
-import { type SearchItem } from "../src/storage";
+import { type SearchDocument } from "../src/storage";
 import { MemoryStorageAdapter } from "../src/storage/memory-storage-adapter";
 
-const SEARCH_ITEMS: SearchItem[] = [
+const SEARCH_DOCUMENTS: SearchDocument[] = [
   {
-    id: "item_1",
+    id: "document_1",
     tenant: "test",
     index: "test",
     data: {
-      title: "Test item 1",
+      title: "Test document 1",
       content: "This is some test content",
     },
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
-    id: "item_2",
+    id: "document_2",
     tenant: "test",
     index: "test",
     data: {
-      title: "Test item 2",
+      title: "Test document 2",
       content: "This is some more test content",
     },
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
-    id: "item_3",
+    id: "document_3",
     tenant: "test",
     index: "test",
     data: {
-      title: "Test item 3",
+      title: "Test document 3",
       content: "This doesn't contain that 't' word",
     },
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
-    id: "item_4",
+    id: "document_4",
     tenant: "test",
     index: "other",
     data: {
-      title: "Test item 4",
+      title: "Test document 4",
       content: "This index contain that 't' word",
     },
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
-    id: "item_5",
+    id: "document_5",
     tenant: "other",
     index: "other",
     data: {
-      title: "Test item 5",
+      title: "Test document 5",
       content: "This tenant or index contain that 't' word",
     },
     createdAt: new Date(),
@@ -61,13 +61,13 @@ const SEARCH_ITEMS: SearchItem[] = [
 ];
 
 const TAGS = {
-  test: ["item_1", "item_3"],
-  other: ["item_4", "item_5"],
+  test: ["document_1", "document_3"],
+  other: ["document_4", "document_5"],
 };
 
 export function createTestService(
   options: CreateServerOptions = {},
-  intialData: SearchItem[] = SEARCH_ITEMS,
+  intialData: SearchDocument[] = SEARCH_DOCUMENTS,
   tags: Record<string, string[]> = TAGS
 ) {
   return search({

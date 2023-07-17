@@ -11,7 +11,7 @@ interface SuccessfulResponse {
 interface SearchResponse extends SuccessfulResponse {
   data: {
     id: string;
-    item: Record<string, unknown>;
+    document: Record<string, unknown>;
     score: number;
     terms: string[];
   }[];
@@ -33,8 +33,8 @@ test("search w/ tenant, single field", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 2);
-  t.is(result.data[0].id, "item_1");
-  t.is(result.data[1].id, "item_2");
+  t.is(result.data[0].id, "document_1");
+  t.is(result.data[1].id, "document_2");
 });
 
 test("search w/ tenant, multiple fields", async (t) => {
@@ -49,10 +49,10 @@ test("search w/ tenant, multiple fields", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 4);
-  t.is(result.data[0].id, "item_1");
-  t.is(result.data[1].id, "item_2");
-  t.is(result.data[2].id, "item_4");
-  t.is(result.data[3].id, "item_3");
+  t.is(result.data[0].id, "document_1");
+  t.is(result.data[1].id, "document_2");
+  t.is(result.data[2].id, "document_4");
+  t.is(result.data[3].id, "document_3");
 });
 
 test("search w/ tenant, index, single field", async (t) => {
@@ -67,8 +67,8 @@ test("search w/ tenant, index, single field", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 2);
-  t.is(result.data[0].id, "item_1");
-  t.is(result.data[1].id, "item_2");
+  t.is(result.data[0].id, "document_1");
+  t.is(result.data[1].id, "document_2");
 });
 
 test("search w/ tenant, index, multiple fields", async (t) => {
@@ -83,9 +83,9 @@ test("search w/ tenant, index, multiple fields", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 3);
-  t.is(result.data[0].id, "item_1");
-  t.is(result.data[1].id, "item_2");
-  t.is(result.data[2].id, "item_3");
+  t.is(result.data[0].id, "document_1");
+  t.is(result.data[1].id, "document_2");
+  t.is(result.data[2].id, "document_3");
 });
 
 test("search w/ tenant, index, single field, limit", async (t) => {
@@ -100,12 +100,12 @@ test("search w/ tenant, index, single field, limit", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 1);
-  t.is(result.data[0].id, "item_1");
+  t.is(result.data[0].id, "document_1");
 });
 
 test("search w/ tenant, index, single field, cursor", async (t) => {
   const service = createTestService();
-  const cursor = btoa("item_1");
+  const cursor = btoa("document_1");
   const res = await makeRequest(
     service,
     `/v1/search/test/test?term=test&fields=content&limit=1&after=${cursor}`
@@ -116,7 +116,7 @@ test("search w/ tenant, index, single field, cursor", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 1);
-  t.is(result.data[0].id, "item_2");
+  t.is(result.data[0].id, "document_2");
 });
 
 test("search w/ tenant, index, single field, tags", async (t) => {
@@ -131,7 +131,7 @@ test("search w/ tenant, index, single field, tags", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 1);
-  t.is(result.data[0].id, "item_1");
+  t.is(result.data[0].id, "document_1");
 });
 
 test("search w/ tenant, index, single field, fuzzy", async (t) => {
@@ -146,8 +146,8 @@ test("search w/ tenant, index, single field, fuzzy", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 2);
-  t.is(result.data[0].id, "item_1");
-  t.is(result.data[1].id, "item_2");
+  t.is(result.data[0].id, "document_1");
+  t.is(result.data[1].id, "document_2");
 });
 
 test("search w/ custom endpoint", async (t) => {
@@ -168,8 +168,8 @@ test("search w/ custom endpoint", async (t) => {
   const result = (await res.json()) as SearchResponse;
 
   t.is(result.data.length, 2);
-  t.is(result.data[0].id, "item_1");
-  t.is(result.data[1].id, "item_2");
+  t.is(result.data[0].id, "document_1");
+  t.is(result.data[1].id, "document_2");
 });
 
 // Suggest
@@ -323,8 +323,8 @@ test("suggest w/ custom endpoint", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-// Items
-// Items (custom endpoint)
+// Documents
+// Documents (custom endpoint)
 
 // Tags
 interface TagsResponse extends SuccessfulResponse {

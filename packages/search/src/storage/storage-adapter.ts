@@ -1,10 +1,10 @@
-export interface GetItemsOptions {
+export interface GetDocumentsOptions {
   limit: number;
   index?: string;
   tenant: string;
 }
 
-export interface SearchItem {
+export interface SearchDocument {
   id: string;
   tenant: string;
   index: string;
@@ -14,42 +14,42 @@ export interface SearchItem {
 }
 
 export class StorageAdapter {
-  async getItems(options: GetItemsOptions): Promise<SearchItem[]> {
-    throw new TypeError("'getItems()' not implemented");
+  async getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]> {
+    throw new TypeError("'getDocuments()' not implemented");
   }
 
-  async getItemsByTags(
+  async getDocumentsByTags(
     tags: string[],
-    options: GetItemsOptions
-  ): Promise<SearchItem[]> {
-    throw new TypeError("'getItemsByTags()' not implemented");
+    options: GetDocumentsOptions
+  ): Promise<SearchDocument[]> {
+    throw new TypeError("'getDocumentsByTags()' not implemented");
   }
 
-  async getItem(id: string): Promise<SearchItem | null> {
-    throw new TypeError("'getItem()' not implemented");
+  async getDocument(id: string): Promise<SearchDocument | null> {
+    throw new TypeError("'getDocument()' not implemented");
   }
 
-  async indexItem(
-    item: Pick<SearchItem, "id" | "tenant" | "index" | "data">,
+  async indexDocument(
+    item: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
-  ): Promise<SearchItem> {
-    throw new TypeError("'indexItem()' not implemented");
+  ): Promise<SearchDocument> {
+    throw new TypeError("'indexDocument()' not implemented");
   }
 
-  async deleteItem(id: string): Promise<void> {
-    throw new TypeError("'deleteItem()' not implemented");
+  async deleteDocument(id: string): Promise<void> {
+    throw new TypeError("'deleteDocument()' not implemented");
   }
 
   async getTags(): Promise<string[]> {
     throw new TypeError("'getTags()' not implemented");
   }
 
-  async tagItem(id: string, tag: string): Promise<void> {
-    throw new TypeError("'tagItem()' not implemented");
+  async tagDocument(id: string, tag: string): Promise<void> {
+    throw new TypeError("'tagDocument()' not implemented");
   }
 
-  async untagItem(id: string, tag: string): Promise<void> {
-    throw new TypeError("'untagItem()' not implemented");
+  async untagDocument(id: string, tag: string): Promise<void> {
+    throw new TypeError("'untagDocument()' not implemented");
   }
 
   async runMigrations(): Promise<void> {}

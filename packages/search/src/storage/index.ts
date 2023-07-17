@@ -1,7 +1,7 @@
 import {
-  type GetItemsOptions,
-  type SearchItem,
+  type GetDocumentsOptions,
+  type SearchDocument,
   StorageAdapter,
 } from "./storage-adapter.js";
 
-export { StorageAdapter, type GetItemsOptions, type SearchItem };
+export { StorageAdapter, type GetDocumentsOptions, type SearchDocument };

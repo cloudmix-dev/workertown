@@ -2,7 +2,7 @@ import { createRouter, validate } from "@workertown/hono";
 import MiniSearch, { type Suggestion } from "minisearch";
 import { z } from "zod";
 
-import { type SearchItem } from "../../storage/storage-adapter.js";
+import { type SearchDocument } from "../../storage/storage-adapter.js";
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
@@ -63,7 +63,7 @@ router.get(
     const index = ctx.req.param("index");
     const storage = ctx.get("storage");
     const {
-      boostItem,
+      boostDocument,
       filter,
       scanRange: scanRangeFn,
       stopWords: stopWordsFn,
@@ -78,23 +78,27 @@ router.get(
       typeof stopWordsFn === "function"
         ? await stopWordsFn(ctx.req)
         : stopWordsFn;
-    let items: any[] = [];
+    let documents: any[] = [];
     let results: Suggestion[] = [];
 
     if (term) {
       if (tags?.length && tags.length > 0) {
-        items = await storage.getItemsByTags(tags, {
+        documents = await storage.getDocumentsByTags(tags, {
           tenant,
           index,
           limit: scanRange,
         });
       } else {
-        items = await storage.getItems({ tenant, index, limit: scanRange });
+        documents = await storage.getDocuments({
+          tenant,
+          index,
+          limit: scanRange,
+        });
       }
 
-      if (items.length > 0) {
-        const itemsMap = new Map<string, SearchItem>(
-          items.map((item) => [item.id, item])
+      if (documents.length > 0) {
+        const documentsMap = new Map<string, SearchDocument>(
+          documents.map((document) => [document.id, document])
         );
         const miniSearch = new MiniSearch({
           fields: fields ?? [],
@@ -102,20 +106,20 @@ router.get(
             stopWords.has(term) ? null : term.toLowerCase(),
           autoSuggestOptions: {
             boostDocument:
-              typeof boostItem === "function"
+              typeof boostDocument === "function"
                 ? (id, term) => {
-                    const item = itemsMap.get(id);
+                    const document = documentsMap.get(id);
 
-                    return boostItem(item!, term);
+                    return boostDocument(document!, term);
                   }
                 : undefined,
             combineWith: exact ? "AND" : "OR",
             filter:
               typeof filter === "function"
                 ? (result) => {
-                    const item = itemsMap.get(result.id);
+                    const document = documentsMap.get(result.id);
 
-                    return filter(item!, result);
+                    return filter(document!, result);
                   }
                 : undefined,
             fuzzy,
@@ -123,7 +127,9 @@ router.get(
           },
         });
 
-        miniSearch.addAll(items.map((item) => ({ id: item.id, ...item.data })));
+        miniSearch.addAll(
+          documents.map((document) => ({ id: document.id, ...document.data }))
+        );
 
         results = miniSearch.autoSuggest(term);
       }

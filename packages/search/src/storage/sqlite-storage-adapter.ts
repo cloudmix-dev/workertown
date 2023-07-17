@@ -11,12 +11,12 @@ import {
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import { DefaultMigrationProvider } from "./migrations.js";
 import {
-  GetItemsOptions,
-  SearchItem,
+  GetDocumentsOptions,
+  SearchDocument,
   StorageAdapter,
 } from "./storage-adapter.js";
 
-interface SearchItemTable {
+interface SearchDocumentTable {
   id: string;
   tenant: string;
   index: string;
@@ -25,15 +25,15 @@ interface SearchItemTable {
   updated_at: ColumnType<Date | number, number, number>;
 }
 
-type SearchItemRow = Selectable<SearchItemTable>;
+type SearchDocumentRow = Selectable<SearchDocumentTable>;
 
 interface SearchTagTable {
   tag: string;
-  search_item_id: string;
+  search_document_id: string;
 }
 
 export interface DatabaseSchema {
-  search_items: SearchItemTable;
+  search_documents: SearchDocumentTable;
   search_tags: SearchTagTable;
 }
 
@@ -43,7 +43,7 @@ const MIGRATIONS: MigrationInfo[] = [
     migration: {
       async up(db) {
         await db.schema
-          .createTable("search_items")
+          .createTable("search_documents")
           .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("tenant", "text", (col) => col.notNull())
@@ -57,28 +57,28 @@ const MIGRATIONS: MigrationInfo[] = [
           .createTable("search_tags")
           .ifNotExists()
           .addColumn("tag", "text", (col) => col.notNull())
-          .addColumn("search_item_id", "text", (col) => col.notNull())
+          .addColumn("search_document_id", "text", (col) => col.notNull())
           .execute();
 
         await db.schema
-          .createIndex("search_items_id_idx")
+          .createIndex("search_documents_id_idx")
           .unique()
           .ifNotExists()
-          .on("search_items")
+          .on("search_documents")
           .columns(["id"])
           .execute();
 
         await db.schema
-          .createIndex("search_items_tenant_idx")
+          .createIndex("search_documents_tenant_idx")
           .ifNotExists()
-          .on("search_items")
+          .on("search_documents")
           .columns(["tenant", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
         await db.schema
-          .createIndex("search_items_tenant_index_idx")
+          .createIndex("search_documents_tenant_index_idx")
           .ifNotExists()
-          .on("search_items")
+          .on("search_documents")
           .columns(["tenant", "index", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
@@ -87,7 +87,7 @@ const MIGRATIONS: MigrationInfo[] = [
           .unique()
           .ifNotExists()
           .on("search_tags")
-          .columns(["tag", "search_item_id"])
+          .columns(["tag", "search_document_id"])
           .execute();
       },
       async down(db) {
@@ -97,20 +97,23 @@ const MIGRATIONS: MigrationInfo[] = [
           .execute();
 
         await db.schema
-          .dropIndex("search_items_tenant_index_idx")
+          .dropIndex("search_documents_tenant_index_idx")
           .ifExists()
           .execute();
 
         await db.schema
-          .dropIndex("search_items_tenant_idx")
+          .dropIndex("search_documents_tenant_idx")
           .ifExists()
           .execute();
 
-        await db.schema.dropIndex("search_items_id_idx").ifExists().execute();
+        await db.schema
+          .dropIndex("search_documents_id_idx")
+          .ifExists()
+          .execute();
 
         await db.schema.dropTable("search_tags").ifExists().execute();
 
-        await db.schema.dropTable("search_items").ifExists().execute();
+        await db.schema.dropTable("search_documents").ifExists().execute();
       },
     },
   },
@@ -139,21 +142,21 @@ export class SqliteStorageAdapter extends StorageAdapter {
     });
   }
 
-  private _formatItem(item: SearchItemRow): SearchItem {
+  private _formatDocument(document: SearchDocumentRow): SearchDocument {
     return {
-      id: item.id,
-      tenant: item.tenant,
-      index: item.index,
-      data: JSON.parse(item.data),
-      createdAt: new Date(item.created_at),
-      updatedAt: new Date(item.updated_at),
+      id: document.id,
+      tenant: document.tenant,
+      index: document.index,
+      data: JSON.parse(document.data),
+      createdAt: new Date(document.created_at),
+      updatedAt: new Date(document.updated_at),
     };
   }
 
-  async getItems(options: GetItemsOptions): Promise<SearchItem[]> {
+  async getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]> {
     let query = this._client
-      .selectFrom("search_items")
-      .where("search_items.tenant", "=", options.tenant);
+      .selectFrom("search_documents")
+      .where("search_documents.tenant", "=", options.tenant);
 
     if (options.index) {
       query = query.where("index", "=", options.index);
@@ -161,42 +164,42 @@ export class SqliteStorageAdapter extends StorageAdapter {
 
     const records = await query
       .selectAll()
-      .orderBy("search_items.updated_at", "desc")
+      .orderBy("search_documents.updated_at", "desc")
       .limit(options?.limit)
       .execute();
 
-    return records.map((record) => this._formatItem(record));
+    return records.map((record) => this._formatDocument(record));
   }
 
-  async getItemsByTags(tags: string[], options: GetItemsOptions) {
+  async getDocumentsByTags(tags: string[], options: GetDocumentsOptions) {
     let query = this._client
       .selectFrom("search_tags")
       .innerJoin(
-        "search_items",
-        "search_tags.search_item_id",
-        "search_items.id"
+        "search_documents",
+        "search_tags.search_document_id",
+        "search_documents.id"
       )
       .where("search_tags.tag", "in", tags)
-      .where("search_items.tenant", "=", options.tenant);
+      .where("search_documents.tenant", "=", options.tenant);
 
     if (options?.index) {
-      query = query.where("search_items.index", "=", options.index);
+      query = query.where("search_documents.index", "=", options.index);
     }
 
     const records = await query
-      .selectAll("search_items")
-      .groupBy("search_items.id")
-      .having((eb) => eb.fn.count("search_items.id"), "=", tags.length)
-      .orderBy("search_items.updated_at", "desc")
+      .selectAll("search_documents")
+      .groupBy("search_documents.id")
+      .having((eb) => eb.fn.count("search_documents.id"), "=", tags.length)
+      .orderBy("search_documents.updated_at", "desc")
       .limit(options?.limit)
       .execute();
 
-    return records.map((record) => this._formatItem(record));
+    return records.map((record) => this._formatDocument(record));
   }
 
-  async getItem(id: string) {
+  async getDocument(id: string) {
     const result = await this._client
-      .selectFrom("search_items")
+      .selectFrom("search_documents")
       .selectAll()
       .where("id", "=", id)
       .executeTakeFirst();
@@ -205,40 +208,40 @@ export class SqliteStorageAdapter extends StorageAdapter {
       return null;
     }
 
-    return this._formatItem(result);
+    return this._formatDocument(result);
   }
 
-  async indexItem(
-    item: Pick<SearchItem, "id" | "tenant" | "index" | "data">,
+  async indexDocument(
+    document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
   ) {
     const now = new Date();
     const existing = await this._client
-      .selectFrom("search_items")
+      .selectFrom("search_documents")
       .select(["id", "created_at"])
-      .where("id", "=", item.id)
-      .where("tenant", "=", item.tenant)
-      .where("index", "=", item.index)
+      .where("id", "=", document.id)
+      .where("tenant", "=", document.tenant)
+      .where("index", "=", document.index)
       .executeTakeFirst();
 
     if (!existing) {
       await this._client
-        .insertInto("search_items")
+        .insertInto("search_documents")
         .values({
-          ...item,
-          data: JSON.stringify(item.data),
+          ...document,
+          data: JSON.stringify(document.data),
           created_at: now.getTime(),
           updated_at: now.getTime(),
         })
         .execute();
     } else {
       await this._client
-        .updateTable("search_items")
-        .where("id", "=", item.id)
-        .where("tenant", "=", item.tenant)
-        .where("index", "=", item.index)
+        .updateTable("search_documents")
+        .where("id", "=", document.id)
+        .where("tenant", "=", document.tenant)
+        .where("index", "=", document.index)
         .set({
-          data: JSON.stringify(item.data),
+          data: JSON.stringify(document.data),
           updated_at: now.getTime(),
         })
         .execute();
@@ -248,7 +251,7 @@ export class SqliteStorageAdapter extends StorageAdapter {
       const existingTags = await this._client
         .selectFrom("search_tags")
         .selectAll()
-        .where("search_item_id", "=", item.id)
+        .where("search_document_id", "=", document.id)
         .execute();
       const tagsToAdd = tags.filter(
         (tag) =>
@@ -263,14 +266,16 @@ export class SqliteStorageAdapter extends StorageAdapter {
       if (tagsToAdd.length > 0) {
         await this._client
           .insertInto("search_tags")
-          .values(tagsToAdd.map((tag) => ({ tag, search_item_id: item.id })))
+          .values(
+            tagsToAdd.map((tag) => ({ tag, search_document_id: document.id }))
+          )
           .execute();
       }
 
       if (tagsToRemove.length > 0) {
         await this._client
           .deleteFrom("search_tags")
-          .where("search_item_id", "=", item.id)
+          .where("search_document_id", "=", document.id)
           .where(
             "tag",
             "in",
@@ -281,20 +286,20 @@ export class SqliteStorageAdapter extends StorageAdapter {
     }
 
     return {
-      ...item,
+      ...document,
       createdAt: existing?.created_at ? new Date(existing.created_at) : now,
       updatedAt: now,
     };
   }
 
-  async deleteItem(id: string) {
+  async deleteDocument(id: string) {
     await this._client
-      .deleteFrom("search_items")
+      .deleteFrom("search_documents")
       .where("id", "=", id)
       .execute();
     await this._client
       .deleteFrom("search_tags")
-      .where("search_item_id", "=", id)
+      .where("search_document_id", "=", id)
       .execute();
   }
 
@@ -308,18 +313,18 @@ export class SqliteStorageAdapter extends StorageAdapter {
     return tags.map(({ tag }) => tag);
   }
 
-  async tagItem(id: string, tag: string) {
+  async tagDocument(id: string, tag: string) {
     await this._client
       .insertInto("search_tags")
-      .onConflict((oc) => oc.columns(["search_item_id", "tag"]).doNothing())
-      .values({ search_item_id: id, tag })
+      .onConflict((oc) => oc.columns(["search_document_id", "tag"]).doNothing())
+      .values({ search_document_id: id, tag })
       .execute();
   }
 
-  async untagItem(id: string, tag: string) {
+  async untagDocument(id: string, tag: string) {
     await this._client
       .deleteFrom("search_tags")
-      .where("search_item_id", "=", id)
+      .where("search_document_id", "=", id)
       .where("tag", "=", tag)
       .execute();
   }

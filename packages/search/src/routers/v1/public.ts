@@ -18,7 +18,7 @@ router.options("*", (ctx) =>
 );
 
 router.get("/open-api.json", (ctx) => {
-  const { auth, basePath, endpoints } = ctx.get("config");
+  const { basePath, endpoints } = ctx.get("config");
   const url = new URL(ctx.req.url);
   const searchPath = `${`${basePath}${endpoints.v1.search}`.replace(
     "//",
