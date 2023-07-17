@@ -16,13 +16,18 @@
     "@workertown/internal-hono": "0.0.0",
     "@workertown/pub-sub": "0.0.0",
     "@workertown/pub-sub-example": "0.0.0",
-    "@workertown/node": "0.0.0"
+    "@workertown/node": "0.0.0",
+    "@workertown/internal-cache": "0.0.0",
+    "@workertown/internal-queue": "0.0.0",
+    "@workertown/internal-storage": "0.0.0",
+    "@workertown/cloudflare-workers": "0.0.0"
   },
   "changesets": [
     "cold-hats-float",
     "fair-dingos-occur",
     "hot-adults-tell",
     "plenty-dolls-decide",
+    "short-beans-beam",
     "sour-rules-design",
     "tidy-windows-dream"
   ]

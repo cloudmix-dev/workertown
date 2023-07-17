@@ -1,7 +1,7 @@
 {
   "name": "@workertown/internal-hono",
   "description": "Internal custom Hono implementation for WorkerTown",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.6",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

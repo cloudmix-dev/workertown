@@ -1,6 +1,6 @@
 {
   "name": "@workertown/middleware",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.6",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230710.1",
-    "@workertown/internal-types": "~0.0.1-alpha.5",
+    "@workertown/internal-types": "~0.0.1-alpha.6",
     "hono": "~3.2.2"
   },
   "engines": {

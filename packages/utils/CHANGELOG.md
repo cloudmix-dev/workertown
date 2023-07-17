@@ -1,5 +1,13 @@
 # @workertown/utils
 
+## 0.0.1-alpha.6
+
+### Patch Changes
+
+- Alpha.6 Release
+- Updated dependencies
+  - @workertown/internal-hono@0.0.1-alpha.6
+
 ## 0.0.1-alpha.5
 
 ### Patch Changes
