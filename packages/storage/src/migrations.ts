@@ -8,9 +8,9 @@ export { type MigrationInfo as Migration };
 export type Migrations = MigrationInfo[];
 
 export class MigrationProvider implements BaseMigrationProvider {
-  private readonly _migrations: MigrationInfo[];
+  private readonly _migrations: Migrations;
 
-  constructor(migrations: MigrationInfo[]) {
+  constructor(migrations: Migrations) {
     this._migrations = migrations;
   }
 

@@ -1,5 +1,5 @@
 import search, { type CreateServerOptions } from "../src";
-import { type SearchDocument } from "../src/storage";
+import { type SearchDocument, type StorageAdapter } from "../src/storage";
 import { MemoryStorageAdapter } from "../src/storage/memory-storage-adapter";
 
 const SEARCH_DOCUMENTS: SearchDocument[] = [
@@ -73,7 +73,11 @@ export function createTestService(
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
-    storage: new MemoryStorageAdapter(intialData, tags),
+    // The `as unknown` here fixes some weird Typescript bug...
+    storage: new MemoryStorageAdapter(
+      intialData,
+      tags
+    ) as unknown as StorageAdapter,
   });
 }
 

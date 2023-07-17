@@ -1,6 +1,7 @@
-import { Kysely } from "kysely";
+import { Kysely, Migrator } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 
+import { MigrationProvider } from "./migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
 interface PlanetscaleStorageAdapterOptions {
@@ -10,13 +11,22 @@ interface PlanetscaleStorageAdapterOptions {
 }
 
 export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
-  protected readonly _client: Kysely<T>;
+  public readonly client: Kysely<T>;
 
   constructor(options: PlanetscaleStorageAdapterOptions = {}) {
     super();
 
-    this._client = new Kysely<T>({
+    this.client = new Kysely<T>({
       dialect: new PlanetScaleDialect(options),
     });
+  }
+
+  public async runMigrations() {
+    const migrator = new Migrator({
+      db: this.client,
+      provider: new MigrationProvider(this.migrations),
+    });
+
+    await migrator.migrateToLatest();
   }
 }

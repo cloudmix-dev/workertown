@@ -374,6 +374,10 @@ interface AdminInfoResponse extends SuccessfulResponse {
   };
 }
 
+interface AdminMigrateResponse extends SuccessfulResponse {
+  data: true;
+}
+
 test("admin info", async (t) => {
   const service = createTestService({
     endpoints: {
@@ -389,6 +393,19 @@ test("admin info", async (t) => {
   const result = (await res.json()) as AdminInfoResponse;
 
   t.is(result.data.endpoints.v1.search, "/custom-search");
+});
+
+test("admin migrate", async (t) => {
+  const service = createTestService();
+  const res = await makeRequest(service, "/v1/admin/migrate", {
+    method: "POST",
+  });
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as AdminMigrateResponse;
+
+  t.true(result.data);
 });
 
 test("admin w/ custom endpoint", async (t) => {
@@ -424,6 +441,7 @@ test("public open-api.json", async (t) => {
 
   t.is(result.openapi, "3.0.0");
 });
+
 test("public w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {

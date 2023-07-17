@@ -115,7 +115,7 @@ const MIGRATIONS: Migrations = [
 ];
 
 export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchema> {
-  protected _migrations = MIGRATIONS;
+  public readonly migrations = MIGRATIONS;
 
   private _formatDocument(document: SearchDocumentRow): SearchDocument {
     return {
@@ -128,8 +128,10 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     };
   }
 
-  async getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]> {
-    let query = this._client
+  public async getDocuments(
+    options: GetDocumentsOptions
+  ): Promise<SearchDocument[]> {
+    let query = this.client
       .selectFrom("search_documents")
       .where("search_documents.tenant", "=", options.tenant);
 
@@ -146,8 +148,11 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     return records.map((record) => this._formatDocument(record));
   }
 
-  async getDocumentsByTags(tags: string[], options: GetDocumentsOptions) {
-    let query = this._client
+  public async getDocumentsByTags(
+    tags: string[],
+    options: GetDocumentsOptions
+  ) {
+    let query = this.client
       .selectFrom("search_tags")
       .innerJoin(
         "search_documents",
@@ -172,8 +177,8 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     return records.map((record) => this._formatDocument(record));
   }
 
-  async getDocument(id: string) {
-    const result = await this._client
+  public async getDocument(id: string) {
+    const result = await this.client
       .selectFrom("search_documents")
       .selectAll()
       .where("id", "=", id)
@@ -186,12 +191,12 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     return this._formatDocument(result);
   }
 
-  async indexDocument(
+  public async indexDocument(
     document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
   ) {
     const now = new Date();
-    const existing = await this._client
+    const existing = await this.client
       .selectFrom("search_documents")
       .select(["id", "created_at"])
       .where("id", "=", document.id)
@@ -200,7 +205,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
       .executeTakeFirst();
 
     if (!existing) {
-      await this._client
+      await this.client
         .insertInto("search_documents")
         .values({
           ...document,
@@ -210,7 +215,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
         })
         .execute();
     } else {
-      await this._client
+      await this.client
         .updateTable("search_documents")
         .where("id", "=", document.id)
         .where("tenant", "=", document.tenant)
@@ -223,7 +228,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     }
 
     if (tags.length > 0) {
-      const existingTags = await this._client
+      const existingTags = await this.client
         .selectFrom("search_tags")
         .selectAll()
         .where("search_document_id", "=", document.id)
@@ -239,7 +244,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
       );
 
       if (tagsToAdd.length > 0) {
-        await this._client
+        await this.client
           .insertInto("search_tags")
           .values(
             tagsToAdd.map((tag) => ({ tag, search_document_id: document.id }))
@@ -248,7 +253,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
       }
 
       if (tagsToRemove.length > 0) {
-        await this._client
+        await this.client
           .deleteFrom("search_tags")
           .where("search_document_id", "=", document.id)
           .where(
@@ -267,19 +272,19 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     };
   }
 
-  async deleteDocument(id: string) {
-    await this._client
+  public async deleteDocument(id: string) {
+    await this.client
       .deleteFrom("search_documents")
       .where("id", "=", id)
       .execute();
-    await this._client
+    await this.client
       .deleteFrom("search_tags")
       .where("search_document_id", "=", id)
       .execute();
   }
 
-  async getTags() {
-    const tags = await this._client
+  public async getTags() {
+    const tags = await this.client
       .selectFrom("search_tags")
       .select("tag")
       .distinct()
@@ -288,16 +293,16 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     return tags.map(({ tag }) => tag);
   }
 
-  async tagDocument(id: string, tag: string) {
-    await this._client
+  public async tagDocument(id: string, tag: string) {
+    await this.client
       .insertInto("search_tags")
       .onConflict((oc) => oc.columns(["search_document_id", "tag"]).doNothing())
       .values({ search_document_id: id, tag })
       .execute();
   }
 
-  async untagDocument(id: string, tag: string) {
-    await this._client
+  public async untagDocument(id: string, tag: string) {
+    await this.client
       .deleteFrom("search_tags")
       .where("search_document_id", "=", id)
       .where("tag", "=", tag)

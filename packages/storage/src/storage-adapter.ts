@@ -1,7 +1,7 @@
 import { type Migrations } from "./migrations.js";
 
 export class StorageAdapter {
-  protected readonly _migrations: Migrations = [];
+  public readonly migrations: Migrations = [] as Migrations;
 
-  async runMigrations(): Promise<void> {}
+  public async runMigrations(): Promise<void> {}
 }

@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
-import { Kysely, SqliteDialect } from "kysely";
+import { Kysely, Migrator, SqliteDialect } from "kysely";
 
+import { MigrationProvider } from "./migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
 interface SqliteStorageAdapterOptions {
@@ -8,7 +9,7 @@ interface SqliteStorageAdapterOptions {
 }
 
 export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
-  protected readonly _client: Kysely<T>;
+  public readonly client: Kysely<T>;
 
   constructor(options?: SqliteStorageAdapterOptions) {
     super();
@@ -19,10 +20,19 @@ export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
       process.on("exit", () => db.close());
     }
 
-    this._client = new Kysely<T>({
+    this.client = new Kysely<T>({
       dialect: new SqliteDialect({
         database: db,
       }),
     });
+  }
+
+  public async runMigrations() {
+    const migrator = new Migrator({
+      db: this.client,
+      provider: new MigrationProvider(this.migrations),
+    });
+
+    await migrator.migrateToLatest();
   }
 }

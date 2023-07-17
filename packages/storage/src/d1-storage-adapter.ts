@@ -10,22 +10,22 @@ interface D1StorageAdapterOptions {
 }
 
 export class D1StorageAdapter<T = {}> extends StorageAdapter {
-  protected readonly _client: Kysely<T>;
+  public readonly client: Kysely<T>;
 
   constructor(options: D1StorageAdapterOptions) {
     super();
 
-    this._client = new Kysely<T>({
+    this.client = new Kysely<T>({
       // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
       // types
       dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
     });
   }
 
-  async runMigrations() {
+  public async runMigrations() {
     const migrator = new Migrator({
-      db: this._client,
-      provider: new MigrationProvider(this._migrations),
+      db: this.client,
+      provider: new MigrationProvider(this.migrations),
     });
 
     await migrator.migrateToLatest();

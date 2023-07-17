@@ -65,7 +65,9 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     return sortedDocuments.map(([, id]) => this._documentStore.get(id)!);
   }
 
-  async getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]> {
+  public async getDocuments(
+    options: GetDocumentsOptions
+  ): Promise<SearchDocument[]> {
     const { index, tenant, limit } = options;
     const indexKey = index ? `${tenant}_${index}` : tenant;
     const indexSet = this._tenantIndex.get(indexKey);
@@ -92,7 +94,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     return bucket.filter((document) => document !== null).slice(0, limit);
   }
 
-  async getDocumentsByTags(
+  public async getDocumentsByTags(
     tags: string[],
     options: GetDocumentsOptions
   ): Promise<SearchDocument[]> {
@@ -130,11 +132,11 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     return bucket.filter((document) => document !== null).slice(0, limit);
   }
 
-  async getDocument(id: string): Promise<SearchDocument | null> {
+  public async getDocument(id: string): Promise<SearchDocument | null> {
     return this._documentStore.get(id) ?? null;
   }
 
-  async indexDocument(
+  public async indexDocument(
     document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
     tags: string[] = []
   ): Promise<SearchDocument> {
@@ -167,15 +169,15 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     return searchDocument;
   }
 
-  async deleteDocument(id: string): Promise<void> {
+  public async deleteDocument(id: string): Promise<void> {
     this._deleted.add(id);
   }
 
-  async getTags(): Promise<string[]> {
+  public async getTags(): Promise<string[]> {
     return Array.from(this._tags.keys());
   }
 
-  async tagDocument(id: string, tag: string): Promise<void> {
+  public async tagDocument(id: string, tag: string): Promise<void> {
     if (!this._tags.has(tag)) {
       this._tags.set(tag, new Set<string>());
     }
@@ -185,7 +187,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     tagSet!.add(id);
   }
 
-  async untagDocument(id: string, tag: string): Promise<void> {
+  public async untagDocument(id: string, tag: string): Promise<void> {
     if (!this._tags.has(tag)) {
       return;
     }
@@ -195,7 +197,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     tagSet!.delete(id);
   }
 
-  reset() {
+  public reset() {
     this._documentStore.clear();
     this._tenantIndex.clear();
     this._updatedIndex.clear();
