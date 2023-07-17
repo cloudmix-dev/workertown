@@ -1,5 +1,5 @@
 import { type Message, type MessageBatch } from "@cloudflare/workers-types";
-import { WorkertownHono } from "@workertown/hono";
+import { WorkertownHono } from "@workertown/internal-hono";
 
 import { type Context } from "../types.js";
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";

@@ -1,4 +1,4 @@
-import { createRouter } from "@workertown/hono";
+import { createRouter } from "@workertown/internal-hono";
 
 import { type Context } from "../types.js";
 

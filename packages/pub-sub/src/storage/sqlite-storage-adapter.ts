@@ -1,15 +1,11 @@
-import Database from "better-sqlite3";
 import {
   type ColumnType,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
+  type Migrations,
   type Selectable,
-  SqliteDialect,
-} from "kysely";
+} from "@workertown/internal-storage";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite-storage-adapter";
 
-import { DefaultMigrationProvider } from "./migrations.js";
-import { StorageAdapter, type Subscription } from "./storage-adapter.js";
+import { type Subscription } from "./storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;
@@ -26,7 +22,7 @@ export interface DatabaseSchema {
   subscriptions: SubscriptionsTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -72,28 +68,8 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface SqliteStorageAdapterOptions {
-  db: string;
-}
-
-export class SqliteStorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options?: SqliteStorageAdapterOptions) {
-    super();
-
-    const db = new Database(options?.db ?? "db.sqlite");
-
-    if (globalThis.process) {
-      process.on("exit", () => db.close());
-    }
-
-    this._client = new Kysely<DatabaseSchema>({
-      dialect: new SqliteDialect({
-        database: db,
-      }),
-    });
-  }
+export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchema> {
+  public readonly migrations = MIGRATIONS;
 
   private _formatSubscription(subscription: SubscriptionRow): Subscription {
     return {
@@ -111,7 +87,7 @@ export class SqliteStorageAdapter extends StorageAdapter {
   }
 
   async getSubscriptions() {
-    const records = await this._client
+    const records = await this.client
       .selectFrom("subscriptions")
       .selectAll()
       .execute();
@@ -120,7 +96,7 @@ export class SqliteStorageAdapter extends StorageAdapter {
   }
 
   async getSubscriptionsByTopic(topic: string) {
-    const records = await this._client
+    const records = await this.client
       .selectFrom("subscriptions")
       .selectAll()
       .where("topic", "=", topic)
@@ -138,7 +114,7 @@ export class SqliteStorageAdapter extends StorageAdapter {
     const id = crypto.randomUUID();
     const now = new Date();
 
-    await this._client
+    await this.client
       .insertInto("subscriptions")
       .values({
         id,
@@ -162,18 +138,9 @@ export class SqliteStorageAdapter extends StorageAdapter {
   }
 
   async deleteSubscription(id: string) {
-    await this._client
+    await this.client
       .deleteFrom("subscriptions")
       .where("id", "=", id)
       .execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
   }
 }

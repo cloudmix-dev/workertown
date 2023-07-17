@@ -1,4 +1,4 @@
-import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/storage/memory-storage-adapter";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
 import { type Flag } from "./storage-adapter.js";
 

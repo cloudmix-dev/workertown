@@ -1,5 +1,5 @@
 {
-  "name": "@workertown/cache",
+  "name": "@workertown/internal-cache",
   "version": "0.0.0",
   "type": "module",
   "main": "./dist/index.js",

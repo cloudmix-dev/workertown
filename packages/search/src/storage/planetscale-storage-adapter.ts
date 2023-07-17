@@ -1,6 +1,10 @@
-import { type ColumnType, type Selectable, sql } from "@workertown/storage";
-import { type Migrations } from "@workertown/storage";
-import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/storage/planetscale-storage-adapter";
+import {
+  type ColumnType,
+  type Selectable,
+  sql,
+} from "@workertown/internal-storage";
+import { type Migrations } from "@workertown/internal-storage";
+import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale-storage-adapter";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {

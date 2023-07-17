@@ -1,1 +1,1 @@
-import { MemoryCacheAdapter } from "@workertown/cache/memory-cache-adapter";
+import { MemoryCacheAdapter } from "@workertown/internal-cache/memory-cache-adapter";

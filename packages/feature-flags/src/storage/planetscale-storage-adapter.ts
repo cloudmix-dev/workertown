@@ -2,8 +2,8 @@ import {
   type ColumnType,
   type Migrations,
   type Selectable,
-} from "@workertown/storage";
-import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/storage/planetscale-storage-adapter";
+} from "@workertown/internal-storage";
+import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale-storage-adapter";
 
 import { type Flag, type FlagCondition } from "./storage-adapter.js";
 

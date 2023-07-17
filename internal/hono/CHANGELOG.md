@@ -1,4 +1,4 @@
-# @workertown/hono
+# @workertown/internal-hono
 
 ## 0.0.1-alpha.5
 

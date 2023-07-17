@@ -1,3 +1,5 @@
+import { StorageAdapter as BaseStorageAdapter } from "@workertown/internal-storage";
+
 export interface Subscription {
   id: string;
   topic: string;
@@ -7,7 +9,7 @@ export interface Subscription {
   createdAt: Date;
 }
 
-export class StorageAdapter {
+export class StorageAdapter extends BaseStorageAdapter {
   async getSubscriptions(): Promise<Subscription[]> {
     throw new Error("'getSubscriptions()' not implemented");
   }
@@ -28,6 +30,4 @@ export class StorageAdapter {
   async deleteSubscription(id: string): Promise<void> {
     throw new Error("'deleteSubscription' not implemented");
   }
-
-  async runMigrations(): Promise<void> {}
 }

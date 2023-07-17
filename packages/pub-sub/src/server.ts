@@ -3,7 +3,7 @@ import {
   type MessageBatch,
   type Queue,
 } from "@cloudflare/workers-types";
-import { createServer } from "@workertown/hono";
+import { createServer } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 

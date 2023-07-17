@@ -1,5 +1,5 @@
 import { serve as honoServe } from "@hono/node-server";
-import { type WorkertownHono } from "@workertown/hono";
+import { type WorkertownHono } from "@workertown/internal-hono";
 
 interface ServeOptions {
   port?: number;

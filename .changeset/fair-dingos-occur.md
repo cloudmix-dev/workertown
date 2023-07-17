@@ -1,6 +1,6 @@
 ---
 "@workertown/feature-flags": patch
-"@workertown/hono": patch
+"@workertown/internal-hono": patch
 "@workertown/internal-types": patch
 "@workertown/kv": patch
 "@workertown/middleware": patch

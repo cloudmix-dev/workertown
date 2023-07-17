@@ -1,4 +1,4 @@
-import { type WorkertownHono } from "@workertown/hono";
+import { type WorkertownHono } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import { hc } from "hono/client";
 import merge from "lodash.merge";

@@ -2,8 +2,8 @@ import {
   type ColumnType,
   type Migrations,
   type Selectable,
-} from "@workertown/storage";
-import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/storage/d1-storage-adapter";
+} from "@workertown/internal-storage";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {

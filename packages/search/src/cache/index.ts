@@ -1,3 +1,3 @@
-import { CacheAdapter } from "@workertown/cache";
+import { CacheAdapter } from "@workertown/internal-cache";
 
 export { CacheAdapter };

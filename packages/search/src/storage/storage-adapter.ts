@@ -1,4 +1,4 @@
-import { StorageAdapter as BaseStorageAdapter } from "@workertown/storage";
+import { StorageAdapter as BaseStorageAdapter } from "@workertown/internal-storage";
 
 export interface GetDocumentsOptions {
   limit: number;

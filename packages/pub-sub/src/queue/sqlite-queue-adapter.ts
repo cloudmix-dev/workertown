@@ -1,4 +1,5 @@
 import { type Message } from "@cloudflare/workers-types";
+import { MigrationProvider } from "@workertown/internal-storage";
 import Database from "better-sqlite3";
 import {
   type ColumnType,
@@ -9,7 +10,6 @@ import {
   SqliteDialect,
 } from "kysely";
 
-import { DefaultMigrationProvider } from "../storage/migrations.js";
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface QueueMessagesTable {
@@ -166,7 +166,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
   async runMigrations() {
     const migrator = new Migrator({
       db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
+      provider: new MigrationProvider(MIGRATIONS),
     });
 
     await migrator.migrateToLatest();

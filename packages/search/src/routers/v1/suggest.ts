@@ -1,4 +1,4 @@
-import { createRouter, validate } from "@workertown/hono";
+import { createRouter, validate } from "@workertown/internal-hono";
 import MiniSearch, { type Suggestion } from "minisearch";
 import { z } from "zod";
 

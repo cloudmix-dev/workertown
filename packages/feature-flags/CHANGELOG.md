@@ -6,7 +6,7 @@
 
 - Alpha.5 Release
 - Updated dependencies
-  - @workertown/hono@0.0.1-alpha.5
+  - @workertown/internal-hono@0.0.1-alpha.5
   - @workertown/middleware@0.0.1-alpha.5
 
 ## 0.0.1-alpha.4
@@ -15,7 +15,7 @@
 
 - Alpha.4 Release
 - Updated dependencies
-  - @workertown/hono@0.0.1-alpha.4
+  - @workertown/internal-hono@0.0.1-alpha.4
   - @workertown/middleware@0.0.1-alpha.4
 
 ## 0.0.1-alpha.3

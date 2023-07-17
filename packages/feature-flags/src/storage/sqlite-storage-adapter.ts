@@ -2,8 +2,8 @@ import {
   type ColumnType,
   type Migrations,
   type Selectable,
-} from "@workertown/storage";
-import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/storage/sqlite-storage-adapter";
+} from "@workertown/internal-storage";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite-storage-adapter";
 
 import { type Flag, type FlagCondition } from "./storage-adapter.js";
 

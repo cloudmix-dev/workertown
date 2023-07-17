@@ -2,7 +2,7 @@ import {
   type CreateServerOptions as BaseCreateServerOptions,
   type WorkertownContext,
   type WorkertownRequest,
-} from "@workertown/hono";
+} from "@workertown/internal-hono";
 import { type SearchResult } from "minisearch";
 
 import { type CacheAdapter } from "./cache/index.js";

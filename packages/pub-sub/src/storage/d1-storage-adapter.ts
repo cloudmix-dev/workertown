@@ -1,16 +1,11 @@
-import { D1Database } from "@cloudflare/workers-types";
 import {
   type ColumnType,
-  type Dialect,
-  Kysely,
-  type MigrationInfo,
-  Migrator,
+  type Migrations,
   type Selectable,
-} from "kysely";
-import { D1Dialect } from "kysely-d1";
+} from "@workertown/internal-storage";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
-import { DefaultMigrationProvider } from "./migrations.js";
-import { StorageAdapter, type Subscription } from "./storage-adapter.js";
+import { type Subscription } from "./storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;
@@ -27,7 +22,7 @@ export interface DatabaseSchema {
   subscriptions: SubscriptionsTable;
 }
 
-const MIGRATIONS: MigrationInfo[] = [
+const MIGRATIONS: Migrations = [
   {
     name: "1688823193041_add_initial_tables_and_indexes",
     migration: {
@@ -73,22 +68,8 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface D1StorageAdapterOptions {
-  db: D1Database;
-}
-
-export class D1StorageAdapter extends StorageAdapter {
-  private readonly _client: Kysely<DatabaseSchema>;
-
-  constructor(options: D1StorageAdapterOptions) {
-    super();
-
-    this._client = new Kysely<DatabaseSchema>({
-      // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
-      // types
-      dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
-    });
-  }
+export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+  public readonly migrations = MIGRATIONS;
 
   private _formatSubscription(subscription: SubscriptionRow): Subscription {
     return {
@@ -106,7 +87,7 @@ export class D1StorageAdapter extends StorageAdapter {
   }
 
   async getSubscriptions() {
-    const records = await this._client
+    const records = await this.client
       .selectFrom("subscriptions")
       .selectAll()
       .execute();
@@ -115,7 +96,7 @@ export class D1StorageAdapter extends StorageAdapter {
   }
 
   async getSubscriptionsByTopic(topic: string) {
-    const records = await this._client
+    const records = await this.client
       .selectFrom("subscriptions")
       .selectAll()
       .where("topic", "=", topic)
@@ -133,7 +114,7 @@ export class D1StorageAdapter extends StorageAdapter {
     const id = crypto.randomUUID();
     const now = new Date();
 
-    await this._client
+    await this.client
       .insertInto("subscriptions")
       .values({
         id,
@@ -157,18 +138,9 @@ export class D1StorageAdapter extends StorageAdapter {
   }
 
   async deleteSubscription(id: string) {
-    await this._client
+    await this.client
       .deleteFrom("subscriptions")
       .where("id", "=", id)
       .execute();
-  }
-
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new DefaultMigrationProvider(MIGRATIONS),
-    });
-
-    await migrator.migrateToLatest();
   }
 }

@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { createRouter } from "@workertown/hono";
+import { createRouter } from "@workertown/internal-hono";
 import { z } from "zod";
 
 import { type Subscription } from "../../storage/index.js";

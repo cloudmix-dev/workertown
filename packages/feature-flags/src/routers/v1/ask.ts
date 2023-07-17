@@ -1,4 +1,4 @@
-import { createRouter, validate } from "@workertown/hono";
+import { createRouter, validate } from "@workertown/internal-hono";
 import { z } from "zod";
 
 import { type FlagCondition } from "../../storage/storage-adapter.js";

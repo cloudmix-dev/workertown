@@ -1,6 +1,8 @@
-import { StorageAdapter, type Subscription } from "./storage-adapter.js";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
-export class MemoryStorageAdapter extends StorageAdapter {
+import { type Subscription } from "./storage-adapter.js";
+
+export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   private _itemStore = new Map<string, Subscription>();
 
   async getSubscriptions(): Promise<Subscription[]> {
