@@ -7,9 +7,7 @@
       ".next/*",
       ".turbo/*",
       ".wrangler/*",
-      ".vercel/*",
-      ".husky/*",
-      ".changeset/*"
+      ".vercel/*"
     ]
   },
   "formatter": {
