@@ -7,8 +7,14 @@ export class MemoryCacheAdapter extends CacheAdapter {
     return (this._cache.get(key) as T) ?? null;
   }
 
-  public async set(key: string, value: unknown): Promise<void> {
+  public async set(key: string, value: unknown, ttl?: number): Promise<void> {
     this._cache.set(key, value);
+
+    if (typeof ttl === "number") {
+      setTimeout(() => {
+        this._cache.delete(key);
+      }, ttl * 1000);
+    }
   }
 
   public async delete(key?: string): Promise<void> {

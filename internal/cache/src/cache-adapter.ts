@@ -3,7 +3,7 @@ export class CacheAdapter {
     throw new TypeError("'get()' not implemented");
   }
 
-  public async set(key: string, value: unknown): Promise<void> {
+  public async set(key: string, value: unknown, ttl?: number): Promise<void> {
     throw new TypeError("'set()' not implemented");
   }
 

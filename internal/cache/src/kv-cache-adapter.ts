@@ -32,8 +32,10 @@ export class KVCacheAdapter extends CacheAdapter {
     return value as T;
   }
 
-  public async set(key: string, value: unknown) {
-    await this.kv.put(this._prefixKey(key), JSON.stringify(value));
+  public async set(key: string, value: unknown, ttl?: number) {
+    await this.kv.put(this._prefixKey(key), JSON.stringify(value), {
+      expirationTtl: ttl,
+    });
   }
 
   public async delete(key?: string) {
