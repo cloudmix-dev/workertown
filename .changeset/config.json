@@ -11,7 +11,9 @@
     "@workertown/kv-example",
     "@workertown/nodejs-example",
     "@workertown/pub-sub-example",
-    "@workertown/search-example"
+    "@workertown/search-example",
+    "// WIP packages below...",
+    "@workertown/auth"
   ],
   "linked": [],
   "updateInternalDependencies": "patch"
