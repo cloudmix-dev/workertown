@@ -6,9 +6,11 @@ import {
 import {
   type ApiKeyOptions,
   type BasicOptions,
+  type IpOptions,
   type JwtOptions,
   apiKey as apiKeyMiddleware,
   basic as basicMiddleware,
+  ip as ipMiddleware,
   jwt as jwtMiddleware,
 } from "@workertown/middleware";
 import { type Env, Hono } from "hono";
@@ -30,6 +32,9 @@ export class WorkertownHono<T extends Context> extends Hono<T> {
 }
 
 export interface CreateServerOptions {
+  access?: {
+    ip?: IpOptions | false;
+  };
   auth?: {
     basic?: BasicOptions | false;
     jwt?: JwtOptions | false;
@@ -46,7 +51,12 @@ export interface CreateServerOptions {
 export function createServer<T extends Context>(
   options: CreateServerOptions = {},
 ) {
-  const { auth: authOptions, basePath = "/", cors } = options;
+  const {
+    access: accessOptions,
+    auth: authOptions,
+    basePath = "/",
+    cors,
+  } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
 
   // This sets `ctx.env` to NodeJS' `process.env` if we're in that environment
@@ -57,6 +67,10 @@ export function createServer<T extends Context>(
 
     return next();
   });
+
+  if (accessOptions?.ip !== false) {
+    server.use("*", ipMiddleware(accessOptions?.ip));
+  }
 
   if (authOptions?.basic !== false) {
     server.use("*", basicMiddleware(authOptions?.basic));
