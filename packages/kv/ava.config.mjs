@@ -2,5 +2,5 @@ export default {
   extensions: {
     ts: "module",
   },
-  nodeArguments: ["--loader=tsx"],
+  nodeArguments: ["--loader=tsx", "--no-warnings"],
 };
