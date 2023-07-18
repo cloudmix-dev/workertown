@@ -9,6 +9,7 @@
     "clean": "turbo clean && rm -rf node_modules",
     "lint": "rome check ./{packages,examples,internal,www}/*",
     "fmt": "rome format --write ./{packages,examples,internal,www}/*",
+    "ci": "rome ci ./{packages,examples,internal,www}/*",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "turbo build --filter='./{packages,internal}/*' && changeset publish",
