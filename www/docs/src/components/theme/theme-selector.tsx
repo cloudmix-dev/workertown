@@ -16,6 +16,7 @@ import {
 function LightIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
     <svg aria-hidden="true" viewBox="0 0 16 16" {...props}>
+      <title>Light mode icon</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -28,6 +29,7 @@ function LightIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 function DarkIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
     <svg aria-hidden="true" viewBox="0 0 16 16" {...props}>
+      <title>Dark mode icon</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -43,7 +45,10 @@ export function ThemeSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-zinc-700 dark:ring-inset dark:ring-white/5">
+        <button
+          type="button"
+          className="flex h-6 w-6 items-center justify-center rounded-lg shadow-md shadow-black/5 ring-1 ring-black/5 dark:bg-zinc-700 dark:ring-inset dark:ring-white/5"
+        >
           <LightIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 fill-indigo-400 [[data-theme=light]_&]:block" />
           <DarkIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 fill-indigo-400 [[data-theme=light]_&]:block" />
           <span className="sr-only">Toggle theme</span>

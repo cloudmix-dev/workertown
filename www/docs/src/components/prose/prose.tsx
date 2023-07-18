@@ -2,6 +2,7 @@ import clsx from "clsx";
 
 interface ProseProps {
   className?: string;
+  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any kind of prop through
   [x: string]: any;
 }
 
@@ -26,7 +27,7 @@ export function Prose({
         // pre
         "prose-pre:rounded-xl prose-pre:bg-zinc-900 prose-pre:shadow-lg dark:prose-pre:bg-zinc-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-zinc-300/10",
         // hr
-        "dark:prose-hr:border-zinc-800"
+        "dark:prose-hr:border-zinc-800",
       )}
       {...props}
     />

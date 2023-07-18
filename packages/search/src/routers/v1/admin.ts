@@ -10,7 +10,7 @@ router.get("/info", async (ctx) => {
   return ctx.json({
     status: 200,
     success: true,
-    data: config as any,
+    data: config as {},
   });
 });
 
@@ -26,7 +26,7 @@ router.post("/migrate", async (ctx) => {
 
   return ctx.json(
     { status: success ? 200 : 500, success, data: success },
-    success ? 200 : 500
+    success ? 200 : 500,
   );
 });
 

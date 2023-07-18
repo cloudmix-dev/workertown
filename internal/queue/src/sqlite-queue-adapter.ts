@@ -91,7 +91,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
   }
 
   private _formatQueueMessage(
-    queueMessage: QueueMessageRow
+    queueMessage: QueueMessageRow,
   ): Pick<Message<QueueMessage>, "id" | "body" | "timestamp"> {
     return {
       id: queueMessage.id,
@@ -104,7 +104,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
     message: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ): Promise<void> {
     await this._client
       .insertInto("queue_messages")
@@ -120,7 +120,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
     messages: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >[]
+    >[],
   ): Promise<void> {
     if (messages.length > 0) {
       await this._client
@@ -130,7 +130,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
             id: crypto.randomUUID(),
             timestamp: Date.now(),
             body: JSON.stringify(message),
-          }))
+          })),
         )
         .execute();
     }

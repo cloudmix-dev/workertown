@@ -1,11 +1,11 @@
 import { StorageAdapter as BaseStorageAdapter } from "@workertown/internal-storage";
 
 export class StorageAdapter extends BaseStorageAdapter {
-  public async getValue<T = any>(key: string): Promise<T | null> {
+  public async getValue<T = unknown>(key: string): Promise<T | null> {
     throw new Error("'getValue()' not implemented");
   }
 
-  public async setValue<T = any>(key: string, value: T): Promise<T> {
+  public async setValue<T = unknown>(key: string, value: T): Promise<T> {
     throw new Error("'setValue()' not implemented");
   }
 

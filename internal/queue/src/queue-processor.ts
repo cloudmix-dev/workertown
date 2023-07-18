@@ -5,6 +5,7 @@ import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface CreateQueueProcessorOptions {
   adapter: QueueAdapter;
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
   server: WorkertownHono<any>;
   delay?: number;
   schedule?: (callback: () => Promise<void>, delay: number) => Promise<void>;
@@ -13,13 +14,14 @@ interface CreateQueueProcessorOptions {
 class QueueProcessor {
   private _queue: QueueAdapter;
 
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
   private _server: WorkertownHono<any>;
 
   private _delay: number;
 
   private _schedule: (
     callback: () => Promise<void>,
-    delay: number
+    delay: number,
   ) => Promise<void>;
 
   constructor(options: CreateQueueProcessorOptions) {
@@ -53,18 +55,19 @@ class QueueProcessor {
         queue: "main",
         ackAll: () => {
           Promise.allSettled(
-            messages.map((message) => this._queue.ackMessage?.(message.id))
+            messages.map((message) => this._queue.ackMessage?.(message.id)),
           );
         },
         retryAll: () => {
           Promise.allSettled(
             messages.map((message) =>
-              this._queue.rescheduleMessage?.(message.id)
-            )
+              this._queue.rescheduleMessage?.(message.id),
+            ),
           );
         },
       };
 
+      // rome-ignore lint/suspicious/noExplicitAny: Forcing through the queue call
       await this._server.queue?.(batch, {} as any, {} as any);
 
       delay = 0;

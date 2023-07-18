@@ -68,7 +68,7 @@ const TAGS = {
 export function createTestService(
   options: CreateServerOptions = {},
   intialSearchItems: SearchDocument[] = SEARCH_DOCUMENTS,
-  initialTags: Record<string, string[]> = TAGS
+  initialTags: Record<string, string[]> = TAGS,
 ) {
   return search({
     ...options,
@@ -76,7 +76,7 @@ export function createTestService(
     // The `as unknown` here fixes some weird Typescript bug...
     storage: new MemoryStorageAdapter(
       intialSearchItems,
-      initialTags
+      initialTags,
     ) as unknown as StorageAdapter,
   });
 }
@@ -87,7 +87,7 @@ export function makeRequest(
   {
     method = "GET",
     body,
-  }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: any } = {}
+  }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: unknown } = {},
 ) {
   return service.fetch(
     new Request(`http://search.local${path}`, {
@@ -97,6 +97,6 @@ export function makeRequest(
         "content-type": "application/json",
       },
       body: body ? JSON.stringify(body) : undefined,
-    })
+    }),
   );
 }

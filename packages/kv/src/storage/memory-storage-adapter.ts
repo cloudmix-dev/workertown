@@ -3,7 +3,7 @@ import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/in
 export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   private _valueStore = new Map<string, string>();
 
-  constructor(initialDocuments: { key: string; value: any }[] = []) {
+  constructor(initialDocuments: { key: string; value: unknown }[] = []) {
     super();
 
     initialDocuments.forEach((value) => {
@@ -11,7 +11,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     });
   }
 
-  public async getValue<T = any>(key: string): Promise<T | null> {
+  public async getValue<T = unknown>(key: string): Promise<T | null> {
     const value = this._valueStore.get(key);
 
     if (typeof value === "undefined") {
@@ -21,7 +21,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     return JSON.parse(value) as T;
   }
 
-  public async setValue<T = any>(key: string, value: T): Promise<T> {
+  public async setValue<T = unknown>(key: string, value: T): Promise<T> {
     this._valueStore.set(key, JSON.stringify(value));
 
     return value;

@@ -129,7 +129,7 @@ const FLAGS: Flag[] = [
 
 export function createTestService(
   options: CreateServerOptions = {},
-  intialFlags: Flag[] = FLAGS
+  intialFlags: Flag[] = FLAGS,
 ) {
   return search({
     ...options,
@@ -145,7 +145,7 @@ export function makeRequest(
   {
     method = "GET",
     body,
-  }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: any } = {}
+  }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: unknown } = {},
 ) {
   return service.fetch(
     new Request(`http://feature-flags.local${path}`, {
@@ -155,6 +155,6 @@ export function makeRequest(
         "content-type": "application/json",
       },
       body: body ? JSON.stringify(body) : undefined,
-    })
+    }),
   );
 }

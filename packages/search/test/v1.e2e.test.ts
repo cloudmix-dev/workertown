@@ -25,7 +25,7 @@ test("v1 search w/ tenant, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test?term=test&fields=content"
+    "/v1/search/test?term=test&fields=content",
   );
 
   t.is(res.status, 200);
@@ -41,7 +41,7 @@ test("v1 search w/ tenant, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test?term=test&fields=content,title"
+    "/v1/search/test?term=test&fields=content,title",
   );
 
   t.is(res.status, 200);
@@ -59,7 +59,7 @@ test("v1 search w/ tenant, index, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test/test?term=test&fields=content"
+    "/v1/search/test/test?term=test&fields=content",
   );
 
   t.is(res.status, 200);
@@ -75,7 +75,7 @@ test("v1 search w/ tenant, index, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test/test?term=test&fields=content,title"
+    "/v1/search/test/test?term=test&fields=content,title",
   );
 
   t.is(res.status, 200);
@@ -92,7 +92,7 @@ test("v1 search w/ tenant, index, single field, limit", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test/test?term=test&fields=content&limit=1"
+    "/v1/search/test/test?term=test&fields=content&limit=1",
   );
 
   t.is(res.status, 200);
@@ -108,7 +108,7 @@ test("v1 search w/ tenant, index, single field, cursor", async (t) => {
   const cursor = btoa("document_1");
   const res = await makeRequest(
     service,
-    `/v1/search/test/test?term=test&fields=content&limit=1&after=${cursor}`
+    `/v1/search/test/test?term=test&fields=content&limit=1&after=${cursor}`,
   );
 
   t.is(res.status, 200);
@@ -123,7 +123,7 @@ test("v1 search w/ tenant, index, single field, tags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test/test?term=test&fields=content&tags=test"
+    "/v1/search/test/test?term=test&fields=content&tags=test",
   );
 
   t.is(res.status, 200);
@@ -138,7 +138,7 @@ test("v1 search w/ tenant, index, single field, fuzzy", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/search/test/test?term=tist&fields=content&fuzzy=1"
+    "/v1/search/test/test?term=tist&fields=content&fuzzy=1",
   );
 
   t.is(res.status, 200);
@@ -160,7 +160,7 @@ test("v1 search w/ custom endpoint", async (t) => {
   });
   const res = await makeRequest(
     service,
-    "/custom-search/test/test?term=test&fields=content"
+    "/custom-search/test/test?term=test&fields=content",
   );
 
   t.is(res.status, 200);
@@ -185,7 +185,7 @@ test("v1 suggest w/ tenant, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test?term=test&fields=content"
+    "/v1/suggest/test?term=test&fields=content",
   );
 
   t.is(res.status, 200);
@@ -202,7 +202,7 @@ test("v1 suggest w/ tenant, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test?term=test&fields=content,title"
+    "/v1/suggest/test?term=test&fields=content,title",
   );
 
   t.is(res.status, 200);
@@ -219,7 +219,7 @@ test("v1 suggest w/ tenant, index, single field", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test/test?term=test&fields=content"
+    "/v1/suggest/test/test?term=test&fields=content",
   );
 
   t.is(res.status, 200);
@@ -236,7 +236,7 @@ test("v1 suggest w/ tenant, index, multiple fields", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test/test?term=test&fields=content,title"
+    "/v1/suggest/test/test?term=test&fields=content,title",
   );
 
   t.is(res.status, 200);
@@ -253,7 +253,7 @@ test("v1 suggest w/ tenant, index, single field, limit", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test/test?term=test&fields=content&limit=1"
+    "/v1/suggest/test/test?term=test&fields=content&limit=1",
   );
 
   t.is(res.status, 200);
@@ -270,7 +270,7 @@ test("v1 suggest w/ tenant, index, single field, tags", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test/test?term=test&fields=content&tags=test"
+    "/v1/suggest/test/test?term=test&fields=content&tags=test",
   );
 
   t.is(res.status, 200);
@@ -287,7 +287,7 @@ test("v1 suggest w/ tenant, index, single field, fuzzy", async (t) => {
   const service = createTestService();
   const res = await makeRequest(
     service,
-    "/v1/suggest/test/test?term=tist&fields=content&fuzzy=1"
+    "/v1/suggest/test/test?term=tist&fields=content&fuzzy=1",
   );
 
   t.is(res.status, 200);
@@ -310,7 +310,7 @@ test("v1 suggest w/ custom endpoint", async (t) => {
   });
   const res = await makeRequest(
     service,
-    "/custom-suggest/test/test?term=test&fields=content"
+    "/custom-suggest/test/test?term=test&fields=content",
   );
 
   t.is(res.status, 200);

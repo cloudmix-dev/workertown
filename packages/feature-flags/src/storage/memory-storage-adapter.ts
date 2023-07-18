@@ -13,7 +13,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     });
   }
 
-  public async getFlags(disabled: boolean = false): Promise<Flag[]> {
+  public async getFlags(disabled = false): Promise<Flag[]> {
     return Array.from(this._flagStore.values())
       .filter((flag) => {
         if (disabled === false && !flag.enabled) {
@@ -30,7 +30,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   }
 
   public async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
+    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">,
   ): Promise<Flag> {
     const existing = await this.getFlag(flag.name);
 

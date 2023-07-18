@@ -56,7 +56,7 @@ router.get(
         .string()
         .optional()
         .transform((val) => val === "1" || val === "true"),
-    })
+    }),
   ),
   async (ctx) => {
     const tenant = ctx.req.param("tenant") as string;
@@ -78,6 +78,7 @@ router.get(
       typeof stopWordsFn === "function"
         ? await stopWordsFn(ctx.req)
         : stopWordsFn;
+    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
     let documents: any[] = [];
     let results: Suggestion[] = [];
 
@@ -98,7 +99,7 @@ router.get(
 
       if (documents.length > 0) {
         const documentsMap = new Map<string, SearchDocument>(
-          documents.map((document) => [document.id, document])
+          documents.map((document) => [document.id, document]),
         );
         const miniSearch = new MiniSearch({
           fields: fields ?? [],
@@ -110,7 +111,7 @@ router.get(
                 ? (id, term) => {
                     const document = documentsMap.get(id);
 
-                    return boostDocument(document!, term);
+                    return boostDocument(document as SearchDocument, term);
                   }
                 : undefined,
             combineWith: exact ? "AND" : "OR",
@@ -119,7 +120,7 @@ router.get(
                 ? (result) => {
                     const document = documentsMap.get(result.id);
 
-                    return filter(document!, result);
+                    return filter(document as SearchDocument, result);
                   }
                 : undefined,
             fuzzy,
@@ -128,7 +129,7 @@ router.get(
         });
 
         miniSearch.addAll(
-          documents.map((document) => ({ id: document.id, ...document.data }))
+          documents.map((document) => ({ id: document.id, ...document.data })),
         );
 
         results = miniSearch.autoSuggest(term);
@@ -140,7 +141,7 @@ router.get(
     }
 
     return ctx.json({ status: 200, success: true, data: results });
-  }
+  },
 );
 
 export { router };

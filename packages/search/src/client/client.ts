@@ -54,6 +54,7 @@ export class SearchClient {
     return {
       getInfo: async () => {
         const client = this._createClient(this._options.prefixes.admin);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any).info.$get();
         const { data } = await res.json();
 
@@ -61,6 +62,7 @@ export class SearchClient {
       },
       runMigrations: async () => {
         const client = this._createClient(this._options.prefixes.admin);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any).migrate.$post();
         const { data } = await res.json();
 
@@ -73,6 +75,7 @@ export class SearchClient {
     return {
       openApi: async () => {
         const client = this._createClient(this._options.prefixes.public);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any)["open-api.json"].$get();
         const result = await res.json();
 
@@ -80,6 +83,7 @@ export class SearchClient {
       },
       health: async () => {
         const client = this._createClient(this._options.prefixes.public);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any).health.$get();
         const result = await res.json();
 
@@ -92,6 +96,7 @@ export class SearchClient {
     return {
       deleteItem: async (id: string) => {
         const client = this._createClient(this._options.prefixes.items);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any)[":id"].$delete({ param: { id } });
         const { data } = await res.json();
 
@@ -99,6 +104,7 @@ export class SearchClient {
       },
       getItem: async (id: string) => {
         const client = this._createClient(this._options.prefixes.items);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any)[":id"].$get({ param: { id } });
         const { data } = await res.json();
 
@@ -111,9 +117,10 @@ export class SearchClient {
           index: string;
           tenant: string;
           tags?: string[];
-        }
+        },
       ) => {
         const client = this._createClient(this._options.prefixes.items);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any)[":id"].$put({
           param: { id },
           json: item,
@@ -134,11 +141,12 @@ export class SearchClient {
           index?: string;
           fields?: string[];
           tags?: [];
-        }
+        },
       ) => {
         const { tenant, index, fields, tags } = options;
         const client = this._createClient(this._options.prefixes.search);
         // TODO: Fix this `any` when Hono fixes type inference
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any)[":tenant"][":index?"].$get({
           param: { tenant, index },
           query: {
@@ -151,8 +159,8 @@ export class SearchClient {
 
         // TODO: remove this hard coded typing when above is fixed
         return data as {
-          id: any;
-          item: any;
+          id: string;
+          document: unknown;
           score: number;
           terms: string[];
           match: MatchInfo;
@@ -170,11 +178,12 @@ export class SearchClient {
           index?: string;
           fields?: string[];
           tags?: [];
-        }
+        },
       ) => {
         const { tenant, index, fields, tags } = options;
         const client = this._createClient(this._options.prefixes.suggest);
         // TODO: Fix this `any` when Hono fixes type inference
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any)[":tenant"][":index?"].$get({
           param: { tenant, index },
           query: {
@@ -195,6 +204,7 @@ export class SearchClient {
     return {
       getTags: async () => {
         const client = this._createClient(this._options.prefixes.tags);
+        // rome-ignore lint/suspicious/noExplicitAny: We're casting to any because reasons...
         const res = await (client as any).index.$get();
         const { data } = await res.json();
 
@@ -206,7 +216,7 @@ export class SearchClient {
 
 export function createSearchClient(
   url: string,
-  options?: ClientOptionsOptional
+  options?: ClientOptionsOptional,
 ) {
   return new SearchClient(url, options);
 }

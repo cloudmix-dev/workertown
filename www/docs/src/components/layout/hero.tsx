@@ -57,11 +57,12 @@ database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   },
 ];
 
-interface TrafficLightsIconProps extends React.SVGProps<SVGSVGElement> {}
+type TrafficLightsIconProps = React.SVGProps<SVGSVGElement>;
 
 function TrafficLightsIcon(props: TrafficLightsIconProps) {
   return (
     <svg aria-hidden="true" viewBox="0 0 42 10" fill="none" {...props}>
+      <title>traffic lights menu</title>
       <circle cx="5" cy="5" r="4.5" fill="#ef4444" />
       <circle cx="21" cy="5" r="4.5" fill="#fbbf24" />
       <circle cx="37" cy="5" r="4.5" fill="#22c55e" />
@@ -105,8 +106,8 @@ export function Hero() {
                   </span>
                 </div>
                 <div className="absolute left-[80%] top-0 flex h-full w-full">
-                  <div className="h-full w-36 bg-gradient-to-r from-transparent to-zinc-900"></div>
-                  <div className="h-full flex-grow :bg-zinc-900"></div>
+                  <div className="h-full w-36 bg-gradient-to-r from-transparent to-zinc-900" />
+                  <div className="h-full flex-grow :bg-zinc-900" />
                 </div>
               </div>
               <p className="mt-3 text-lg tracking-tight text-zinc-400 md:text-xl">

@@ -109,7 +109,7 @@ export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchem
     subscription: Pick<
       Subscription,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ) {
     const id = crypto.randomUUID();
     const now = new Date();

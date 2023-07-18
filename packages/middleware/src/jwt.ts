@@ -99,7 +99,7 @@ export function jwt(options?: JwtOptionsOptional) {
             typeof signingCredentials === "string"
               ? new TextEncoder().encode(signingCredentials)
               : (signingCredentials as unknown as KeyLike),
-            { issuer, audience }
+            { issuer, audience },
           );
           let allowed = true;
 

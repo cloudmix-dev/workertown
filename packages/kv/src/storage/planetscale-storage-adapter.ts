@@ -44,7 +44,7 @@ const MIGRATIONS: Migrations = [
 export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<DatabaseSchema> {
   public readonly migrations = MIGRATIONS;
 
-  public async getValue<T = any>(key: string) {
+  public async getValue<T = unknown>(key: string) {
     const record = await this.client
       .selectFrom("key_values")
       .where("name", "=", key)
@@ -58,7 +58,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
     return JSON.parse(record.value) as T;
   }
 
-  public async setValue<T = any>(key: string, value: T) {
+  public async setValue<T = unknown>(key: string, value: T) {
     const now = new Date();
     const existing = await this.client
       .selectFrom("key_values")

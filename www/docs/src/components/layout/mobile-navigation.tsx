@@ -15,6 +15,7 @@ function MenuIcon(props) {
       strokeLinecap="round"
       {...props}
     >
+      <title>Menu icon</title>
       <path d="M4 7h16M4 12h16M4 17h16" />
     </svg>
   );
@@ -30,6 +31,7 @@ function CloseIcon(props) {
       strokeLinecap="round"
       {...props}
     >
+      <title>Close icon</title>
       <path d="M5 5l14 14M19 5l-14 14" />
     </svg>
   );

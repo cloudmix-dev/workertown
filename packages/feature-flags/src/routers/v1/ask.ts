@@ -8,7 +8,7 @@ const router = createRouter<Context>();
 
 function validateContext(
   context: Record<string, unknown>,
-  conditions: FlagCondition[]
+  conditions: FlagCondition[],
 ) {
   let result = true;
 
@@ -28,7 +28,7 @@ function validateContext(
         result = Boolean(
           typeof value === "number" &&
             typeof flagCondition.value === "number" &&
-            value > flagCondition.value
+            value > flagCondition.value,
         );
 
         break;
@@ -36,7 +36,7 @@ function validateContext(
         result = Boolean(
           typeof value === "number" &&
             typeof flagCondition.value === "number" &&
-            value >= flagCondition.value
+            value >= flagCondition.value,
         );
 
         break;
@@ -44,7 +44,7 @@ function validateContext(
         result = Boolean(
           typeof value === "number" &&
             typeof flagCondition.value === "number" &&
-            value < flagCondition.value
+            value < flagCondition.value,
         );
 
         break;
@@ -52,7 +52,7 @@ function validateContext(
         result = Boolean(
           typeof value === "number" &&
             typeof flagCondition.value === "number" &&
-            value <= flagCondition.value
+            value <= flagCondition.value,
         );
 
         break;
@@ -89,7 +89,7 @@ router.post(
     z.object({
       flags: z.array(z.string()).nonempty().optional(),
       context: z.record(z.any()).optional(),
-    })
+    }),
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
@@ -113,7 +113,7 @@ router.post(
       .map((flag) => flag.name);
 
     return ctx.json({ status: 200, success: true, data: result });
-  }
+  },
 );
 
 export { router };

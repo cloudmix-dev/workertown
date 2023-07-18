@@ -18,7 +18,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
   constructor(
     initialDocuments: SearchDocument[] = [],
-    tags: Record<string, string[]> = {}
+    tags: Record<string, string[]> = {},
   ) {
     super();
 
@@ -38,35 +38,35 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
       this._tenantIndex.set(document.tenant, new Set<string>());
     }
 
-    this._tenantIndex.get(document.tenant)!.add(document.id);
+    this._tenantIndex.get(document.tenant)?.add(document.id);
 
     if (!this._tenantIndex.has(`${document.tenant}_${document.index}`)) {
       this._tenantIndex.set(
         `${document.tenant}_${document.index}`,
-        new Set<string>()
+        new Set<string>(),
       );
     }
 
     this._tenantIndex
-      .get(`${document.tenant}_${document.index}`)!
-      .add(document.id);
+      .get(`${document.tenant}_${document.index}`)
+      ?.add(document.id);
 
     this._updatedIndex.set(
       `${document.updatedAt.getTime()}_${document.id}`,
-      document.id
+      document.id,
     );
   }
 
   private _getSortedDocuments() {
     const sortedDocuments = Array.from(this._updatedIndex.entries()).sort(
-      ([a], [b]) => (b > a ? 1 : -1)
+      ([a], [b]) => (b > a ? 1 : -1),
     );
 
-    return sortedDocuments.map(([, id]) => this._documentStore.get(id)!);
+    return sortedDocuments.map(([, id]) => this._documentStore.get(id));
   }
 
   public async getDocuments(
-    options: GetDocumentsOptions
+    options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     const { index, tenant, limit } = options;
     const indexKey = index ? `${tenant}_${index}` : tenant;
@@ -84,7 +84,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
       if (!this._deleted.has(id)) {
         const document = this._documentStore.get(id);
         const index = sortedDocuments.findIndex(
-          (document) => document.id === id
+          (document) => document?.id === id,
         );
 
         bucket[index] = document;
@@ -96,11 +96,11 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
   public async getDocumentsByTags(
     tags: string[],
-    options: GetDocumentsOptions
+    options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     const { index, tenant, limit } = options;
     const tagSet = new Set(
-      tags.flatMap((tag) => Array.from(this._tags.get(tag) ?? []))
+      tags.flatMap((tag) => Array.from(this._tags.get(tag) ?? [])),
     );
 
     if (tagSet.size === 0) {
@@ -122,7 +122,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
       if (!this._deleted.has(id) && tagSet.has(id)) {
         const document = this._documentStore.get(id);
         const index = sortedDocuments.findIndex(
-          (document) => document.id === id
+          (document) => document?.id === id,
         );
 
         bucket[index] = document;
@@ -138,7 +138,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
   public async indexDocument(
     document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
-    tags: string[] = []
+    tags: string[] = [],
   ): Promise<SearchDocument> {
     const now = new Date();
     const existing = this._documentStore.get(document.id);
@@ -160,7 +160,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
         const tagSet = this._tags.get(tag);
 
-        tagSet!.add(document.id);
+        tagSet?.add(document.id);
       });
     }
 
@@ -184,7 +184,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
     const tagSet = this._tags.get(tag);
 
-    tagSet!.add(id);
+    tagSet?.add(id);
   }
 
   public async untagDocument(id: string, tag: string): Promise<void> {
@@ -194,7 +194,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
     const tagSet = this._tags.get(tag);
 
-    tagSet!.delete(id);
+    tagSet?.delete(id);
   }
 
   public reset() {

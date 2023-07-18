@@ -7,8 +7,9 @@ interface ServeOptions {
 }
 
 export function serve(
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the WorkertownHono server here
   server: WorkertownHono<any>,
-  options: ServeOptions = { port: 3000 }
+  options: ServeOptions = { port: 3000 },
 ) {
   return honoServe({ fetch: server.fetch, ...options });
 }

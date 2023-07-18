@@ -13,7 +13,7 @@ router.get(
     "query",
     z.object({
       topic: z.string().optional(),
-    })
+    }),
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
@@ -27,7 +27,7 @@ router.get(
     }
 
     return ctx.json({ status: 200, success: true, data: subscriptions });
-  }
+  },
 );
 
 router.post(
@@ -39,7 +39,7 @@ router.post(
       endpoint: z.string().url(),
       headers: z.record(z.string(), z.string()).optional(),
       queryParameters: z.record(z.string(), z.string()).optional(),
-    })
+    }),
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
@@ -59,9 +59,9 @@ router.post(
 
     return ctx.json(
       { status, success: subscription ? true : null, data: subscription },
-      status
+      status,
     );
-  }
+  },
 );
 
 router.delete("/:id", async (ctx) => {

@@ -5,7 +5,7 @@ import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 export class CfQueuesQueueAdapter extends QueueAdapter {
   private _queue: Queue<QueueMessage>;
 
-  constructor(queue: Queue<any>) {
+  constructor(queue: Queue<unknown>) {
     super();
 
     this._queue = queue;
@@ -15,7 +15,7 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     message: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ) {
     const id = crypto.randomUUID();
 
@@ -29,7 +29,7 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     messages: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >[]
+    >[],
   ) {
     const messagesToSend = messages.map((message) => ({
       body: {

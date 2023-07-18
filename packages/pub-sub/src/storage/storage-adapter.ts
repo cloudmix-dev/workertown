@@ -22,7 +22,7 @@ export class StorageAdapter extends BaseStorageAdapter {
     subscription: Pick<
       Subscription,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ): Promise<Subscription> {
     throw new Error("'createSubscription' not implemented");
   }

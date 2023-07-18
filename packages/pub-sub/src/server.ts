@@ -83,7 +83,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
             data: null,
             error: `Database not found at env.${dbEnvKey}`,
           },
-          500
+          500,
         );
       }
 
@@ -91,7 +91,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     }
 
     if (!queueAdapter) {
-      const queue = ctx.env[queueEnvKey] as Queue<any> | undefined;
+      const queue = ctx.env[queueEnvKey] as Queue<unknown> | undefined;
 
       if (!queue) {
         return ctx.json(
@@ -101,7 +101,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
             data: null,
             error: `Queue not found at env.${queueEnvKey}`,
           },
-          500
+          500,
         );
       }
 
@@ -151,7 +151,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
         if (!res.ok) {
           throw new Error();
         }
-      })
+      }),
     );
 
     for (const [index, result] of results.entries()) {

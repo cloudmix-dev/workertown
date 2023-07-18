@@ -17,7 +17,7 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
         {Array.from({
           length: code.split("\n").length,
         }).map((_, index) => (
-          <Fragment key={index}>
+          <Fragment key={`line_number_${index}`}>
             {(index + 1).toString().padStart(2, "0")}
             <br />
           </Fragment>
@@ -36,9 +36,12 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
           >
             <code className="px-4">
               {tokens.map((line, lineIndex) => (
-                <div key={lineIndex} {...getLineProps({ line })}>
+                <div key={`line_${lineIndex}`} {...getLineProps({ line })}>
                   {line.map((token, tokenIndex) => (
-                    <span key={tokenIndex} {...getTokenProps({ token })} />
+                    <span
+                      key={`token_${tokenIndex}`}
+                      {...getTokenProps({ token })}
+                    />
                   ))}
                 </div>
               ))}

@@ -4,7 +4,7 @@ export interface QueueMessage {
   endpoint: string;
   headers?: Record<string, string>;
   queryParameters?: Record<string, string>;
-  body?: Record<any, unknown>;
+  body?: Record<string, unknown>;
 }
 
 export class QueueAdapter {
@@ -12,7 +12,7 @@ export class QueueAdapter {
     message: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ): Promise<void> {
     throw new Error("'sendMessage()' not implemented");
   }
@@ -21,7 +21,7 @@ export class QueueAdapter {
     messages: Pick<
       QueueMessage,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >[]
+    >[],
   ): Promise<void> {
     throw new Error("'sendMessages()' not implemented");
   }

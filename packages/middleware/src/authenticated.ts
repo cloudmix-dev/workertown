@@ -12,7 +12,7 @@ export function authenticated() {
           data: null,
           error: "Forbidden",
         },
-        403
+        403,
       );
     }
 

@@ -14,7 +14,7 @@ interface NavigationProps {
 }
 
 export function Navigation({ navigation, className }: NavigationProps) {
-  let router = useRouter();
+  const router = useRouter();
 
   return (
     <nav className={clsx("text-base lg:text-sm", className)}>
@@ -36,7 +36,7 @@ export function Navigation({ navigation, className }: NavigationProps) {
                       "block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full",
                       link.href === router.pathname
                         ? "font-semibold text-indigo-500 before:bg-indigo-500"
-                        : "text-zinc-500 before:hidden before:bg-zinc-300 hover:text-zinc-600 hover:before:block dark:text-zinc-400 dark:before:bg-zinc-700 dark:hover:text-zinc-300"
+                        : "text-zinc-500 before:hidden before:bg-zinc-300 hover:text-zinc-600 hover:before:block dark:text-zinc-400 dark:before:bg-zinc-700 dark:hover:text-zinc-300",
                     )}
                   >
                     {link.title}

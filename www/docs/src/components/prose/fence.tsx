@@ -19,6 +19,7 @@ function ClipboardIcon() {
       fill="currentColor"
       className="w-4 h-4"
     >
+      <title>Copy to clipboard</title>
       <path
         fillRule="evenodd"
         d="M17.663 3.118c.225.015.45.032.673.05C19.876 3.298 21 4.604 21 6.109v9.642a3 3 0 01-3 3V16.5c0-5.922-4.576-10.775-10.384-11.217.324-1.132 1.3-2.01 2.548-2.114.224-.019.448-.036.673-.051A3 3 0 0113.5 1.5H15a3 3 0 012.663 1.618zM12 4.5A1.5 1.5 0 0113.5 3H15a1.5 1.5 0 011.5 1.5H12z"
@@ -98,12 +99,12 @@ export function Fence({ children, language }) {
               <pre className={cn(className, "pr-14")} style={style}>
                 <code>
                   {tokens.map((line, lineIndex) => (
-                    <Fragment key={lineIndex}>
+                    <Fragment key={`line_${lineIndex}`}>
                       {line
                         .filter((token) => !token.empty)
                         .map((token, tokenIndex) => (
                           <span
-                            key={tokenIndex}
+                            key={`token_${tokenIndex}`}
                             {...getTokenProps({ token })}
                           />
                         ))}

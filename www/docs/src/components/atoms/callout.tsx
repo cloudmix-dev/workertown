@@ -29,7 +29,7 @@ interface CalloutProps {
 }
 
 export function Callout({ type = "note", title, children }: CalloutProps) {
-  let IconComponent = icons[type];
+  const IconComponent = icons[type];
 
   return (
     <div className={clsx("my-8 flex rounded-3xl p-6", styles[type].container)}>

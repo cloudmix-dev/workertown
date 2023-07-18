@@ -1,6 +1,6 @@
 import {
-  type MigrationProvider as BaseMigrationProvider,
   type MigrationInfo,
+  type MigrationProvider as BaseMigrationProvider,
 } from "kysely";
 
 export { type MigrationInfo as Migration };
@@ -16,7 +16,10 @@ export class MigrationProvider implements BaseMigrationProvider {
 
   async getMigrations() {
     return Object.fromEntries(
-      this._migrations.map((migration) => [migration.name, migration.migration])
+      this._migrations.map((migration) => [
+        migration.name,
+        migration.migration,
+      ]),
     );
   }
 }

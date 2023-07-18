@@ -17,14 +17,14 @@ export interface SearchDocument {
 
 export class StorageAdapter extends BaseStorageAdapter {
   public async getDocuments(
-    options: GetDocumentsOptions
+    options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     throw new TypeError("'getDocuments()' not implemented");
   }
 
   public async getDocumentsByTags(
     tags: string[],
-    options: GetDocumentsOptions
+    options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     throw new TypeError("'getDocumentsByTags()' not implemented");
   }
@@ -35,7 +35,7 @@ export class StorageAdapter extends BaseStorageAdapter {
 
   public async indexDocument(
     item: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
-    tags: string[] = []
+    tags: string[] = [],
   ): Promise<SearchDocument> {
     throw new TypeError("'indexDocument()' not implemented");
   }

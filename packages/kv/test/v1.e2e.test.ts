@@ -13,11 +13,11 @@ interface SuccessfulResponse {
 
 // KV
 interface KVGetResponse extends SuccessfulResponse {
-  data: any;
+  data: unknown;
 }
 
 interface KVSetResponse extends SuccessfulResponse {
-  data: any;
+  data: unknown;
 }
 
 interface KVDeleteResponse extends SuccessfulResponse {
@@ -40,7 +40,7 @@ test.serial("v1 kv get", async (t) => {
 
   const result2 = (await res2.json()) as KVGetResponse;
 
-  t.is(result2.data.test, true);
+  t.is((result2.data as { test: boolean }).test, true);
 });
 
 test.serial("v1 kv set", async (t) => {

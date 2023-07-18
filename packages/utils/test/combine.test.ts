@@ -17,10 +17,10 @@ test("combine", async (t) => {
   const combined = combine(server1, server2);
 
   const res1 = await combined.fetch(
-    new Request("http://test.local/server-1/test")
+    new Request("http://test.local/server-1/test"),
   );
   const res2 = await combined.fetch(
-    new Request("http://test.local/server-2/test")
+    new Request("http://test.local/server-2/test"),
   );
 
   const response1 = (await res1.json()) as TestResponse;

@@ -11,7 +11,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
   async getSubscriptionsByTopic(topic: string): Promise<Subscription[]> {
     return Array.from(this._itemStore.values()).filter(
-      (item) => item.topic === topic
+      (item) => item.topic === topic,
     );
   }
 
@@ -19,7 +19,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     subscription: Pick<
       Subscription,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ): Promise<Subscription> {
     const id = Math.random().toString(36).slice(2, 9);
     const item = { ...subscription, id, createdAt: new Date() };

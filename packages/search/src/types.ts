@@ -28,11 +28,13 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   filter?: (document: SearchDocument, result: SearchResult) => boolean;
   scanRange:
     | number
+    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
     | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
   stopWords:
     | Set<string>
     | ((
-        req: WorkertownRequest<any, any>
+        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
+        req: WorkertownRequest<any, any>,
       ) => Set<string> | Promise<Set<string>>);
   storage?: StorageAdapter;
 }

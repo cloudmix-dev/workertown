@@ -22,7 +22,7 @@ router.put(
       index: z.string(),
       data: z.record(z.unknown()),
       tags: z.array(z.string()).optional(),
-    })
+    }),
   ),
   async (ctx) => {
     const id = ctx.req.param("id");
@@ -31,14 +31,14 @@ router.put(
     const { tenant, index, data, tags } = ctx.req.valid("json");
     const document = await storage.indexDocument(
       { id, tenant, index, data },
-      tags
+      tags,
     );
 
     await cache.delete(`documents_${tenant}_ALL`);
     await cache.delete(`documents_${tenant}_${index}`);
 
     return ctx.json({ status: 200, success: true, data: document });
-  }
+  },
 );
 
 router.delete("/:id", async (ctx) => {

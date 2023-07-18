@@ -40,8 +40,8 @@ const iconStyles = {
 };
 
 export function Icon({ color = "blue", icon, className, ...props }) {
-  let id = useId();
-  let IconComponent = icons[icon];
+  const id = useId();
+  const IconComponent = icons[icon];
 
   return (
     <svg
@@ -51,6 +51,7 @@ export function Icon({ color = "blue", icon, className, ...props }) {
       className={clsx(className, iconStyles[color])}
       {...props}
     >
+      <title>Icon</title>
       <IconComponent id={id} color={color} />
     </svg>
   );
@@ -78,7 +79,7 @@ export function Gradient({ color = "blue", ...props }) {
       {...props}
     >
       {gradients[color].map((stop, stopIndex) => (
-        <stop key={stopIndex} {...stop} />
+        <stop key={`stop_${stopIndex}`} {...stop} />
       ))}
     </radialGradient>
   );
@@ -86,6 +87,7 @@ export function Gradient({ color = "blue", ...props }) {
 
 interface ThemeModeProps {
   className?: string;
+  // rome-ignore lint/suspicious/noExplicitAny: We need to allow any props to be passed through
   [x: string]: any;
 }
 

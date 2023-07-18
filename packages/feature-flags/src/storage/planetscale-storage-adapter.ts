@@ -71,7 +71,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
     return {
       name: flag.name,
       description: flag.description === null ? undefined : flag.description,
-      enabled: !Boolean(flag.disabled_at),
+      enabled: !flag.disabled_at,
       conditions: flag.conditions
         ? (JSON.parse(flag.conditions) as FlagCondition[])
         : undefined,
@@ -80,7 +80,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
     };
   }
 
-  public async getFlags(disabled: boolean = false) {
+  public async getFlags(disabled = false) {
     let query = this.client.selectFrom("flags").selectAll();
 
     if (!disabled) {
@@ -107,7 +107,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
   }
 
   public async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">
+    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">,
   ) {
     const now = new Date();
     const existing = await this.client

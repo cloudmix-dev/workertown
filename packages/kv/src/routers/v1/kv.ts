@@ -11,7 +11,7 @@ const router = createRouter<Context>();
 
 function getKey(
   req: WorkertownRequest<"/*">,
-  config: Context["Variables"]["config"]
+  config: Context["Variables"]["config"],
 ) {
   const { kv: kvPrefix } = config.endpoints.v1;
   const url = new URL(req.url);
@@ -42,7 +42,7 @@ router.put(
         z.record(z.string(), z.unknown()),
         z.array(z.unknown()),
       ]),
-    })
+    }),
   ),
   async (ctx) => {
     const config = ctx.get("config");
@@ -52,8 +52,8 @@ router.put(
 
     await storage.setValue(key, value);
 
-    return ctx.json({ status: 200, success: true, data: value as any });
-  }
+    return ctx.json({ status: 200, success: true, data: value });
+  },
 );
 
 router.delete("/*", async (ctx) => {

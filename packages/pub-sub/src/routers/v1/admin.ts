@@ -22,7 +22,7 @@ router.post("/migrate", async (ctx) => {
 
   return ctx.json(
     { status: success ? 200 : 500, success, data: success },
-    success ? 200 : 500
+    success ? 200 : 500,
   );
 });
 

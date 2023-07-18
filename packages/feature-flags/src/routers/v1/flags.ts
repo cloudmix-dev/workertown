@@ -14,7 +14,7 @@ router.get(
         .enum(["1", "0", "true", "false"])
         .optional()
         .transform((val) => val === "1" || val === "true"),
-    })
+    }),
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
@@ -22,7 +22,7 @@ router.get(
     const flags = await storage.getFlags(includeDisabled);
 
     return ctx.json({ status: 200, success: true, data: flags });
-  }
+  },
 );
 
 router.get("/:name", async (ctx) => {
@@ -63,11 +63,11 @@ router.put(
               z.array(z.number()),
               z.array(z.boolean()),
             ]),
-          })
+          }),
         )
         .nonempty()
         .optional(),
-    })
+    }),
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
@@ -81,7 +81,7 @@ router.put(
     });
 
     return ctx.json({ status: 200, success: true, data: flag });
-  }
+  },
 );
 
 router.delete("/:name", async (ctx) => {

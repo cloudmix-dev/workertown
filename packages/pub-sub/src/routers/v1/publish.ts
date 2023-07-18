@@ -11,7 +11,7 @@ router.post(
     "json",
     z.object({
       message: z.record(z.any(), z.unknown()).optional(),
-    })
+    }),
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
@@ -32,7 +32,7 @@ router.post(
     }
 
     return ctx.json({ status: 200, success: true, data: true });
-  }
+  },
 );
 
 export { router };

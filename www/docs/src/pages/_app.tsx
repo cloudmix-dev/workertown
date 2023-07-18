@@ -7,7 +7,7 @@ import "../styles/tailwind.css";
 
 function getNodeText(node) {
   let text = "";
-  for (let child of node.children ?? []) {
+  for (const child of node.children ?? []) {
     if (typeof child === "string") {
       text += child;
     }
@@ -17,18 +17,18 @@ function getNodeText(node) {
 }
 
 function collectHeadings(nodes, slugify = slugifyWithCounter()) {
-  let sections = [];
+  const sections = [];
 
-  for (let node of nodes) {
+  for (const node of nodes) {
     if (node.name === "h2" || node.name === "h3") {
-      let title = getNodeText(node);
+      const title = getNodeText(node);
       if (title) {
-        let id = slugify(title);
+        const id = slugify(title);
         node.attributes.id = id;
         if (node.name === "h3") {
           if (!sections[sections.length - 1]) {
             throw new Error(
-              "Cannot add `h3` to table of contents without a preceding `h2`"
+              "Cannot add `h3` to table of contents without a preceding `h2`",
             );
           }
           sections[sections.length - 1].children.push({
@@ -48,15 +48,15 @@ function collectHeadings(nodes, slugify = slugifyWithCounter()) {
 }
 
 export default function App({ Component, pageProps }) {
-  let title = pageProps.markdoc?.frontmatter.title;
+  const title = pageProps.markdoc?.frontmatter.title;
 
-  let pageTitle =
+  const pageTitle =
     pageProps.markdoc?.frontmatter.pageTitle ||
     `${pageProps.markdoc?.frontmatter.title} - Workertown`;
 
-  let description = pageProps.markdoc?.frontmatter.description;
+  const description = pageProps.markdoc?.frontmatter.description;
 
-  let tableOfContents = pageProps.markdoc?.content
+  const tableOfContents = pageProps.markdoc?.content
     ? collectHeadings(pageProps.markdoc.content)
     : [];
 

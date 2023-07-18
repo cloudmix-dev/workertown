@@ -1,6 +1,6 @@
 import {
-  type CreateServerOptions as BaseCreateServerOptions,
   type Context as WorkertownContext,
+  type CreateServerOptions as BaseCreateServerOptions,
 } from "@workertown/internal-hono";
 
 import { type QueueAdapter } from "./queue/index.js";

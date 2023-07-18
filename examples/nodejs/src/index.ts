@@ -83,5 +83,5 @@ const api = combine(flagsApi, kvApi, pubSubApi, searchApi);
   await pubSubQueueAdapter.runMigrations();
   await processor.start();
 
-  console.log(`PubSub queue processor running`);
+  console.log("PubSub queue processor running");
 })();

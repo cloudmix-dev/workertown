@@ -48,7 +48,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 };
 
 export function createFeatureFlagsServer(
-  options?: CreateServerOptionsOptional
+  options?: CreateServerOptionsOptional,
 ) {
   const config = merge(DEFAULT_OPTIONS, options);
   const {

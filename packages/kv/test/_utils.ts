@@ -2,7 +2,7 @@ import search, { type CreateServerOptions } from "../src";
 import { StorageAdapter } from "../src/storage";
 import { MemoryStorageAdapter } from "../src/storage/memory-storage-adapter";
 
-const VALUES: { key: string; value: any }[] = [
+const VALUES: { key: string; value: unknown }[] = [
   {
     key: "test/1",
     value: "test",
@@ -17,14 +17,14 @@ const VALUES: { key: string; value: any }[] = [
 
 export function createTestService(
   options: CreateServerOptions = {},
-  intialValues: { key: string; value: any }[] = VALUES
+  intialValues: { key: string; value: unknown }[] = VALUES,
 ) {
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
     // The `as unknown` here fixes some weird Typescript bug...
     storage: new MemoryStorageAdapter(
-      intialValues
+      intialValues,
     ) as unknown as StorageAdapter,
   });
 }
@@ -35,7 +35,7 @@ export function makeRequest(
   {
     method = "GET",
     body,
-  }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: any } = {}
+  }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: unknown } = {},
 ) {
   return service.fetch(
     new Request(`http://search.local${path}`, {
@@ -45,6 +45,6 @@ export function makeRequest(
         "content-type": "application/json",
       },
       body: body ? JSON.stringify(body) : undefined,
-    })
+    }),
   );
 }

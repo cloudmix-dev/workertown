@@ -4,7 +4,7 @@ interface ErrorProps {
   statusCode?: number;
 }
 
-function Error({ statusCode }: ErrorProps) {
+function ErrorComponent({ statusCode }: ErrorProps) {
   const isServer = useMemo(() => typeof statusCode !== "undefined", []);
 
   return (
@@ -16,10 +16,10 @@ function Error({ statusCode }: ErrorProps) {
   );
 }
 
-Error.getInitialProps = ({ res, err }) => {
+ErrorComponent.getInitialProps = ({ res, err }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
 
   return { statusCode };
 };
 
-export default Error;
+export default ErrorComponent;

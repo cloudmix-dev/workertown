@@ -17,6 +17,7 @@ import { navigation } from "./layout";
 function SearchIcon(props) {
   return (
     <svg aria-hidden="true" viewBox="0 0 20 20" {...props}>
+      <title>Search icon</title>
       <path d="M16.293 17.707a1 1 0 0 0 1.414-1.414l-1.414 1.414ZM9 14a5 5 0 0 1-5-5H2a7 7 0 0 0 7 7v-2ZM4 9a5 5 0 0 1 5-5V2a7 7 0 0 0-7 7h2Zm5-5a5 5 0 0 1 5 5h2a7 7 0 0 0-7-7v2Zm8.707 12.293-3.757-3.757-1.414 1.414 3.757 3.757 1.414-1.414ZM14 9a4.98 4.98 0 0 1-1.464 3.536l1.414 1.414A6.98 6.98 0 0 0 16 9h-2Zm-1.464 3.536A4.98 4.98 0 0 1 9 14v2a6.98 6.98 0 0 0 4.95-2.05l-1.414-1.414Z" />
     </svg>
   );
@@ -34,12 +35,14 @@ function useAutocomplete() {
       placeholder: "Find something...",
       defaultActiveItemId: 0,
       onStateChange({ state }) {
+        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the state
         setAutocompleteState(state as any);
       },
       shouldPanelOpen({ state }) {
         return state.query !== "";
       },
       getSources({ query }) {
+        // rome-ignore lint/suspicious/noExplicitAny: Dealing with dyanmic import
         return import("../../markdoc/search.mjs").then(({ search }: any) => {
           return [
             {
@@ -57,7 +60,7 @@ function useAutocomplete() {
           ];
         });
       },
-    })
+    }),
   );
 
   return { autocomplete, autocompleteState };
@@ -68,6 +71,7 @@ function LoadingIcon(props) {
 
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
+      <title>Loading icon</title>
       <circle cx="10" cy="10" r="5.5" strokeLinejoin="round" />
       <path
         stroke={`url(#${id})`}
@@ -106,7 +110,7 @@ function HighlightQuery({ text, query }) {
 function SearchResult({ result, autocomplete, collection, query }) {
   const id = useId();
   const sectionTitle = navigation.find((section) =>
-    section.links.find((link) => link.href === result.url.split("#")[0])
+    section.links.find((link) => link.href === result.url.split("#")[0]),
   )?.title;
   const hierarchy = [sectionTitle, result.pageTitle].filter(Boolean);
 
@@ -133,7 +137,7 @@ function SearchResult({ result, autocomplete, collection, query }) {
           className="mt-0.5 truncate whitespace-nowrap text-xs text-zinc-500 dark:text-zinc-400"
         >
           {hierarchy.map((item, itemIndex, items) => (
-            <Fragment key={itemIndex}>
+            <Fragment key={`item_${itemIndex}`}>
               <HighlightQuery text={item} query={query} />
               <span
                 className={
@@ -181,6 +185,7 @@ function SearchResults({ autocomplete, query, collection }) {
 }
 
 interface SearchInputProps {
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the autocomplete here
   autocomplete: any;
   autocompleteState: { [x: string]: unknown };
   onClose: () => void;
@@ -188,7 +193,7 @@ interface SearchInputProps {
 
 const SearchInput = forwardRef(function SearchInput(
   { autocomplete, autocompleteState, onClose }: SearchInputProps,
-  inputRef
+  inputRef,
 ) {
   const inputProps = autocomplete.getInputProps({});
 
@@ -199,7 +204,7 @@ const SearchInput = forwardRef(function SearchInput(
         ref={inputRef}
         className={clsx(
           "flex-auto appearance-none bg-transparent pl-12 text-zinc-900 outline-none placeholder:text-zinc-400 focus:w-full focus:flex-none dark:text-white sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden",
-          autocompleteState.status === "stalled" ? "pr-11" : "pr-4"
+          autocompleteState.status === "stalled" ? "pr-11" : "pr-4",
         )}
         {...inputProps}
         onKeyDown={(event) => {
@@ -295,6 +300,7 @@ function SearchDialog({ open, setOpen, className }: SearchDialogProps) {
               ref={formRef}
               {...(autocomplete.getFormProps({
                 inputElement: inputRef.current,
+                // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the props here
               }) as any)}
             >
               <SearchInput
@@ -306,6 +312,7 @@ function SearchDialog({ open, setOpen, className }: SearchDialogProps) {
               <div
                 ref={panelRef}
                 className="border-t border-zinc-200 bg-white px-2 py-3 empty:hidden dark:border-zinc-400/10 dark:bg-zinc-800"
+                // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the props here
                 {...(autocomplete.getPanelProps({}) as any)}
               >
                 {autocompleteState.isOpen && (
@@ -358,7 +365,7 @@ export function Search() {
 
   useEffect(() => {
     setModifierKey(
-      /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? "⌘" : "Ctrl "
+      /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? "⌘" : "Ctrl ",
     );
   }, []);
 

@@ -17,14 +17,15 @@ import { type Context } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
   queue?: (
+    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the messages here
     batch: MessageBatch<any>,
     env: Env["Bindings"],
-    ctx: ExecutionContext
+    ctx: ExecutionContext,
   ) => void | Promise<void>;
   scheduled?: (
     event: ScheduledEvent,
     env: Env["Bindings"],
-    ctx: ExecutionContext
+    ctx: ExecutionContext,
   ) => void | Promise<void>;
 }
 
@@ -43,7 +44,7 @@ export interface CreateServerOptions {
 }
 
 export function createServer<T extends Context>(
-  options: CreateServerOptions = {}
+  options: CreateServerOptions = {},
 ) {
   const { auth: authOptions, basePath = "/", cors } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
@@ -69,7 +70,7 @@ export function createServer<T extends Context>(
     server.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
-  if (cors && cors.origin) {
+  if (typeof cors === "object" && cors?.origin) {
     server.use("*", (ctx, next) => {
       let origin: string | false = false;
 
@@ -89,11 +90,11 @@ export function createServer<T extends Context>(
         ctx.res.headers.set("access-control-allow-origin", origin);
         ctx.res.headers.set(
           "access-control-allow-methods",
-          "GET, POST, PUT, DELETE, OPTIONS"
+          "GET, POST, PUT, DELETE, OPTIONS",
         );
         ctx.res.headers.set(
           "access-control-allow-headers",
-          "Content-Type, Authorization"
+          "Content-Type, Authorization",
         );
         ctx.res.headers.set("access-control-allow-private-network", "true");
       }
@@ -106,8 +107,8 @@ export function createServer<T extends Context>(
   server.notFound((ctx) =>
     ctx.json(
       { success: false, status: 404, data: null, error: "Not found" },
-      404
-    )
+      404,
+    ),
   );
 
   server.onError((error, ctx) => {
@@ -118,9 +119,10 @@ export function createServer<T extends Context>(
         success: false,
         status: 500,
         data: null,
+        // rome-ignore lint/suspicious/noExplicitAny: We need to reach inside of the Error
         error: (error.cause as any)?.message ?? error.message,
       },
-      500
+      500,
     );
   });
 

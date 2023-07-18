@@ -1,7 +1,7 @@
 import { CacheAdapter } from "./cache-adapter.js";
 
 export class MemoryCacheAdapter extends CacheAdapter {
-  private _cache = new Map<string, any>();
+  private _cache = new Map<string, unknown>();
 
   public async get<T>(key: string): Promise<T | null> {
     return (this._cache.get(key) as T) ?? null;

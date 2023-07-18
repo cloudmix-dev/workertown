@@ -109,7 +109,7 @@ export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
     subscription: Pick<
       Subscription,
       "topic" | "endpoint" | "headers" | "queryParameters"
-    >
+    >,
   ) {
     const id = crypto.randomUUID();
     const now = new Date();

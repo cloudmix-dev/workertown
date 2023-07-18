@@ -46,10 +46,10 @@ const MIGRATIONS: Migrations = [
           .addColumn("index", "varchar", (col) => col.notNull())
           .addColumn("data", "varchar", (col) => col.notNull())
           .addColumn("created_at", "timestamp", (col) =>
-            col.defaultTo(sql`now()`).notNull()
+            col.defaultTo(sql`now()`).notNull(),
           )
           .addColumn("updated_at", "timestamp", (col) =>
-            col.defaultTo(sql`now()`).notNull()
+            col.defaultTo(sql`now()`).notNull(),
           )
           .execute();
 
@@ -134,7 +134,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
   }
 
   public async getDocuments(
-    options: GetDocumentsOptions
+    options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     let query = this.client
       .selectFrom("search_documents")
@@ -155,14 +155,14 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
 
   public async getDocumentsByTags(
     tags: string[],
-    options: GetDocumentsOptions
+    options: GetDocumentsOptions,
   ) {
     let query = this.client
       .selectFrom("search_tags")
       .innerJoin(
         "search_documents",
         "search_tags.search_document_id",
-        "search_documents.id"
+        "search_documents.id",
       )
       .where("search_tags.tag", "in", tags)
       .where("search_documents.tenant", "=", options.tenant);
@@ -198,7 +198,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
 
   public async indexDocument(
     document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
-    tags: string[] = []
+    tags: string[] = [],
   ) {
     const now = new Date();
     const existing = await this.client
@@ -241,11 +241,11 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
       const tagsToAdd = tags.filter(
         (tag) =>
           existingTags.find((existingTag) => existingTag.tag === tag) ===
-          undefined
+          undefined,
       );
       const tagsToRemove = existingTags.filter(
         (existingTag) =>
-          tags.find((tag) => tag === existingTag.tag) === undefined
+          tags.find((tag) => tag === existingTag.tag) === undefined,
       );
 
       if (tagsToAdd.length > 0) {
@@ -262,7 +262,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
           .where(
             "tag",
             "in",
-            tagsToRemove.map((tag) => tag.tag)
+            tagsToRemove.map((tag) => tag.tag),
           )
           .execute();
       }

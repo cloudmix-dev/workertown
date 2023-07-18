@@ -19,13 +19,13 @@ export class KVStorageAdapter extends StorageAdapter {
     return key.replaceAll(/\//g, "_");
   }
 
-  public async getValue<T = any>(key: string) {
+  public async getValue<T = unknown>(key: string) {
     const value = await this._kv.get<T>(this._formatKey(key), "json");
 
     return value;
   }
 
-  public async setValue<T = any>(key: string, value: T) {
+  public async setValue<T = unknown>(key: string, value: T) {
     await this._kv.put(this._formatKey(key), JSON.stringify(value));
 
     return value;

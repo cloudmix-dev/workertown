@@ -10,7 +10,7 @@ router.get("/open-api.json", (ctx) => {
 });
 
 router.get("/health", async (ctx) =>
-  ctx.json({ status: 200, success: true, data: "OK" })
+  ctx.json({ status: 200, success: true, data: "OK" }),
 );
 
 export { router };

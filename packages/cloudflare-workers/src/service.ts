@@ -15,7 +15,7 @@ interface ServiceOptions {
 export function service(
   url: string,
   fetcher?: Fetcher | null,
-  options?: ServiceOptions
+  options?: ServiceOptions,
 ) {
   const fetch = (fetcher?.fetch ??
     options?.fetch ??
@@ -25,7 +25,7 @@ export function service(
   return {
     fetch: (
       input: RequestInfo<unknown, CfProperties<unknown>> | URL,
-      init?: RequestInit | undefined
+      init?: RequestInit | undefined,
     ): Promise<Response> => {
       let url = new URL(urlObj);
 
@@ -43,7 +43,7 @@ export function service(
 
       const request = new Request(
         url,
-        input instanceof Request ? input : undefined
+        input instanceof Request ? input : undefined,
       ) as unknown as RequestInfo<unknown, CfProperties<unknown>>;
 
       return fetch(request, init);
