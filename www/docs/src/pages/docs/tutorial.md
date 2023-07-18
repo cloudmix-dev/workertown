@@ -143,28 +143,28 @@ If all is well, you should see the response:
 
 Now we've got a working service, let's play around with it a bit.
 
-### Index your first item
+### Index your first document
 
 Let's get some data in there...
 
-First, let's index item `1`:
+First, let's index document `1`:
 
 ```json
 {
   "tenant": "test",
   "index": "test",
   "data": {
-    "title": "Test item 1",
+    "title": "Test document 1",
     "content": "This is some test content"
   }
 }
 ```
 
-You can index an item via a `PUT` request to the `/v1/items/:id` endpoint.
+You can index an document via a `PUT` request to the `/v1/docs/:id` endpoint.
 Here's how the request is made via `curl`:
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test item 1", "content": "This is some test content" } }' 'localhost:8787/v1/items/1'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test document 1", "content": "This is some test content" } }' 'localhost:8787/v1/docs/1'
 ```
 
 ...and you should get a successful response:
@@ -178,7 +178,7 @@ curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "
     "tenant": "test",
     "index": "test",
     "data": {
-      "title": "Test item 1",
+      "title": "Test document 1",
       "content": "This is some test content"
     },
     "createdAt": "<SOME DATE>",
@@ -187,13 +187,13 @@ curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "
 }
 ```
 
-{% callout title="Updating an item" %}
-The `PUT` request to the `/v1/items/:id` endpoint will create an item if it
-doesn't exist, or update it if an item with the same `id`, `tenant` and `index`
+{% callout title="Updating an document" %}
+The `PUT` request to the `/v1/docs/:id` endpoint will create an document if it
+doesn't exist, or update it if an document with the same `id`, `tenant` and `index`
 already exists.
 {% /callout %}
 
-### Search for your first item
+### Search for your first document
 
 OK, with data in the service, we can test the search functionality. With only
 the one record in the database, it should be relatively easy to find it.
@@ -213,7 +213,7 @@ Here's the request via `curl`:
 curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search/test?term=test&fields=content'
 ```
 
-...and you should see a successful response with our item `1`:
+...and you should see a successful response with our document `1`:
 
 ```json
 {
@@ -222,12 +222,12 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
   "data": [
     {
       "id": "1",
-      "item": {
+      "document": {
         "id": "1",
         "tenant": "test",
         "index": "test",
         "data": {
-          "title": "Test item 1",
+          "title": "Test document 1",
           "content": "This is some test content"
         },
         "createdAt": "<SOME DATE>",
@@ -245,7 +245,7 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
 
 We've just performed our first search against the entire "test" tenant.
 
-### Get suggestions based on your first item
+### Get suggestions based on your first document
 
 We can also request a list of suggestions from our search service. This can be
 done via the `/v1/suggest/:tenant/:index?` endpoint. This endpoint takes the
@@ -276,25 +276,25 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/sugges
 
 Awesome! This endpoint can be handy for powering automcomplete functionality.
 
-### Add a tag to your first item
+### Add a tag to your first document
 
-Tagging allows you to filter out (at the database level) items you don't want to
+Tagging allows you to filter out (at the database level) documents you don't want to
 be included in search/suggestion results.
 
-You can tag an item by including an array of strings under the `tag` property
-when you index it. Replace the item via the `/v1/items/:id` endpoint:
+You can tag an document by including an array of strings under the `tag` property
+when you index it. Replace the document via the `/v1/docs/:id` endpoint:
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test item 1", "content": "This is some test content" }, "tags": ["test"] }' 'localhost:8787/v1/items/1'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test document 1", "content": "This is some test content" }, "tags": ["test"] }' 'localhost:8787/v1/docs/1'
 ```
 
-...and then you can search for your item via the `"test"` tag we just added:
+...and then you can search for your document via the `"test"` tag we just added:
 
 ```bash
 curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search/test?term=test&fields=content&tags=test'
 ```
 
-...which should return the item:
+...which should return the document:
 
 ```json
 {
@@ -303,12 +303,12 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
   "data": [
     {
       "id": "1",
-      "item": {
+      "document": {
         "id": "1",
         "tenant": "test",
         "index": "test",
         "data": {
-          "title": "Test item 1",
+          "title": "Test document 1",
           "content": "This is some test content"
         },
         "createdAt": "<SOME DATE>",
@@ -342,7 +342,7 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
 ```
 
 A search with multiple tags acts as an **and** operation, meaning that all tags
-must be present for an item to be included in the search.
+must be present for an document to be included in the search.
 
 ```bash
 curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search/test?term=test&fields=content&tags=test,invalid'
@@ -358,13 +358,13 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
 }
 ```
 
-...but if you add another tag to the item:
+...but if you add another tag to the document:
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test item 1", "content": "This is some test content" }, "tags": ["test", "test2"] }' 'localhost:8787/v1/items/1'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test document 1", "content": "This is some test content" }, "tags": ["test", "test2"] }' 'localhost:8787/v1/docs/1'
 ```
 
-...and search for both, you should see the item:
+...and search for both, you should see the document:
 
 ```bash
 curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search/test?term=test&fields=content&tags=test,test2'
@@ -377,12 +377,12 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
   "data": [
     {
       "id": "1",
-      "item": {
+      "document": {
         "id": "1",
         "tenant": "test",
         "index": "test",
         "data": {
-          "title": "Test item 1",
+          "title": "Test document 1",
           "content": "This is some test content"
         },
         "createdAt": "<SOME DATE>",
@@ -400,30 +400,30 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
 
 There you have it, you've just used tags!
 
-### Adding more items
+### Adding more documents
 
-Let's add some more items to our tenant, so that we can search _across_ a varied
+Let's add some more documents to our tenant, so that we can search _across_ a varied
 dataset.
 
 Here are example `curl` commands:
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test item 2", "content": "This is also some test content" }, "tags": ["test"] }' 'localhost:8787/v1/items/2'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test document 2", "content": "This is also some test content" }, "tags": ["test"] }' 'localhost:8787/v1/docs/2'
 ```
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test item 3", "content": "This is again some test content" }, "tags": ["test2"] }' 'localhost:8787/v1/items/3'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "test",  "data": { "title": "Test document 3", "content": "This is again some test content" }, "tags": ["test2"] }' 'localhost:8787/v1/docs/3'
 ```
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "other",  "data": { "title": "Test item 4", "content": "This is some test content in another index" }, "tags": ["test"] }' 'localhost:8787/v1/items/4'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "other",  "data": { "title": "Test document 4", "content": "This is some test content in another index" }, "tags": ["test"] }' 'localhost:8787/v1/docs/4'
 ```
 
 ```bash
-curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "other",  "data": { "title": "Test item 3", "content": "This is also some test content in another index" }, "tags": ["test2"] }' 'localhost:8787/v1/items/5'
+curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "index": "other",  "data": { "title": "Test document 3", "content": "This is also some test content in another index" }, "tags": ["test2"] }' 'localhost:8787/v1/docs/5'
 ```
 
-You now have **5** items in your tenant across **2** indexes (`test` and
+You now have **5** documents in your tenant across **2** indexes (`test` and
 `other`).
 
 Let's try some more search queries:
@@ -504,7 +504,7 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/custom/se
 ```
 
 You can also customise other endpoints of your service, such as the
-`/v1/suggest/*` endpoint, and the `/v1/items/*` endpoints.
+`/v1/suggest/*` endpoint, and the `/v1/docs/*` endpoints.
 
 ### Customising the search engine performance
 

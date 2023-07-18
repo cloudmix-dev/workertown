@@ -67,7 +67,7 @@ const server = search({
   },
   prefixes: {
     admin: "/v1/admin", // Base path for the server to serve admin endpoints from
-    items: "/v1/items", // Base path for the server to serve items endpoints from
+    documents: "/v1/docs", // Base path for the server to serve documents endpoints from
     public: "/", // Base path for the server to serve public endpoints from
     search: "/v1/search", // Base path for the server to serve search endpoints from
     suggest: "/v1/suggest", // Base path for the server to serve suggest endpoints from
