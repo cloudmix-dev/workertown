@@ -15,8 +15,8 @@ export type BasicOptionsOptional = DeepPartial<BasicOptions>;
 
 const DEFAULT_OPTIONS: BasicOptions = {
   env: {
-    username: "AUTH_BASIC_USERNAME",
-    password: "AUTH_BASIC_PASSWORD",
+    username: "AUTH_USERNAME",
+    password: "AUTH_PASSWORD",
   },
 };
 
@@ -25,19 +25,19 @@ export function basic(options?: BasicOptionsOptional) {
     username: optionsUsername,
     password: optionsPassword,
     env: { username: usernameEnvKey, password: passwordEnvKey },
-  } = merge(DEFAULT_OPTIONS, options);
+  } = merge({}, DEFAULT_OPTIONS, options);
   const handler: MiddlewareHandler = (ctx, next) => {
-    const username = (optionsUsername ?? ctx.env[usernameEnvKey]) as string;
-    const password = (optionsPassword ?? ctx.env[passwordEnvKey]) as string;
+    const username = (optionsUsername ?? ctx.env?.[usernameEnvKey]) as string;
+    const password = (optionsPassword ?? ctx.env?.[passwordEnvKey]) as string;
     const user = ctx.get("user") ?? null;
 
-    if (user === null) {
+    if (user === null && username && password) {
       const authHeader = ctx.req.headers.get("Authorization");
 
       if (typeof authHeader === "string" && authHeader.startsWith("Basic ")) {
-        const [credentials] = authHeader.split(" ");
+        const [type, credentials] = authHeader.split(" ");
 
-        if (credentials) {
+        if (type === "Basic" && credentials) {
           const decodedAuthHeader = atob(credentials);
           const [headerUsername, headerPassword] = decodedAuthHeader.split(":");
 

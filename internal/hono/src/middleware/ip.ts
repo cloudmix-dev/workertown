@@ -39,7 +39,7 @@ function ip4inCidrs(ip: string, cidrs: Cidr[]) {
 }
 
 export function ip(options?: IpOptionsOptional) {
-  const { ips } = merge(DEFAULT_OPTIONS, options);
+  const { ips } = merge({}, DEFAULT_OPTIONS, options);
   const allowAll = ips.includes("0.0.0.0/0");
   const cidrs = ips.map((ip) => createCidr(ip));
 

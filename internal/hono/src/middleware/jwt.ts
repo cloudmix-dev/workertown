@@ -47,26 +47,30 @@ export function jwt(options?: JwtOptionsOptional) {
       issuer: issuerEnvKey,
       audience: audienceEnvKey,
     },
-  } = merge(DEFAULT_OPTIONS, options);
+  } = merge({}, DEFAULT_OPTIONS, options);
   const handler: MiddlewareHandler = async (ctx, next) => {
-    const jwks = (optionsJwksUrl ?? ctx.env[jwksUrlEnvKey]) as string;
-    const secret = (optionsSecret ?? ctx.env[secretEnvKey]) as string;
-    const issuer = (optionsIssuer ?? ctx.env[issuerEnvKey]) as
+    const jwks = (optionsJwksUrl ?? ctx.env?.[jwksUrlEnvKey]) as string;
+    const secret = (optionsSecret ?? ctx.env?.[secretEnvKey]) as string;
+    const issuer = (optionsIssuer ?? ctx.env?.[issuerEnvKey]) as
       | string
       | undefined;
-    const audience = (optionsAudience ?? ctx.env[audienceEnvKey]) as
+    const audience = (optionsAudience ?? ctx.env?.[audienceEnvKey]) as
       | string
       | undefined;
     const user = ctx.get("user") ?? null;
 
-    if (user === null) {
+    if (user === null && (secret || jwks)) {
       const authHeader = ctx.req.headers.get("Authorization");
 
       if (typeof authHeader === "string") {
-        const credentials = authHeader.replace("Bearer ", "");
+        const [type, credentials] = authHeader.split(" ");
         let signingCredentials: (() => Promise<KeyLike>) | string = secret;
 
-        if (typeof signingCredentials !== "string") {
+        if (
+          type === "Bearer" &&
+          credentials &&
+          typeof signingCredentials !== "string"
+        ) {
           if (!signingCredentials) {
             try {
               const jwksRes = await (fetch as unknown as typeof CFFetch)(jwks, {
@@ -95,7 +99,7 @@ export function jwt(options?: JwtOptionsOptional) {
 
         try {
           const { payload } = await jwtVerify(
-            credentials,
+            credentials as string,
             typeof signingCredentials === "string"
               ? new TextEncoder().encode(signingCredentials)
               : (signingCredentials as unknown as KeyLike),

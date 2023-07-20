@@ -38,7 +38,7 @@ export class SearchClient {
 
   constructor(url: string, options?: ClientOptionsOptional) {
     this._url = url.replace(/\/$/, "");
-    this._options = merge(DEFAULT_OPTIONS, options);
+    this._options = merge({}, DEFAULT_OPTIONS, options);
   }
 
   private _createClient<T extends WorkertownHono<Context>>(route: string) {

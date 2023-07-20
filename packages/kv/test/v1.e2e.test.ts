@@ -1,7 +1,3 @@
-/**
- * Note: We **have** to use `test.serial` here due to the nature of how routing
- * works in kv...
- */
 import test from "ava";
 
 import { createTestService, makeRequest } from "./_utils";
@@ -24,7 +20,7 @@ interface KVDeleteResponse extends SuccessfulResponse {
   data: true;
 }
 
-test.serial("v1 kv get", async (t) => {
+test("v1 kv get", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/kv/test/1");
 
@@ -43,7 +39,7 @@ test.serial("v1 kv get", async (t) => {
   t.is((result2.data as { test: boolean }).test, true);
 });
 
-test.serial("v1 kv set", async (t) => {
+test("v1 kv set", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/kv/test/1", {
     method: "PUT",
@@ -65,7 +61,7 @@ test.serial("v1 kv set", async (t) => {
   t.is(result2.data, "other");
 });
 
-test.serial("v1 kv delete", async (t) => {
+test("v1 kv delete", async (t) => {
   const service = createTestService();
   const res1 = await makeRequest(service, "/v1/kv/test/1", {
     method: "DELETE",
@@ -101,7 +97,7 @@ interface AdminMigrateResponse extends SuccessfulResponse {
   data: true;
 }
 
-test.serial("v1 admin info", async (t) => {
+test("v1 admin info", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -118,7 +114,7 @@ test.serial("v1 admin info", async (t) => {
   t.is(result.data.endpoints.v1.kv, "/custom-kv");
 });
 
-test.serial("v1 admin migrate", async (t) => {
+test("v1 admin migrate", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/v1/admin/migrate", {
     method: "POST",
@@ -131,7 +127,7 @@ test.serial("v1 admin migrate", async (t) => {
   t.true(result.data);
 });
 
-test.serial("v1 admin w/ custom endpoint", async (t) => {
+test("v1 admin w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {
@@ -154,7 +150,7 @@ interface PublicResponse {
   openapi: "3.0.0";
 }
 
-test.serial("v1 public open-api.json", async (t) => {
+test("v1 public open-api.json", async (t) => {
   const service = createTestService();
   const res = await makeRequest(service, "/open-api.json");
 
@@ -165,7 +161,7 @@ test.serial("v1 public open-api.json", async (t) => {
   t.is(result.openapi, "3.0.0");
 });
 
-test.serial("v1 public w/ custom endpoint", async (t) => {
+test("v1 public w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
       v1: {

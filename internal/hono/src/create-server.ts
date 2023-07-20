@@ -3,18 +3,20 @@ import {
   type MessageBatch,
   type ScheduledEvent,
 } from "@cloudflare/workers-types";
+import { type Env, Hono } from "hono";
+
 import {
   type ApiKeyOptions,
   type BasicOptions,
   type IpOptions,
   type JwtOptions,
+  type SentryOptions,
   apiKey as apiKeyMiddleware,
   basic as basicMiddleware,
   ip as ipMiddleware,
   jwt as jwtMiddleware,
-} from "@workertown/middleware";
-import { type Env, Hono } from "hono";
-
+  sentry as sentryMiddleware,
+} from "./middleware/index.js";
 import { type Context } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
@@ -46,6 +48,7 @@ export interface CreateServerOptions {
         origin: string | string[] | ((req: Request) => string | false);
       }
     | false;
+  sentry?: SentryOptions | false;
 }
 
 export function createServer<T extends Context>(
@@ -56,6 +59,7 @@ export function createServer<T extends Context>(
     auth: authOptions,
     basePath = "/",
     cors,
+    sentry: sentryOptions,
   } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
 
@@ -70,6 +74,10 @@ export function createServer<T extends Context>(
 
   if (accessOptions?.ip !== false) {
     server.use("*", ipMiddleware(accessOptions?.ip));
+  }
+
+  if (sentryOptions !== false) {
+    server.use("*", sentryMiddleware(sentryOptions));
   }
 
   if (authOptions?.basic !== false) {

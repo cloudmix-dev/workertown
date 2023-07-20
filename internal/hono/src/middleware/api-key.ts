@@ -21,18 +21,18 @@ export function apiKey(options?: ApiKeyOptionsOptional) {
   const {
     apiKey: optionsApiKey,
     env: { apiKey: apiKeyEnvKey },
-  } = merge(DEFAULT_OPTIONS, options);
+  } = merge({}, DEFAULT_OPTIONS, options);
   const handler: MiddlewareHandler = (ctx, next) => {
-    const apiKey = (optionsApiKey ?? ctx.env[apiKeyEnvKey]) as string;
+    const apiKey = (optionsApiKey ?? ctx.env?.[apiKeyEnvKey]) as string;
     const user = ctx.get("user") ?? null;
 
-    if (user === null) {
+    if (user === null && apiKey) {
       const authHeader = ctx.req.headers.get("Authorization");
 
       if (typeof authHeader === "string") {
-        const credentials = authHeader.replace("Bearer ", "");
+        const [type, credentials] = authHeader.split(" ");
 
-        if (credentials === apiKey) {
+        if (type === "Bearer" && credentials === apiKey) {
           ctx.set("user", { id: "api_key" });
         }
       }

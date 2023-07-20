@@ -52,12 +52,16 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     cache: "SEARCH_CACHE",
     database: "SEARCH_DB",
   },
+  access: {
+    ip: false,
+  },
   scanRange: DEFAULT_SCAN_RANGE,
+  sentry: false,
   stopWords: DEFAUlT_STOP_WORDS,
 };
 
 export function createSearchServer(options?: CreateServerOptionsOptional) {
-  const config = merge(DEFAULT_OPTIONS, options);
+  const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,
     basePath,
@@ -75,7 +79,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!cacheAdapter) {
-      const kv = ctx.env[cacheEnvKey] as KVNamespace | undefined;
+      const kv = ctx.env?.[cacheEnvKey] as KVNamespace | undefined;
 
       if (!kv) {
         cacheAdapter = new NoOpCacheAdapter();
@@ -85,7 +89,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     }
 
     if (!storageAdapter) {
-      const db = ctx.env[dbEnvKey] as D1Database | undefined;
+      const db = ctx.env?.[dbEnvKey] as D1Database | undefined;
 
       if (!db) {
         return ctx.json({

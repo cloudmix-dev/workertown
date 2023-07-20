@@ -48,7 +48,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 };
 
 export function createKvServer(options?: CreateServerOptionsOptional) {
-  const config = merge(DEFAULT_OPTIONS, options);
+  const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,
     basePath,
@@ -64,7 +64,7 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!storageAdapter) {
-      const kv = ctx.env[kvEnvKey] as KVNamespace | undefined;
+      const kv = ctx.env?.[kvEnvKey] as KVNamespace | undefined;
 
       if (!kv) {
         return ctx.json({

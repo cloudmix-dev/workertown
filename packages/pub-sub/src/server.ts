@@ -55,7 +55,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 };
 
 export function createPubSubServer(options?: CreateServerOptionsOptional) {
-  const config = merge(DEFAULT_OPTIONS, options);
+  const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,
     basePath,
@@ -73,7 +73,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     let queueAdapter: QueueAdapter | undefined = queue;
 
     if (!storageAdapter) {
-      const db = ctx.env[dbEnvKey] as D1Database | undefined;
+      const db = ctx.env?.[dbEnvKey] as D1Database | undefined;
 
       if (!db) {
         return ctx.json(
@@ -91,7 +91,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     }
 
     if (!queueAdapter) {
-      const queue = ctx.env[queueEnvKey] as Queue<unknown> | undefined;
+      const queue = ctx.env?.[queueEnvKey] as Queue<unknown> | undefined;
 
       if (!queue) {
         return ctx.json(

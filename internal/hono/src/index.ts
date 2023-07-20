@@ -1,8 +1,3 @@
-import {
-  type ApiKeyOptions,
-  type BasicOptions,
-  type JwtOptions,
-} from "@workertown/middleware";
 import { type HonoRequest } from "hono";
 
 import { createRouter } from "./create-router.js";
@@ -11,6 +6,13 @@ import {
   type WorkertownHono,
   createServer,
 } from "./create-server.js";
+import {
+  type ApiKeyOptions,
+  type BasicOptions,
+  type IpOptions,
+  type JwtOptions,
+  type SentryOptions,
+} from "./middleware/index.js";
 import { type Context } from "./types.js";
 import { validate } from "./validate.js";
 
@@ -27,5 +29,7 @@ export {
   type HonoRequest as WorkertownRequest,
   type ApiKeyOptions,
   type BasicOptions,
+  type IpOptions,
   type JwtOptions,
+  type SentryOptions,
 };

@@ -50,7 +50,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 export function createFeatureFlagsServer(
   options?: CreateServerOptionsOptional,
 ) {
-  const config = merge(DEFAULT_OPTIONS, options);
+  const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     auth: authOptions,
     basePath,
@@ -66,7 +66,7 @@ export function createFeatureFlagsServer(
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!storageAdapter) {
-      const db = ctx.env[dbEnvKey] as D1Database | undefined;
+      const db = ctx.env?.[dbEnvKey] as D1Database | undefined;
 
       if (!db) {
         return ctx.json({

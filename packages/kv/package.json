@@ -50,7 +50,6 @@
   "dependencies": {
     "@workertown/internal-hono": "~0.0.1-alpha.6",
     "@workertown/internal-storage": "~0.0.1-alpha.6",
-    "@workertown/middleware": "~0.0.1-alpha.6",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
   },
