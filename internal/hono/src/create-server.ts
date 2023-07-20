@@ -4,6 +4,7 @@ import {
   type ScheduledEvent,
 } from "@cloudflare/workers-types";
 import { type Env, Hono } from "hono";
+import { cors } from "hono/cors";
 
 import {
   type ApiKeyOptions,
@@ -43,9 +44,17 @@ export interface CreateServerOptions {
     apiKey?: ApiKeyOptions | false;
   };
   basePath?: string;
-  cors?:
+  cors?: // Copy/pasted from cors/hono
     | {
-        origin: string | string[] | ((req: Request) => string | false);
+        origin:
+          | string
+          | string[]
+          | ((origin: string) => string | undefined | null);
+        allowMethods?: string[];
+        allowHeaders?: string[];
+        maxAge?: number;
+        credentials?: boolean;
+        exposeHeaders?: string[];
       }
     | false;
   sentry?: SentryOptions | false;
@@ -58,7 +67,7 @@ export function createServer<T extends Context>(
     access: accessOptions,
     auth: authOptions,
     basePath = "/",
-    cors,
+    cors: corsOptions,
     sentry: sentryOptions,
   } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
@@ -72,11 +81,11 @@ export function createServer<T extends Context>(
     return next();
   });
 
-  if (accessOptions?.ip !== false) {
+  if (accessOptions?.ip) {
     server.use("*", ipMiddleware(accessOptions?.ip));
   }
 
-  if (sentryOptions !== false) {
+  if (sentryOptions) {
     server.use("*", sentryMiddleware(sentryOptions));
   }
 
@@ -92,37 +101,8 @@ export function createServer<T extends Context>(
     server.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
-  if (typeof cors === "object" && cors?.origin) {
-    server.use("*", (ctx, next) => {
-      let origin: string | false = false;
-
-      if (typeof cors.origin === "string") {
-        origin = cors.origin;
-      } else if (Array.isArray(cors.origin)) {
-        origin = ctx.req.headers.get("origin") ?? false;
-
-        if (origin && !cors.origin.includes(origin)) {
-          origin = false;
-        }
-      } else if (typeof cors.origin === "function") {
-        origin = cors.origin(ctx.req as unknown as Request);
-      }
-
-      if (origin) {
-        ctx.res.headers.set("access-control-allow-origin", origin);
-        ctx.res.headers.set(
-          "access-control-allow-methods",
-          "GET, POST, PUT, DELETE, OPTIONS",
-        );
-        ctx.res.headers.set(
-          "access-control-allow-headers",
-          "Content-Type, Authorization",
-        );
-        ctx.res.headers.set("access-control-allow-private-network", "true");
-      }
-
-      return next();
-    });
+  if (corsOptions) {
+    server.use("*", cors(corsOptions));
     server.options("*", (ctx) => ctx.text("OK"));
   }
 

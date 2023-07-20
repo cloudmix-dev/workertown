@@ -36,8 +36,6 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
       },
     },
   },
-  basePath: "/",
-  cors: false,
   endpoints: {
     v1: {
       admin: "/v1/admin",
@@ -52,27 +50,21 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     cache: "SEARCH_CACHE",
     database: "SEARCH_DB",
   },
-  access: {
-    ip: false,
-  },
   scanRange: DEFAULT_SCAN_RANGE,
-  sentry: false,
   stopWords: DEFAUlT_STOP_WORDS,
 };
 
 export function createSearchServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
-    auth: authOptions,
-    basePath,
     cache,
-    cors,
     endpoints,
     env: { cache: cacheEnvKey, database: dbEnvKey },
     storage,
+    ...baseConfig
   } = config;
 
-  const server = createServer<Context>({ auth: authOptions, basePath, cors });
+  const server = createServer<Context>(baseConfig);
 
   server.use(async (ctx, next) => {
     let cacheAdapter: CacheAdapter | undefined = cache;

@@ -38,8 +38,6 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
       },
     },
   },
-  basePath: "/",
-  cors: false,
   endpoints: {
     v1: {
       admin: "/v1/admin",
@@ -57,16 +55,14 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 export function createPubSubServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
-    auth: authOptions,
-    basePath,
-    cors,
     endpoints,
     env: { database: dbEnvKey, queue: queueEnvKey },
     queue,
     storage,
+    ...baseConfig
   } = config;
 
-  const server = createServer<Context>({ auth: authOptions, basePath, cors });
+  const server = createServer<Context>(baseConfig);
 
   server.use(async (ctx, next) => {
     let storageAdapter: StorageAdapter | undefined = storage;
