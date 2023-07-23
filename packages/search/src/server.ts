@@ -102,13 +102,29 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     return next();
   });
 
-  server.route(endpoints.v1.admin, v1.adminRouter);
-  server.route(endpoints.v1.documents, v1.documentsRouter);
-  server.route(endpoints.v1.search, v1.searchRouter);
-  server.route(endpoints.v1.suggest, v1.suggestRouter);
-  server.route(endpoints.v1.tags, v1.tagsRouter);
+  if (endpoints.v1.admin !== false) {
+    server.route(endpoints.v1.admin, v1.adminRouter);
+  }
 
-  server.route(endpoints.public, v1.publicRouter);
+  if (endpoints.v1.documents !== false) {
+    server.route(endpoints.v1.documents, v1.documentsRouter);
+  }
+
+  if (endpoints.v1.search !== false) {
+    server.route(endpoints.v1.search, v1.searchRouter);
+  }
+
+  if (endpoints.v1.suggest !== false) {
+    server.route(endpoints.v1.suggest, v1.suggestRouter);
+  }
+
+  if (endpoints.v1.tags !== false) {
+    server.route(endpoints.v1.tags, v1.tagsRouter);
+  }
+
+  if (endpoints.public !== false) {
+    server.route(endpoints.public, v1.publicRouter);
+  }
 
   return server;
 }

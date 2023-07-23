@@ -13,13 +13,13 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   cache?: CacheAdapter;
   endpoints: {
     v1: {
-      admin: string;
-      documents: string;
-      search: string;
-      suggest: string;
-      tags: string;
+      admin: string | false;
+      documents: string | false;
+      search: string | false;
+      suggest: string | false;
+      tags: string | false;
     };
-    public: string;
+    public: string | false;
   };
   env: {
     cache: string;
