@@ -25,11 +25,11 @@
       "default": "./dist/storage/index.js",
       "types": "./dist/storage/index.d.ts"
     },
-    "./storage/d1-storage-adapter": {
+    "./storage/d1": {
       "default": "./dist/storage/d1-storage-adapter.js",
       "types": "./dist/storage/d1-storage-adapter.d.ts"
     },
-    "./storage/sqlite-storage-adapter": {
+    "./storage/sqlite": {
       "default": "./dist/storage/sqlite-storage-adapter.js",
       "types": "./dist/storage/sqlite-storage-adapter.d.ts"
     },

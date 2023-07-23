@@ -21,27 +21,27 @@
       "default": "./dist/storage/index.js",
       "types": "./dist/storage/index.d.ts"
     },
-    "./storage/d1-storage-adapter": {
+    "./storage/d1": {
       "default": "./dist/storage/d1-storage-adapter.js",
       "types": "./dist/storage/d1-storage-adapter.d.ts"
     },
-    "./storage/kv-storage-adapter": {
+    "./storage/kv": {
       "default": "./dist/storage/kv-storage-adapter.js",
       "types": "./dist/storage/kv-storage-adapter.d.ts"
     },
-    "./storage/planetscale-storage-adapter": {
+    "./storage/planetscale": {
       "default": "./dist/storage/planetscale-storage-adapter.js",
       "types": "./dist/storage/planetscale-storage-adapter.d.ts"
     },
-    "./storage/sqlite-storage-adapter": {
+    "./storage/sqlite": {
       "default": "./dist/storage/sqlite-storage-adapter.js",
       "types": "./dist/storage/sqlite-storage-adapter.d.ts"
     },
-    "./storage/turso-storage-adapter": {
+    "./storage/turso": {
       "default": "./dist/storage/turso-storage-adapter.js",
       "types": "./dist/storage/turso-storage-adapter.d.ts"
     },
-    "./storage/memory-storage-adapter": {
+    "./storage/memory": {
       "default": "./dist/storage/memory-storage-adapter.js",
       "types": "./dist/storage/memory-storage-adapter.d.ts"
     }

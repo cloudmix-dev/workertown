@@ -13,15 +13,15 @@
       "default": "./dist/cache/index.js",
       "types": "./dist/cache/index.d.ts"
     },
-    "./cache/no-op-cache-adapter": {
+    "./cache/no-op": {
       "default": "./dist/cache/no-op-cache-adapter.js",
       "types": "./dist/cache/no-op-cache-adapter.d.ts"
     },
-    "./cache/kv-cache-adapter": {
+    "./cache/kv": {
       "default": "./dist/cache/kv-cache-adapter.js",
       "types": "./dist/cache/kv-cache-adapter.d.ts"
     },
-    "./cache/memory-cache-adapter": {
+    "./cache/memory": {
       "default": "./dist/cache/memory-cache-adapter.js",
       "types": "./dist/cache/memory-cache-adapter.d.ts"
     },
@@ -33,23 +33,23 @@
       "default": "./dist/storage/index.js",
       "types": "./dist/storage/index.d.ts"
     },
-    "./storage/d1-storage-adapter": {
+    "./storage/d1": {
       "default": "./dist/storage/d1-storage-adapter.js",
       "types": "./dist/storage/d1-storage-adapter.d.ts"
     },
-    "./storage/planetscale-storage-adapter": {
+    "./storage/planetscale": {
       "default": "./dist/storage/planetscale-storage-adapter.js",
       "types": "./dist/storage/planetscale-storage-adapter.d.ts"
     },
-    "./storage/sqlite-storage-adapter": {
+    "./storage/sqlite": {
       "default": "./dist/storage/sqlite-storage-adapter.js",
       "types": "./dist/storage/sqlite-storage-adapter.d.ts"
     },
-    "./storage/turso-storage-adapter": {
+    "./storage/turso": {
       "default": "./dist/storage/turso-storage-adapter.js",
       "types": "./dist/storage/turso-storage-adapter.d.ts"
     },
-    "./storage/memory-storage-adapter": {
+    "./storage/memory": {
       "default": "./dist/storage/memory-storage-adapter.js",
       "types": "./dist/storage/memory-storage-adapter.d.ts"
     }

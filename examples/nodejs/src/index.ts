@@ -1,14 +1,14 @@
 import { featureFlags } from "@workertown/feature-flags";
-import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/feature-flags/storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/feature-flags/storage/sqlite";
 import { kv } from "@workertown/kv";
-import { SqliteStorageAdapter as KvStorageAdapter } from "@workertown/kv/storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as KvStorageAdapter } from "@workertown/kv/storage/sqlite";
 import { serve } from "@workertown/node";
 import { pubSub } from "@workertown/pub-sub";
 import { createQueueProcessor } from "@workertown/pub-sub/queue";
 import { SqliteQueueAdapter } from "@workertown/pub-sub/queue/sqlite-queue-adapter";
-import { SqliteStorageAdapter as PubSubStorageAdapter } from "@workertown/pub-sub/storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as PubSubStorageAdapter } from "@workertown/pub-sub/storage/sqlite";
 import { search } from "@workertown/search";
-import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite";
 import { combine } from "@workertown/utils";
 import * as path from "node:path";
 import * as url from "node:url";
