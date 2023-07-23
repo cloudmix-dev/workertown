@@ -1,18 +1,41 @@
 import set from "lodash.set";
 
+interface ExitOnSignalsOptions {
+  code?: number;
+  exit?: (code?: number) => never;
+  // rome-ignore lint/suspicious/noExplicitAny: NodeJS needs these to be any for this to be types
+  on?: (event: string | symbol, listener: (...args: any[]) => void) => any;
+}
+
+export function exitOnSignals(
+  signals: string[] = ["SIGINT", "SIGTERM"],
+  options: ExitOnSignalsOptions = {},
+) {
+  const { code = 1, exit = process.exit, on = process.on } = options;
+
+  function onExit() {
+    exit(code);
+  }
+
+  for (const signal of signals) {
+    on(signal, onExit);
+  }
+}
+
 interface ParseOptionsFromEnvOptions {
-  delimeter: string;
+  delimeter?: string;
+  prefix?: string;
 }
 
 export function parseOptionsFromEnv<T = Record<string, unknown>>(
   env = process.env,
-  options: ParseOptionsFromEnvOptions = { delimeter: "_" },
+  options: ParseOptionsFromEnvOptions = {},
 ) {
-  const { delimeter } = options;
+  const { delimeter = "_", prefix = "options" } = options;
   const parsedEnv = {};
 
   for (const [key, value] of Object.entries(env)) {
-    if (!key.startsWith(`options${delimeter}`)) {
+    if (!key.startsWith(`${prefix}${delimeter}`)) {
       continue;
     }
 
@@ -51,26 +74,4 @@ export function parseOptionsFromEnv<T = Record<string, unknown>>(
   }
 
   return parsedEnv as T;
-}
-
-interface ExitOnSignalsOptions {
-  code?: number;
-  exit?: (code?: number) => never;
-  // rome-ignore lint/suspicious/noExplicitAny: NodeJS needs these to be any for this to be types
-  on?: (event: string | symbol, listener: (...args: any[]) => void) => any;
-}
-
-export function exitOnSignals(
-  signals: string[] = ["SIGINT", "SIGTERM"],
-  options: ExitOnSignalsOptions = {},
-) {
-  const { code = 1, exit = process.exit, on = process.on } = options;
-
-  function onExit() {
-    exit(code);
-  }
-
-  for (const signal of signals) {
-    on(signal, onExit);
-  }
 }

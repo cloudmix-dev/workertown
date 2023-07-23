@@ -32,6 +32,6 @@ By default, combined services are mounted at the root of the API (`/`). If you
 would like to _namespace_ each service within the combined API, you must set
 the `basePath` option for each service.
 
-The example above makes the Feature Flags endpoints available at `/flags/*` and
+The example above makes the feature flags endpoints available at `/flags/*` and
 the search endpoints available at `/search/*`.
 {% /callout %}
