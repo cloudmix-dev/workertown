@@ -24,10 +24,11 @@ RUN npm install
 # Create server script
 RUN echo "import { search } from \"@workertown/search\"\n" \
   "import { SqliteStorageAdapter } from \"@workertown/search/storage/sqlite\"\n" \
+  "import { MemoryCacheAdapter } from \"@workertown/search/cache/no-op\"\n" \
   "import { serve } from \"@workertown/node\"\n" \
   "import { exitOnSignals, parseOptionsFromEnv } from \"@workertown/node/utils\";\n" \
   "exitOnSignals();" \
-  "serve(search({ ...parseOptionsFromEnv(), storage: new SqliteStorageAdapter() }));\n" \
+  "serve(search({ ...parseOptionsFromEnv(), cache: new MemoryCacheAdapter(), storage: new SqliteStorageAdapter() }));\n" \
   "console.log(\`Server running at http://localhost:\${process.env.PORT}\`);" > index.js
 
 CMD ["node", "./index.js"]
