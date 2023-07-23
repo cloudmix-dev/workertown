@@ -96,7 +96,12 @@ export default search();
 
 ### Cloudflare Pages
 
-Coming soon...
+```ts
+import { serve } from "@workertown/cloudflare-pages";
+import { search } from "@workertown/search";
+
+export const onRequest = serve(search());
+```
 
 ### Deno
 
@@ -137,11 +142,30 @@ export const handler = server.fetch;
 
 ### Vercel
 
-Coming soon...
+```ts
+import { search } from "@workertown/search";
+import { serve } from "@workertown/vercel";
+
+export default serve(search());
+```
 
 ### AWS Lambda
 
-Coming soon...
+```ts
+import { serve } from "@workertown/aws-lambda";
+import { search } from "@workertown/search";
+
+export const handler = serve(search());
+```
+
+### AWS Lambda@Edge
+
+```ts
+import { serve } from "@workertown/aws-lambda-edge";
+import { search } from "@workertown/search";
+
+export const handler = serve(search());
+```
 
 ### Node.js
 
