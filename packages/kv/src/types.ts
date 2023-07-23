@@ -1,6 +1,6 @@
 import {
-  type Context as WorkertownContext,
   type CreateServerOptions as BaseCreateServerOptions,
+  type WorkertownContext,
 } from "@workertown/internal-hono";
 
 import { type StorageAdapter } from "./storage/index.js";
