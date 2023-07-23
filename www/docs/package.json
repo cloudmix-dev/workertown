@@ -21,7 +21,7 @@
     "@sindresorhus/slugify": "~2.1.0",
     "class-variance-authority": "~0.6.1",
     "clsx": "~1.2.1",
-    "fast-glob": "~3.2.12",
+    "fast-glob": "~3.3.0",
     "flexsearch": "~0.7.31",
     "focus-visible": "~5.2.0",
     "next": "~13.4.2",
