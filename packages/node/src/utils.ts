@@ -9,12 +9,27 @@ export function parseOptionsFromEnv(env = process.env) {
     }
 
     let parsedValue: unknown = value;
+    let parsed = false;
 
-    if (!Number.isNaN(parseInt(value as string, 10))) {
+    if (!parsed && !Number.isNaN(parseInt(value as string, 10))) {
       parsedValue = parseInt(value as string, 10);
-    } else {
+      parsed = true;
+    }
+
+    if (!parsed) {
+      if (value === "true") {
+        parsedValue = true;
+        parsed = true;
+      } else if (value === "false") {
+        parsedValue = false;
+        parsed = true;
+      }
+    }
+
+    if (!parsed) {
       try {
         parsedValue = JSON.parse(value as string);
+        parsed = true;
       } catch (_) {}
     }
 
