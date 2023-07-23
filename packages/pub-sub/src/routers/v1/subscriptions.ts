@@ -1,5 +1,4 @@
-import { zValidator } from "@hono/zod-validator";
-import { createRouter } from "@workertown/internal-hono";
+import { createRouter, validate } from "@workertown/internal-hono";
 import { z } from "zod";
 
 import { type Subscription } from "../../storage/index.js";
@@ -9,7 +8,7 @@ const router = createRouter<Context>();
 
 router.get(
   "/",
-  zValidator(
+  validate(
     "query",
     z.object({
       topic: z.string().optional(),
@@ -32,7 +31,7 @@ router.get(
 
 router.post(
   "/",
-  zValidator(
+  validate(
     "json",
     z.object({
       topic: z.string(),
