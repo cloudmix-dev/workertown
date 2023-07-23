@@ -1,6 +1,6 @@
 FROM node:current-buster
 
-ARG VERSION=0.0.1-alpha.8
+ARG VERSION=0.0.1-alpha.9
 
 WORKDIR /usr/src/app
 
