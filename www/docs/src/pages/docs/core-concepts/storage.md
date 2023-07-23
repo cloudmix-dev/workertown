@@ -88,6 +88,14 @@ export default search({
 });
 ```
 
+Each `PlanetscaleStorageAdapter` has a dependency on the `@planetscale/database`
+package, and therefore you must install this package as a dependency of your
+project.
+
+```bash
+npm install @planetscale/database
+```
+
 ### Turso
 
 [Turso](https://turso.tech) is a hosted Sqlite (libsql) database provider that
@@ -120,6 +128,13 @@ export default search({
     db: "db.sqlite", // The path to the Sqlite database file
   }),
 });
+```
+
+Each `SqliteStorageAdapter` has a dependency on the `better-sqlite3` package,
+and therefore you must install this package as a dependency of your project.
+
+```bash
+npm install better-sqlite3
 ```
 
 ### Memory (dev only)

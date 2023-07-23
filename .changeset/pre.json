@@ -20,13 +20,15 @@
     "@workertown/internal-cache": "0.0.0",
     "@workertown/internal-queue": "0.0.0",
     "@workertown/internal-storage": "0.0.0",
-    "@workertown/cloudflare-workers": "0.0.0"
+    "@workertown/cloudflare-workers": "0.0.0",
+    "@workertown/auth": "0.0.1-alpha.6"
   },
   "changesets": [
     "cold-hats-float",
     "fair-dingos-occur",
     "hot-adults-tell",
     "plenty-dolls-decide",
+    "polite-boxes-dress",
     "short-beans-beam",
     "sour-rules-design",
     "tidy-windows-dream"

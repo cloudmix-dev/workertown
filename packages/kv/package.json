@@ -1,6 +1,6 @@
 {
   "name": "@workertown/kv",
-  "version": "0.0.1-alpha.6",
+  "version": "0.0.1-alpha.7",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -52,13 +52,13 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.1-alpha.6",
-    "@workertown/internal-storage": "~0.0.1-alpha.6",
+    "@workertown/internal-hono": "~0.0.1-alpha.7",
+    "@workertown/internal-storage": "~0.0.1-alpha.7",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
   },
   "devDependencies": {
-    "@workertown/internal-types": "~0.0.1-alpha.6"
+    "@workertown/internal-types": "~0.0.1-alpha.7"
   },
   "optionalDependencies": {
     "@planetscale/database": "~1.8.0",
