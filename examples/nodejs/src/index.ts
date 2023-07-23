@@ -3,6 +3,7 @@ import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/
 import { kv } from "@workertown/kv";
 import { SqliteStorageAdapter as KvStorageAdapter } from "@workertown/kv/storage/sqlite";
 import { serve } from "@workertown/node";
+import { exitOnSignals, parseOptionsFromEnv } from "@workertown/node/utils";
 import { pubSub } from "@workertown/pub-sub";
 import { createQueueProcessor } from "@workertown/pub-sub/queue";
 import { SqliteQueueAdapter } from "@workertown/pub-sub/queue/sqlite-queue-adapter";
@@ -71,6 +72,7 @@ const searchApi = search({
 const api = combine(flagsApi, kvApi, pubSubApi, searchApi);
 
 (async function main() {
+  exitOnSignals();
   serve(api, { port: parseInt(PORT, 10) });
 
   console.log(`Server running at http://localhost:${PORT}`);
