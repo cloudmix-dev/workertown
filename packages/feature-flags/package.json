@@ -1,6 +1,6 @@
 {
   "name": "@workertown/feature-flags",
-  "version": "0.0.1-alpha.7",
+  "version": "0.0.1-alpha.8",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -56,16 +56,16 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-cache": "~0.0.1-alpha.7",
-    "@workertown/internal-hono": "~0.0.1-alpha.7",
-    "@workertown/internal-storage": "~0.0.1-alpha.7",
+    "@workertown/internal-cache": "~0.0.1-alpha.8",
+    "@workertown/internal-hono": "~0.0.1-alpha.8",
+    "@workertown/internal-storage": "~0.0.1-alpha.8",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230710.1",
     "@types/better-sqlite3": "~7.6.4",
-    "@workertown/internal-types": "~0.0.1-alpha.7"
+    "@workertown/internal-types": "~0.0.1-alpha.8"
   },
   "optionalDependencies": {
     "@planetscale/database": "~1.8.0",
