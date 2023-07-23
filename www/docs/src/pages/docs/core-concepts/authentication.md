@@ -65,29 +65,6 @@ export default search({
 });
 ```
 
-### JWKS caching
-
-When running in the Cloudflare Workers runtime (for now - this will be rolling
-out to all runtimes eventually...), fetches made to load and check for a valid
-JWKS are cached for `86400` seconds by default on a **successful** response.
-
-If you would like to change this value, this can be set via the
-`auth.jwt.jwksCacheTtl` option, where you can set the number of **seconds** to
-cache the JWKS for. It can also be disabled entirely by setting this option to
-`false`.
-
-```typescript
-import { search } from "@workertown/search";
-
-export default search({
-  auth: {
-    jwt: {
-      jwksCacheTtl: 3600, // or false
-    },
-  },
-});
-```
-
 ### Getting the JWT from the request
 
 By default, Workertown services will look for the JWT in the `Authorization`
@@ -127,6 +104,29 @@ export default search({
       verifyCredentials: (jwt) => {
         return jwt.role === "admin";
       }
+    },
+  },
+});
+```
+
+### JWKS caching
+
+When running in the Cloudflare Workers runtime (for now - this will be rolling
+out to all runtimes eventually...), fetches made to load and check for a valid
+JWKS are cached for `86400` seconds by default on a **successful** response.
+
+If you would like to change this value, this can be set via the
+`auth.jwt.jwksCacheTtl` option, where you can set the number of **seconds** to
+cache the JWKS for. It can also be disabled entirely by setting this option to
+`false`.
+
+```typescript
+import { search } from "@workertown/search";
+
+export default search({
+  auth: {
+    jwt: {
+      jwksCacheTtl: 3600, // or false
     },
   },
 });
@@ -302,9 +302,9 @@ export default search({
 ## Manually authenticating per request
 
 Every Workertown service supports an `authenticateRequest` function that can be
-passed within the `options` argument when creating the service. This function
-returns a `boolean` (or a `Promise<boolean>`) that determines whether the
-request is allowed to continue or not. It runs **after** the authentication
+passed within the `options.auth` argument when creating the service. This
+function returns a `boolean` (or a `Promise<boolean>`) that determines whether
+the request is allowed to continue or not. It runs **after** the authentication
 middlewares listed above.
 
 Here is an example:
@@ -318,9 +318,9 @@ export default search({
       // `req` is the incoming `Request` object
       // `user` is the authenticated user object (or `null`)
 
-      return user.id === "123";
+      return user?.id === "123";
     },
-  }.
+  },
 });
 ```
 
@@ -329,3 +329,26 @@ The `User` object has an `id` property, and a strategy property that is one of
 authenticate the user. If the user was authenticated with the `jwt` strategy,
 the `User` object will also contain a `claims` property containing all of the
 JWT's claims.
+
+___
+
+## Disabling authentication
+
+To disable any authentication strategy, simply set the `auth.<strategy>` option
+to `false`.
+
+```typescript
+import { search } from "@workertown/search";
+
+export default search({
+  auth: {
+    basic: false,
+  },
+});
+```
+{% callout type="warning" title="Do not disable all strategies" %}
+The internals of Workertown services require an authenticated user to be present
+within the context of a request to function. While you can set each
+`auth.<strategy>` to `false`, this isn't advised as you won't be able to call
+any of the service's non-public endpoints.
+{% /callout %}
