@@ -1,8 +1,4 @@
-import {
-  type D1Database,
-  type MessageBatch,
-  type Queue,
-} from "@cloudflare/workers-types";
+import { type D1Database, type Queue } from "@cloudflare/workers-types";
 import { createServer } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
@@ -116,11 +112,11 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   server.route(endpoints.v1.publish, v1.publishRouter);
   server.route(endpoints.v1.subscriptions, v1.subscriptionsRouter);
 
-  server.queue = async (batch: MessageBatch<QueueMessage>) => {
+  server.queue = async (batch) => {
     const results = await Promise.allSettled(
       batch.messages.map(async (message) => {
         const { topic, endpoint, headers, queryParameters, body } =
-          message.body;
+          message.body as QueueMessage;
         const url = new URL(endpoint);
         const reqHeaders = new Headers({
           "content-type": "application/json",

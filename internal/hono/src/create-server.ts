@@ -1,9 +1,8 @@
 import {
-  type ExecutionContext,
-  type MessageBatch,
-  type ScheduledEvent,
+  type ExportedHandlerQueueHandler,
+  type ExportedHandlerScheduledHandler,
 } from "@cloudflare/workers-types";
-import { type Env, Hono, type HonoRequest } from "hono";
+import { Hono, type HonoRequest, type Input } from "hono";
 import { cors } from "hono/cors";
 
 import {
@@ -21,20 +20,14 @@ import {
 import { type Context, User } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
-  queue?: (
-    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the messages here
-    batch: MessageBatch<any>,
-    env: Env["Bindings"],
-    ctx: ExecutionContext,
-  ) => void | Promise<void>;
-  scheduled?: (
-    event: ScheduledEvent,
-    env: Env["Bindings"],
-    ctx: ExecutionContext,
-  ) => void | Promise<void>;
+  queue?: ExportedHandlerQueueHandler;
+  scheduled?: ExportedHandlerScheduledHandler;
 }
 
-export type WorkertownRequest = HonoRequest;
+export type WorkertownRequest<
+  P extends string = "/",
+  I extends Input["out"] = {},
+> = HonoRequest<P, I>;
 
 export interface CreateServerOptions {
   access?: {
@@ -44,11 +37,11 @@ export interface CreateServerOptions {
     basic?: BasicOptions | false;
     jwt?: JwtOptions | false;
     apiKey?: ApiKeyOptions | false;
+    authenticateRequest?: (
+      request: WorkertownRequest,
+      user: User | null,
+    ) => boolean | Promise<boolean>;
   };
-  authenticateRequest?: (
-    request: WorkertownRequest,
-    user: User | null,
-  ) => boolean | Promise<boolean>;
   basePath?: string;
   cors?: // Copy/pasted from cors/hono
     | {
@@ -72,7 +65,6 @@ export function createServer<T extends Context>(
   const {
     access: accessOptions,
     auth: authOptions,
-    authenticateRequest,
     basePath = "/",
     cors: corsOptions,
     sentry: sentryOptions,
@@ -108,9 +100,9 @@ export function createServer<T extends Context>(
     server.use("*", jwtMiddleware(authOptions?.jwt));
   }
 
-  if (typeof authenticateRequest === "function") {
+  if (typeof authOptions?.authenticateRequest === "function") {
     server.use("*", async (ctx, next) => {
-      const allowed = await authenticateRequest(
+      const allowed = await authOptions.authenticateRequest?.(
         ctx.req as unknown as HonoRequest,
         // rome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
         (ctx as any).get("user") ?? null,
