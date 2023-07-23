@@ -31,11 +31,12 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
     | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
   stopWords:
+    | string[]
     | Set<string>
     | ((
         // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
         req: WorkertownRequest<any, any>,
-      ) => Set<string> | Promise<Set<string>>);
+      ) => string[] | Set<string> | Promise<string[] | Set<string>>);
   storage?: StorageAdapter;
 }
 

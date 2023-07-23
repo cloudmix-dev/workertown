@@ -74,10 +74,11 @@ router.get(
       typeof scanRangeFn === "function"
         ? await scanRangeFn(ctx.req)
         : scanRangeFn;
-    const stopWords =
+    const stopWords = new Set(
       typeof stopWordsFn === "function"
         ? await stopWordsFn(ctx.req)
-        : stopWordsFn;
+        : stopWordsFn,
+    );
     // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
     let documents: any[] = [];
     let results: Suggestion[] = [];
