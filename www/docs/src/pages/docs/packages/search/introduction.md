@@ -27,13 +27,14 @@ Running a text search index on the edge is complicated - we don't have the
 luxury of copious amounts of RAM to use or disk space to store indexes on
 directly. `@workertown/search` manages to provide similar functionaility to a
 traditional search engine by combining edge-compatible storage with the
-wonderful [Minisearch]() package.
+wonderful [Minisearch](https://www.npmjs.com/package/minisearch) package.
 
 In short, anything that is indexed is stored in an edge-compatible storage
 layer (database) - when a query is run, we load the whole index into memory and
-then instantiate [Minisearch]() to actually perform the search. This may seem
-wasteful when it comes to resources, but this simple access pattern can make
-"hot" indexes/search terms highly cachable.
+then instantiate [Minisearch](https://www.npmjs.com/package/minisearch) to
+actually perform the search. This may seem wasteful when it comes to resources,
+but this simple access pattern can make "hot" indexes/search terms highly
+cachable.
 
 To help keep the amount of documents loaded for a search as few as possible,
 `@workertown/search` also provides a "tagging" mechanism to allow you to group

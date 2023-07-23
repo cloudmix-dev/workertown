@@ -36,9 +36,10 @@ storage adapters provided within the package.
 
 ### D1 (default)
 
-The [D1](https://developers.cloudflare.com/d1/) storage adapter is the
-**default** storage adapter for all Workertown services, and so any Workertown
-service that requires storage will require a bound D1 database to run.
+The [Cloudflare D1](https://developers.cloudflare.com/d1/) storage adapter is
+the **default** storage adapter for all Workertown services, and so any
+Workertown service that requires storage will require a bound D1 database to
+run.
 
 The `D1StorageAdapter` is exposed from each package, but in reality you should
 **never** have to manually instantiate this adapter.
@@ -155,8 +156,8 @@ export default search({
 ```
 
 {% callout type="warning" title="For development use only" %}
-The memory storage adapter is **not** intended for production use of any kind,
-and should only be used in development environments.
+The memory storage adapter is not intended for production use of any kind, and
+should only be used in development environments.
 {% /callout %}
 
 ---

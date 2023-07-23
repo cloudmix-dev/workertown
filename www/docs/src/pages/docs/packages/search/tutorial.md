@@ -115,9 +115,9 @@ route.
 
 ### Running the migrations
 
-This default, out-of-the-box `@workertown/search` service uses [D1]() as it's
-storage layer - locally, this will be a SQLite instance that `wrangler` manages
-for you.
+This default, out-of-the-box `@workertown/search` service uses
+[Cloudflare D1](https://developers.cloudflare.com/d1/) as it's storage layer -
+locally, this will be a SQLite instance that `wrangler` manages for you.
 
 To use the service, we need to run the database migrations. To do this, you can
 make a `POST` request to the `/v1/admin/migrate` endpoint. Here's an example

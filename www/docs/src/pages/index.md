@@ -98,5 +98,6 @@ any of the Workertown packages, please don't hesitate to get in touch.
 
 ### Submit an issue
 
-Found a bug? Head over to our [Github repository]() and file an issue for us to
-take a look at - reproduction examples encouraged 🙏.
+Found a bug? Head over to our
+[Github repository](https://github.com/cloudmix-dev/workertown) and file an
+issue for us to take a look at - reproduction examples encouraged 🙏.
