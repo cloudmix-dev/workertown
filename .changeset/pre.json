@@ -21,7 +21,11 @@
     "@workertown/internal-queue": "0.0.0",
     "@workertown/internal-storage": "0.0.0",
     "@workertown/cloudflare-workers": "0.0.0",
-    "@workertown/auth": "0.0.1-alpha.6"
+    "@workertown/auth": "0.0.1-alpha.6",
+    "@workertown/aws-lambda": "0.0.0",
+    "@workertown/aws-lambda-edge": "0.0.0",
+    "@workertown/cloudflare-pages": "0.0.0",
+    "@workertown/vercel": "0.0.0"
   },
   "changesets": [
     "cold-hats-float",
@@ -31,6 +35,7 @@
     "polite-boxes-dress",
     "shiny-lions-count",
     "short-beans-beam",
+    "silver-pans-develop",
     "sour-rules-design",
     "thick-pigs-tap",
     "tidy-windows-dream"

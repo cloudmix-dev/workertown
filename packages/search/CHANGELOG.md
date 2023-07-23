@@ -1,5 +1,15 @@
 # @workertown/search
 
+## 0.0.1-alpha.10
+
+### Patch Changes
+
+- Alpha.10 Release
+- Updated dependencies
+  - @workertown/internal-cache@0.0.1-alpha.10
+  - @workertown/internal-hono@0.0.1-alpha.10
+  - @workertown/internal-storage@0.0.1-alpha.10
+
 ## 0.0.1-alpha.9
 
 ### Patch Changes
