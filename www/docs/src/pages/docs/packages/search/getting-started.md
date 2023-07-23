@@ -16,7 +16,7 @@ npm install @workertown/search
 In your main file (e.g. `worker.ts`), import the `search` factory function and
 call it.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 // ...or `import search from "@workertown/search";`
@@ -34,7 +34,7 @@ This options object allows you to customise the search service to fit your
 needs (see [configuration](/docs/packages/search/configuration) for a full set
 of options).
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 // These are the default values...
@@ -88,7 +88,7 @@ a search service in various environments.
 
 ### Cloudflare Workers
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search();
@@ -104,7 +104,7 @@ Coming soon...
 
 ### Bun
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 const server = search();
@@ -117,7 +117,7 @@ export default {
 
 ### Fastly Compute@Edge
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 const server = search();
@@ -127,7 +127,7 @@ server.fire();
 
 ### Lagon
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 const server = search();
@@ -145,7 +145,7 @@ Coming soon...
 
 ### Node.js
 
-```typescript
+```ts
 import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
 

@@ -14,7 +14,7 @@ choice uses Node.js.
 
 Install the `@workertown/node` package and call the `serve` export:
 
-```typescript
+```ts
 import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
 
@@ -28,7 +28,7 @@ The above will run a Node.js HTTP server on port `3000`.
 To configure some options of the HTTP server, you can also pass an `options`
 argument with various options to customise the server:
 
-```typescript
+```ts
 import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
 
@@ -47,6 +47,7 @@ The Workertown packages all come with a default config that assumes the service
 is running in a (correctly configured) Cloudflare Workers environment.
 
 When running in Node.js, you'll need to change your storage and cache adapters
-to ones that work in Node.js. Every package comes with a [Planetscale]() storage
-adapter and an [Upstash Redis]() cache adapter, but you can also write your own.
+to ones that work in Node.js. Every package comes with [Sqlite](),
+[Planetscale]() and [Turso]() storage adapters, and an [Upstash Redis]() cach
+ adapter, but you can also write your own.
 {% /callout %}

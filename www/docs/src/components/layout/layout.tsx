@@ -24,7 +24,7 @@ export const navigation: {
     title: "Introduction",
     links: [
       { title: "What is Workertown?", href: "/" },
-      { title: "Tutorial", href: "/docs/tutorial" },
+      { title: "Tutorials", href: "/docs/tutorials" },
     ],
   },
   {
@@ -68,19 +68,6 @@ export const navigation: {
         title: "Tutorial",
         href: "/docs/packages/search/tutorial",
       },
-    ],
-  },
-  {
-    title: "Packages",
-    links: [
-      { title: "Auth", href: "/docs/packages/auth" },
-      { title: "CMS", href: "/docs/packages/cms" },
-      { title: "Events", href: "/docs/packages/events" },
-      { title: "Feature Flags", href: "/docs/packages/feature-flags" },
-      { title: "KV", href: "/docs/packages/kv" },
-      { title: "Pub Sub", href: "/docs/packages/pub-sub" },
-      { title: "Queues", href: "/docs/packages/queues" },
-      { title: "Search", href: "/docs/packages/search" },
     ],
   },
   {

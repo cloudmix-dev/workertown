@@ -14,17 +14,17 @@ into a single REST API.
 
 Install the `@workertown/utils` package and call the `combine` export:
 
-```typescript
-import { cms } from "@workertown/cms";
+```ts
+import { featureFlags } from "@workertown/feature-flags";
 import { search } from "@workertown/search";
 import { combine } from "@workertown/utils";
 
 export default combine(
-  cms({ basePath: "/cms" }),
+  featureFlags({ basePath: "/flags" }),
   search({ basePath: "/search" })
 );
 
-// ⬆️ A combined search and CMS API
+// ⬆️ A combined search and Feature Flags API
 ```
 
 {% callout type="warning" title="Remember to set the `basePath`!" %}
@@ -32,6 +32,6 @@ By default, combined services are mounted at the root of the API (`/`). If you
 would like to _namespace_ each service within the combined API, you must set
 the `basePath` option for each service.
 
-The example above makes the CMS endpoints available at `/cms/*` and the search
-endpoints available at `/search/*`.
+The example above makes the Feature Flags endpoints available at `/flags/*` and
+the search endpoints available at `/search/*`.
 {% /callout %}

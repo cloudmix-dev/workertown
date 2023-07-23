@@ -9,7 +9,7 @@ secured using any combination of available strategies.
 
 A Workertown service will check an incoming request against **all** enabled
 authentication strategies, and will fail the request if **none** of the
-stratgeies successfully authenticates the request. This allows you to mix and
+strategies successfully authenticates the request. This allows you to mix and
 match strategies on a per request basis.
 
 ---
@@ -44,7 +44,7 @@ authentication will assume (unless told otherwise) that the values it needs to
 verify a JWT are set in the environment, but this can be configured via the
 `options` object you can pass to `auth.jwt` in your service's options:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -72,7 +72,7 @@ header, specifically as a `Bearer` token. This can be changed by passing a
 `getCredentials` function that takes the request and returns the JWT as a
 `string` (or `undefined`/`null`).
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -95,7 +95,7 @@ You can verify any custom claims set within the JWT payload by passing a
 the JWT payload as a single argument and returns a `boolean` (or a
 `Promise<boolean>`) indicating whether the JWT is valid or not.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -120,7 +120,7 @@ If you would like to change this value, this can be set via the
 cache the JWKS for. It can also be disabled entirely by setting this option to
 `false`.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -153,7 +153,7 @@ needs to verify a request are set in the environment, but this can be configured
 via the `options` object you can pass to `auth.apiKey` in your service's
 options:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -175,12 +175,12 @@ header, specifically as a `Bearer` token. This can be changed by passing a
 `getCredentials` function that takes the request and returns the API key as a
 `string` (or `undefined`/`null`).
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
   auth: {
-    jwt: {
+    apiKey: {
       getCredentials: (req) => {
         const url = new URL(req.url);
 
@@ -198,12 +198,12 @@ You can manually verify the API key on a per request basis by passing a
 receives the API key as a single argument and returns a `boolean` (or a
 `Promise<boolean>`) indicating whether the API key is valid or not.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
   auth: {
-    jwt: {
+    apiKey: {
       verifyCredentials: (apiKey) => {
         return apiKey === "super_secret_api";
       }
@@ -219,8 +219,8 @@ export default search({
 Basic authentication authenticates requests via a username/password combination.
 
 With basic authentication enabled, by default your services will look for a
-base64 encoded `username:password`` passed as a `Basic` credential as part of
-the `Authorization` header:
+base64 encoded `username:password` passed as a `Basic` credential as part of the
+`Authorization` header:
 
 ```bash
 Authorization: Basic <base64<username:password>>
@@ -234,7 +234,7 @@ needs to verify a request are set in the environment, but this can be configured
 via the `options` object you can pass to `auth.basic` in your service's
 options:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -259,12 +259,12 @@ This can be changed by passing a `getCredentials` function that takes the
 request and returns the username/password combination as a `[string,string]`
 tuple (or `undefined`/`null`).
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
   auth: {
-    jwt: {
+    basic: {
       getCredentials: (req) => {
         const url = new URL(req.url);
 
@@ -283,12 +283,12 @@ function receives the username and password as `string` arguments, and returns
 a `boolean` (or a `Promise<boolean>`) indicating whether the username/password
 combination is valid or not.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
   auth: {
-    jwt: {
+    basic: {
       verifyCredentials: (username, password) => {
         return username === "username" && password === "password";
       }
@@ -302,14 +302,14 @@ export default search({
 ## Manually authenticating per request
 
 Every Workertown service supports an `authenticateRequest` function that can be
-passed within the `options.auth` argument when creating the service. This
-function returns a `boolean` (or a `Promise<boolean>`) that determines whether
-the request is allowed to continue or not. It runs **after** the authentication
+passed within the `auth` argument when creating the service. This function
+returns a `boolean` (or a `Promise<boolean>`) that determines whether the
+request is allowed to continue or not. It runs **after** the authentication
 middlewares listed above.
 
 Here is an example:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -337,7 +337,7 @@ ___
 To disable any authentication strategy, simply set the `auth.<strategy>` option
 to `false`.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({

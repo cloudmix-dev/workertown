@@ -16,7 +16,7 @@ bring your own storage adapter entirely.
 Workertown services that require storage expose a `options.storage`
 configuration option that allows you to specify a storage adapter to use.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
 
@@ -43,7 +43,7 @@ service that requires storage will require a bound D1 database to run.
 The `D1StorageAdapter` is exposed from each package, but in reality you should
 **never** have to manually instantiate this adapter.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { D1StorageAdapter } from "@workertown/search/storage/d1";
 
@@ -65,8 +65,8 @@ preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 {% callout type="warning" title="The above won't work" %}
 The example above is contrived, and won't actually work within the Cloudflare
 Workers runtime. In reality, you would have to create your own `fetch`
-implementation that retrieves the D1Namespace instance from the environment and
-then builds the Workertown service on each request.
+implementation that retrieves the `D1Namespace`` instance from the environment
+and then builds the Workertown service on each request.
 {% /callout %}
 
 ### Planetscale
@@ -75,7 +75,7 @@ then builds the Workertown service on each request.
 SQL (Vitess) databases that are accessible via a REST API - meaning they are
 edge runtime compatible.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { PlanetscaleStorageAdapter } from "@workertown/search/storage/planetscale";
 
@@ -93,7 +93,7 @@ export default search({
 [Turso](https://turso.tech) is a hosted Sqlite (libsql) database provider that
 provides a REST API for interacting with Sqlite databases.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { TursoStorageAdapter } from "@workertown/search/storage/turso";
 
@@ -107,10 +107,11 @@ export default search({
 
 ### Sqlite
 
-If you would like to run your Workertoen service in a NodeJS environment, you
-can use [Sqlite](https://www.sqlite.org/index.html) as your storage adapter.
+If you are running your Workertown service in a NodeJS environment, you can use
+[Sqlite](https://www.sqlite.org/index.html) as your storage adapter to persist
+data directly on the disk in your environment.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
 
@@ -129,7 +130,7 @@ running tests), you can use the `MemoryStorageAdapter` to store data in memory.
 This will **not** persist any data to disk, and therefore any values stored are
 lost when the process is terminated.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { MemoryStorageAdapter } from "@workertown/search/storage/memory";
 
@@ -150,7 +151,7 @@ and should only be used in development environments.
 Each Workertown service with storage support exposes a `StorageAdapter` class
 that can be extended upon to create your own storage adapter.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 import { StorageAdapter } from "@workertown/search/storage";
 
@@ -174,10 +175,10 @@ For storage adapters built upon relational databases, each Workertown service
 exposes an endpoint to run the migrations required to run the service. The
 endpoint takes a `POST` request with an empty JSON body to run the migrations.
 
-By **default**, this endpoint is exposed at `/v1/admin.migrate`, but this can be
+By **default**, this endpoint is exposed at `/v1/admin/migrate`, but this can be
 configured via the `options.endpoints.v1.admin` configuration option.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({

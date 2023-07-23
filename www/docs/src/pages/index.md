@@ -15,11 +15,9 @@ Workertown provides...
 
 {% quick-links %}
 
-{% quick-link title="Auth" icon="auth" href="/docs/packages/auth" description="OAuth 2 and SAML, but easy to understand." /%}
+{% quick-link title="Auth" icon="auth" description="OAuth 2 and SAML, but easy to understand." /%}
 
-{% quick-link title="CMS" icon="cms" href="/docs/packages/cms" description="Headless content management" /%}
-
-{% quick-link title="Events" icon="events" href="/docs/packages/events" description="Kafka-like events streaming." /%}
+{% quick-link title="Events" icon="events" description="Kafka-like events streaming." /%}
 
 {% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags" description="Feature flags made simple." /%}
 
@@ -27,7 +25,7 @@ Workertown provides...
 
 {% quick-link title="Pub Sub" icon="pubsub" href="/docs/packages/pub-sub" description="Webhook based system messaging." /%}
 
-{% quick-link title="Queues" icon="queues" href="/docs/packages/queues" description="Distributed, prioritized task processing." /%}
+{% quick-link title="Queues" icon="queues" description="Distributed, prioritized task processing." /%}
 
 {% quick-link title="Search" icon="search" href="/docs/packages/search/introduction" description="Full text search indexing for small to medium datasets." /%}
 
@@ -53,7 +51,7 @@ It's very easy to get started with Workertown.
 ### Installing a package
 
 All the Workertown packages are available to download via `npm`. They are all
-namespaced under `@workertown/`. For example, to install the search package,
+namespaced under `@workertown/*`. For example, to install the search package,
 run:
 
 ```bash
@@ -66,19 +64,19 @@ All Workertown service packages follow the same export pattern.
 
 You can either import the default export:
 
-```typescript
+```ts
 import search from "@workertown/search";
 ```
 
 ...or the **named** export for the service:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 ```
 
 ...and then call the function to create the service:
 
-```typescript
+```ts
 const service = search();
 ```
 

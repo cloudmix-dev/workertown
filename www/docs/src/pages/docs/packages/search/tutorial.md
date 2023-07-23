@@ -55,7 +55,7 @@ The `@workertown/search` package is no different.
 To create the service, first replace the contents of `worker.{js.ts}` with the
 following:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search();
@@ -160,7 +160,7 @@ First, let's index document `1`:
 }
 ```
 
-You can index an document via a `PUT` request to the `/v1/docs/:id` endpoint.
+You can index a document via a `PUT` request to the `/v1/docs/:id` endpoint.
 Here's how the request is made via `curl`:
 
 ```bash
@@ -187,10 +187,10 @@ curl -XPUT -H 'Authorization: Bearer super_secret_api' -d '{ "tenant": "test", "
 }
 ```
 
-{% callout title="Updating an document" %}
-The `PUT` request to the `/v1/docs/:id` endpoint will create an document if it
-doesn't exist, or update it if an document with the same `id`, `tenant` and `index`
-already exists.
+{% callout title="Updating a document" %}
+The `PUT` request to the `/v1/docs/:id` endpoint will create a document if it
+doesn't exist, or update it if a document with the same `id`, `tenant` and
+`index` already exists.
 {% /callout %}
 
 ### Search for your first document
@@ -278,10 +278,10 @@ Awesome! This endpoint can be handy for powering automcomplete functionality.
 
 ### Add a tag to your first document
 
-Tagging allows you to filter out (at the database level) documents you don't want to
-be included in search/suggestion results.
+Tagging allows you to filter out (at the database level) documents you don't
+want to be included in search/suggestion results.
 
-You can tag an document by including an array of strings under the `tag` property
+You can tag a document by including an array of strings under the `tag` property
 when you index it. Replace the document via the `/v1/docs/:id` endpoint:
 
 ```bash
@@ -342,7 +342,7 @@ curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search
 ```
 
 A search with multiple tags acts as an **and** operation, meaning that all tags
-must be present for an document to be included in the search.
+must be present for a document to be included in the search.
 
 ```bash
 curl -XGET -H 'Authorization: Bearer super_secret_api' 'localhost:8787/v1/search/test?term=test&fields=content&tags=test,invalid'
@@ -402,8 +402,8 @@ There you have it, you've just used tags!
 
 ### Adding more documents
 
-Let's add some more documents to our tenant, so that we can search _across_ a varied
-dataset.
+Let's add some more documents to our tenant, so that we can search _across_ a
+varied dataset.
 
 Here are example `curl` commands:
 
@@ -472,7 +472,7 @@ results change.
 The `@workertown/search` package allows various aspects of how the service
 functions to be customised via the `options` parameter.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -485,7 +485,7 @@ export default search({
 One thing you can customise are the URL prefixes for all of the available
 endpoints. Let's change the search endpoint to our own:
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
@@ -512,7 +512,7 @@ A powerful option that can have a big impact on the performance of your service
 is the ability to set how many records are retrieved from the database to
 perform a search on. The default value is **1000**.
 
-```typescript
+```ts
 import { search } from "@workertown/search";
 
 export default search({
