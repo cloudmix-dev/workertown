@@ -686,9 +686,7 @@ test("v1 public open-api.json", async (t) => {
 test("v1 public w/ custom endpoint", async (t) => {
   const service = createTestService({
     endpoints: {
-      v1: {
-        public: "/custom-public",
-      },
+      public: "/custom-public",
     },
   });
   const res = await makeRequest(service, "/custom-public/open-api.json");
