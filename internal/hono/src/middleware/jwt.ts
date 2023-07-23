@@ -1,36 +1,54 @@
+import { type WorkertownRequest } from "../index.js";
+import { User } from "../types.js";
 import { type fetch as CFFetch } from "@cloudflare/workers-types";
 import { type DeepPartial } from "@workertown/internal-types";
 import { type MiddlewareHandler } from "hono";
-import { JSONWebKeySet, KeyLike, createLocalJWKSet, jwtVerify } from "jose";
+import {
+  JSONWebKeySet,
+  JWTPayload,
+  KeyLike,
+  createLocalJWKSet,
+  jwtVerify,
+} from "jose";
 import merge from "lodash.merge";
 
 interface JwtOptions {
   audience?: string;
-  claims?: {
-    [x: string]: unknown;
-  };
   env: {
     jwksUrl: string;
     secret: string;
     issuer: string;
     audience: string;
   };
+  getCredentials: (req: WorkertownRequest) => string | null | undefined;
   issuer?: string;
   jwksCacheTtl?: number | boolean;
   jwksUrl?: string;
   secret?: string;
+  verifyCredentials?: (jwt: JWTPayload) => boolean | Promise<boolean>;
 }
 
 export type JwtOptionsOptional = DeepPartial<JwtOptions>;
 
 const DEFAULT_OPTIONS: JwtOptions = {
-  jwksCacheTtl: 86400,
   env: {
     jwksUrl: "AUTH_JWKS",
     secret: "AUTH_JWT_SECRET",
     issuer: "AUTH_JWT_ISSUER",
     audience: "AUTH_JWT_AUDIENCE",
   },
+  getCredentials: (req) => {
+    const authHeader = req.headers.get("Authorization");
+
+    if (typeof authHeader === "string") {
+      const [type, credentials] = authHeader.split(" ");
+
+      if (type === "Bearer" && credentials) {
+        return credentials;
+      }
+    }
+  },
+  jwksCacheTtl: 86400,
 };
 
 export function jwt(options?: JwtOptionsOptional) {
@@ -40,13 +58,14 @@ export function jwt(options?: JwtOptionsOptional) {
     secret: optionsSecret,
     issuer: optionsIssuer,
     audience: optionsAudience,
-    claims: optionsClaims,
     env: {
       jwksUrl: jwksUrlEnvKey,
       secret: secretEnvKey,
       issuer: issuerEnvKey,
       audience: audienceEnvKey,
     },
+    getCredentials,
+    verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
   const handler: MiddlewareHandler = async (ctx, next) => {
     const jwks = (optionsJwksUrl ?? ctx.env?.[jwksUrlEnvKey]) as string;
@@ -63,64 +82,63 @@ export function jwt(options?: JwtOptionsOptional) {
       const authHeader = ctx.req.headers.get("Authorization");
 
       if (typeof authHeader === "string") {
-        const [type, credentials] = authHeader.split(" ");
+        const credentials = getCredentials(ctx.req);
         let signingCredentials: (() => Promise<KeyLike>) | string = secret;
 
-        if (
-          type === "Bearer" &&
-          credentials &&
-          typeof signingCredentials !== "string"
-        ) {
-          if (!signingCredentials) {
-            try {
-              const jwksRes = await (fetch as unknown as typeof CFFetch)(jwks, {
-                cf:
-                  optionsJwksCacheTtl !== false
-                    ? {
-                        cacheTtlByStatus: {
-                          "200-299":
-                            typeof optionsJwksCacheTtl === "number"
-                              ? optionsJwksCacheTtl
-                              : 86400,
-                          "400-599": 0,
-                        },
-                      }
-                    : undefined,
-              });
+        if (credentials) {
+          if (typeof signingCredentials !== "string") {
+            if (!signingCredentials) {
+              try {
+                const jwksRes = await (fetch as unknown as typeof CFFetch)(
+                  jwks,
+                  {
+                    cf:
+                      optionsJwksCacheTtl !== false
+                        ? {
+                            cacheTtlByStatus: {
+                              "200-299":
+                                typeof optionsJwksCacheTtl === "number"
+                                  ? optionsJwksCacheTtl
+                                  : 86400,
+                              "400-599": 0,
+                            },
+                          }
+                        : undefined,
+                  },
+                );
 
-              if (jwksRes.ok) {
-                const jwksJson = (await jwksRes.json()) as JSONWebKeySet;
+                if (jwksRes.ok) {
+                  const jwksJson = (await jwksRes.json()) as JSONWebKeySet;
 
-                signingCredentials = await createLocalJWKSet(jwksJson);
-              }
-            } catch (_) {}
-          }
-        }
-
-        try {
-          const { payload } = await jwtVerify(
-            credentials as string,
-            typeof signingCredentials === "string"
-              ? new TextEncoder().encode(signingCredentials)
-              : (signingCredentials as unknown as KeyLike),
-            { issuer, audience },
-          );
-          let allowed = true;
-
-          if (optionsClaims) {
-            for (const [key, value] of Object.entries(optionsClaims)) {
-              if (payload[key] !== value) {
-                allowed = false;
-
-                break;
-              }
+                  signingCredentials = await createLocalJWKSet(jwksJson);
+                }
+              } catch (_) {}
             }
           }
 
-          if (allowed) {
-            ctx.set("user", { id: payload.sub as string });
-          }
-        } catch (_) {}
+          try {
+            const { payload } = await jwtVerify(
+              credentials as string,
+              typeof signingCredentials === "string"
+                ? new TextEncoder().encode(signingCredentials)
+                : (signingCredentials as unknown as KeyLike),
+              { issuer, audience },
+            );
+            let allowed = true;
+
+            if (typeof verifyCredentials === "function") {
+              allowed = await verifyCredentials(payload);
+            }
+
+            if (allowed) {
+              ctx.set("user", {
+                id: payload.sub,
+                strategy: "jwt",
+                claims: { ...payload },
+              } as User);
+            }
+          } catch (_) {}
+        }
       }
     }
 

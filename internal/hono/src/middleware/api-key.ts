@@ -1,3 +1,5 @@
+import { type WorkertownRequest } from "../index.js";
+import { User } from "../types.js";
 import { type DeepPartial } from "@workertown/internal-types";
 import { type MiddlewareHandler } from "hono";
 import merge from "lodash.merge";
@@ -7,6 +9,8 @@ interface ApiKeyOptions {
   env: {
     apiKey: string;
   };
+  getCredentials: (req: WorkertownRequest) => string | null | undefined;
+  verifyCredentials?: (apiKey: string) => boolean | Promise<boolean>;
 }
 
 export type ApiKeyOptionsOptional = DeepPartial<ApiKeyOptions>;
@@ -15,26 +19,39 @@ const DEFAULT_OPTIONS: ApiKeyOptions = {
   env: {
     apiKey: "AUTH_API_KEY",
   },
+  getCredentials: (req) => {
+    const authHeader = req.headers.get("Authorization");
+
+    if (typeof authHeader === "string") {
+      const [type, credentials] = authHeader.split(" ");
+
+      if (type === "Bearer" && credentials) {
+        return credentials;
+      }
+    }
+  },
 };
 
 export function apiKey(options?: ApiKeyOptionsOptional) {
   const {
     apiKey: optionsApiKey,
     env: { apiKey: apiKeyEnvKey },
+    getCredentials,
+    verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
-  const handler: MiddlewareHandler = (ctx, next) => {
+  const handler: MiddlewareHandler = async (ctx, next) => {
     const apiKey = (optionsApiKey ?? ctx.env?.[apiKeyEnvKey]) as string;
     const user = ctx.get("user") ?? null;
 
-    if (user === null && apiKey) {
-      const authHeader = ctx.req.headers.get("Authorization");
+    if (user === null) {
+      const credentials = getCredentials(ctx.req);
+      const allowed =
+        typeof verifyCredentials === "function"
+          ? await verifyCredentials(credentials ?? "")
+          : credentials === apiKey;
 
-      if (typeof authHeader === "string") {
-        const [type, credentials] = authHeader.split(" ");
-
-        if (type === "Bearer" && credentials === apiKey) {
-          ctx.set("user", { id: "api_key" });
-        }
+      if (allowed) {
+        ctx.set("user", { id: apiKey, strategy: "api_key" } as User);
       }
     }
 

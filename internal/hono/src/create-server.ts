@@ -3,7 +3,7 @@ import {
   type MessageBatch,
   type ScheduledEvent,
 } from "@cloudflare/workers-types";
-import { type Env, Hono } from "hono";
+import { type Env, Hono, type HonoRequest } from "hono";
 import { cors } from "hono/cors";
 
 import {
@@ -18,7 +18,7 @@ import {
   jwt as jwtMiddleware,
   sentry as sentryMiddleware,
 } from "./middleware/index.js";
-import { type Context } from "./types.js";
+import { type Context, User } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
   queue?: (
@@ -34,6 +34,8 @@ export class WorkertownHono<T extends Context> extends Hono<T> {
   ) => void | Promise<void>;
 }
 
+export type WorkertownRequest = HonoRequest;
+
 export interface CreateServerOptions {
   access?: {
     ip?: IpOptions | false;
@@ -43,6 +45,10 @@ export interface CreateServerOptions {
     jwt?: JwtOptions | false;
     apiKey?: ApiKeyOptions | false;
   };
+  authenticateRequest?: (
+    request: WorkertownRequest,
+    user: User | null,
+  ) => boolean | Promise<boolean>;
   basePath?: string;
   cors?: // Copy/pasted from cors/hono
     | {
@@ -66,6 +72,7 @@ export function createServer<T extends Context>(
   const {
     access: accessOptions,
     auth: authOptions,
+    authenticateRequest,
     basePath = "/",
     cors: corsOptions,
     sentry: sentryOptions,
@@ -99,6 +106,27 @@ export function createServer<T extends Context>(
 
   if (authOptions?.jwt !== false) {
     server.use("*", jwtMiddleware(authOptions?.jwt));
+  }
+
+  if (typeof authenticateRequest === "function") {
+    server.use("*", async (ctx, next) => {
+      const allowed = await authenticateRequest(
+        ctx.req as unknown as HonoRequest,
+        // rome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
+        (ctx as any).get("user") ?? null,
+      );
+
+      if (!allowed) {
+        return ctx.json({
+          success: false,
+          status: 401,
+          data: null,
+          error: "Unauthorized",
+        });
+      }
+
+      return next();
+    });
   }
 
   if (corsOptions) {
