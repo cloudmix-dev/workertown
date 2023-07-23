@@ -22,6 +22,10 @@
       "default": "./dist/sqlite-storage-adapter.js",
       "types": "./dist/sqlite-storage-adapter.d.ts"
     },
+    "./turso-storage-adapter": {
+      "default": "./dist/turso-storage-adapter.js",
+      "types": "./dist/turso-storage-adapter.d.ts"
+    },
     "./memory-storage-adapter": {
       "default": "./dist/memory-storage-adapter.js",
       "types": "./dist/memory-storage-adapter.d.ts"
@@ -32,6 +36,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
+    "@libsql/kysely-libsql": "~0.3.0",
     "kysely": "~0.26.1",
     "kysely-d1": "~0.3.0",
     "kysely-planetscale": "~1.3.0"
