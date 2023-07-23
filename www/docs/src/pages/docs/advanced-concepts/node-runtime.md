@@ -117,8 +117,9 @@ import { parseOptionsFromEnv } from "@workertown/node/utils";
 serve(search({ ...parseOptionsFromEnv() }));
 ```
 
-Both the `prefix` and the `delimiter` can be customised via an optional
-`options` object:
+You can explicitly pass in the `env` object to parse values from, and both the
+`prefix` and the `delimiter` can be customised via an optional `options`
+argument:
 
 ```ts
 import { search } from "@workertown/search";
@@ -127,10 +128,13 @@ import { parseOptionsFromEnv } from "@workertown/node/utils";
 
 serve(
   search({
-    ...parseOptionsFromEnv({
-      prefix: "search_options",
-      delimiter: ">",
-     }), // e.g. search_options>auth>basic>username
+    ...parseOptionsFromEnv(
+      process.env,
+      {
+        prefix: "search_options",
+        delimiter: ">",
+      },
+    ), // e.g. search_options>auth>basic>username
   }),
 );
 ```

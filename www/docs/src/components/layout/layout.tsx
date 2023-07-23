@@ -31,6 +31,7 @@ export const navigation: {
     title: "Core concepts",
     links: [
       { title: "Configuration", href: "/docs/core-concepts/configuration" },
+      { title: "Routing", href: "/docs/core-concepts/routing" },
       { title: "Authentication", href: "/docs/core-concepts/authentication" },
       { title: "Storage", href: "/docs/core-concepts/storage" },
       { title: "Cache", href: "/docs/core-concepts/cache" },
@@ -222,7 +223,9 @@ function useTableOfContents(tableOfContents) {
 export function Layout({ children, title, tableOfContents }) {
   const router = useRouter();
   const isHomePage = router.pathname === "/";
-  const allLinks = navigation.flatMap((section) => section.links);
+  const allLinks = navigation.flatMap((section) =>
+    section.links.map((link) => ({ ...link, section: section.title })),
+  );
   const linkIndex = allLinks.findIndex((link) => link.href === router.pathname);
   const previousPage = allLinks[linkIndex - 1];
   const nextPage = allLinks[linkIndex + 1];
@@ -281,7 +284,10 @@ export function Layout({ children, title, tableOfContents }) {
                 <dt className="font-display text-sm font-medium text-zinc-900 dark:text-white">
                   Previous
                 </dt>
-                <dd className="mt-1">
+                <dd className="flex flex-col mt-1">
+                  <span className="text-indigo-500 text-xs font-semibold">
+                    {previousPage.section}
+                  </span>
                   <Link
                     href={previousPage.href}
                     className="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
@@ -296,7 +302,10 @@ export function Layout({ children, title, tableOfContents }) {
                 <dt className="font-display text-sm font-medium text-zinc-900 dark:text-white">
                   Next
                 </dt>
-                <dd className="mt-1">
+                <dd className="flex flex-col mt-1">
+                  <span className="text-indigo-500 text-xs font-semibold">
+                    {nextPage.section}
+                  </span>
                   <Link
                     href={nextPage.href}
                     className="text-base font-semibold text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
