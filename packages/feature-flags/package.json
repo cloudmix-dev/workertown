@@ -40,6 +40,14 @@
     "./storage/sqlite-storage-adapter": {
       "default": "./dist/storage/sqlite-storage-adapter.js",
       "types": "./dist/storage/sqlite-storage-adapter.d.ts"
+    },
+    "./storage/turso-storage-adapter": {
+      "default": "./dist/storage/turso-storage-adapter.js",
+      "types": "./dist/storage/turso-storage-adapter.d.ts"
+    },
+    "./storage/memory-storage-adapter": {
+      "default": "./dist/storage/memory-storage-adapter.js",
+      "types": "./dist/storage/memory-storage-adapter.d.ts"
     }
   },
   "scripts": {
