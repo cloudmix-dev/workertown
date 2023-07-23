@@ -10,8 +10,8 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     v1: {
       admin: string;
       kv: string;
-      public: string;
     };
+    public: string;
   };
   env: {
     kv: string;

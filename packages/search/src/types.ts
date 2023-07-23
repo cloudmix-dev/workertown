@@ -15,11 +15,11 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     v1: {
       admin: string;
       documents: string;
-      public: string;
       search: string;
       suggest: string;
       tags: string;
     };
+    public: string;
   };
   env: {
     cache: string;

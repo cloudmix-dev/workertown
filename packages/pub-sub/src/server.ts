@@ -37,10 +37,10 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   endpoints: {
     v1: {
       admin: "/v1/admin",
-      public: "/",
       publish: "/v1/publish",
       subscriptions: "/v1/subscriptions",
     },
+    public: "/",
   },
   env: {
     database: "PUBSUB_DB",
@@ -108,9 +108,10 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   });
 
   server.route(endpoints.v1.admin, v1.adminRouter);
-  server.route(endpoints.v1.public, v1.publicRouter);
   server.route(endpoints.v1.publish, v1.publishRouter);
   server.route(endpoints.v1.subscriptions, v1.subscriptionsRouter);
+
+  server.route(endpoints.public, v1.publicRouter);
 
   server.queue = async (batch) => {
     const results = await Promise.allSettled(

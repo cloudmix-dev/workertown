@@ -10,10 +10,10 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   endpoints: {
     v1: {
       admin: string;
-      public: string;
       publish: string;
       subscriptions: string;
     };
+    public: string;
   };
   env: {
     database: string;

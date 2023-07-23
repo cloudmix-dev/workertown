@@ -36,8 +36,8 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     v1: {
       admin: "/v1/admin",
       kv: "/v1/kv",
-      public: "/",
     },
+    public: "/",
   },
   env: {
     kv: "KV_KV",
@@ -82,7 +82,8 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
 
   server.route(endpoints.v1.admin, v1.adminRouter);
   server.route(endpoints.v1.kv, v1.kvRouter);
-  server.route(endpoints.v1.public, v1.publicRouter);
+
+  server.route(endpoints.public, v1.publicRouter);
 
   return server;
 }

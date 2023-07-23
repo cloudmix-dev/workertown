@@ -37,8 +37,8 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
       admin: "/v1/admin",
       ask: "/v1/ask",
       flags: "/v1/flags",
-      public: "/",
     },
+    public: "/",
   },
   env: {
     database: "FLAGS_DB",
@@ -85,7 +85,8 @@ export function createFeatureFlagsServer(
   server.route(endpoints.v1.admin, v1.adminRouter);
   server.route(endpoints.v1.ask, v1.askRouter);
   server.route(endpoints.v1.flags, v1.flagsRouter);
-  server.route(endpoints.v1.public, v1.publicRouter);
+
+  server.route(endpoints.public, v1.publicRouter);
 
   return server;
 }

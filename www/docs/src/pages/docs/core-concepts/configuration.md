@@ -26,6 +26,8 @@ export default search({
 })
 ```
 
+---
+
 ## Universal options
 
 All Workertown services have a common set of options that are available to be

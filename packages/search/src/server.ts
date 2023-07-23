@@ -40,11 +40,11 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     v1: {
       admin: "/v1/admin",
       documents: "/v1/docs",
-      public: "/",
       search: "/v1/search",
       suggest: "/v1/suggest",
       tags: "/v1/tags",
     },
+    public: "/",
   },
   env: {
     cache: "SEARCH_CACHE",
@@ -107,7 +107,8 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
   server.route(endpoints.v1.search, v1.searchRouter);
   server.route(endpoints.v1.suggest, v1.suggestRouter);
   server.route(endpoints.v1.tags, v1.tagsRouter);
-  server.route(endpoints.v1.public, v1.publicRouter);
+
+  server.route(endpoints.public, v1.publicRouter);
 
   return server;
 }

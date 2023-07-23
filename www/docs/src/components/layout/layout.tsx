@@ -30,12 +30,11 @@ export const navigation: {
   {
     title: "Core concepts",
     links: [
-      { title: "REST", href: "/docs/core-concepts/rest" },
       { title: "Configuration", href: "/docs/core-concepts/configuration" },
       { title: "Authentication", href: "/docs/core-concepts/authentication" },
       { title: "Storage", href: "/docs/core-concepts/storage" },
       { title: "Cache", href: "/docs/core-concepts/cache" },
-      { title: "Open API", href: "/docs/core-concepts/open-api" },
+      { title: "REST", href: "/docs/core-concepts/rest" },
     ],
   },
   {

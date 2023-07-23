@@ -11,8 +11,8 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
       admin: string;
       ask: string;
       flags: string;
-      public: string;
     };
+    public: string;
   };
   env: {
     database: string;
