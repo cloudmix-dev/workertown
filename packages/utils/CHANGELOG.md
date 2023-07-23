@@ -1,5 +1,13 @@
 # @workertown/utils
 
+## 0.0.1-alpha.9
+
+### Patch Changes
+
+- Alpha.9 Release
+- Updated dependencies
+  - @workertown/internal-hono@0.0.1-alpha.9
+
 ## 0.0.1-alpha.8
 
 ### Patch Changes

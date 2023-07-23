@@ -1,6 +1,6 @@
 {
   "name": "@workertown/utils",
-  "version": "0.0.1-alpha.8",
+  "version": "0.0.1-alpha.9",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,7 +10,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.1-alpha.8"
+    "@workertown/internal-hono": "~0.0.1-alpha.9"
   },
   "devDependencies": {
     "@types/node": "~20.4.0"
