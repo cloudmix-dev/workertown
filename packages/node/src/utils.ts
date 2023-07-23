@@ -1,10 +1,18 @@
 import set from "lodash.set";
 
-export function parseOptionsFromEnv(env = process.env) {
-  const options = {};
+interface ParseOptionsFromEnvOptions {
+  delimeter: string;
+}
+
+export function parseOptionsFromEnv<T = Record<string, unknown>>(
+  env = process.env,
+  options: ParseOptionsFromEnvOptions = { delimeter: "_" },
+) {
+  const { delimeter } = options;
+  const parsedEnv = {};
 
   for (const [key, value] of Object.entries(env)) {
-    if (!key.startsWith("options_")) {
+    if (!key.startsWith(`options${delimeter}`)) {
       continue;
     }
 
@@ -33,21 +41,36 @@ export function parseOptionsFromEnv(env = process.env) {
       } catch (_) {}
     }
 
-    set(options, key.replace("options_", "").replace(/_/g, "."), parsedValue);
+    set(
+      parsedEnv,
+      key
+        .replace(`options${delimeter}`, "")
+        .replace(new RegExp(`\\${delimeter}`, "g"), "."),
+      parsedValue,
+    );
   }
 
-  return options as Record<string, unknown>;
+  return parsedEnv as T;
+}
+
+interface ExitOnSignalsOptions {
+  code?: number;
+  exit?: (code?: number) => never;
+  // rome-ignore lint/suspicious/noExplicitAny: NodeJS needs these to be any for this to be types
+  on?: (event: string | symbol, listener: (...args: any[]) => void) => any;
 }
 
 export function exitOnSignals(
   signals: string[] = ["SIGINT", "SIGTERM"],
-  code = 1,
+  options: ExitOnSignalsOptions = {},
 ) {
-  function exit() {
-    process.exit(code);
+  const { code = 1, exit = process.exit, on = process.on } = options;
+
+  function onExit() {
+    exit(code);
   }
 
   for (const signal of signals) {
-    process.on(signal, exit);
+    on(signal, onExit);
   }
 }
