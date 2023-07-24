@@ -19,7 +19,7 @@ router.post(
     const topic = ctx.req.param("topic");
     const { message } = ctx.req.valid("json");
     const subscriptions = await storage.getSubscriptionsByTopic(topic);
-    const messages = subscriptions.map((subscription) => ({
+    const queueMessages = subscriptions.map((subscription) => ({
       topic: subscription.topic,
       endpoint: subscription.endpoint,
       headers: subscription.headers ?? undefined,
@@ -27,8 +27,8 @@ router.post(
       body: message ?? undefined,
     }));
 
-    if (messages.length > 0) {
-      await queue.sendMessages(messages);
+    if (queueMessages.length > 0) {
+      await queue.sendMessages(queueMessages);
     }
 
     return ctx.json({ status: 200, success: true, data: true });

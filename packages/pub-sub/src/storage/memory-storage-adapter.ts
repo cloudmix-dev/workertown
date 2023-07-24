@@ -1,16 +1,19 @@
 import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
-import { type Subscription } from "./storage-adapter.js";
+import { StorageAdapter, type Subscription } from "./storage-adapter.js";
 
-export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
-  private _itemStore = new Map<string, Subscription>();
+export class MemoryStorageAdapter
+  extends BaseMemoryStorageAdapter
+  implements StorageAdapter
+{
+  private readonly _subscriptionStore = new Map<string, Subscription>();
 
   async getSubscriptions(): Promise<Subscription[]> {
-    return Array.from(this._itemStore.values());
+    return Array.from(this._subscriptionStore.values());
   }
 
   async getSubscriptionsByTopic(topic: string): Promise<Subscription[]> {
-    return Array.from(this._itemStore.values()).filter(
+    return Array.from(this._subscriptionStore.values()).filter(
       (item) => item.topic === topic,
     );
   }
@@ -18,18 +21,18 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   async createSubscription(
     subscription: Pick<
       Subscription,
-      "topic" | "endpoint" | "headers" | "queryParameters"
+      "topic" | "endpoint" | "method" | "headers" | "queryParameters"
     >,
   ): Promise<Subscription> {
     const id = Math.random().toString(36).slice(2, 9);
-    const item = { ...subscription, id, createdAt: new Date() };
+    const subscriptionRecord = { ...subscription, id, createdAt: new Date() };
 
-    this._itemStore.set(id, item);
+    this._subscriptionStore.set(id, subscriptionRecord);
 
-    return item;
+    return subscriptionRecord;
   }
 
   async deleteSubscription(id: string): Promise<void> {
-    this._itemStore.delete(id);
+    this._subscriptionStore.delete(id);
   }
 }

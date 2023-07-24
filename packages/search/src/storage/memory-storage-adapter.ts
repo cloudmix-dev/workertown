@@ -10,15 +10,15 @@ export class MemoryStorageAdapter
   extends BaseMemoryStorageAdapter
   implements StorageAdapter
 {
-  private _documentStore = new Map<string, SearchDocument>();
+  private readonly _documentStore = new Map<string, SearchDocument>();
 
-  private _tenantIndex = new Map<string, Set<string>>();
+  private readonly _tenantIndex = new Map<string, Set<string>>();
 
-  private _updatedIndex = new Map<string, string>();
+  private readonly _updatedIndex = new Map<string, string>();
 
-  private _tags = new Map<string, Set<string>>();
+  private readonly _tags = new Map<string, Set<string>>();
 
-  private _deleted = new Set<string>();
+  private readonly _deleted = new Set<string>();
 
   constructor(
     initialDocuments: SearchDocument[] = [],

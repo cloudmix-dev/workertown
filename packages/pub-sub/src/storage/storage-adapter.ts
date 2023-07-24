@@ -4,6 +4,7 @@ export interface Subscription {
   id: string;
   topic: string;
   endpoint: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   headers?: Record<string, string>;
   queryParameters?: Record<string, string>;
   createdAt: Date;
@@ -21,7 +22,7 @@ export class StorageAdapter extends BaseStorageAdapter {
   async createSubscription(
     subscription: Pick<
       Subscription,
-      "topic" | "endpoint" | "headers" | "queryParameters"
+      "topic" | "endpoint" | "method" | "headers" | "queryParameters"
     >,
   ): Promise<Subscription> {
     throw new Error("'createSubscription' not implemented");

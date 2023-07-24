@@ -5,13 +5,14 @@ import {
 } from "@workertown/internal-storage";
 import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
-import { type Subscription } from "./storage-adapter.js";
+import { StorageAdapter, type Subscription } from "./storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;
   topic: string;
   endpoint: string;
-  headers?: string | null;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  headers: string | null;
   query_parameters: string | null;
   created_at: ColumnType<Date | number, number, never>;
 }
@@ -33,6 +34,7 @@ const MIGRATIONS: Migrations = [
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("topic", "text", (col) => col.notNull())
           .addColumn("endpoint", "text", (col) => col.notNull())
+          .addColumn("method", "text", (col) => col.notNull())
           .addColumn("headers", "text")
           .addColumn("query_parameters", "integer")
           .addColumn("created_at", "integer", (col) => col.notNull())
@@ -68,7 +70,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+export class D1StorageAdapter
+  extends BaseD1StorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   private _formatSubscription(subscription: SubscriptionRow): Subscription {
@@ -76,6 +81,7 @@ export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
       id: subscription.id,
       topic: subscription.topic,
       endpoint: subscription.endpoint,
+      method: subscription.method,
       headers: subscription.headers
         ? JSON.parse(subscription.headers)
         : undefined,
@@ -108,7 +114,7 @@ export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
   async createSubscription(
     subscription: Pick<
       Subscription,
-      "topic" | "endpoint" | "headers" | "queryParameters"
+      "topic" | "endpoint" | "method" | "headers" | "queryParameters"
     >,
   ) {
     const id = crypto.randomUUID();
@@ -120,6 +126,7 @@ export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
         id,
         topic: subscription.topic,
         endpoint: subscription.endpoint,
+        method: subscription.method,
         headers: subscription.headers
           ? JSON.stringify(subscription.headers)
           : null,
