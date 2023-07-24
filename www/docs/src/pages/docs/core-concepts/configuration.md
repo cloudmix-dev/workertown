@@ -48,13 +48,18 @@ import { search } from "@workertown/search";
 
 export default search({
   access: {
-    ip: ["10.0.0.0", "11.0.0.0/24"],
+    ip: [
+      "10.0.0.0",
+      "11.0.0.0/24",
+      "2001:4860:8006::62",
+      "2001:db8::/24",
+    ],
   },
 });
 ```
 
-The values passed in to the `access.ip` array can either be an IPv4 string, or
-an IPv4 CIDR block describing an IP range to allow.
+The values passed in to the `access.ip` array can either be an IPv4/v6 string,
+or an IPv4/v6 CIDR block describing an IP range to allow.
 
 Any requests that do not originate from an IP address whutelisted in the
 `access.ip` array will be rejected with a `403 Forbidden` response.
