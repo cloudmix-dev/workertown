@@ -10,6 +10,7 @@ import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
   type SearchDocument,
+  StorageAdapter,
 } from "./storage-adapter.js";
 
 interface SearchDocumentTable {
@@ -119,7 +120,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<DatabaseSchema> {
+export class PlanetscaleStorageAdapter
+  extends BasePlanetscaleStorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   private _formatDocument(document: SearchDocumentRow): SearchDocument {

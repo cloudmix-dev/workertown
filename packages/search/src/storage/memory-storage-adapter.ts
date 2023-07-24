@@ -3,9 +3,13 @@ import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/in
 import {
   type GetDocumentsOptions,
   type SearchDocument,
+  StorageAdapter,
 } from "./storage-adapter.js";
 
-export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
+export class MemoryStorageAdapter
+  extends BaseMemoryStorageAdapter
+  implements StorageAdapter
+{
   private _documentStore = new Map<string, SearchDocument>();
 
   private _tenantIndex = new Map<string, Set<string>>();
