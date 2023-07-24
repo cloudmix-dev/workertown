@@ -43,11 +43,11 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230710.1",
-    "@planetscale/database": "~1.8.0",
+    "@planetscale/database": "~1.9.0",
     "better-sqlite3": "~8.5.0"
   },
   "peerDependencies": {
-    "@planetscale/database": "~1.8.0",
+    "@planetscale/database": "~1.9.0",
     "better-sqlite3": "~8.4.0"
   },
   "engines": {
