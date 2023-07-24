@@ -6,14 +6,20 @@ import {
   type UpsertFlagBody,
 } from "./storage-adapter.js";
 
+interface MemoryStorageAdapterOptions {
+  initialFlags?: Flag[];
+}
+
 export class MemoryStorageAdapter
   extends BaseMemoryStorageAdapter
   implements StorageAdapter
 {
   private readonly _flagStore = new Map<string, Flag>();
 
-  constructor(initialFlags: Flag[] = []) {
+  constructor(options: MemoryStorageAdapterOptions = {}) {
     super();
+
+    const { initialFlags = [] } = options;
 
     initialFlags.forEach((flag) => {
       this._flagStore.set(flag.name, flag);
