@@ -13,8 +13,8 @@ bring your own storage adapter entirely.
 
 ## How it works
 
-Workertown services that require storage expose a `options.storage`
-configuration option that allows you to specify a storage adapter to use.
+Workertown services that require storage expose a `storage` configuration option
+that allows you to specify a storage adapter to use.
 
 ```ts
 import { search } from "@workertown/search";
@@ -192,7 +192,7 @@ exposes an endpoint to run the migrations required to run the service. The
 endpoint takes a `POST` request with an empty JSON body to run the migrations.
 
 By **default**, this endpoint is exposed at `/v1/admin/migrate`, but this can be
-configured via the `options.endpoints.v1.admin` configuration option.
+configured via the `endpoints.v1.admin` configuration option.
 
 ```ts
 import { search } from "@workertown/search";
