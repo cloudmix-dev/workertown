@@ -14,23 +14,30 @@
       "default": "./dist/kv-cache-adapter.js",
       "types": "./dist/kv-cache-adapter.d.ts"
     },
-    "./memory-cache-adapter": {
-      "default": "./dist/memory-cache-adapter.js",
-      "types": "./dist/memory-cache-adapter.d.ts"
+    "./upstash-redis-cache-adapter": {
+      "default": "./dist/upstash-redis-cache-adapter.js",
+      "types": "./dist/upstash-redis-cache-adapter.d.ts"
     },
     "./no-op-cache-adapter": {
       "default": "./dist/no-op-cache-adapter.js",
       "types": "./dist/no-op-cache-adapter.d.ts"
+    },
+    "./memory-cache-adapter": {
+      "default": "./dist/memory-cache-adapter.js",
+      "types": "./dist/memory-cache-adapter.d.ts"
     }
   },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230710.1"
+  },
+  "optionalDependencies": {
+    "@upstash/redis": "~1.22.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
