@@ -32,9 +32,7 @@ argument with various options to customise the server:
 import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
 
-const api = search();
-
-serve(api, { port: 8080, hostname: "api.local" });
+serve(search(), { port: 8080, hostname: "api.local" });
 
 console.log("Server running at http://localhost:8080");
 ```
@@ -71,6 +69,8 @@ import { exitOnSignals } from "@workertown/node/utils";
 
 exitOnSignals();
 serve(search());
+
+console.log("Server running at http://localhost:3000");
 ```
 
 You can customise the `signals` to listen for, as well as the exit `code` and
@@ -82,7 +82,7 @@ import { serve } from "@workertown/node";
 import { exitOnSignals } from "@workertown/node/utils";
 
 function customOn(event: string | symbol, listener: (...args: any[]) => void) {
-  console.log(`Adding listener for signal ${signal}`);
+  console.log(`Adding listener for signal ${event}`);
   process.on(signal, listener);
 }
 
@@ -93,6 +93,8 @@ function customExit(code: number = 99) {
 
 exitOnSignals(["SIGMADEUP"], { code: 99, exit: customExit, on: customOn });
 serve(search());
+
+console.log("Server running at http://localhost:3000");
 ```
 
 
@@ -117,6 +119,8 @@ import { serve } from "@workertown/node";
 import { parseOptionsFromEnv } from "@workertown/node/utils";
 
 serve(search({ ...parseOptionsFromEnv() }));
+
+console.log("Server running at http://localhost:3000");
 ```
 
 You can explicitly pass in the `env` object to parse values from, and both the
@@ -139,4 +143,6 @@ serve(
     ), // e.g. search_options>auth>basic>username
   }),
 );
+
+console.log("Server running at http://localhost:3000");
 ```
