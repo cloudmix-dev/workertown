@@ -50,9 +50,6 @@ import { search } from "@workertown/search";
 export default search({
   auth: {
     jwt: {
-      jwksUrl: "https://auth.acme.com/.well-known/jwks.json", // JWKS URL
-      secret: "super_secret_jwts", // Fixed secret to verify JWTs with
-      issuer: "http://acme.com", // Optional JWT issuer value to verify
       audience: "http://api.acme.com", // Optional JWT audience value to verify
       env: {
         jwksUrl: "SEARCH_JWKS_URL", // Environment variable for the JWKS URL
@@ -60,6 +57,12 @@ export default search({
         issuer: "SEARCH_JWT_ISSUER", // Environment variable for the JWT issuer
         audience: "SEARCH_JWT_AUDIENCE", // Environment variable for the JWT audience
       }, // Each service has it's own `auth.jwt.env` default values, so check the docs for more info.
+      issuer: "http://acme.com", // Optional JWT issuer value to verify
+      jwks: {
+        url: "https://auth.acme.com/.well-known/jwks.json", // Optional JWKS URL
+        cacheTtl: 84600, // Optional number of seconds to cache the JWKS for
+      },
+      secret: "super_secret_jwts", // Fixed secret to verify JWTs with
     },
   },
 });
@@ -126,7 +129,9 @@ import { search } from "@workertown/search";
 export default search({
   auth: {
     jwt: {
-      jwksCacheTtl: 3600, // or false
+      jwks:{ 
+        cacheTtl: 3600, // or false
+      },
     },
   },
 });

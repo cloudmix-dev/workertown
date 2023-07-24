@@ -22,8 +22,10 @@ interface JwtOptions {
   };
   getCredentials: (req: WorkertownRequest) => string | null | undefined;
   issuer?: string;
-  jwksCacheTtl?: number | boolean;
-  jwksUrl?: string;
+  jwks?: {
+    url?: string;
+    cacheTtl?: number | false;
+  };
   secret?: string;
   verifyCredentials?: (jwt: JWTPayload) => boolean | Promise<boolean>;
 }
@@ -48,15 +50,13 @@ const DEFAULT_OPTIONS: JwtOptions = {
       }
     }
   },
-  jwksCacheTtl: 86400,
+  jwks: {
+    cacheTtl: 86400,
+  },
 };
 
 export function jwt(options?: JwtOptionsOptional) {
   const {
-    jwksUrl: optionsJwksUrl,
-    jwksCacheTtl: optionsJwksCacheTtl,
-    secret: optionsSecret,
-    issuer: optionsIssuer,
     audience: optionsAudience,
     env: {
       jwksUrl: jwksUrlEnvKey,
@@ -64,11 +64,14 @@ export function jwt(options?: JwtOptionsOptional) {
       issuer: issuerEnvKey,
       audience: audienceEnvKey,
     },
+    issuer: optionsIssuer,
     getCredentials,
+    jwks: optionsJwks,
+    secret: optionsSecret,
     verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
   const handler: MiddlewareHandler = async (ctx, next) => {
-    const jwks = (optionsJwksUrl ?? ctx.env?.[jwksUrlEnvKey]) as string;
+    const jwks = (optionsJwks?.url ?? ctx.env?.[jwksUrlEnvKey]) as string;
     const secret = (optionsSecret ?? ctx.env?.[secretEnvKey]) as string;
     const issuer = (optionsIssuer ?? ctx.env?.[issuerEnvKey]) as
       | string
@@ -93,12 +96,12 @@ export function jwt(options?: JwtOptionsOptional) {
                   jwks,
                   {
                     cf:
-                      optionsJwksCacheTtl !== false
+                      optionsJwks?.cacheTtl !== false
                         ? {
                             cacheTtlByStatus: {
                               "200-299":
-                                typeof optionsJwksCacheTtl === "number"
-                                  ? optionsJwksCacheTtl
+                                typeof optionsJwks?.cacheTtl === "number"
+                                  ? optionsJwks?.cacheTtl
                                   : 86400,
                               "400-599": 0,
                             },
