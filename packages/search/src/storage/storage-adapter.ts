@@ -15,7 +15,7 @@ export interface SearchDocument {
   updatedAt: Date;
 }
 
-export interface IndexSearchDocumentBody {
+export interface UpsertSearchDocumentBody {
   id: string;
   tenant: string;
   index: string;
@@ -40,11 +40,11 @@ export class StorageAdapter extends BaseStorageAdapter {
     throw new TypeError("'getDocument()' not implemented");
   }
 
-  public async indexDocument(
-    item: IndexSearchDocumentBody,
+  public async upsertDocument(
+    item: UpsertSearchDocumentBody,
     tags: string[] = [],
   ): Promise<SearchDocument> {
-    throw new TypeError("'indexDocument()' not implemented");
+    throw new TypeError("'upsertDocument()' not implemented");
   }
 
   public async deleteDocument(id: string): Promise<void> {

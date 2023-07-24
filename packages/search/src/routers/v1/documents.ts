@@ -29,7 +29,7 @@ router.put(
     const storage = ctx.get("storage");
     const cache = ctx.get("cache");
     const { tenant, index, data, tags } = ctx.req.valid("json");
-    const document = await storage.indexDocument(
+    const document = await storage.upsertDocument(
       { id, tenant, index, data },
       tags,
     );

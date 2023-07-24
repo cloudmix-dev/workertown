@@ -8,9 +8,9 @@ import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/in
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
-  type IndexSearchDocumentBody,
   type SearchDocument,
   StorageAdapter,
+  type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 
 interface SearchDocumentTable {
@@ -196,8 +196,8 @@ export class SqliteStorageAdapter
     return this._formatDocument(result);
   }
 
-  public async indexDocument(
-    document: IndexSearchDocumentBody,
+  public async upsertDocument(
+    document: UpsertSearchDocumentBody,
     tags: string[] = [],
   ) {
     const now = new Date();

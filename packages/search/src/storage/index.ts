@@ -1,13 +1,13 @@
 import {
   type GetDocumentsOptions,
-  type IndexSearchDocumentBody,
   type SearchDocument,
   StorageAdapter,
+  type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 
 export {
   StorageAdapter,
   type GetDocumentsOptions,
-  type IndexSearchDocumentBody,
+  type UpsertSearchDocumentBody,
   type SearchDocument,
 };
