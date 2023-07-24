@@ -1,7 +1,7 @@
 import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
 export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
-  private _valueStore = new Map<string, string>();
+  private readonly _valueStore = new Map<string, string>();
 
   constructor(initialDocuments: { key: string; value: unknown }[] = []) {
     super();

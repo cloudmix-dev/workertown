@@ -3,7 +3,7 @@ import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/in
 import { type Flag } from "./storage-adapter.js";
 
 export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
-  private _flagStore = new Map<string, Flag>();
+  private readonly _flagStore = new Map<string, Flag>();
 
   constructor(initialFlags: Flag[] = []) {
     super();
