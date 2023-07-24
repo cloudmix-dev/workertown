@@ -100,36 +100,26 @@ export class SqliteQueueAdapter extends QueueAdapter {
     };
   }
 
-  async sendMessage(
-    message: Pick<
-      QueueMessage,
-      "topic" | "endpoint" | "headers" | "queryParameters"
-    >,
-  ): Promise<void> {
+  async sendMessage(body: Record<string, unknown>): Promise<void> {
     await this._client
       .insertInto("queue_messages")
       .values({
         id: crypto.randomUUID(),
         timestamp: Date.now(),
-        body: JSON.stringify(message),
+        body: JSON.stringify(body),
       })
       .execute();
   }
 
-  async sendMessages(
-    messages: Pick<
-      QueueMessage,
-      "topic" | "endpoint" | "headers" | "queryParameters"
-    >[],
-  ): Promise<void> {
-    if (messages.length > 0) {
+  async sendMessages(bodies: Record<string, unknown>[]): Promise<void> {
+    if (bodies.length > 0) {
       await this._client
         .insertInto("queue_messages")
         .values(
-          messages.map((message) => ({
+          bodies.map((body) => ({
             id: crypto.randomUUID(),
             timestamp: Date.now(),
-            body: JSON.stringify(message),
+            body: JSON.stringify(body),
           })),
         )
         .execute();

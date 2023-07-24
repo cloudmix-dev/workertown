@@ -2,6 +2,7 @@ import {
   type ExportedHandlerQueueHandler,
   type ExportedHandlerScheduledHandler,
 } from "@cloudflare/workers-types";
+import { type QueueMessage } from "@workertown/internal-queue";
 import { Hono, type HonoRequest, type Input } from "hono";
 import { cors } from "hono/cors";
 
@@ -20,7 +21,7 @@ import {
 import { type Context, User } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
-  queue?: ExportedHandlerQueueHandler;
+  queue?: ExportedHandlerQueueHandler<T["Variables"], QueueMessage>;
   scheduled?: ExportedHandlerScheduledHandler;
 }
 

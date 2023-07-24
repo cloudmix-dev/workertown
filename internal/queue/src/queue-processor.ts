@@ -1,12 +1,11 @@
 import { type Message, type MessageBatch } from "@cloudflare/workers-types";
-import { WorkertownHono } from "@workertown/internal-hono";
 
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface CreateQueueProcessorOptions {
   adapter: QueueAdapter;
   // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
-  server: WorkertownHono<any>;
+  server: any;
   delay?: number;
   schedule?: (callback: () => Promise<void>, delay: number) => Promise<void>;
 }
@@ -15,7 +14,7 @@ class QueueProcessor {
   private _queue: QueueAdapter;
 
   // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
-  private _server: WorkertownHono<any>;
+  private _server: any;
 
   private _delay: number;
 
@@ -35,13 +34,13 @@ class QueueProcessor {
       });
   }
 
-  private _wrapMessage(message: QueueMessage): Message {
+  private _wrapMessage(message: QueueMessage): Message<QueueMessage> {
     return {
       id: crypto.randomUUID(),
       timestamp: new Date(),
       body: message,
       ack: () => this._queue.ackMessage?.(message.id),
-      retry: () => this._queue.rescheduleMessage?.(message.id),
+      retry: () => this._queue.retryMessage?.(message.id),
     };
   }
 
@@ -50,7 +49,7 @@ class QueueProcessor {
     let delay = this._delay;
 
     if (messages.length > 0) {
-      const batch: MessageBatch = {
+      const batch: MessageBatch<QueueMessage> = {
         messages: messages.map((message) => this._wrapMessage(message)),
         queue: "main",
         ackAll: () => {
@@ -60,15 +59,13 @@ class QueueProcessor {
         },
         retryAll: () => {
           Promise.allSettled(
-            messages.map((message) =>
-              this._queue.rescheduleMessage?.(message.id),
-            ),
+            messages.map((message) => this._queue.retryMessage?.(message.id)),
           );
         },
       };
 
       // rome-ignore lint/suspicious/noExplicitAny: Forcing through the queue call
-      await this._server.queue?.(batch, {} as any, {} as any);
+      await this._server.queue(batch, {} as any, {} as any);
 
       delay = 0;
     }

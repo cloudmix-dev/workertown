@@ -33,10 +33,11 @@
     "range_check": "~2.0.4",
     "zod": "~3.21.4"
   },
+  "devDependencies": {
+    "@types/lodash.merge": "~4.6.7",
+    "@workertown/internal-queue": "~0.0.1-alpha.10"
+  },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "devDependencies": {
-    "@types/lodash.merge": "~4.6.7"
   }
 }
