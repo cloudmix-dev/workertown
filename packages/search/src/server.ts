@@ -53,7 +53,12 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 
 export function createSearchServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
-  const { endpoints, env, runtime, ...baseConfig } = config;
+  const {
+    endpoints,
+    env,
+    runtime = getCloudflareWorkersRuntime,
+    ...baseConfig
+  } = config;
 
   const server = createServer<Context>(baseConfig);
 
@@ -61,7 +66,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
     const { cache, storage } =
       typeof runtime === "function"
         ? runtime(config, ctx.env)
-        : getCloudflareWorkersRuntime(config, ctx.env);
+        : runtime ?? getCloudflareWorkersRuntime(config, ctx.env);
 
     ctx.set("cache", cache || new NoOpCacheAdapter());
     ctx.set("config", config);
