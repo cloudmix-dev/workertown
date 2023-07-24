@@ -15,7 +15,9 @@ import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 interface QueueMessagesTable {
   id: string;
   body: string;
+  attempts: number;
   timestamp: ColumnType<Date | number, number, number>;
+  dlq_at: ColumnType<Date | number, number, number> | null;
 }
 
 type QueueMessageRow = Selectable<QueueMessagesTable>;
@@ -34,7 +36,9 @@ const MIGRATIONS: MigrationInfo[] = [
           .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("body", "text", (col) => col.notNull())
+          .addColumn("attempts", "integer", (col) => col.notNull())
           .addColumn("timestamp", "integer", (col) => col.notNull())
+          .addColumn("dlq_at", "integer")
           .execute();
 
         await db.schema
@@ -46,16 +50,16 @@ const MIGRATIONS: MigrationInfo[] = [
           .execute();
 
         await db.schema
-          .createIndex("queue_messages_timestamp_idx")
+          .createIndex("queue_messages_dlq_at_timestamp_id_idx")
           .unique()
           .ifNotExists()
           .on("queue_messages")
-          .columns(["timestamp"])
+          .columns(["dlq_at", "timestamp", "id"])
           .execute();
       },
       async down(db) {
         await db.schema
-          .dropIndex("queue_messages_timestamp_idx")
+          .dropIndex("queue_messages_dlq_at_timestamp_id_idx")
           .ifExists()
           .execute();
 
@@ -69,10 +73,13 @@ const MIGRATIONS: MigrationInfo[] = [
 
 interface SqliteQueueAdapterOptions {
   db: string;
+  maxRetries?: number;
 }
 
 export class SqliteQueueAdapter extends QueueAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
+
+  private readonly _maxRetries: number;
 
   constructor(options?: SqliteQueueAdapterOptions) {
     super();
@@ -88,6 +95,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
         database: db,
       }),
     });
+    this._maxRetries = options?.maxRetries ?? 5;
   }
 
   private _formatQueueMessage(
@@ -106,8 +114,9 @@ export class SqliteQueueAdapter extends QueueAdapter {
       .insertInto("queue_messages")
       .values({
         id: crypto.randomUUID(),
-        timestamp: Date.now(),
         body: JSON.stringify(body),
+        attempts: 0,
+        timestamp: Date.now(),
       })
       .execute();
   }
@@ -120,8 +129,9 @@ export class SqliteQueueAdapter extends QueueAdapter {
         .values(
           bodies.map((body) => ({
             id: crypto.randomUUID(),
-            timestamp: Date.now(),
             body: JSON.stringify(body),
+            attempts: 0,
+            timestamp: Date.now(),
           })),
         )
         .execute();
@@ -132,6 +142,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
     const messages = await this._client
       .selectFrom("queue_messages")
       .selectAll()
+      .where("dlq_at", "is", null)
       .orderBy("timestamp", "asc")
       .execute();
 
@@ -146,13 +157,30 @@ export class SqliteQueueAdapter extends QueueAdapter {
   }
 
   async retryMessage(id: string, delay?: number): Promise<void> {
-    await this._client
-      .updateTable("queue_messages")
-      .set({
-        timestamp: Date.now() + (delay ?? 0),
-      })
+    const message = await this._client
+      .selectFrom("queue_messages")
+      .selectAll()
       .where("id", "=", id)
-      .execute();
+      .executeTakeFirst();
+
+    if (message) {
+      if (message.attempts < this._maxRetries)
+        await this._client
+          .updateTable("queue_messages")
+          .set({
+            attempts: message.attempts + 1,
+          })
+          .where("id", "=", id)
+          .execute();
+    } else {
+      await this._client
+        .updateTable("queue_messages")
+        .set({
+          dlq_at: Date.now(),
+        })
+        .where("id", "=", id)
+        .execute();
+    }
   }
 
   async runMigrations() {

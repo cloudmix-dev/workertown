@@ -11,14 +11,14 @@ interface CreateQueueProcessorOptions {
 }
 
 class QueueProcessor {
-  private _queue: QueueAdapter;
+  private readonly _queue: QueueAdapter;
 
   // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
-  private _server: any;
+  private readonly _server: any;
 
-  private _delay: number;
+  private readonly _delay: number;
 
-  private _schedule: (
+  private readonly _schedule: (
     callback: () => Promise<void>,
     delay: number,
   ) => Promise<void>;

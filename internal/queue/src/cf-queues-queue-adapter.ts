@@ -3,7 +3,7 @@ import { type Queue } from "@cloudflare/workers-types";
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 export class CfQueuesQueueAdapter extends QueueAdapter {
-  private _queue: Queue<QueueMessage>;
+  private readonly _queue: Queue<QueueMessage>;
 
   constructor(queue: Queue<unknown>) {
     super();
