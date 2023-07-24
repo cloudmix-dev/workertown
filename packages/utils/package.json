@@ -13,7 +13,7 @@
     "@workertown/internal-hono": "~0.0.1-alpha.10"
   },
   "devDependencies": {
-    "@types/node": "~20.4.0"
+    "@types/node": "~20.4.4"
   },
   "engines": {
     "node": ">=18.0.0"
