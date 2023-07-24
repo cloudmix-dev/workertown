@@ -32,9 +32,10 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "~4.20230710.1"
+    "@cloudflare/workers-types": "~4.20230710.1",
+    "@upstash/redis": "~1.22.0"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "@upstash/redis": "~1.22.0"
   },
   "engines": {

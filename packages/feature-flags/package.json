@@ -67,7 +67,7 @@
     "@types/better-sqlite3": "~7.6.4",
     "@workertown/internal-types": "~0.0.1-alpha.10"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "@planetscale/database": "~1.8.0",
     "better-sqlite3": "~8.4.0"
   },
