@@ -8,6 +8,7 @@ import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-s
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
+  type IndexSearchDocumentBody,
   type SearchDocument,
   StorageAdapter,
 } from "./storage-adapter.js";
@@ -196,7 +197,7 @@ export class D1StorageAdapter
   }
 
   public async indexDocument(
-    document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
+    document: IndexSearchDocumentBody,
     tags: string[] = [],
   ) {
     const now = new Date();

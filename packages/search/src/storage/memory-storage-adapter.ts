@@ -2,6 +2,7 @@ import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/in
 
 import {
   type GetDocumentsOptions,
+  type IndexSearchDocumentBody,
   type SearchDocument,
   StorageAdapter,
 } from "./storage-adapter.js";
@@ -141,7 +142,7 @@ export class MemoryStorageAdapter
   }
 
   public async indexDocument(
-    document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
+    document: IndexSearchDocumentBody,
     tags: string[] = [],
   ): Promise<SearchDocument> {
     const now = new Date();

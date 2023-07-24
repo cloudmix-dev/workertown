@@ -15,6 +15,13 @@ export interface SearchDocument {
   updatedAt: Date;
 }
 
+export interface IndexSearchDocumentBody {
+  id: string;
+  tenant: string;
+  index: string;
+  data: Record<string, unknown>;
+}
+
 export class StorageAdapter extends BaseStorageAdapter {
   public async getDocuments(
     options: GetDocumentsOptions,
@@ -34,7 +41,7 @@ export class StorageAdapter extends BaseStorageAdapter {
   }
 
   public async indexDocument(
-    item: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
+    item: IndexSearchDocumentBody,
     tags: string[] = [],
   ): Promise<SearchDocument> {
     throw new TypeError("'indexDocument()' not implemented");

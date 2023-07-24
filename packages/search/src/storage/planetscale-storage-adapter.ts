@@ -9,6 +9,7 @@ import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@wor
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
+  type IndexSearchDocumentBody,
   type SearchDocument,
   StorageAdapter,
 } from "./storage-adapter.js";
@@ -201,7 +202,7 @@ export class PlanetscaleStorageAdapter
   }
 
   public async indexDocument(
-    document: Pick<SearchDocument, "id" | "tenant" | "index" | "data">,
+    document: IndexSearchDocumentBody,
     tags: string[] = [],
   ) {
     const now = new Date();
