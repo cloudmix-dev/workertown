@@ -10,6 +10,14 @@ export interface Subscription {
   createdAt: Date;
 }
 
+export interface CreateSubscriptionBody {
+  topic: string;
+  endpoint: string;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  headers?: Record<string, string>;
+  queryParameters?: Record<string, string>;
+}
+
 export class StorageAdapter extends BaseStorageAdapter {
   async getSubscriptions(): Promise<Subscription[]> {
     throw new Error("'getSubscriptions()' not implemented");
@@ -20,10 +28,7 @@ export class StorageAdapter extends BaseStorageAdapter {
   }
 
   async createSubscription(
-    subscription: Pick<
-      Subscription,
-      "topic" | "endpoint" | "method" | "headers" | "queryParameters"
-    >,
+    subscription: CreateSubscriptionBody,
   ): Promise<Subscription> {
     throw new Error("'createSubscription' not implemented");
   }

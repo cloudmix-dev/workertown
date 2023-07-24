@@ -34,6 +34,7 @@ router.post(
   validate(
     "json",
     z.object({
+      method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
       topic: z.string(),
       endpoint: z.string().url(),
       headers: z.record(z.string(), z.string()).optional(),
@@ -42,13 +43,15 @@ router.post(
   ),
   async (ctx) => {
     const storage = ctx.get("storage");
-    const { topic, endpoint, headers, queryParameters } = ctx.req.valid("json");
+    const { topic, endpoint, method, headers, queryParameters } =
+      ctx.req.valid("json");
     let subscription: Subscription | null = null;
 
     try {
       subscription = await storage.createSubscription({
         topic,
         endpoint,
+        method,
         headers,
         queryParameters,
       });

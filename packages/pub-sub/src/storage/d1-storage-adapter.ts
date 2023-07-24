@@ -5,7 +5,11 @@ import {
 } from "@workertown/internal-storage";
 import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
-import { StorageAdapter, type Subscription } from "./storage-adapter.js";
+import {
+  CreateSubscriptionBody,
+  StorageAdapter,
+  type Subscription,
+} from "./storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;
@@ -111,12 +115,7 @@ export class D1StorageAdapter
     return records.map((record) => this._formatSubscription(record));
   }
 
-  async createSubscription(
-    subscription: Pick<
-      Subscription,
-      "topic" | "endpoint" | "method" | "headers" | "queryParameters"
-    >,
-  ) {
+  async createSubscription(subscription: CreateSubscriptionBody) {
     const id = crypto.randomUUID();
     const now = new Date();
 
