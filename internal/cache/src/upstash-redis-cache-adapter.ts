@@ -7,7 +7,7 @@ interface UpstashRedisCacheAdapterOptions {
 }
 
 export class UpstashRedisCacheAdapter extends CacheAdapter {
-  private _client: Redis;
+  private readonly _client: Redis;
 
   constructor(options: UpstashRedisCacheAdapterOptions) {
     super();
