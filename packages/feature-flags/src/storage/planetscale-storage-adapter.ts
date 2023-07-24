@@ -5,7 +5,12 @@ import {
 } from "@workertown/internal-storage";
 import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale-storage-adapter";
 
-import { type Flag, type FlagCondition } from "./storage-adapter.js";
+import {
+  type Flag,
+  type FlagCondition,
+  StorageAdapter,
+  type UpsertFlagBody,
+} from "./storage-adapter.js";
 
 interface FlagTable {
   name: string;
@@ -64,7 +69,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<DatabaseSchema> {
+export class PlanetscaleStorageAdapter
+  extends BasePlanetscaleStorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   private _formatFlag(flag: FlagRow): Flag {
@@ -106,9 +114,7 @@ export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<Dat
     return this._formatFlag(record);
   }
 
-  public async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">,
-  ) {
+  public async upsertFlag(flag: UpsertFlagBody) {
     const now = new Date();
     const existing = await this.client
       .selectFrom("flags")

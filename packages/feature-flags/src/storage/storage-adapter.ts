@@ -15,6 +15,13 @@ export interface Flag {
   updatedAt: Date;
 }
 
+export interface UpsertFlagBody {
+  name: string;
+  description?: string;
+  enabled: boolean;
+  conditions?: FlagCondition[];
+}
+
 export class StorageAdapter extends BaseStorageAdapter {
   public async getFlags(disabled = false): Promise<Flag[]> {
     throw new Error("'getFlags()' not implemented");
@@ -24,9 +31,7 @@ export class StorageAdapter extends BaseStorageAdapter {
     throw new Error("'getFlag()' not implemented");
   }
 
-  public async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">,
-  ): Promise<Flag> {
+  public async upsertFlag(flag: UpsertFlagBody): Promise<Flag> {
     throw new Error("'upsertFlag()' not implemented");
   }
 

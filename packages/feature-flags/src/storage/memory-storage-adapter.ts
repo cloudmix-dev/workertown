@@ -1,8 +1,15 @@
 import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
-import { type Flag } from "./storage-adapter.js";
+import {
+  type Flag,
+  StorageAdapter,
+  type UpsertFlagBody,
+} from "./storage-adapter.js";
 
-export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
+export class MemoryStorageAdapter
+  extends BaseMemoryStorageAdapter
+  implements StorageAdapter
+{
   private readonly _flagStore = new Map<string, Flag>();
 
   constructor(initialFlags: Flag[] = []) {
@@ -29,9 +36,7 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
     return this._flagStore.get(name) ?? null;
   }
 
-  public async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">,
-  ): Promise<Flag> {
+  public async upsertFlag(flag: UpsertFlagBody): Promise<Flag> {
     const existing = await this.getFlag(flag.name);
 
     if (existing) {

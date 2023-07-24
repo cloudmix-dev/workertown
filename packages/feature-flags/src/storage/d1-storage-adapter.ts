@@ -5,7 +5,12 @@ import {
 } from "@workertown/internal-storage";
 import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
-import { type Flag, type FlagCondition } from "./storage-adapter.js";
+import {
+  type Flag,
+  type FlagCondition,
+  StorageAdapter,
+  type UpsertFlagBody,
+} from "./storage-adapter.js";
 
 interface FlagsTable {
   name: string;
@@ -64,7 +69,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+export class D1StorageAdapter
+  extends BaseD1StorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   private _formatFlag(flag: FlagRow): Flag {
@@ -106,9 +114,7 @@ export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
     return this._formatFlag(record);
   }
 
-  public async upsertFlag(
-    flag: Pick<Flag, "name" | "description" | "enabled" | "conditions">,
-  ) {
+  public async upsertFlag(flag: UpsertFlagBody) {
     const now = new Date();
     const existing = await this.client
       .selectFrom("flags")
