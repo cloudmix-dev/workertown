@@ -100,7 +100,8 @@ export class SqliteQueueAdapter extends QueueAdapter {
     };
   }
 
-  async sendMessage(body: Record<string, unknown>): Promise<void> {
+  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  async sendMessage(body: any): Promise<void> {
     await this._client
       .insertInto("queue_messages")
       .values({
@@ -111,7 +112,8 @@ export class SqliteQueueAdapter extends QueueAdapter {
       .execute();
   }
 
-  async sendMessages(bodies: Record<string, unknown>[]): Promise<void> {
+  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  async sendMessages(bodies: any[]): Promise<void> {
     if (bodies.length > 0) {
       await this._client
         .insertInto("queue_messages")

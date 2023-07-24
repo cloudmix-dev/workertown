@@ -1,7 +1,7 @@
-export interface QueueMessage {
+export type QueueMessage<T = Record<string, unknown>> = {
   id: string;
-  body: Record<string, unknown>;
-}
+  body: T;
+};
 
 export class QueueAdapter {
   async sendMessage(body: Record<string, unknown>): Promise<void> {

@@ -11,7 +11,8 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     this._queue = queue;
   }
 
-  async sendMessage(body: Record<string, unknown>) {
+  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  async sendMessage(body: any) {
     const id = crypto.randomUUID();
 
     await this._queue.send({
@@ -20,7 +21,8 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     });
   }
 
-  async sendMessages(bodies: Record<string, unknown>[]) {
+  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  async sendMessages(bodies: any[]) {
     const messagesToSend = bodies.map((body) => ({
       body: {
         id: crypto.randomUUID(),
