@@ -6,7 +6,7 @@ import {
 import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite-storage-adapter";
 
 import {
-  CreateSubscriptionBody,
+  type CreateSubscriptionBody,
   StorageAdapter,
   type Subscription,
 } from "./storage-adapter.js";

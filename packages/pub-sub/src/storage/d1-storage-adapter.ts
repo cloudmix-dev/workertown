@@ -6,7 +6,7 @@ import {
 import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
 
 import {
-  CreateSubscriptionBody,
+  type CreateSubscriptionBody,
   StorageAdapter,
   type Subscription,
 } from "./storage-adapter.js";
