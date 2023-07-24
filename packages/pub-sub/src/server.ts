@@ -65,9 +65,9 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
     let queueAdapter: QueueAdapter | undefined = queue;
 
     if (!storageAdapter) {
-      const db = ctx.env?.[dbEnvKey] as D1Database | undefined;
+      const d1 = ctx.env?.[dbEnvKey] as D1Database | undefined;
 
-      if (!db) {
+      if (!d1) {
         return ctx.json(
           {
             status: 500,
@@ -79,7 +79,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
         );
       }
 
-      storageAdapter = new D1StorageAdapter({ db });
+      storageAdapter = new D1StorageAdapter({ d1 });
     }
 
     if (!queueAdapter) {

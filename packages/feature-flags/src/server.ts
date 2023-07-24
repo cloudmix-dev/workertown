@@ -62,9 +62,9 @@ export function createFeatureFlagsServer(
     let storageAdapter: StorageAdapter | undefined = storage;
 
     if (!storageAdapter) {
-      const db = ctx.env?.[dbEnvKey] as D1Database | undefined;
+      const d1 = ctx.env?.[dbEnvKey] as D1Database | undefined;
 
-      if (!db) {
+      if (!d1) {
         return ctx.json({
           status: 500,
           success: false,
@@ -73,7 +73,7 @@ export function createFeatureFlagsServer(
         });
       }
 
-      storageAdapter = new D1StorageAdapter({ db });
+      storageAdapter = new D1StorageAdapter({ d1 });
     }
 
     ctx.set("config", config);

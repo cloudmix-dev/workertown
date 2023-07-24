@@ -3,7 +3,7 @@ import { SqliteStorageAdapter as FeatureFlagsStorageAdapter } from "@workertown/
 import { kv } from "@workertown/kv";
 import { SqliteStorageAdapter as KvStorageAdapter } from "@workertown/kv/storage/sqlite";
 import { serve } from "@workertown/node";
-import { exitOnSignals, parseOptionsFromEnv } from "@workertown/node/utils";
+import { exitOnSignals } from "@workertown/node/utils";
 import { pubSub } from "@workertown/pub-sub";
 import { createQueueProcessor } from "@workertown/pub-sub/queue";
 import { SqliteQueueAdapter } from "@workertown/pub-sub/queue/sqlite-queue-adapter";
@@ -64,8 +64,11 @@ const searchApi = search({
     },
   },
   basePath: "/search",
-  storage: new SearchStorageAdapter({
-    db: path.resolve(DIRNAME, "../db/search.sqlite"),
+  runtime: () => ({
+    cache: false,
+    storage: new SearchStorageAdapter({
+      db: path.resolve(DIRNAME, "../db/search.sqlite"),
+    }),
   }),
 });
 

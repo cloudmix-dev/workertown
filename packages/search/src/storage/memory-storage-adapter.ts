@@ -7,6 +7,11 @@ import {
   type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 
+interface MemoryStorageAdapterOptions {
+  initialDocuments?: SearchDocument[];
+  initialTags?: Record<string, string[]>;
+}
+
 export class MemoryStorageAdapter
   extends BaseMemoryStorageAdapter
   implements StorageAdapter
@@ -21,18 +26,17 @@ export class MemoryStorageAdapter
 
   private readonly _deleted = new Set<string>();
 
-  constructor(
-    initialDocuments: SearchDocument[] = [],
-    tags: Record<string, string[]> = {},
-  ) {
+  constructor(options: MemoryStorageAdapterOptions = {}) {
     super();
+
+    const { initialDocuments = [], initialTags = {} } = options;
 
     initialDocuments.forEach((document) => {
       this._storeDocument(document);
     });
 
-    Object.keys(tags).forEach((tag) => {
-      this._tags.set(tag, new Set(tags[tag]));
+    Object.keys(initialTags).forEach((tag) => {
+      this._tags.set(tag, new Set(initialTags[tag]));
     });
   }
 

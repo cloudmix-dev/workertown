@@ -6,7 +6,7 @@ import { MigrationProvider } from "./migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
 interface D1StorageAdapterOptions {
-  db: D1Database;
+  d1: D1Database;
 }
 
 export class D1StorageAdapter<T = {}> extends StorageAdapter {
@@ -18,7 +18,7 @@ export class D1StorageAdapter<T = {}> extends StorageAdapter {
     this.client = new Kysely<T>({
       // The `as unknown as Dialect` is a workaround for a bug in the kysely-d1
       // types
-      dialect: new D1Dialect({ database: options.db }) as unknown as Dialect,
+      dialect: new D1Dialect({ database: options.d1 }) as unknown as Dialect,
     });
   }
 

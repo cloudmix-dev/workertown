@@ -1,6 +1,6 @@
 import search, { type CreateServerOptions } from "../src";
-import { type SearchDocument, type StorageAdapter } from "../src/storage";
-import { MemoryStorageAdapter } from "../src/storage/memory-storage-adapter";
+import { getRuntime } from "../src/runtime/test";
+import { type SearchDocument } from "../src/storage";
 
 const SEARCH_DOCUMENTS: SearchDocument[] = [
   {
@@ -67,17 +67,18 @@ const TAGS = {
 
 export function createTestService(
   options: CreateServerOptions = {},
-  intialSearchItems: SearchDocument[] = SEARCH_DOCUMENTS,
+  intialDocuments: SearchDocument[] = SEARCH_DOCUMENTS,
   initialTags: Record<string, string[]> = TAGS,
 ) {
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
-    // The `as unknown` here fixes some weird Typescript bug...
-    storage: new MemoryStorageAdapter(
-      intialSearchItems,
-      initialTags,
-    ) as unknown as StorageAdapter,
+    runtime: (config, env) =>
+      getRuntime(config, env, {
+        cache: false,
+        initialDocuments: intialDocuments,
+        initialTags: initialTags,
+      }),
   });
 }
 

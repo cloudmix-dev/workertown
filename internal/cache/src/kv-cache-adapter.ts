@@ -3,6 +3,7 @@ import { type KVNamespace } from "@cloudflare/workers-types";
 import { CacheAdapter } from "./cache-adapter.js";
 
 interface KVCacheAdapterOptions {
+  kv: KVNamespace;
   prefix?: string;
 }
 
@@ -11,10 +12,10 @@ export class KVCacheAdapter extends CacheAdapter {
 
   public readonly _kv: KVNamespace;
 
-  constructor(kv: KVNamespace, options?: KVCacheAdapterOptions) {
+  constructor(options: KVCacheAdapterOptions) {
     super();
 
-    this._kv = kv;
+    this._kv = options.kv;
     this._prefix = options?.prefix ?? this._prefix;
   }
 

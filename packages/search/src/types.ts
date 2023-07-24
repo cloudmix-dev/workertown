@@ -10,7 +10,6 @@ import { type SearchDocument, type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
   boostDocument?: (document: SearchDocument, term: string) => number;
-  cache?: CacheAdapter;
   endpoints: {
     v1: {
       admin: string | false;
@@ -23,9 +22,16 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   };
   env: {
     cache: string;
-    database: string;
+    db: string;
   };
   filter?: (document: SearchDocument, result: SearchResult) => boolean;
+  runtime?:
+    | Runtime
+    | ((
+        config: CreateServerOptions,
+        env: Record<string, unknown>,
+        options?: GetRuntimeOptions,
+      ) => Runtime);
   scanRange:
     | number
     // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
@@ -37,7 +43,6 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
         // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
         req: WorkertownRequest<any, any>,
       ) => string[] | Set<string> | Promise<string[] | Set<string>>);
-  storage?: StorageAdapter;
 }
 
 export type Context = WorkertownContext<{
@@ -45,3 +50,12 @@ export type Context = WorkertownContext<{
   config: CreateServerOptions;
   storage: StorageAdapter;
 }>;
+
+export interface Runtime {
+  cache: CacheAdapter | false;
+  storage: StorageAdapter;
+}
+
+export interface GetRuntimeOptions {
+  cache: boolean;
+}
