@@ -11,8 +11,12 @@ export function getRuntime(
   env: Record<string, unknown>,
   options: GetRuntimeOptions = { cache: true },
 ): Runtime {
+  const db = env[config.env.db] as string;
+
   return {
     cache: options.cache ? new MemoryCacheAdapter() : false,
-    storage: new SqliteStorageAdapter({ db: config.env.db }),
+    storage: new SqliteStorageAdapter(
+      db.endsWith(".sqlite") ? { db } : undefined,
+    ),
   };
 }
