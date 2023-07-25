@@ -29,7 +29,7 @@
     "husky": "~8.0.3",
     "rome": "~12.1.3",
     "tsx": "~3.12.7",
-    "turbo": "~1.10.9",
+    "turbo": "~1.10.11",
     "typescript": "~5.1.6"
   },
   "packageManager": "npm@9.6.7"
