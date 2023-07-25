@@ -15,7 +15,7 @@ function getKey(
 ) {
   const { kv: kvPrefix } = config.endpoints.v1;
   const url = new URL(req.url);
-  const key = url.pathname.replace(kvPrefix, "").replace(/^\//, "");
+  const key = url.pathname.replace(kvPrefix as string, "").replace(/^\//, "");
 
   return key;
 }
