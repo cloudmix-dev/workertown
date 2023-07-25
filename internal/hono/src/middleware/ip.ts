@@ -13,11 +13,6 @@ const DEFAULT_OPTIONS: IpOptions = {
   ips: [],
 };
 
-interface Cidr {
-  range: number;
-  mask: number;
-}
-
 export function ip(options?: IpOptionsOptional) {
   const { ips } = merge({}, DEFAULT_OPTIONS, options);
 

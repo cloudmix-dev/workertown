@@ -12,7 +12,9 @@ interface TestGetRuntimeOptions extends GetRuntimeOptions {
 }
 
 export function getRuntime(
+  // rome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
   config: CreateServerOptions,
+  // rome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
   env: Record<string, unknown>,
   options: TestGetRuntimeOptions = {
     cache: true,

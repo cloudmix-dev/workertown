@@ -23,16 +23,19 @@ export class StorageAdapter extends BaseStorageAdapter {
     throw new Error("'getSubscriptions()' not implemented");
   }
 
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
   async getSubscriptionsByTopic(topic: string): Promise<Subscription[]> {
     throw new Error("'getSubscriptionsByTopic()' not implemented");
   }
 
   async createSubscription(
+    // rome-ignore lint/correctness/noUnusedVariables: stub class
     subscription: CreateSubscriptionBody,
   ): Promise<Subscription> {
     throw new Error("'createSubscription' not implemented");
   }
 
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
   async deleteSubscription(id: string): Promise<void> {
     throw new Error("'deleteSubscription' not implemented");
   }

@@ -129,12 +129,13 @@ const FLAGS: Flag[] = [
 
 export function createTestService(
   options: CreateServerOptions = {},
-  intialFlags: Flag[] = FLAGS,
+  initialFlags: Flag[] = FLAGS,
 ) {
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
-    runtime: (config, env) => getRuntime(config, env),
+    runtime: (config, env) =>
+      getRuntime(config, env, { cache: true, initialFlags }),
   });
 }
 

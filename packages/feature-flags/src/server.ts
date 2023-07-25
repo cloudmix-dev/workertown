@@ -50,9 +50,7 @@ export function createFeatureFlagsServer(
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,
-    env,
     runtime = getCloudflareWorkersRuntime,
-    storage,
     ...baseConfig
   } = config;
 

@@ -1,13 +1,19 @@
 import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
 
+interface MemoryStorageAdapterOptions {
+  initialValues?: Record<string, unknown>;
+}
+
 export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   private readonly _valueStore = new Map<string, string>();
 
-  constructor(initialDocuments: { key: string; value: unknown }[] = []) {
+  constructor(options: MemoryStorageAdapterOptions = {}) {
     super();
 
-    initialDocuments.forEach((value) => {
-      this._valueStore.set(value.key, JSON.stringify(value.value));
+    const { initialValues = {} } = options;
+
+    Object.entries(initialValues).forEach(([key, value]) => {
+      this._valueStore.set(key, JSON.stringify(value));
     });
   }
 

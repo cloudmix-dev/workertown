@@ -156,7 +156,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
       .execute();
   }
 
-  async retryMessage(id: string, delay?: number): Promise<void> {
+  async retryMessage(id: string): Promise<void> {
     const message = await this._client
       .selectFrom("queue_messages")
       .selectAll()

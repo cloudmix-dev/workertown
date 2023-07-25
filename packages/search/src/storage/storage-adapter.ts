@@ -24,29 +24,36 @@ export interface UpsertSearchDocumentBody {
 
 export class StorageAdapter extends BaseStorageAdapter {
   public async getDocuments(
+    // rome-ignore lint/correctness/noUnusedVariables: stub class
     options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     throw new TypeError("'getDocuments()' not implemented");
   }
 
   public async getDocumentsByTags(
+    // rome-ignore lint/correctness/noUnusedVariables: stub class
     tags: string[],
+    // rome-ignore lint/correctness/noUnusedVariables: stub class
     options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     throw new TypeError("'getDocumentsByTags()' not implemented");
   }
 
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
   public async getDocument(id: string): Promise<SearchDocument | null> {
     throw new TypeError("'getDocument()' not implemented");
   }
 
   public async upsertDocument(
+    // rome-ignore lint/correctness/noUnusedVariables: stub class
     item: UpsertSearchDocumentBody,
+    // rome-ignore lint/correctness/noUnusedVariables: stub class
     tags: string[] = [],
   ): Promise<SearchDocument> {
     throw new TypeError("'upsertDocument()' not implemented");
   }
 
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
   public async deleteDocument(id: string): Promise<void> {
     throw new TypeError("'deleteDocument()' not implemented");
   }
@@ -55,10 +62,12 @@ export class StorageAdapter extends BaseStorageAdapter {
     throw new TypeError("'getTags()' not implemented");
   }
 
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
   public async tagDocument(id: string, tag: string): Promise<void> {
     throw new TypeError("'tagDocument()' not implemented");
   }
 
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
   public async untagDocument(id: string, tag: string): Promise<void> {
     throw new TypeError("'untagDocument()' not implemented");
   }

@@ -55,7 +55,6 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,
-    env,
     runtime = getCloudflareWorkersRuntime,
     ...baseConfig
   } = config;
