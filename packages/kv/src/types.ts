@@ -8,19 +8,24 @@ import { type StorageAdapter } from "./storage/index.js";
 export interface CreateServerOptions extends BaseCreateServerOptions {
   endpoints: {
     v1: {
-      admin: string;
-      kv: string;
+      admin: string | false;
+      kv: string | false;
     };
-    public: string;
+    public: string | false;
   };
   env: {
-    kv: string;
-    database: string;
+    db: string;
   };
-  storage?: StorageAdapter;
+  runtime?:
+    | Runtime
+    | ((config: CreateServerOptions, env: Record<string, unknown>) => Runtime);
 }
 
 export type Context = WorkertownContext<{
   config: CreateServerOptions;
   storage: StorageAdapter;
 }>;
+
+export interface Runtime {
+  storage: StorageAdapter;
+}

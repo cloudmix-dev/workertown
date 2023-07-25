@@ -1,11 +1,9 @@
-import { type KVNamespace } from "@cloudflare/workers-types";
 import { createServer } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
 import { v1 } from "./routers/index.js";
-import { StorageAdapter } from "./storage/index.js";
-import { KVStorageAdapter } from "./storage/kv-storage-adapter.js";
+import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
 export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
@@ -40,8 +38,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     public: "/",
   },
   env: {
-    kv: "KV_KV",
-    database: "KV_DB",
+    db: "KV_DB",
   },
 };
 
@@ -49,41 +46,35 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,
-    env: { kv: kvEnvKey },
-    storage,
+    runtime = getCloudflareWorkersRuntime,
     ...baseConfig
   } = config;
 
   const server = createServer<Context>(baseConfig);
 
   server.use(async (ctx, next) => {
-    let storageAdapter: StorageAdapter | undefined = storage;
-
-    if (!storageAdapter) {
-      const kv = ctx.env?.[kvEnvKey] as KVNamespace | undefined;
-
-      if (!kv) {
-        return ctx.json({
-          status: 500,
-          success: false,
-          data: null,
-          error: `KV not found at env.${kvEnvKey}`,
-        });
-      }
-
-      storageAdapter = new KVStorageAdapter({ kv });
-    }
+    const { storage } =
+      typeof runtime === "function"
+        ? runtime(config, ctx.env)
+        : runtime ?? getCloudflareWorkersRuntime(config, ctx.env);
 
     ctx.set("config", config);
-    ctx.set("storage", storageAdapter);
+    ctx.set("storage", storage);
 
     return next();
   });
 
-  server.route(endpoints.v1.admin, v1.adminRouter);
-  server.route(endpoints.v1.kv, v1.kvRouter);
+  if (endpoints.v1.admin !== false) {
+    server.route(endpoints.v1.admin, v1.adminRouter);
+  }
 
-  server.route(endpoints.public, v1.publicRouter);
+  if (endpoints.v1.kv !== false) {
+    server.route(endpoints.v1.kv, v1.kvRouter);
+  }
+
+  if (endpoints.public !== false) {
+    server.route(endpoints.public, v1.publicRouter);
+  }
 
   return server;
 }
