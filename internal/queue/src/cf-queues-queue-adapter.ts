@@ -2,13 +2,17 @@ import { type Queue } from "@cloudflare/workers-types";
 
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
+interface CfQueuesQueueAdapterOptions {
+  queue: Queue<unknown>;
+}
+
 export class CfQueuesQueueAdapter extends QueueAdapter {
   private readonly _queue: Queue<QueueMessage>;
 
-  constructor(queue: Queue<unknown>) {
+  constructor(options: CfQueuesQueueAdapterOptions) {
     super();
 
-    this._queue = queue;
+    this._queue = options.queue;
   }
 
   // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body

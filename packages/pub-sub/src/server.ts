@@ -1,12 +1,10 @@
-import { type D1Database, type Queue } from "@cloudflare/workers-types";
 import { createServer } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
-import { CfQueuesQueueAdapter } from "./queue/cf-queues-queue-adapter.js";
 import { QueueAdapter, type QueueMessage } from "./queue/index.js";
 import { v1 } from "./routers/index.js";
-import { D1StorageAdapter } from "./storage/d1-storage-adapter.js";
+import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { StorageAdapter } from "./storage/index.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
@@ -43,7 +41,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     public: "/",
   },
   env: {
-    database: "PUBSUB_DB",
+    db: "PUBSUB_DB",
     queue: "PUBSUB_QUEUE",
   },
 };
@@ -52,57 +50,25 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,
-    env: { database: dbEnvKey, queue: queueEnvKey },
-    queue,
-    storage,
+    runtime = getCloudflareWorkersRuntime,
     ...baseConfig
   } = config;
 
   const server = createServer<Context>(baseConfig);
+  let storage: StorageAdapter;
+  let queue: QueueAdapter;
 
   server.use(async (ctx, next) => {
-    let storageAdapter: StorageAdapter | undefined = storage;
-    let queueAdapter: QueueAdapter | undefined = queue;
-
-    if (!storageAdapter) {
-      const d1 = ctx.env?.[dbEnvKey] as D1Database | undefined;
-
-      if (!d1) {
-        return ctx.json(
-          {
-            status: 500,
-            success: false,
-            data: null,
-            error: `Database not found at env.${dbEnvKey}`,
-          },
-          500,
-        );
-      }
-
-      storageAdapter = new D1StorageAdapter({ d1 });
-    }
-
-    if (!queueAdapter) {
-      const queue = ctx.env?.[queueEnvKey] as Queue<unknown> | undefined;
-
-      if (!queue) {
-        return ctx.json(
-          {
-            status: 500,
-            success: false,
-            data: null,
-            error: `Queue not found at env.${queueEnvKey}`,
-          },
-          500,
-        );
-      }
-
-      queueAdapter = new CfQueuesQueueAdapter(queue);
+    if (!storage && !queue) {
+      ({ storage, queue } =
+        typeof runtime === "function"
+          ? runtime(config, ctx.env)
+          : runtime ?? getCloudflareWorkersRuntime(config, ctx.env));
     }
 
     ctx.set("config", config);
-    ctx.set("storage", storageAdapter);
-    ctx.set("queue", queueAdapter);
+    ctx.set("storage", storage);
+    ctx.set("queue", queue);
 
     return next();
   });

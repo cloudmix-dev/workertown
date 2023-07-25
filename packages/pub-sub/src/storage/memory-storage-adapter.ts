@@ -6,11 +6,25 @@ import {
   type Subscription,
 } from "./storage-adapter.js";
 
+interface MemoryStorageAdapterOptions {
+  initialSubscriptions?: Subscription[];
+}
+
 export class MemoryStorageAdapter
   extends BaseMemoryStorageAdapter
   implements StorageAdapter
 {
   private readonly _subscriptionStore = new Map<string, Subscription>();
+
+  constructor(options: MemoryStorageAdapterOptions = {}) {
+    super();
+
+    const { initialSubscriptions = [] } = options;
+
+    initialSubscriptions.forEach((subscription) => {
+      this._subscriptionStore.set(subscription.id, subscription);
+    });
+  }
 
   async getSubscriptions() {
     return Array.from(this._subscriptionStore.values());
