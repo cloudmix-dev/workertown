@@ -2,8 +2,11 @@ import { createServer } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
+import { type CacheAdapter } from "./cache/index.js";
+import { NoOpCacheAdapter } from "./cache/no-op-cache-adapter.js";
 import { v1 } from "./routers/index.js";
 import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
+import { type StorageAdapter } from "./storage/storage-adapter.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
 export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
@@ -55,14 +58,18 @@ export function createFeatureFlagsServer(
   } = config;
 
   const server = createServer<Context>(baseConfig);
+  let storage: StorageAdapter;
+  let cache: CacheAdapter | false;
 
   server.use(async (ctx, next) => {
-    const { cache, storage } =
-      typeof runtime === "function"
-        ? runtime(config, ctx.env)
-        : runtime ?? getCloudflareWorkersRuntime(config, ctx.env);
+    if (!cache && !storage) {
+      ({ cache, storage } =
+        typeof runtime === "function"
+          ? runtime(config, ctx.env)
+          : runtime ?? getCloudflareWorkersRuntime(config, ctx.env));
+    }
 
-    ctx.set("cache", cache);
+    ctx.set("cache", cache || new NoOpCacheAdapter());
     ctx.set("config", config);
     ctx.set("storage", storage);
 

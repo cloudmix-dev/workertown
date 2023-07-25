@@ -30,6 +30,7 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
 }
 
 export type Context = WorkertownContext<{
+  cache: CacheAdapter;
   config: CreateServerOptions;
   storage: StorageAdapter;
 }>;

@@ -30,6 +30,8 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
   public async setValue<T = unknown>(key: string, value: T): Promise<T> {
     this._valueStore.set(key, JSON.stringify(value));
 
+    console.log(JSON.stringify(Array.from(this._valueStore.entries())));
+
     return value;
   }
 

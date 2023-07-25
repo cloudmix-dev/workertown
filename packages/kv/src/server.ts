@@ -4,6 +4,7 @@ import merge from "lodash.merge";
 
 import { v1 } from "./routers/index.js";
 import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
+import { type StorageAdapter } from "./storage/storage-adapter.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
 export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
@@ -51,12 +52,15 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
   } = config;
 
   const server = createServer<Context>(baseConfig);
+  let storage: StorageAdapter;
 
   server.use(async (ctx, next) => {
-    const { storage } =
-      typeof runtime === "function"
-        ? runtime(config, ctx.env)
-        : runtime ?? getCloudflareWorkersRuntime(config, ctx.env);
+    if (!storage) {
+      ({ storage } =
+        typeof runtime === "function"
+          ? runtime(config, ctx.env)
+          : runtime ?? getCloudflareWorkersRuntime(config, ctx.env));
+    }
 
     ctx.set("config", config);
     ctx.set("storage", storage);
