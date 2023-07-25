@@ -39,6 +39,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     public: "/",
   },
   env: {
+    cache: "FLAGS_CACHE",
     db: "FLAGS_DB",
   },
 };

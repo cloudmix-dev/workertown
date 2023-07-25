@@ -16,6 +16,7 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     public: string | false;
   };
   env: {
+    cache: string;
     db: string;
   };
   runtime?:
