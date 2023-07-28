@@ -26,12 +26,12 @@
       "types": "./dist/storage/index.d.ts"
     },
     "./storage/d1": {
-      "default": "./dist/storage/d1-storage-adapter.js",
-      "types": "./dist/storage/d1-storage-adapter.d.ts"
+      "default": "./dist/storage/d1.js",
+      "types": "./dist/storage/d1.d.ts"
     },
     "./storage/sqlite": {
-      "default": "./dist/storage/sqlite-storage-adapter.js",
-      "types": "./dist/storage/sqlite-storage-adapter.d.ts"
+      "default": "./dist/storage/sqlite.js",
+      "types": "./dist/storage/sqlite.d.ts"
     },
     "./storage/migrations": {
       "default": "./dist/storage/migrations.js",

@@ -1,5 +1,5 @@
 import { MemoryQueueAdapter } from "../queue/memory.js";
-import { MemoryStorageAdapter } from "../storage/memory-storage-adapter.js";
+import { MemoryStorageAdapter } from "../storage/memory.js";
 import { type Subscription } from "../storage/storage-adapter.js";
 import { type CreateServerOptions, type Runtime } from "../types.js";
 

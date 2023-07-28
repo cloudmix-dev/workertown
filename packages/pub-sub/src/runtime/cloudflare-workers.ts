@@ -1,7 +1,7 @@
 import { type D1Database } from "@cloudflare/workers-types";
 
 import { CfQueuesQueueAdapter } from "../queue/cf-queues.js";
-import { D1StorageAdapter } from "../storage/d1-storage-adapter.js";
+import { D1StorageAdapter } from "../storage/d1.js";
 import { type CreateServerOptions, type Runtime } from "../types.js";
 
 export function getRuntime(
