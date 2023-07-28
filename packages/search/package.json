@@ -14,16 +14,16 @@
       "types": "./dist/cache/index.d.ts"
     },
     "./cache/no-op": {
-      "default": "./dist/cache/no-op-cache-adapter.js",
-      "types": "./dist/cache/no-op-cache-adapter.d.ts"
+      "default": "./dist/cache/no-op.js",
+      "types": "./dist/cache/no-op.d.ts"
     },
     "./cache/kv": {
-      "default": "./dist/cache/kv-cache-adapter.js",
-      "types": "./dist/cache/kv-cache-adapter.d.ts"
+      "default": "./dist/cache/kv.js",
+      "types": "./dist/cache/kv.d.ts"
     },
     "./cache/memory": {
-      "default": "./dist/cache/memory-cache-adapter.js",
-      "types": "./dist/cache/memory-cache-adapter.d.ts"
+      "default": "./dist/cache/memory.js",
+      "types": "./dist/cache/memory.d.ts"
     },
     "./client": {
       "default": "./dist/client/index.js",

@@ -3,7 +3,7 @@ import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
 import { type CacheAdapter } from "./cache/index.js";
-import { NoOpCacheAdapter } from "./cache/no-op-cache-adapter.js";
+import { NoOpCacheAdapter } from "./cache/no-op.js";
 import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants.js";
 import { v1 } from "./routers/index.js";
 import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";

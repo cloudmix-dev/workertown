@@ -1,6 +1,6 @@
 import { type D1Database, type KVNamespace } from "@cloudflare/workers-types";
 
-import { KVCacheAdapter } from "../cache/kv-cache-adapter.js";
+import { KVCacheAdapter } from "../cache/kv.js";
 import { D1StorageAdapter } from "../storage/d1.js";
 import {
   type CreateServerOptions,

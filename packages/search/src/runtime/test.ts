@@ -1,4 +1,4 @@
-import { NoOpCacheAdapter } from "../cache/no-op-cache-adapter.js";
+import { NoOpCacheAdapter } from "../cache/no-op.js";
 import { MemoryStorageAdapter } from "../storage/memory.js";
 import { type SearchDocument } from "../storage/storage-adapter.js";
 import {
