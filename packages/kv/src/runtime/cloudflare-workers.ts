@@ -3,7 +3,7 @@ import { type KVNamespace } from "@cloudflare/workers-types";
 import { KVStorageAdapter } from "../storage/kv.js";
 import { type CreateServerOptions, type Runtime } from "../types.js";
 
-export function getRuntime(
+export function runtime(
   config: CreateServerOptions,
   env: Record<string, unknown>,
 ): Runtime {

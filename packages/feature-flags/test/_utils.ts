@@ -1,5 +1,5 @@
 import search, { type CreateServerOptions } from "../src";
-import { getRuntime } from "../src/runtime/test";
+import { runtime } from "../src/runtime/test";
 import { type Flag } from "../src/storage";
 
 const FLAGS: Flag[] = [
@@ -135,7 +135,7 @@ export function createTestService(
     ...options,
     auth: { apiKey: { apiKey: "test" } },
     runtime: (config, env) =>
-      getRuntime(config, env, { cache: true, initialFlags }),
+      runtime(config, env, { cache: true, initialFlags }),
   });
 }
 

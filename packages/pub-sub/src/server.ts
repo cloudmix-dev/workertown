@@ -4,7 +4,7 @@ import merge from "lodash.merge";
 
 import { QueueAdapter, type QueueMessage } from "./queue/index.js";
 import { v1 } from "./routers/index.js";
-import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
+import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { StorageAdapter } from "./storage/index.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
@@ -50,7 +50,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,
-    runtime = getCloudflareWorkersRuntime,
+    runtime = cloudflareWorkersRuntime,
     ...baseConfig
   } = config;
 
@@ -63,7 +63,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
       ({ storage, queue } =
         typeof runtime === "function"
           ? runtime(config, ctx.env)
-          : runtime ?? getCloudflareWorkersRuntime(config, ctx.env));
+          : runtime ?? cloudflareWorkersRuntime(config, ctx.env));
     }
 
     ctx.set("config", config);

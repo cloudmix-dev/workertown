@@ -11,7 +11,7 @@ interface TestGetRuntimeOptions extends GetRuntimeOptions {
   initialFlags: Flag[];
 }
 
-export function getRuntime(
+export function runtime(
   // rome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
   config: CreateServerOptions,
   // rome-ignore lint/correctness/noUnusedVariables: not needed for this runtime

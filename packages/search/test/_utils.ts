@@ -1,5 +1,5 @@
 import search, { type CreateServerOptions } from "../src";
-import { getRuntime } from "../src/runtime/test";
+import { runtime } from "../src/runtime/test";
 import { type SearchDocument } from "../src/storage";
 
 const SEARCH_DOCUMENTS: SearchDocument[] = [
@@ -74,7 +74,7 @@ export function createTestService(
     ...options,
     auth: { apiKey: { apiKey: "test" } },
     runtime: (config, env) =>
-      getRuntime(config, env, {
+      runtime(config, env, {
         cache: false,
         initialDocuments: intialDocuments,
         initialTags: initialTags,

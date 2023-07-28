@@ -6,7 +6,7 @@ import {
   type Runtime,
 } from "../types.js";
 
-export function getRuntime(
+export function runtime(
   config: CreateServerOptions,
   env: Record<string, unknown>,
   options: GetRuntimeOptions = { cache: true },

@@ -3,7 +3,7 @@ import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
 import { v1 } from "./routers/index.js";
-import { getRuntime as getCloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
+import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { type StorageAdapter } from "./storage/storage-adapter.js";
 import { type Context, type CreateServerOptions } from "./types.js";
 
@@ -47,7 +47,7 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,
-    runtime = getCloudflareWorkersRuntime,
+    runtime = cloudflareWorkersRuntime,
     ...baseConfig
   } = config;
 
@@ -59,7 +59,7 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
       ({ storage } =
         typeof runtime === "function"
           ? runtime(config, ctx.env)
-          : runtime ?? getCloudflareWorkersRuntime(config, ctx.env));
+          : runtime ?? cloudflareWorkersRuntime(config, ctx.env));
     }
 
     ctx.set("config", config);

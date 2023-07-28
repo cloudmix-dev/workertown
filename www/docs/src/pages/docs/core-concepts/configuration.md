@@ -145,9 +145,9 @@ follows the same simple API.
 ```ts
 import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
-import { getRuntime } from "@workertown/search/node";
+import { runtime } from "@workertown/search/node";
 
-serve(search({ runtime: getRuntime }));
+serve(search({ runtime }));
 
 console.log("Server running at http://localhost:3000");
 ```

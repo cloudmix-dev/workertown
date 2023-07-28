@@ -1,5 +1,5 @@
 import search, { type CreateServerOptions } from "../src";
-import { getRuntime } from "../src/runtime/test";
+import { runtime } from "../src/runtime/test";
 
 const VALUES = {
   "test/1": "test",
@@ -15,7 +15,7 @@ export function createTestService(
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
-    runtime: (config, env) => getRuntime(config, env, { initialValues }),
+    runtime: (config, env) => runtime(config, env, { initialValues }),
   });
 }
 
