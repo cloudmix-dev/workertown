@@ -1,4 +1,4 @@
-import { MemoryCacheAdapter } from "../cache/memory-cache-adapter.js";
+import { MemoryCacheAdapter } from "../cache/memory.js";
 import { SqliteStorageAdapter } from "../storage/sqlite.js";
 import {
   type CreateServerOptions,
