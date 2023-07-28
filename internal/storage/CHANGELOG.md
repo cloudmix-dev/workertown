@@ -1,5 +1,11 @@
 # @workertown/internal-storage
 
+## 0.0.1-alpha.11
+
+### Patch Changes
+
+- Alpha.11 Release
+
 ## 0.0.1-alpha.10
 
 ### Patch Changes
