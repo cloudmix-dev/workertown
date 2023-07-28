@@ -27,5 +27,5 @@ jobs:
       - name: Install Dependencies
         run: npm -w @workertown/feature-flags i
 
-      - name: Run tests
+      - name: Run Tests
         run: npm test -- --filter=@workertown/feature-flags
