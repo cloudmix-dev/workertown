@@ -11,7 +11,11 @@ export function exitOnSignals(
   signals: string[] = ["SIGINT", "SIGTERM"],
   options: ExitOnSignalsOptions = {},
 ) {
-  const { code = 1, exit = process.exit, on = process.on } = options;
+  const {
+    code = 1,
+    exit = process.exit.bind(process),
+    on = process.on.bind(process),
+  } = options;
 
   function onExit() {
     exit(code);
