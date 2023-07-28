@@ -19,9 +19,7 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     db: string;
     queue: string;
   };
-  runtime?:
-    | Runtime
-    | ((config: CreateServerOptions, env: Record<string, unknown>) => Runtime);
+  runtime?: RuntimeResolver;
 }
 
 export type Context = WorkertownContext<{
@@ -34,3 +32,7 @@ export interface Runtime {
   storage: StorageAdapter;
   queue: QueueAdapter;
 }
+
+export type RuntimeResolver =
+  | Runtime
+  | ((config: CreateServerOptions, env: Record<string, unknown>) => Runtime);

@@ -80,6 +80,7 @@ export const navigation: {
         title: "Combining APIs",
         href: "/docs/advanced-concepts/combining-apis",
       },
+      { title: "Testing", href: "/docs/advanced-concepts/testing" },
       { title: "Node runtime", href: "/docs/advanced-concepts/node-runtime" },
       { title: "Docker", href: "/docs/advanced-concepts/docker" },
     ],

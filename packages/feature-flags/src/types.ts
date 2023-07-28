@@ -19,13 +19,7 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     cache: string;
     db: string;
   };
-  runtime?:
-    | Runtime
-    | ((
-        config: CreateServerOptions,
-        env: Record<string, unknown>,
-        options?: GetRuntimeOptions,
-      ) => Runtime);
+  runtime?: RuntimeResolver;
 }
 
 export type Context = WorkertownContext<{
@@ -42,3 +36,11 @@ export interface Runtime {
 export interface GetRuntimeOptions {
   cache: boolean;
 }
+
+export type RuntimeResolver =
+  | Runtime
+  | ((
+      config: CreateServerOptions,
+      env: Record<string, unknown>,
+      options?: GetRuntimeOptions,
+    ) => Runtime);
