@@ -31,18 +31,45 @@ Values passed via the environment are parsed optimistically in this order:
 
 1. Parse it as a `number`/`float`
 2. Parse it as a `boolean`
-3. Parse it as a `JSON` stringified value
-4. Leave it as a `string`
+3. Parse it as a `Function` string
+4. Parse it as a `JSON` stringified value
+5. Leave it as a `string`
 
-{% callout type="warning" title="You can't use function options" %}
-Given the nature of how values are passed to the underlying Workertown service,
-any option that requires a function as a value is not supported via environment
-variables.
+{% callout type="warning" title="Be careful with function options" %}
+Any available option that takes a function can be set within the environment as
+a `string` representing the function.
 
-If you require this level of configuration, you can use the `Dockerfile`s within
-the project's repository as a template to build your own Docker image.
+You can write either a named/anonymous function or an ES5 arrow function:
+
+```js
+"function() { return { /* ... */ } }"
+```
+
+```js
+"() => { return { /*...*/ } }"
+```
+
+```js
+"() => ({ /*...*/ })"
+```
+
+Any functions parsed like this have access to a `Workertown` global object that
+contains all of the runtime adapters available for the service, e.g.:
+
+```js
+"() => ({ storage: new Workertown.SqliteStorageAdapter() })"
+```
 {% /callout %}
-
 
 Aditionally, all Docker images support a `PORT` environment variable to set the
 port the service will listen on (the default is `3000`).
+
+### Persisting data
+
+By **default**, each Docker image will persist data using the
+[Sqlite](https://www.sqlite.org/index.html) storage adapter, so that data is
+persisted even when the container is stopped. By default, the Sqlite database
+file is saved to `/usr/src/app/db.sqlite`, but this can be configured by either
+changing the environment variable that `env.db` maps to, or by passing in a
+file path in a custom `runtime` function. If the file path **does not** end with
+`.sqlite`, then it will be ignored and the default path will be used.

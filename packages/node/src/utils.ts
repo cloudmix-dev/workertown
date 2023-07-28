@@ -27,6 +27,30 @@ interface ParseOptionsFromEnvOptions {
   prefix?: string;
 }
 
+function parseFunction(func: string) {
+  const funcRegExp = new RegExp(
+    /\(([A-Za-z0-9-_ ,=\"\'\[\]\{\}\:]*)\) *(=> ?\{?|{)+((.|\s)*)\}?$/,
+  );
+  const match = func.match(funcRegExp);
+
+  if (match) {
+    const [, args, , rawBody, last] = match;
+    let body = rawBody;
+
+    if (last === "}") {
+      body = rawBody?.slice(0, -1);
+    }
+
+    if (body?.indexOf("return") === -1) {
+      body = `return ${body}`;
+    }
+
+    return new Function(args as string, body as string);
+  } else {
+    throw new Error("SOMETHING WRONG DOG");
+  }
+}
+
 export function parseOptionsFromEnv<T = Record<string, unknown>>(
   env = process.env,
   options: ParseOptionsFromEnvOptions = {},
@@ -55,6 +79,13 @@ export function parseOptionsFromEnv<T = Record<string, unknown>>(
         parsedValue = false;
         parsed = true;
       }
+    }
+
+    if (!parsed) {
+      try {
+        parsedValue = parseFunction(value as string);
+        parsed = true;
+      } catch (_) {}
     }
 
     if (!parsed) {

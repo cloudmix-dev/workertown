@@ -8,6 +8,7 @@ test("parseOptionsFromEnv parses options from env", (t) => {
     options_string: "test",
     options_boolean: "true",
     options_number: "1",
+    options_function: "function() { return 1; }",
     options_array: "[1,2,3]",
     options_object: '{"test":true}',
     options_nested_value: "test",
@@ -16,6 +17,7 @@ test("parseOptionsFromEnv parses options from env", (t) => {
   t.is(result.string, "test");
   t.is(result.boolean, true);
   t.is(result.number, 1);
+  t.true(typeof result.function === "function");
   t.deepEqual(result.array, [1, 2, 3]);
   t.deepEqual(result.object, { test: true });
   t.is(result.nested.value, "test");
@@ -28,6 +30,7 @@ test("parseOptionsFromEnv parses options with a custom delimeter", (t) => {
       "options|string": "test",
       "options|boolean": "true",
       "options|number": "1",
+      "options|function": "function() { return 1; }",
       "options|array": "[1,2,3]",
       "options|object": '{"test":true}',
       "options|nested|value": "test",
@@ -38,6 +41,7 @@ test("parseOptionsFromEnv parses options with a custom delimeter", (t) => {
   t.is(result.string, "test");
   t.is(result.boolean, true);
   t.is(result.number, 1);
+  t.true(typeof result.function === "function");
   t.deepEqual(result.array, [1, 2, 3]);
   t.deepEqual(result.object, { test: true });
   t.is(result.nested.value, "test");
