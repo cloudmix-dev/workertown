@@ -10,7 +10,7 @@
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {
-    "@algolia/autocomplete-core": "~1.9.2",
+    "@algolia/autocomplete-core": "~1.10.0",
     "@headlessui/react": "~1.7.13",
     "@markdoc/markdoc": "0.3.0",
     "@markdoc/next.js": "0.2.2",
@@ -21,7 +21,7 @@
     "@sindresorhus/slugify": "~2.1.0",
     "class-variance-authority": "~0.6.1",
     "clsx": "~1.2.1",
-    "fast-glob": "~3.3.0",
+    "fast-glob": "~3.3.1",
     "flexsearch": "~0.7.31",
     "focus-visible": "~5.2.0",
     "next": "~13.4.2",
@@ -33,12 +33,12 @@
     "react-dom": "18.2.0",
     "react-highlight-words": "~0.20.0",
     "simple-functional-loader": "~1.2.1",
-    "tailwind-merge": "~1.13.2",
+    "tailwind-merge": "~1.14.0",
     "tailwindcss-animate": "~1.0.6"
   },
   "devDependencies": {
     "@tailwindcss/typography": "~0.5.7",
-    "@types/node": "~20.4.1",
+    "@types/node": "~20.4.5",
     "@types/react": "18.2.15",
     "autoprefixer": "~10.4.12",
     "js-yaml": "~4.1.0",
