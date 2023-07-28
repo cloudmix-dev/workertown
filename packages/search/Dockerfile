@@ -1,6 +1,6 @@
 FROM node:current-buster
 
-ARG VERSION=0.0.1-alpha.11
+ARG VERSION=0.0.1-alpha.12
 
 WORKDIR /usr/src/app
 
@@ -22,10 +22,10 @@ RUN echo "{" \
 RUN npm install
 
 # Create server script
-RUN echo "import { search } from \"@workertown/search\"\n" \
-  "import { runtime } from \"@workertown/search/node\"\n" \
-  "import { serve } from \"@workertown/node\"\n" \
+RUN echo "import { serve } from \"@workertown/node\"\n" \
   "import { exitOnSignals, parseOptionsFromEnv } from \"@workertown/node/utils\";\n" \
+  "import { search } from \"@workertown/search\"\n" \
+  "import { runtime } from \"@workertown/search/node\"\n" \
   "exitOnSignals();" \
   "serve(search({ ...parseOptionsFromEnv(), runtime }));\n" \
   "console.log(\`Server running at http://localhost:\${process.env.PORT ?? \"3000\"}\`);" > index.js
