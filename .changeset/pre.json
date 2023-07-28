@@ -28,6 +28,7 @@
     "@workertown/vercel": "0.0.0"
   },
   "changesets": [
+    "afraid-points-do",
     "cold-hats-float",
     "fair-dingos-occur",
     "hot-adults-tell",

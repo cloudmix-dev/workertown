@@ -1,6 +1,6 @@
 FROM node:current-buster
 
-ARG VERSION=0.0.1-alpha.9
+ARG VERSION=0.0.1-alpha.11
 
 WORKDIR /usr/src/app
 
@@ -23,12 +23,11 @@ RUN npm install
 
 # Create server script
 RUN echo "import { search } from \"@workertown/search\"\n" \
-  "import { SqliteStorageAdapter } from \"@workertown/search/storage/sqlite\"\n" \
-  "import { MemoryCacheAdapter } from \"@workertown/search/cache/no-op\"\n" \
+  "import { runtime } from \"@workertown/search/node\"\n" \
   "import { serve } from \"@workertown/node\"\n" \
   "import { exitOnSignals, parseOptionsFromEnv } from \"@workertown/node/utils\";\n" \
   "exitOnSignals();" \
-  "serve(search({ ...parseOptionsFromEnv(), cache: new MemoryCacheAdapter(), storage: new SqliteStorageAdapter() }));\n" \
-  "console.log(\`Server running at http://localhost:\${process.env.PORT}\`);" > index.js
+  "serve(search({ ...parseOptionsFromEnv(), runtime }));\n" \
+  "console.log(\`Server running at http://localhost:\${process.env.PORT ?? \"3000\"}\`);" > index.js
 
 CMD ["node", "./index.js"]

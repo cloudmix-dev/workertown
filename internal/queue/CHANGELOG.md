@@ -1,5 +1,13 @@
 # @workertown/internal-queue
 
+## 0.0.1-alpha.12
+
+### Patch Changes
+
+- Alpha.12 Release
+- Updated dependencies
+  - @workertown/internal-storage@0.0.1-alpha.12
+
 ## 0.0.1-alpha.11
 
 ### Patch Changes
