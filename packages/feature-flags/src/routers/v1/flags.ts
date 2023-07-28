@@ -1,6 +1,8 @@
 import { createRouter, validate } from "@workertown/internal-hono";
 import { z } from "zod";
 
+import { CACHE } from "../../constants.js";
+import { Flag } from "../../storage/storage-adapter.js";
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
@@ -17,9 +19,17 @@ router.get(
     }),
   ),
   async (ctx) => {
+    const cache = ctx.get("cache");
     const storage = ctx.get("storage");
     const { include_disabled: includeDisabled } = ctx.req.valid("query");
-    const flags = await storage.getFlags(includeDisabled);
+    const cacheKey = includeDisabled ? CACHE.FLAGS.ALL : CACHE.FLAGS.ENABLED;
+    let flags: Flag[] | null = await cache.get(cacheKey);
+
+    if (!flags) {
+      flags = await storage.getFlags(includeDisabled);
+
+      await cache.set(cacheKey, flags);
+    }
 
     return ctx.json({ status: 200, success: true, data: flags });
   },
@@ -70,6 +80,7 @@ router.put(
     }),
   ),
   async (ctx) => {
+    const cache = ctx.get("cache");
     const storage = ctx.get("storage");
     const name = ctx.req.param("name");
     const { description, enabled, conditions } = ctx.req.valid("json");
@@ -79,6 +90,9 @@ router.put(
       enabled: enabled ?? true,
       conditions,
     });
+
+    await cache.delete(CACHE.FLAGS.ALL);
+    await cache.delete(CACHE.FLAGS.ENABLED);
 
     return ctx.json({ status: 200, success: true, data: flag });
   },

@@ -1,7 +1,8 @@
 import { createRouter, validate } from "@workertown/internal-hono";
 import { z } from "zod";
 
-import { type FlagCondition } from "../../storage/storage-adapter.js";
+import { CACHE } from "../../constants.js";
+import { Flag, type FlagCondition } from "../../storage/storage-adapter.js";
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
@@ -92,9 +93,17 @@ router.post(
     }),
   ),
   async (ctx) => {
+    const cache = ctx.get("cache");
     const storage = ctx.get("storage");
     const { flags: proposedFlags, context } = ctx.req.valid("json");
-    const flags = await storage.getFlags();
+    let flags: Flag[] | null = await cache.get(CACHE.FLAGS.ENABLED);
+
+    if (!flags) {
+      flags = await storage.getFlags();
+
+      await cache.set(CACHE.FLAGS.ENABLED, flags);
+    }
+
     const applicableFlags = proposedFlags
       ? flags.filter((flag) => proposedFlags.includes(flag.name))
       : flags;
