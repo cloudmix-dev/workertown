@@ -38,14 +38,14 @@ function parseFunction(func: string) {
   const match = func.match(funcRegExp);
 
   if (match) {
-    const [, args, , rawBody, last] = match;
+    const [, args, arrowOrBrace, rawBody, last] = match;
     let body = rawBody;
 
     if (last === "}") {
       body = rawBody?.slice(0, -1);
     }
 
-    if (body?.indexOf("return") === -1) {
+    if (!arrowOrBrace?.endsWith("{")) {
       body = `return ${body}`;
     }
 
