@@ -51,7 +51,7 @@ class QueueProcessor {
     if (messages.length > 0) {
       const batch: MessageBatch<QueueMessage> = {
         messages: messages.map((message) => this._wrapMessage(message)),
-        queue: "main",
+        queue: "default",
         ackAll: () => {
           Promise.allSettled(
             messages.map((message) => this._queue.ackMessage?.(message.id)),
@@ -64,8 +64,7 @@ class QueueProcessor {
         },
       };
 
-      // rome-ignore lint/suspicious/noExplicitAny: Forcing through the queue call
-      await this._server.queue(batch, {} as any, {} as any);
+      await this._server.queue(batch, {}, {});
 
       delay = 0;
     }

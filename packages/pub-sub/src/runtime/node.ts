@@ -1,4 +1,4 @@
-import { SqliteQueueAdapter } from "../queue/sqlite-queue-adapter.js";
+import { SqliteQueueAdapter } from "../queue/sqlite.js";
 import { SqliteStorageAdapter } from "../storage/sqlite-storage-adapter.js";
 import { type CreateServerOptions, type Runtime } from "../types.js";
 

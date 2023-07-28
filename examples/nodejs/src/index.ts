@@ -6,7 +6,7 @@ import { serve } from "@workertown/node";
 import { exitOnSignals } from "@workertown/node/utils";
 import { pubSub } from "@workertown/pub-sub";
 import { createQueueProcessor } from "@workertown/pub-sub/queue";
-import { SqliteQueueAdapter } from "@workertown/pub-sub/queue/sqlite-queue-adapter";
+import { SqliteQueueAdapter } from "@workertown/pub-sub/queue/sqlite";
 import { SqliteStorageAdapter as PubSubStorageAdapter } from "@workertown/pub-sub/storage/sqlite";
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite";
@@ -24,8 +24,11 @@ const flagsApi = featureFlags({
     },
   },
   basePath: "/flags",
-  storage: new FeatureFlagsStorageAdapter({
-    db: path.resolve(DIRNAME, "../db/flags.sqlite"),
+  runtime: () => ({
+    cache: false,
+    storage: new FeatureFlagsStorageAdapter({
+      db: path.resolve(DIRNAME, "../db/flags.sqlite"),
+    }),
   }),
 });
 
@@ -36,8 +39,10 @@ const kvApi = kv({
     },
   },
   basePath: "/kv",
-  storage: new KvStorageAdapter({
-    db: path.resolve(DIRNAME, "../db/kv.sqlite"),
+  runtime: () => ({
+    storage: new KvStorageAdapter({
+      db: path.resolve(DIRNAME, "../db/kv.sqlite"),
+    }),
   }),
 });
 
@@ -51,10 +56,16 @@ const pubSubApi = pubSub({
     },
   },
   basePath: "/pub-sub",
-  queue: pubSubQueueAdapter,
-  storage: new PubSubStorageAdapter({
-    db: path.resolve(DIRNAME, "../db/pub-sub.sqlite"),
+  runtime: () => ({
+    queue: pubSubQueueAdapter,
+    storage: new PubSubStorageAdapter({
+      db: path.resolve(DIRNAME, "../db/pub-sub.sqlite"),
+    }),
   }),
+});
+const pubSubQueueProcessor = createQueueProcessor({
+  adapter: pubSubQueueAdapter,
+  server: pubSubApi,
 });
 
 const searchApi = search({
@@ -80,13 +91,8 @@ const api = combine(flagsApi, kvApi, pubSubApi, searchApi);
 
   console.log(`Server running at http://localhost:${PORT}`);
 
-  const processor = createQueueProcessor({
-    adapter: pubSubQueueAdapter,
-    server: api,
-  });
-
   await pubSubQueueAdapter.runMigrations();
-  await processor.start();
+  await pubSubQueueProcessor.start();
 
   console.log("PubSub queue processor running");
 })();

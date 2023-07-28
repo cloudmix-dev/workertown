@@ -13,13 +13,13 @@
       "default": "./dist/queue/index.js",
       "types": "./dist/queue/index.d.ts"
     },
-    "./queue/cf-queues-queue-adapter": {
-      "default": "./dist/queue/cf-queues-queue-adapter.js",
-      "types": "./dist/queue/cf-queues-queue-adapter.d.ts"
+    "./queue/cf-queues": {
+      "default": "./dist/queue/cf-queues.js",
+      "types": "./dist/queue/cf-queues.d.ts"
     },
-    "./queue/sqlite-queue-adapter": {
-      "default": "./dist/queue/sqlite-queue-adapter.js",
-      "types": "./dist/queue/sqlite-queue-adapter.d.ts"
+    "./queue/sqlite": {
+      "default": "./dist/queue/sqlite.js",
+      "types": "./dist/queue/sqlite.d.ts"
     },
     "./storage": {
       "default": "./dist/storage/index.js",
@@ -36,6 +36,18 @@
     "./storage/migrations": {
       "default": "./dist/storage/migrations.js",
       "types": "./dist/storage/migrations.d.ts"
+    },
+    "./cloudflare-workers": {
+      "default": "./dist/runtime/cloudflare-workers.js",
+      "types": "./dist/runtime/cloudflare-workers.d.ts"
+    },
+    "./node": {
+      "default": "./dist/runtime/node.js",
+      "types": "./dist/runtime/node.d.ts"
+    },
+    "./test": {
+      "default": "./dist/runtime/test.js",
+      "types": "./dist/runtime/test.d.ts"
     }
   },
   "scripts": {

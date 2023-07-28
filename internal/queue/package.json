@@ -10,21 +10,21 @@
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./cf-queues-queue-adapter": {
-      "default": "./dist/cf-queues-queue-adapter.js",
-      "types": "./dist/cf-queues-queue-adapter.d.ts"
+    "./cf-queues": {
+      "default": "./dist/cf-queues.js",
+      "types": "./dist/cf-queues.d.ts"
     },
-    "./planetscale-queue-adapter": {
-      "default": "./dist/planetscale-queue-adapter.js",
-      "types": "./dist/planetscale-queue-adapter.d.ts"
+    "./planetscale": {
+      "default": "./dist/planetscale.js",
+      "types": "./dist/planetscale.d.ts"
     },
-    "./sqlite-queue-adapter": {
-      "default": "./dist/sqlite-queue-adapter.js",
-      "types": "./dist/sqlite-queue-adapter.d.ts"
+    "./sqlite": {
+      "default": "./dist/sqlite.js",
+      "types": "./dist/sqlite.d.ts"
     },
-    "./memory-queue-adapter": {
-      "default": "./dist/memory-queue-adapter.js",
-      "types": "./dist/memory-queue-adapter.d.ts"
+    "./memory": {
+      "default": "./dist/memory.js",
+      "types": "./dist/memory.d.ts"
     }
   },
   "scripts": {
