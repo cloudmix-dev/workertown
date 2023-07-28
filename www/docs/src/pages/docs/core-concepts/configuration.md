@@ -122,6 +122,67 @@ export default search({
 });
 ```
 
+### `runtime`
+
+All Workertown services expose the ability to customise the runtime options to
+allow support for different environments. By default, every Workertown package
+assumes it is running within a **Cloudflare Worker** (and therefore makes some
+assumptions about bindings that are available).
+
+Workertown comes with **three** out-of-the-box runtimes:
+
+- `cloudflare-workers`
+- `node`
+- `test`
+
+They are all pretty self explanatory - it goes without saying that the `test`
+runtime is **only** intended to be used in test environments, and is **not**
+suitable for production.
+
+While the available runtime options differ between services, customising them
+follows the same simple API.
+
+```ts
+import { serve } from "@workertown/node";
+import { search } from "@workertown/search";
+import { getRuntime } from "@workertown/search/node";
+
+serve(search({ runtime: getRuntime }));
+
+console.log("Server running at http://localhost:3000");
+```
+
+The `runtime` option accepts either an `object` (in the shape of the expected
+runtime - this differs between packages) or a `function` that returns the
+expected runtime. The `function` option receives two arguments, the `options`
+set for the service and an `env` `object` that contains the environment
+variables/bindings available within the environment (the `env` object in a
+Cloudflare Worker, ot the `process.env` `object` in Node, for example).
+
+```ts
+import { serve } from "@workertown/node";
+import { search } from "@workertown/search";
+import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
+
+serve(
+  search({
+    runtime: (config, env) => ({
+      cache: false,
+      storage: new SqliteStorageAdapter({
+        db: config.env.db,
+      }),
+    })
+  })
+);
+
+console.log("Server running at http://localhost:3000");
+```
+
+{% callout title="Check the docs!" %}
+Be sure to check the documentation for the particular service you are using to
+see what runtime options are available.
+{% /callout %}
+
 ### `sentry`
 
 All Workertown service support Sentry error reporting at the edge (via
