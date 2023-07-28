@@ -1,5 +1,5 @@
 import { NoOpCacheAdapter } from "../cache/no-op-cache-adapter.js";
-import { MemoryStorageAdapter } from "../storage/memory-storage-adapter.js";
+import { MemoryStorageAdapter } from "../storage/memory.js";
 import { type SearchDocument } from "../storage/storage-adapter.js";
 import {
   type CreateServerOptions,

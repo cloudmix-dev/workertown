@@ -1,5 +1,5 @@
 import { MemoryCacheAdapter } from "../cache/memory-cache-adapter.js";
-import { SqliteStorageAdapter } from "../storage/sqlite-storage-adapter.js";
+import { SqliteStorageAdapter } from "../storage/sqlite.js";
 import {
   type CreateServerOptions,
   type GetRuntimeOptions,
