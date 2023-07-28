@@ -83,11 +83,11 @@ const searchApi = search({
   }),
 });
 
-const api = combine(flagsApi, kvApi, pubSubApi, searchApi);
-
 (async function main() {
   exitOnSignals();
-  serve(api, { port: parseInt(PORT, 10) });
+  serve(combine(flagsApi, kvApi, pubSubApi, searchApi), {
+    port: parseInt(PORT, 10),
+  });
 
   console.log(`Server running at http://localhost:${PORT}`);
 
