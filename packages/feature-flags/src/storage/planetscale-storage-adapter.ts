@@ -3,7 +3,7 @@ import {
   type Migrations,
   type Selectable,
 } from "@workertown/internal-storage";
-import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale-storage-adapter";
+import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale";
 
 import {
   type Flag,

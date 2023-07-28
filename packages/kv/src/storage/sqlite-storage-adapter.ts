@@ -1,5 +1,7 @@
 import { type ColumnType, type Migrations } from "@workertown/internal-storage";
-import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite";
+
+import { type StorageAdapter } from "./storage-adapter.js";
 
 interface KeyValueTable {
   name: string;
@@ -41,7 +43,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class SqliteStorageAdapter extends BaseSqliteStorageAdapter<DatabaseSchema> {
+export class SqliteStorageAdapter
+  extends BaseSqliteStorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   public async getValue<T = unknown>(key: string) {

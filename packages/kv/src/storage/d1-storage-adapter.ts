@@ -1,5 +1,7 @@
 import { type ColumnType, type Migrations } from "@workertown/internal-storage";
-import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1";
+
+import { type StorageAdapter } from "./storage-adapter.js";
 
 interface KeyValueTable {
   name: string;
@@ -41,7 +43,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class D1StorageAdapter extends BaseD1StorageAdapter<DatabaseSchema> {
+export class D1StorageAdapter
+  extends BaseD1StorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   public async getValue<T = unknown>(key: string) {

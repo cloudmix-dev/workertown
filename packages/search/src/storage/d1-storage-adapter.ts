@@ -3,13 +3,13 @@ import {
   type Migrations,
   type Selectable,
 } from "@workertown/internal-storage";
-import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
   type SearchDocument,
-  StorageAdapter,
+  type StorageAdapter,
   type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 

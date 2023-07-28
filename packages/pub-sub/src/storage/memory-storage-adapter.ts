@@ -1,8 +1,8 @@
-import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory";
 
 import {
   type CreateSubscriptionBody,
-  StorageAdapter,
+  type StorageAdapter,
   type Subscription,
 } from "./storage-adapter.js";
 

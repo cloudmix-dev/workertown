@@ -3,11 +3,11 @@ import {
   type Migrations,
   type Selectable,
 } from "@workertown/internal-storage";
-import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1-storage-adapter";
+import { D1StorageAdapter as BaseD1StorageAdapter } from "@workertown/internal-storage/d1";
 
 import {
   type CreateSubscriptionBody,
-  StorageAdapter,
+  type StorageAdapter,
   type Subscription,
 } from "./storage-adapter.js";
 

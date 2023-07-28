@@ -4,13 +4,13 @@ import {
   sql,
 } from "@workertown/internal-storage";
 import { type Migrations } from "@workertown/internal-storage";
-import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale-storage-adapter";
+import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
   type SearchDocument,
-  StorageAdapter,
+  type StorageAdapter,
   type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 

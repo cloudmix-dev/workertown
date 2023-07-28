@@ -1,5 +1,7 @@
 import { type ColumnType, type Migrations } from "@workertown/internal-storage";
-import { TursoStorageAdapter as BaseTursoStorageAdapter } from "@workertown/internal-storage/turso-storage-adapter";
+import { TursoStorageAdapter as BaseTursoStorageAdapter } from "@workertown/internal-storage/turso";
+
+import { type StorageAdapter } from "./storage-adapter.js";
 
 interface KeyValueTable {
   name: string;
@@ -41,7 +43,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class TursoStorageAdapter extends BaseTursoStorageAdapter<DatabaseSchema> {
+export class TursoStorageAdapter
+  extends BaseTursoStorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   public async getValue<T = unknown>(key: string) {

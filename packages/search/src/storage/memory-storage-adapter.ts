@@ -1,9 +1,9 @@
-import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory";
 
 import {
   type GetDocumentsOptions,
   type SearchDocument,
-  StorageAdapter,
+  type StorageAdapter,
   type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 

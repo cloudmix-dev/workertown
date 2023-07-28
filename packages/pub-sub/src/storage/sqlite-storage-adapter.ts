@@ -3,11 +3,11 @@ import {
   type Migrations,
   type Selectable,
 } from "@workertown/internal-storage";
-import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite";
 
 import {
   type CreateSubscriptionBody,
-  StorageAdapter,
+  type StorageAdapter,
   type Subscription,
 } from "./storage-adapter.js";
 

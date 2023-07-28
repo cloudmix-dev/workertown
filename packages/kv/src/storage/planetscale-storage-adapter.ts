@@ -1,5 +1,7 @@
 import { type ColumnType, type Migrations } from "@workertown/internal-storage";
-import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale-storage-adapter";
+import { PlanetscaleStorageAdapter as BasePlanetscaleStorageAdapter } from "@workertown/internal-storage/planetscale";
+
+import { type StorageAdapter } from "./storage-adapter.js";
 
 interface KeyValueTable {
   name: string;
@@ -41,7 +43,10 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class PlanetscaleStorageAdapter extends BasePlanetscaleStorageAdapter<DatabaseSchema> {
+export class PlanetscaleStorageAdapter
+  extends BasePlanetscaleStorageAdapter<DatabaseSchema>
+  implements StorageAdapter
+{
   public readonly migrations = MIGRATIONS;
 
   public async getValue<T = unknown>(key: string) {

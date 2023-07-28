@@ -3,13 +3,13 @@ import {
   type Migrations,
   type Selectable,
 } from "@workertown/internal-storage";
-import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite-storage-adapter";
+import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite";
 
 import { DEFAULT_SORT_FIELD } from "../constants.js";
 import {
   type GetDocumentsOptions,
   type SearchDocument,
-  StorageAdapter,
+  type StorageAdapter,
   type UpsertSearchDocumentBody,
 } from "./storage-adapter.js";
 

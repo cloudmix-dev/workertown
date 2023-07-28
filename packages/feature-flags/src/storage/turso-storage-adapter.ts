@@ -3,7 +3,7 @@ import {
   type Migrations,
   type Selectable,
 } from "@workertown/internal-storage";
-import { TursoStorageAdapter as BaseTursoStorageAdapter } from "@workertown/internal-storage/turso-storage-adapter";
+import { TursoStorageAdapter as BaseTursoStorageAdapter } from "@workertown/internal-storage/turso";
 
 import {
   type Flag,

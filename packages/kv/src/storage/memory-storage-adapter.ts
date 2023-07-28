@@ -1,10 +1,14 @@
-import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory-storage-adapter";
+import { MemoryStorageAdapter as BaseMemoryStorageAdapter } from "@workertown/internal-storage/memory";
 
+import { type StorageAdapter } from "./storage-adapter.js";
 interface MemoryStorageAdapterOptions {
   initialValues?: Record<string, unknown>;
 }
 
-export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
+export class MemoryStorageAdapter
+  extends BaseMemoryStorageAdapter
+  implements StorageAdapter
+{
   private readonly _valueStore = new Map<string, string>();
 
   constructor(options: MemoryStorageAdapterOptions = {}) {
@@ -29,8 +33,6 @@ export class MemoryStorageAdapter extends BaseMemoryStorageAdapter {
 
   public async setValue<T = unknown>(key: string, value: T): Promise<T> {
     this._valueStore.set(key, JSON.stringify(value));
-
-    console.log(JSON.stringify(Array.from(this._valueStore.entries())));
 
     return value;
   }
