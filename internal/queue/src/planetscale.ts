@@ -36,8 +36,8 @@ const MIGRATIONS: MigrationInfo[] = [
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("body", "text", (col) => col.notNull())
           .addColumn("attempts", "integer", (col) => col.notNull())
-          .addColumn("timestamp", "integer", (col) => col.notNull())
-          .addColumn("dlq_at", "integer")
+          .addColumn("timestamp", "text", (col) => col.notNull())
+          .addColumn("dlq_at", "text")
           .execute();
 
         await db.schema
