@@ -1,3 +1,3 @@
-import { NoOpCacheAdapter } from "@workertown/internal-cache/no-op-cache-adapter";
+import { NoOpCacheAdapter } from "@workertown/internal-cache/no-op";
 
 export { NoOpCacheAdapter };

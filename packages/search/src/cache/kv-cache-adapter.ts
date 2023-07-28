@@ -1,3 +1,3 @@
-import { KVCacheAdapter } from "@workertown/internal-cache/kv-cache-adapter";
+import { KVCacheAdapter } from "@workertown/internal-cache/kv";
 
 export { KVCacheAdapter };
