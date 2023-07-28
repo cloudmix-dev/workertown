@@ -1,13 +1,12 @@
 import { type Message } from "@cloudflare/workers-types";
+import { LibsqlDialect } from "@libsql/kysely-libsql";
 import { MigrationProvider } from "@workertown/internal-storage";
-import Database from "better-sqlite3";
 import {
   type ColumnType,
   Kysely,
   type MigrationInfo,
   Migrator,
   type Selectable,
-  SqliteDialect,
 } from "kysely";
 
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
@@ -71,29 +70,22 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface SqliteQueueAdapterOptions {
-  db?: string;
+interface TursoQueueAdapterOptions {
+  url?: string;
+  authToken?: string;
   maxRetries?: number;
 }
 
-export class SqliteQueueAdapter extends QueueAdapter {
+export class TursoQueueAdapter extends QueueAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
   private readonly _maxRetries: number;
 
-  constructor(options: SqliteQueueAdapterOptions = {}) {
+  constructor(options: TursoQueueAdapterOptions = {}) {
     super();
 
-    const db = new Database(options.db ?? "db.sqlite");
-
-    if (globalThis.process) {
-      process.on("exit", () => db.close());
-    }
-
     this._client = new Kysely<DatabaseSchema>({
-      dialect: new SqliteDialect({
-        database: db,
-      }),
+      dialect: new LibsqlDialect(options),
     });
     this._maxRetries = options?.maxRetries ?? 5;
   }

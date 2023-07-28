@@ -1,14 +1,13 @@
 import { type Message } from "@cloudflare/workers-types";
 import { MigrationProvider } from "@workertown/internal-storage";
-import Database from "better-sqlite3";
 import {
   type ColumnType,
   Kysely,
   type MigrationInfo,
   Migrator,
   type Selectable,
-  SqliteDialect,
 } from "kysely";
+import { PlanetScaleDialect } from "kysely-planetscale";
 
 import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
@@ -16,8 +15,8 @@ interface QueueMessagesTable {
   id: string;
   body: string;
   attempts: number;
-  timestamp: ColumnType<Date | number, number, number>;
-  dlq_at: ColumnType<Date | number, number, number> | null;
+  timestamp: ColumnType<Date | string, string, string>;
+  dlq_at: ColumnType<Date | string, string, string> | null;
 }
 
 type QueueMessageRow = Selectable<QueueMessagesTable>;
@@ -71,29 +70,23 @@ const MIGRATIONS: MigrationInfo[] = [
   },
 ];
 
-interface SqliteQueueAdapterOptions {
-  db?: string;
+interface PlanetscaleQueueAdapterOptions {
   maxRetries?: number;
+  password?: string;
+  url?: string;
+  username?: string;
 }
 
-export class SqliteQueueAdapter extends QueueAdapter {
+export class PlanetscaleQueueAdapter extends QueueAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
   private readonly _maxRetries: number;
 
-  constructor(options: SqliteQueueAdapterOptions = {}) {
+  constructor(options: PlanetscaleQueueAdapterOptions = {}) {
     super();
 
-    const db = new Database(options.db ?? "db.sqlite");
-
-    if (globalThis.process) {
-      process.on("exit", () => db.close());
-    }
-
     this._client = new Kysely<DatabaseSchema>({
-      dialect: new SqliteDialect({
-        database: db,
-      }),
+      dialect: new PlanetScaleDialect(options),
     });
     this._maxRetries = options?.maxRetries ?? 5;
   }
@@ -116,7 +109,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
         id: crypto.randomUUID(),
         body: JSON.stringify(body),
         attempts: 0,
-        timestamp: Date.now(),
+        timestamp: new Date().toISOString(),
       })
       .execute();
   }
@@ -131,7 +124,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
             id: crypto.randomUUID(),
             body: JSON.stringify(body),
             attempts: 0,
-            timestamp: Date.now(),
+            timestamp: new Date().toISOString(),
           })),
         )
         .execute();
@@ -176,7 +169,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
       await this._client
         .updateTable("queue_messages")
         .set({
-          dlq_at: Date.now(),
+          dlq_at: new Date().toISOString(),
         })
         .where("id", "=", id)
         .execute();
