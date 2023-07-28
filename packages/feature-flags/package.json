@@ -48,6 +48,18 @@
     "./storage/memory": {
       "default": "./dist/storage/memory-storage-adapter.js",
       "types": "./dist/storage/memory-storage-adapter.d.ts"
+    },
+    "./cloudflare-workers": {
+      "default": "./dist/runtime/cloudflare-workers.js",
+      "types": "./dist/runtime/cloudflare-workers.d.ts"
+    },
+    "./node": {
+      "default": "./dist/runtime/node.js",
+      "types": "./dist/runtime/node.d.ts"
+    },
+    "./test": {
+      "default": "./dist/runtime/test.js",
+      "types": "./dist/runtime/test.d.ts"
     }
   },
   "scripts": {

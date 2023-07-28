@@ -26,7 +26,6 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
         env: Record<string, unknown>,
         options?: GetRuntimeOptions,
       ) => Runtime);
-  storage?: StorageAdapter;
 }
 
 export type Context = WorkertownContext<{
