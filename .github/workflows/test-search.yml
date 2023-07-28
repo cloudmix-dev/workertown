@@ -1,0 +1,31 @@
+name: Test @workertown/search
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
+    paths:
+      - packages/search
+      - .github/workflows/test-search.yml
+  workflow_dispatch:
+
+jobs:
+  test-search:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        run: npm -w @workertown/search i
+
+      - name: Run tests
+        run: npm test -- --filter=@workertown/search
