@@ -4,6 +4,16 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    "./combine": {
+      "default": "./dist/combine.js",
+      "types": "./dist/combine.d.ts"
+    },
+    "./test": {
+      "default": "./dist/testing.js",
+      "types": "./dist/testing.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",

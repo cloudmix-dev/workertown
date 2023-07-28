@@ -10,7 +10,7 @@ import { SqliteQueueAdapter } from "@workertown/pub-sub/queue/sqlite";
 import { SqliteStorageAdapter as PubSubStorageAdapter } from "@workertown/pub-sub/storage/sqlite";
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter as SearchStorageAdapter } from "@workertown/search/storage/sqlite";
-import { combine } from "@workertown/utils";
+import { combine } from "@workertown/utils/combine";
 import * as path from "node:path";
 import * as url from "node:url";
 

@@ -17,7 +17,7 @@ Install the `@workertown/utils` package and call the `combine` export:
 ```ts
 import { featureFlags } from "@workertown/feature-flags";
 import { search } from "@workertown/search";
-import { combine } from "@workertown/utils";
+import { combine } from "@workertown/utils/combine";
 
 export default combine(
   featureFlags({ basePath: "/flags" }),
