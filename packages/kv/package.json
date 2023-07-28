@@ -22,28 +22,28 @@
       "types": "./dist/storage/index.d.ts"
     },
     "./storage/d1": {
-      "default": "./dist/storage/d1-storage-adapter.js",
-      "types": "./dist/storage/d1-storage-adapter.d.ts"
+      "default": "./dist/storage/d1.js",
+      "types": "./dist/storage/d1.d.ts"
     },
     "./storage/kv": {
-      "default": "./dist/storage/kv-storage-adapter.js",
-      "types": "./dist/storage/kv-storage-adapter.d.ts"
+      "default": "./dist/storage/kv.js",
+      "types": "./dist/storage/kv.d.ts"
     },
     "./storage/planetscale": {
-      "default": "./dist/storage/planetscale-storage-adapter.js",
-      "types": "./dist/storage/planetscale-storage-adapter.d.ts"
+      "default": "./dist/storage/planetscale.js",
+      "types": "./dist/storage/planetscale.d.ts"
     },
     "./storage/sqlite": {
-      "default": "./dist/storage/sqlite-storage-adapter.js",
-      "types": "./dist/storage/sqlite-storage-adapter.d.ts"
+      "default": "./dist/storage/sqlite.js",
+      "types": "./dist/storage/sqlite.d.ts"
     },
     "./storage/turso": {
-      "default": "./dist/storage/turso-storage-adapter.js",
-      "types": "./dist/storage/turso-storage-adapter.d.ts"
+      "default": "./dist/storage/turso.js",
+      "types": "./dist/storage/turso.d.ts"
     },
     "./storage/memory": {
-      "default": "./dist/storage/memory-storage-adapter.js",
-      "types": "./dist/storage/memory-storage-adapter.d.ts"
+      "default": "./dist/storage/memory.js",
+      "types": "./dist/storage/memory.d.ts"
     },
     "./cloudflare-workers": {
       "default": "./dist/runtime/cloudflare-workers.js",

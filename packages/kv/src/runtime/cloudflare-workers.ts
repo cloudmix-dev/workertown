@@ -1,6 +1,6 @@
 import { type KVNamespace } from "@cloudflare/workers-types";
 
-import { KVStorageAdapter } from "../storage/kv-storage-adapter.js";
+import { KVStorageAdapter } from "../storage/kv.js";
 import { type CreateServerOptions, type Runtime } from "../types.js";
 
 export function getRuntime(

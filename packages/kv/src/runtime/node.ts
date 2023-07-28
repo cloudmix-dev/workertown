@@ -1,4 +1,4 @@
-import { SqliteStorageAdapter } from "../storage/sqlite-storage-adapter.js";
+import { SqliteStorageAdapter } from "../storage/sqlite.js";
 import { type CreateServerOptions, type Runtime } from "../types.js";
 
 export function getRuntime(

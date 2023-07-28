@@ -1,4 +1,4 @@
-import { MemoryStorageAdapter } from "../storage/memory-storage-adapter.js";
+import { MemoryStorageAdapter } from "../storage/memory.js";
 
 import { type CreateServerOptions, type Runtime } from "../types.js";
 
