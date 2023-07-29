@@ -53,6 +53,18 @@
       "default": "./dist/storage/memory.js",
       "types": "./dist/storage/memory.d.ts"
     },
+    "./rate-limit": {
+      "default": "./dist/rate-limit/index.js",
+      "types": "./dist/rate-limit/index.d.ts"
+    },
+    "./rate-limit/kv": {
+      "default": "./dist/rate-limit/kv.js",
+      "types": "./dist/rate-limit/kv.d.ts"
+    },
+    "./rate-limit/upstash-redis": {
+      "default": "./dist/rate-limit/upstash-redis.js",
+      "types": "./dist/rate-limit/upstash-redis.d.ts"
+    },
     "./cloudflare-workers": {
       "default": "./dist/runtime/cloudflare-workers.js",
       "types": "./dist/runtime/cloudflare-workers.d.ts"

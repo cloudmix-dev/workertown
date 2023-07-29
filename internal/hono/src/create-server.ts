@@ -11,11 +11,13 @@ import {
   type BasicOptions,
   type IpOptions,
   type JwtOptions,
+  type RateLimitOptions,
   type SentryOptions,
   apiKey as apiKeyMiddleware,
   basic as basicMiddleware,
   ip as ipMiddleware,
   jwt as jwtMiddleware,
+  rateLimit as rateLimitMiddleware,
   sentry as sentryMiddleware,
 } from "./middleware/index.js";
 import { type Context, User } from "./types.js";
@@ -33,6 +35,7 @@ export type WorkertownRequest<
 export interface CreateServerOptions {
   access?: {
     ip?: IpOptions | false;
+    rateLimit?: RateLimitOptions | false;
   };
   auth?: {
     basic?: BasicOptions | false;
@@ -81,8 +84,12 @@ export function createServer<T extends Context>(
     return next();
   });
 
-  if (accessOptions?.ip) {
+  if (accessOptions?.ip !== false) {
     server.use("*", ipMiddleware(accessOptions?.ip));
+  }
+
+  if (accessOptions?.rateLimit) {
+    server.use("*", rateLimitMiddleware(accessOptions?.rateLimit));
   }
 
   if (sentryOptions) {

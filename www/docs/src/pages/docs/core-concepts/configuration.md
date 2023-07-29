@@ -36,9 +36,13 @@ set when creating the service.
 ### `access`
 
 The `access` object allows you to configure access level protections for
-your service. Currently, it has a single property, `access.ip`, which allows you
-to specify an array of IP addresses/CIDR blocks that are allowed to access your
-service.
+your service. Currently, it has a two properties, `access.ip` and
+`access.rateLimit`
+
+#### `access.ip`
+
+`acces.ip` allows you to specify an array of IP addresses/CIDR blocks that are
+allowed to access your service.
 
 This is **disabled** by default, meaning that your service can be accessed from
 **any** IP address.
@@ -63,6 +67,68 @@ or an IPv4/v6 CIDR block describing an IP range to allow.
 
 Any requests that do not originate from an IP address whutelisted in the
 `access.ip` array will be rejected with a `403 Forbidden` response.
+
+#### `access.rateLimit`
+
+`access.rateLimit` allows you to specify a rate limit for your service. By
+default, this is powered by
+[Cloudflare Workers KV](https://developers.cloudflare.com/workers/learning/how-kv-works/),
+but can be configured to use the built in
+[Upstash Redis](https://docs.upstash.com/redis) rate limiter or a custom rate
+limiter class. Requests are limited by their **IP address** in a
+**sliding window** of time.
+
+This is **disabled** by default, meaning that your service can be accessed from
+an IP address with **no** rate limiting.
+
+```ts
+import { search } from "@workertown/search";
+
+export default search({
+  access: {
+    rateLimit: {
+      env: {
+        kv: "RATE_LIMIT_KV", // The environment variable to read the KV binding from
+      },
+      limit: 10, // The maximum number of requests to allow in the window
+      window: 60, // The window (in seconds) to allow the requests in
+    }
+  },
+});
+```
+
+```ts
+import { search } from "@workertown/search";
+import { UpstashRedisRateLimiter } from "@workertown/search/rate-limit/upstash-redis";
+
+export default search({
+  access: {
+    rateLimit: {
+      rateLimiter: new UpstashRedisRateLimiter({
+        url: "...",
+        token: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      }),
+    }
+  },
+});
+```
+
+```ts
+import { search } from "@workertown/search";
+import { RateLimiter } from "@workertown/search/rate-limit";
+
+class CustomRateLimiter extends RateLimiter {
+  // ...
+}
+
+export default search({
+  access: {
+    rateLimit: {
+      rateLimiter: new CustomRateLimiter(),
+    }
+  },
+});
+```
 
 ### `auth`
 
@@ -155,9 +221,9 @@ console.log("Server running at http://localhost:3000");
 The `runtime` option accepts either an `object` (in the shape of the expected
 runtime - this differs between packages) or a `function` that returns the
 expected runtime. The `function` option receives two arguments, the `options`
-set for the service and an `env` `object` that contains the environment
+set for the service and an `env` object that contains the environment
 variables/bindings available within the environment (the `env` object in a
-Cloudflare Worker, ot the `process.env` `object` in Node, for example).
+Cloudflare Worker, ot the `process.env` object in Node, for example).
 
 ```ts
 import { serve } from "@workertown/node";

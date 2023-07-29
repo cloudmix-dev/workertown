@@ -17,6 +17,18 @@
     "./runtime": {
       "default": "./dist/runtime/index.js",
       "types": "./dist/runtime/index.d.ts"
+    },
+    "./rate-limit": {
+      "default": "./dist/rate-limit/index.js",
+      "types": "./dist/rate-limit/index.d.ts"
+    },
+    "./rate-limit/kv": {
+      "default": "./dist/rate-limit/kv.js",
+      "types": "./dist/rate-limit/kv.d.ts"
+    },
+    "./rate-limit/upstash-redis": {
+      "default": "./dist/rate-limit/upstash-redis.js",
+      "types": "./dist/rate-limit/upstash-redis.d.ts"
     }
   },
   "scripts": {
@@ -35,7 +47,11 @@
   },
   "devDependencies": {
     "@types/lodash.merge": "~4.6.7",
+    "@upstash/redis": "~1.22.0",
     "@workertown/internal-queue": "~0.0.1-alpha.12"
+  },
+  "peerDependencies": {
+    "@upstash/redis": "~1.22.0"
   },
   "engines": {
     "node": ">=18.0.0"
