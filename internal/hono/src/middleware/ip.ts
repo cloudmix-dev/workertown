@@ -41,6 +41,9 @@ export function ip(options?: IpOptionsOptional) {
           error: "Forbidden",
         },
         403,
+        {
+          "x-workertown-hint": "The origin IP is not authorized",
+        },
       );
     }
 

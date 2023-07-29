@@ -5,6 +5,17 @@ import { apiKey } from "../../src/middleware/api-key";
 import { authenticated } from "../../src/middleware/authenticated";
 import { makeRequest } from "../_utils";
 
+interface SuccessfulResponse {
+  success: true;
+}
+
+interface ErrorResponse {
+  success: false;
+  status: number;
+  data: null;
+  error: string;
+}
+
 test("allows authenticated requests", async (t) => {
   const server = new Hono<{ Variables: { user: { id: string } } }>();
 
@@ -22,7 +33,7 @@ test("allows authenticated requests", async (t) => {
 
   t.is(res.status, 200);
 
-  const result = await res.json();
+  const result = (await res.json()) as SuccessfulResponse;
 
   t.is(result.success, true);
 });
@@ -38,14 +49,14 @@ test("doesn't allow unauthenticated requests", async (t) => {
 
   const res = await makeRequest(server, "/");
 
-  t.is(res.status, 403);
+  t.is(res.status, 401);
 
-  const result = await res.json();
+  const result = (await res.json()) as ErrorResponse;
 
-  t.is(result.status, 403);
+  t.is(result.status, 401);
   t.is(result.success, false);
   t.is(result.data, null);
-  t.is(result.error, "Forbidden");
+  t.is(result.error, "Unauthorized");
 });
 
 test("gets the API key from ctx.env correctly", async (t) => {
@@ -72,7 +83,7 @@ test("gets the API key from ctx.env correctly", async (t) => {
 
   t.is(res.status, 200);
 
-  const result = await res.json();
+  const result = (await res.json()) as SuccessfulResponse;
 
   t.is(result.success, true);
 });
@@ -108,7 +119,7 @@ test("gets the API key from a custom ctx.env value", async (t) => {
 
   t.is(res.status, 200);
 
-  const result = await res.json();
+  const result = (await res.json()) as SuccessfulResponse;
 
   t.is(result.success, true);
 });

@@ -77,40 +77,14 @@ export function createServer<T extends Context>(
 
   // This sets `ctx.env` to NodeJS' `process.env` if we're in that environment
   server.use(async (ctx, next) => {
-    let after: (() => Promise<void>) | undefined;
-
     if (!ctx.env && globalThis.process?.env) {
       ctx.env = globalThis.process.env;
     }
 
-    if (!ctx.executionCtx?.waitUntil) {
-      // rome-ignore lint/suspicious/noExplicitAny: We don't care about the return type of the Promise here
-      const promises: Promise<any>[] = [];
-
-      // @ts-ignore
-      ctx.executionCtx = {
-        ...(ctx.executionCtx || {}),
-        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the return type of the Promise here
-        waitUntil: (promise: Promise<any>) => {
-          promises.push(promise);
-        },
-      };
-
-      after = async () => {
-        try {
-          await Promise.allSettled(promises);
-        } catch (_) {}
-      };
-    }
-
     await next();
-
-    if (after) {
-      await after();
-    }
   });
 
-  if (accessOptions?.ip !== false) {
+  if (accessOptions?.ip) {
     server.use("*", ipMiddleware(accessOptions?.ip));
   }
 
@@ -143,12 +117,19 @@ export function createServer<T extends Context>(
       );
 
       if (!allowed) {
-        return ctx.json({
-          success: false,
-          status: 401,
-          data: null,
-          error: "Unauthorized",
-        });
+        return ctx.json(
+          {
+            success: false,
+            status: 401,
+            data: null,
+            error: "Unauthorized",
+          },
+          401,
+          {
+            "x-workertown-hint":
+              "The user is not authorized to access this resource",
+          },
+        );
       }
 
       return next();
@@ -164,6 +145,7 @@ export function createServer<T extends Context>(
     ctx.json(
       { success: false, status: 404, data: null, error: "Not found" },
       404,
+      { "x-workertown-hint": "The requested resource was not found" },
     ),
   );
 
@@ -179,6 +161,10 @@ export function createServer<T extends Context>(
         error: (error.cause as any)?.message ?? error.message,
       },
       500,
+      {
+        "x-workertown-hint":
+          "An unexpected error occurred while processing the request",
+      },
     );
   });
 

@@ -54,6 +54,9 @@ export function rateLimit(options?: RateLimitOptionsOptional) {
           error: "Forbidden",
         },
         403,
+        {
+          "x-workertown-hint": "The origin IP has exceeded the rate limit",
+        },
       );
     }
 

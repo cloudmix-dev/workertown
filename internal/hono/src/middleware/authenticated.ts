@@ -8,11 +8,14 @@ export function authenticated() {
       return ctx.json(
         {
           success: false,
-          status: 403,
+          status: 401,
           data: null,
-          error: "Forbidden",
+          error: "Unauthorized",
         },
-        403,
+        401,
+        {
+          "x-workertown-hint": "The user is not authenticated",
+        },
       );
     }
 

@@ -31,7 +31,7 @@ function ClipboardIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   );
 }
 
-function ClipboardSuccessfulIcon(props: React.ComponentPropsWithoutRef<"svg">) {
+function ClipboardSuccessIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ function CopyButton({ text }: CopyButtonProps) {
                 "fill-zinc-50",
               )}
             />
-            <ClipboardSuccessfulIcon
+            <ClipboardSuccessIcon
               className={cn(
                 "hidden h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all",
                 animating && "rotate-0 scale-100 block",
