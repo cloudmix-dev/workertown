@@ -77,11 +77,37 @@ export function createServer<T extends Context>(
 
   // This sets `ctx.env` to NodeJS' `process.env` if we're in that environment
   server.use(async (ctx, next) => {
+    let after: (() => Promise<void>) | undefined;
+
     if (!ctx.env && globalThis.process?.env) {
       ctx.env = globalThis.process.env;
     }
 
-    return next();
+    if (!ctx.executionCtx?.waitUntil) {
+      // rome-ignore lint/suspicious/noExplicitAny: We don't care about the return type of the Promise here
+      const promises: Promise<any>[] = [];
+
+      // @ts-ignore
+      ctx.executionCtx = {
+        ...(ctx.executionCtx || {}),
+        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the return type of the Promise here
+        waitUntil: (promise: Promise<any>) => {
+          promises.push(promise);
+        },
+      };
+
+      after = async () => {
+        try {
+          await Promise.allSettled(promises);
+        } catch (_) {}
+      };
+    }
+
+    await next();
+
+    if (after) {
+      await after();
+    }
   });
 
   if (accessOptions?.ip !== false) {
