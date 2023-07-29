@@ -10,14 +10,14 @@ import {
   TooltipTrigger,
 } from "../atoms/tooltip";
 
-function ClipboardIcon() {
+function ClipboardIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       fill="currentColor"
-      className="w-4 h-4"
+      {...props}
     >
       <title>Copy to clipboard</title>
       <path
@@ -31,32 +31,53 @@ function ClipboardIcon() {
   );
 }
 
+function ClipboardSuccessfulIcon(props: React.ComponentPropsWithoutRef<"svg">) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <title>Copied to clipboard</title>
+      <path
+        fill-rule="evenodd"
+        d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z"
+        clip-rule="evenodd"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zm9.586 4.594a.75.75 0 00-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 00-1.06 1.06l1.5 1.5a.75.75 0 001.116-.062l3-3.75z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  );
+}
+
 interface CopyButtonProps {
   text: string;
 }
 
 function CopyButton({ text }: CopyButtonProps) {
   const [animating, setAnimating] = useState(false);
-  const [color, setColor] = useState<string>("text-zinc-50 dark:text-zinc-50");
+  const [success, setSuccess] = useState(true);
   const onCopy = async () => {
     if (animating) {
       return;
     }
 
+    setSuccess(true);
     setAnimating(true);
 
     try {
       await navigator.clipboard.writeText(text);
-
-      setColor("text-emerald-400");
     } catch (_) {
-      setColor("text-rose-400");
+      setSuccess(false);
     }
 
     setTimeout(() => {
       setAnimating(false);
-      setColor("text-zinc-50 dark:text-zinc-50");
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -67,9 +88,20 @@ function CopyButton({ text }: CopyButtonProps) {
             className="absolute top-1.5 right-1.5 px-2.5 py-0 dark:bg-zinc-900 dark:text-zinc-50 dark:hover:bg-zinc-900/90"
             onClick={onCopy}
           >
-            <span className={color}>
-              <ClipboardIcon />
-            </span>
+            <ClipboardIcon
+              className={cn(
+                "block h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all",
+                animating && "-rotate-90 scale-0 hidden",
+                "fill-zinc-50",
+              )}
+            />
+            <ClipboardSuccessfulIcon
+              className={cn(
+                "hidden h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all",
+                animating && "rotate-0 scale-100 block",
+                success ? "fill-emerald-400" : "fill-red-400",
+              )}
+            />
           </Button>
         </TooltipTrigger>
         <TooltipContent className="py-0">
