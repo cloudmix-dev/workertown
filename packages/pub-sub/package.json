@@ -1,6 +1,6 @@
 {
   "name": "@workertown/pub-sub",
-  "version": "0.0.1-alpha.12",
+  "version": "0.0.1-alpha.13",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -67,9 +67,9 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.1-alpha.12",
-    "@workertown/internal-queue": "~0.0.1-alpha.12",
-    "@workertown/internal-storage": "~0.0.1-alpha.12",
+    "@workertown/internal-hono": "~0.0.1-alpha.13",
+    "@workertown/internal-queue": "~0.0.1-alpha.13",
+    "@workertown/internal-storage": "~0.0.1-alpha.13",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
   },
@@ -77,7 +77,7 @@
     "@cloudflare/workers-types": "~4.20230710.1",
     "@types/better-sqlite3": "~7.6.4",
     "@types/lodash.merge": "~4.6.7",
-    "@workertown/internal-types": "~0.0.1-alpha.12"
+    "@workertown/internal-types": "~0.0.1-alpha.13"
   },
   "peerDependencies": {
     "@planetscale/database": "~1.8.0",
