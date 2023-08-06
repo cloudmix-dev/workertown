@@ -7,7 +7,7 @@ interface KVCacheAdapterOptions {
   prefix?: string;
 }
 
-export class KVCacheAdapter extends CacheAdapter {
+export class KVCacheAdapter<T = unknown> extends CacheAdapter<T> {
   public readonly _prefix: string = "wt_search_cache";
 
   public readonly _kv: KVNamespace;
@@ -23,7 +23,7 @@ export class KVCacheAdapter extends CacheAdapter {
     return `${this._prefix}_${key}`;
   }
 
-  public async get<T>(key: string) {
+  public async get(key: string) {
     const value = await this._kv.get(this._prefixKey(key), "json");
 
     if (value === null) {

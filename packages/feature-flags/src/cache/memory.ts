@@ -1,3 +1,5 @@
-import { MemoryCacheAdapter } from "@workertown/internal-cache/memory";
+import { MemoryCacheAdapter as BaseMemoryCacheAdapter } from "@workertown/internal-cache/memory";
 
-export { MemoryCacheAdapter };
+import { type Flag } from "../storage/storage-adapter.js";
+
+export class MemoryCacheAdapter extends BaseMemoryCacheAdapter<Flag[]> {}

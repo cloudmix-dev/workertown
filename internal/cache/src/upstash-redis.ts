@@ -6,7 +6,7 @@ interface UpstashRedisCacheAdapterOptions {
   token: string;
 }
 
-export class UpstashRedisCacheAdapter extends CacheAdapter {
+export class UpstashRedisCacheAdapter<T = unknown> extends CacheAdapter<T> {
   private readonly _client: Redis;
 
   constructor(options: UpstashRedisCacheAdapterOptions) {
@@ -15,7 +15,7 @@ export class UpstashRedisCacheAdapter extends CacheAdapter {
     this._client = new Redis(options);
   }
 
-  public async get<T>(key: string) {
+  public async get(key: string) {
     const value = await this._client.get(key);
 
     if (!value) {

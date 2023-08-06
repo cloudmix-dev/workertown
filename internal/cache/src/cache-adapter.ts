@@ -1,11 +1,11 @@
-export class CacheAdapter {
+export class CacheAdapter<T = unknown> {
   // rome-ignore lint/correctness/noUnusedVariables: stub class
-  public async get<T>(key: string): Promise<T | null> {
+  public async get(key: string): Promise<T | null> {
     throw new TypeError("'get()' not implemented");
   }
 
   // rome-ignore lint/correctness/noUnusedVariables: stub class
-  public async set(key: string, value: unknown, ttl?: number): Promise<void> {
+  public async set(key: string, value: T, ttl?: number): Promise<void> {
     throw new TypeError("'set()' not implemented");
   }
 

@@ -106,8 +106,7 @@ router.get(
 
       if (tags?.length && tags.length > 0) {
         const tagCacheKey = `${cacheKey}_tags_${tags.sort().join("_")}`;
-        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
-        const cachedDocuments = await cache.get<any[]>(tagCacheKey);
+        const cachedDocuments = await cache.get(tagCacheKey);
 
         if (cachedDocuments) {
           documents = cachedDocuments;
@@ -121,8 +120,7 @@ router.get(
           await cache.set(tagCacheKey, documents);
         }
       } else {
-        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
-        const cachedDocuments = await cache.get<any[]>(cacheKey);
+        const cachedDocuments = await cache.get(cacheKey);
 
         if (cachedDocuments) {
           documents = cachedDocuments;

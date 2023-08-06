@@ -1,8 +1,8 @@
 import { CacheAdapter } from "./cache-adapter.js";
 
-export class NoOpCacheAdapter extends CacheAdapter {
+export class NoOpCacheAdapter<T = unknown> extends CacheAdapter<T> {
   // rome-ignore lint/correctness/noUnusedVariables: stub class
-  public async get<T>(key: string): Promise<T | null> {
+  public async get(key: string): Promise<T | null> {
     return null;
   }
 

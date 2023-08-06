@@ -1,3 +1,5 @@
-import { NoOpCacheAdapter } from "@workertown/internal-cache/no-op";
+import { NoOpCacheAdapter as BaseNoOpCacheAdapter } from "@workertown/internal-cache/no-op";
 
-export { NoOpCacheAdapter };
+import { type Flag } from "../storage/storage-adapter.js";
+
+export class NoOpCacheAdapter extends BaseNoOpCacheAdapter<Flag[]> {}

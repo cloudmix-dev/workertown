@@ -1,3 +1,5 @@
-import { KVCacheAdapter } from "@workertown/internal-cache/kv";
+import { KVCacheAdapter as BaseKVCacheAdapter } from "@workertown/internal-cache/kv";
 
-export { KVCacheAdapter };
+import { type Flag } from "../storage/storage-adapter.js";
+
+export class KVCacheAdapter extends BaseKVCacheAdapter<Flag[]> {}
