@@ -11,6 +11,9 @@ When a search/suggestion is performed, the service will (if the cache is
 scan used **before** it runs the search. If a cached version is found, it will
 **not** hit the `storage` and instead use the cached set of documents.
 
+When a document is added/updated/deleted, the service will clear the cache for
+that document's `tenant` and `index`.
+
 ---
 
 ## `CacheAdapter`
