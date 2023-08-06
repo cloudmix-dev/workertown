@@ -62,12 +62,13 @@ router.get(
     const tenant = ctx.req.param("tenant") as string;
     const index = ctx.req.param("index");
     const storage = ctx.get("storage");
+    const { search } = ctx.get("config");
     const {
       boostDocument,
-      filter,
+      filterDocument,
       scanRange: scanRangeFn,
       stopWords: stopWordsFn,
-    } = ctx.get("config");
+    } = search;
     const { term, tags, fields, limit, fuzzy, prefix, exact } =
       ctx.req.valid("query");
     const scanRange =
@@ -117,11 +118,11 @@ router.get(
                 : undefined,
             combineWith: exact ? "AND" : "OR",
             filter:
-              typeof filter === "function"
+              typeof filterDocument === "function"
                 ? (result) => {
                     const document = documentsMap.get(result.id);
 
-                    return filter(document as SearchDocument, result);
+                    return filterDocument(document as SearchDocument, result);
                   }
                 : undefined,
             fuzzy,

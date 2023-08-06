@@ -48,8 +48,10 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     cache: "SEARCH_CACHE",
     db: "SEARCH_DB",
   },
-  scanRange: DEFAULT_SCAN_RANGE,
-  stopWords: DEFAUlT_STOP_WORDS,
+  search: {
+    scanRange: DEFAULT_SCAN_RANGE,
+    stopWords: DEFAUlT_STOP_WORDS,
+  },
 };
 
 export function createSearchServer(options?: CreateServerOptionsOptional) {

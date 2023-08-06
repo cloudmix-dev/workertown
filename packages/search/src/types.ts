@@ -9,7 +9,6 @@ import { type CacheAdapter } from "./cache/index.js";
 import { type SearchDocument, type StorageAdapter } from "./storage/index.js";
 
 export interface CreateServerOptions extends BaseCreateServerOptions {
-  boostDocument?: (document: SearchDocument, term: string) => number;
   endpoints: {
     v1: {
       admin: string | false;
@@ -24,19 +23,25 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
     cache: string;
     db: string;
   };
-  filter?: (document: SearchDocument, result: SearchResult) => boolean;
   runtime?: RuntimeResolver;
-  scanRange:
-    | number
-    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
-    | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
-  stopWords:
-    | string[]
-    | Set<string>
-    | ((
-        // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
-        req: WorkertownRequest<any, any>,
-      ) => string[] | Set<string> | Promise<string[] | Set<string>>);
+  search: {
+    boostDocument?: (document: SearchDocument, term: string) => number;
+    filterDocument?: (
+      document: SearchDocument,
+      result: SearchResult,
+    ) => boolean;
+    scanRange:
+      | number
+      // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
+      | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
+    stopWords:
+      | string[]
+      | Set<string>
+      | ((
+          // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
+          req: WorkertownRequest<any, any>,
+        ) => string[] | Set<string> | Promise<string[] | Set<string>>);
+  };
 }
 
 export type Context = WorkertownContext<{
