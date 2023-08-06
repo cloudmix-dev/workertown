@@ -1,6 +1,6 @@
 # Workertown
 
-> Sensible defaults, absolute configuration.
+> Sensible defaults, advanced configuration.
 
 Workertown is a collection of packages for building edge-runtime architectures.
 
