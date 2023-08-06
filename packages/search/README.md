@@ -1,3 +1,3 @@
 # @workertown/search
 
-See [here](../../www/docs/src/pages/docs/packages/search.md).
+See [here](http://localhost:3000/docs/packages/search/introduction).

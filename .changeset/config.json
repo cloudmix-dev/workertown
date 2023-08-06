@@ -12,7 +12,8 @@
     "@workertown/nodejs-example",
     "@workertown/pub-sub-example",
     "@workertown/search-example",
-    "@workertown/auth"
+    "@workertown/auth",
+    "@workertown/files"
   ],
   "linked": [],
   "updateInternalDependencies": "patch"
