@@ -25,7 +25,8 @@
     "@workertown/aws-lambda": "0.0.0",
     "@workertown/aws-lambda-edge": "0.0.0",
     "@workertown/cloudflare-pages": "0.0.0",
-    "@workertown/vercel": "0.0.0"
+    "@workertown/vercel": "0.0.0",
+    "@workertown/files": "0.0.1"
   },
   "changesets": [
     "afraid-points-do",
@@ -39,6 +40,7 @@
     "shiny-lions-count",
     "short-beans-beam",
     "silver-pans-develop",
+    "slow-parents-kiss",
     "sour-rules-design",
     "thick-pigs-tap",
     "tidy-windows-dream"
