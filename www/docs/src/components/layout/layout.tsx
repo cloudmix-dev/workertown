@@ -338,8 +338,6 @@ export function Layout({ children, title, tableOfContents }) {
     }
   }, [isBrowser]);
 
-  console.log(isBrowser);
-
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <Header navigation={navigation} />
