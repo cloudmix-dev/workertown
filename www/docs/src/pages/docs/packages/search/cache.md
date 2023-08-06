@@ -14,6 +14,9 @@ scan used **before** it runs the search. If a cached version is found, it will
 When a document is added/updated/deleted, the service will clear the cache for
 that document's `tenant` and `index`.
 
+For more information on how cache works in Workertown services more generally,
+see [cache](/docs/core-concepts/cache)
+
 ---
 
 ## `CacheAdapter`

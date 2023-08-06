@@ -36,7 +36,6 @@ export const navigation: {
       { title: "Runtime", href: "/docs/core-concepts/runtime" },
       { title: "Storage", href: "/docs/core-concepts/storage" },
       { title: "Cache", href: "/docs/core-concepts/cache" },
-      { title: "Queues", href: "/docs/core-concepts/queues" },
       { title: "Environments", href: "/docs/core-concepts/environments" },
       { title: "REST", href: "/docs/core-concepts/rest" },
     ],
