@@ -10,8 +10,9 @@ router.get("/:id", async (ctx) => {
   const id = ctx.req.param("id");
   const storage = ctx.get("storage");
   const document = await storage.getDocument(id);
+  const status = document ? 200 : 404;
 
-  return ctx.json({ status: 200, success: true, data: document });
+  return ctx.json({ status: status, success: true, data: document }, status);
 });
 
 router.put(
