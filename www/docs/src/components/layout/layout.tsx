@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { startTransition, useCallback, useEffect, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "../atoms/alert";
 import { Button } from "../atoms/button";
@@ -12,6 +12,56 @@ import { Hero } from "./hero";
 import { MobileNavigation } from "./mobile-navigation";
 import { Navigation } from "./navigation";
 import { Search } from "./search";
+
+// More or less taken from: https://github.com/uidotdev/usehooks/blob/experimental/index.js#L792
+// function useLocalStorage(key, initialValue) {
+//   const isBrowser = typeof globalThis?.window !== "undefined";
+//   const readValue = useCallback(() => {
+//     try {
+//       const item = window.localStorage.getItem(key);
+
+//       return item ? JSON.parse(item) : initialValue;
+//     } catch (_) {
+//       return initialValue;
+//     }
+//   }, [key, initialValue]);
+//   const [localState, setLocalState] = useState(readValue);
+//   const handleSetState = useCallback(
+//     (value) => {
+//       try {
+//         const nextState =
+//           typeof value === "function" ? value(localState) : value;
+//         window.localStorage.setItem(key, JSON.stringify(nextState));
+//         setLocalState(nextState);
+//         window.dispatchEvent(new Event("local-storage"));
+//       } catch (e) {
+//         console.warn(e);
+//       }
+//     },
+//     [key, localState],
+//   );
+//   const onStorageChange = useCallback((event) => {
+//     if (event?.key && event.key !== key) {
+//       return;
+//     }
+
+//     setLocalState(readValue());
+//   }, []);
+
+//   useEffect(() => {
+//     if (isBrowser) {
+//       window.addEventListener("storage", onStorageChange);
+//       window.addEventListener("local-storage", onStorageChange);
+
+//       return () => {
+//         window.removeEventListener("storage", onStorageChange);
+//         window.removeEventListener("local-storage", onStorageChange);
+//       };
+//     }
+//   }, [isBrowser]);
+
+//   return [localState, handleSetState];
+// }
 
 export const navigation: {
   title: string;
@@ -111,6 +161,27 @@ function GitHubIcon(props) {
 
 function Header({ navigation }) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [version, setVersion] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!version) {
+      (async () => {
+        try {
+          const res = await fetch(
+            "https://registry.npmjs.org/@workertown/search/latest",
+          );
+
+          if (res.ok) {
+            const { version } = (await res.json()) as { version: string };
+
+            if (version.includes("alpha") || version.includes("beta")) {
+              setVersion(version);
+            }
+          }
+        } catch (_) {}
+      })();
+    }
+  }, [version]);
 
   useEffect(() => {
     function onScroll() {
@@ -161,6 +232,12 @@ function Header({ navigation }) {
           </Link>
         </div>
       </div>
+      {version && (
+        <div className="flex justify-center items-center px-3 py-1 bg-yellow-400 text-yellow-950 text-xs font-semibold">
+          The current version is{" "}
+          <span className="ml-1 underline">{version}</span>
+        </div>
+      )}
     </header>
   );
 }
@@ -232,7 +309,12 @@ export function Layout({ children, title, tableOfContents }) {
     section.links.find((link) => link.href === router.pathname),
   );
   const currentSection = useTableOfContents(tableOfContents);
-  const [showWarning, setShowWarning] = useState(true);
+  const [showWarning, setShowWarning] = useState(false);
+  const hideWarning = useCallback(() => {
+    setShowWarning(false);
+    window.localStorage.setItem("alpha_warning", JSON.stringify(false));
+  }, [setShowWarning]);
+  const isBrowser = typeof globalThis.window !== "undefined";
 
   function isActive(section) {
     if (section.id === currentSection) {
@@ -245,6 +327,18 @@ export function Layout({ children, title, tableOfContents }) {
 
     return section.children.findIndex(isActive) > -1;
   }
+
+  useEffect(() => {
+    if (isBrowser) {
+      startTransition(() => {
+        if (window.localStorage.getItem("alpha_warning") !== "false") {
+          setShowWarning(true);
+        }
+      });
+    }
+  }, [isBrowser]);
+
+  console.log(isBrowser);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -397,7 +491,7 @@ export function Layout({ children, title, tableOfContents }) {
                   </p>
                   <Button
                     size="sm"
-                    onClick={() => setShowWarning(false)}
+                    onClick={hideWarning}
                     className="flex-shrink-0"
                   >
                     Got it
