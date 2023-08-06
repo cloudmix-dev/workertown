@@ -10,7 +10,7 @@ router.get("/info", async (ctx) => {
   return ctx.json({
     status: 200,
     success: true,
-    data: config as {},
+    data: { ...config, stopWords: Array.from(config.stopWords as string[]) },
   });
 });
 
