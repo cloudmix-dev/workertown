@@ -79,22 +79,26 @@ const server = search({
     },
   }, // See the "Authentication" section for all of the available options in `auth`
   basePath: "/", // Base path for the server to serve endpoints from
+  endpoints: {
+    v1: {
+      admin: "/admin", // Base path for the server to serve admin endpoints from
+      documents: "/docs", // Base path for the server to serve documents endpoints from
+      search: "/search", // Base path for the server to serve search endpoints from
+      suggest: "/suggest", // Base path for the server to serve suggest endpoints from
+      tags: "/tags", // Base path for the server to serve tag endpoints from
+    },
+    public: "/", // Base path for the server to serve public endpoints from
+  },
   env: {
     cache: "SEARCH_CACHE", // Environment variable for the cache KV binding (Cloudflare Workers only)
     database: "SEARCH_DB", // Environment variable for the D1 database binding (Cloudflare Workers only)
   },
-  prefixes: {
-    admin: "/v1/admin", // Base path for the server to serve admin endpoints from
-    documents: "/v1/docs", // Base path for the server to serve documents endpoints from
-    public: "/", // Base path for the server to serve public endpoints from
-    search: "/v1/search", // Base path for the server to serve search endpoints from
-    suggest: "/v1/suggest", // Base path for the server to serve suggest endpoints from
-    tags: "/v1/tags", // Base path for the server to serve tag endpoints from
+  search: {
+    scanRange: 1000, // The maximum amount of records to take from storage at one time to search across
+    stopWords: new Set([
+      /* ... */
+    ]), // Set of words to ignore when matching search results
   },
-  scanRange: 1000, // The maximum amount of records to take from storage at one time to search across
-  stopWords: new Set([
-    /* ... */
-  ]), // Set of words to ignore when matching search results
 });
 // ...
 ```
