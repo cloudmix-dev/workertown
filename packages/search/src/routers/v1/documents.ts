@@ -2,6 +2,7 @@ import { createRouter, validate } from "@workertown/internal-hono";
 import { z } from "zod";
 
 import { type Context } from "../../types.js";
+import { getCacheKey } from "../../utils.js";
 
 const router = createRouter<Context>();
 
@@ -34,8 +35,8 @@ router.put(
       tags,
     );
 
-    await cache.delete(`documents_${tenant}_ALL`);
-    await cache.delete(`documents_${tenant}_${index}`);
+    await cache.delete(getCacheKey(tenant));
+    await cache.delete(getCacheKey(tenant, index));
 
     return ctx.json({ status: 200, success: true, data: document });
   },
@@ -49,11 +50,11 @@ router.delete("/:id", async (ctx) => {
 
   if (document) {
     await storage.deleteDocument(id);
-    await cache.delete(`documents_${document.tenant}_ALL`);
-    await cache.delete(`documents_${document.tenant}_${document.index}`);
+    await cache.delete(getCacheKey(document.tenant));
+    await cache.delete(getCacheKey(document.tenant, document.index));
   }
 
-  return ctx.json({ status: 200, success: true, data: true });
+  return ctx.json({ status: 200, success: true, data: { id } });
 });
 
 export { router };

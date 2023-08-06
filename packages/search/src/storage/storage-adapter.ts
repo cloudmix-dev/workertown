@@ -11,6 +11,7 @@ export interface SearchDocument {
   tenant: string;
   index: string;
   data: Record<string, unknown>;
+  tags: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -60,15 +61,5 @@ export class StorageAdapter extends BaseStorageAdapter {
 
   public async getTags(): Promise<string[]> {
     throw new TypeError("'getTags()' not implemented");
-  }
-
-  // rome-ignore lint/correctness/noUnusedVariables: stub class
-  public async tagDocument(id: string, tag: string): Promise<void> {
-    throw new TypeError("'tagDocument()' not implemented");
-  }
-
-  // rome-ignore lint/correctness/noUnusedVariables: stub class
-  public async untagDocument(id: string, tag: string): Promise<void> {
-    throw new TypeError("'untagDocument()' not implemented");
   }
 }

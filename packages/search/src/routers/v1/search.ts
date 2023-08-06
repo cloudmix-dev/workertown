@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { type SearchDocument } from "../../storage/index.js";
 import { type Context } from "../../types.js";
+import { getCacheKey } from "../../utils.js";
 
 const router = createRouter<Context>();
 
@@ -100,7 +101,7 @@ router.get(
     };
 
     if (term) {
-      const cacheKey = `documents_${tenant}_${index ?? "ALL"}`;
+      const cacheKey = getCacheKey(tenant, index);
 
       if (tags?.length && tags.length > 0) {
         const tagCacheKey = `${cacheKey}_tags_${tags.sort().join("_")}`;

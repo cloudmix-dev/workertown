@@ -2,6 +2,7 @@ import {
   type ColumnType,
   type Migrations,
   type Selectable,
+  sql,
 } from "@workertown/internal-storage";
 import { SqliteStorageAdapter as BaseSqliteStorageAdapter } from "@workertown/internal-storage/sqlite";
 
@@ -18,11 +19,11 @@ interface SearchDocumentTable {
   tenant: string;
   index: string;
   data: string;
-  created_at: ColumnType<Date | number, number, never>;
-  updated_at: ColumnType<Date | number, number, number>;
+  created_at: ColumnType<number, number, never>;
+  updated_at: ColumnType<number, number, number>;
 }
 
-type SearchDocumentRow = Selectable<SearchDocumentTable>;
+type SearchDocumentRow = Selectable<SearchDocumentTable> & { tags?: string };
 
 interface SearchTagTable {
   tag: string;
@@ -128,6 +129,7 @@ export class SqliteStorageAdapter
       tenant: document.tenant,
       index: document.index,
       data: JSON.parse(document.data),
+      tags: document.tags ? document.tags.split(",") : [],
       createdAt: new Date(document.created_at),
       updatedAt: new Date(document.updated_at),
     };
@@ -138,6 +140,7 @@ export class SqliteStorageAdapter
   ): Promise<SearchDocument[]> {
     let query = this.client
       .selectFrom("search_documents")
+      .innerJoin("search_tags", "search_tags.search_document_id", "id")
       .where("search_documents.tenant", "=", options.tenant);
 
     if (options.index) {
@@ -145,7 +148,16 @@ export class SqliteStorageAdapter
     }
 
     const records = await query
-      .selectAll()
+      .select([
+        "search_documents.id",
+        "search_documents.tenant",
+        "search_documents.index",
+        "search_documents.data",
+        "search_documents.created_at",
+        "search_documents.updated_at",
+        sql<string>`group_concat(search_tags.tag, ',')`.as("tags"),
+      ])
+      .groupBy("search_documents.id")
       .orderBy("search_documents.updated_at", "desc")
       .limit(options?.limit)
       .execute();
@@ -172,7 +184,15 @@ export class SqliteStorageAdapter
     }
 
     const records = await query
-      .selectAll("search_documents")
+      .select([
+        "search_documents.id",
+        "search_documents.tenant",
+        "search_documents.index",
+        "search_documents.data",
+        "search_documents.created_at",
+        "search_documents.updated_at",
+        sql<string>`group_concat(search_tags.tag, ',')`.as("tags"),
+      ])
       .groupBy("search_documents.id")
       .having((eb) => eb.fn.count("search_documents.id"), "=", tags.length)
       .orderBy("search_documents.updated_at", "desc")
@@ -185,7 +205,17 @@ export class SqliteStorageAdapter
   public async getDocument(id: string) {
     const result = await this.client
       .selectFrom("search_documents")
-      .selectAll()
+      .innerJoin("search_tags", "search_tags.search_document_id", "id")
+      .select([
+        "search_documents.id",
+        "search_documents.tenant",
+        "search_documents.index",
+        "search_documents.data",
+        "search_documents.created_at",
+        "search_documents.updated_at",
+        sql<string>`group_concat(search_tags.tag, ',')`.as("tags"),
+      ])
+      .groupBy("search_documents.id")
       .where("id", "=", id)
       .executeTakeFirst();
 
@@ -272,6 +302,7 @@ export class SqliteStorageAdapter
 
     return {
       ...document,
+      tags,
       createdAt: existing?.created_at ? new Date(existing.created_at) : now,
       updatedAt: now,
     };
@@ -296,21 +327,5 @@ export class SqliteStorageAdapter
       .execute();
 
     return tags.map(({ tag }) => tag);
-  }
-
-  public async tagDocument(id: string, tag: string) {
-    await this.client
-      .insertInto("search_tags")
-      .onConflict((oc) => oc.columns(["search_document_id", "tag"]).doNothing())
-      .values({ search_document_id: id, tag })
-      .execute();
-  }
-
-  public async untagDocument(id: string, tag: string) {
-    await this.client
-      .deleteFrom("search_tags")
-      .where("search_document_id", "=", id)
-      .where("tag", "=", tag)
-      .execute();
   }
 }

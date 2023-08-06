@@ -16,7 +16,10 @@ export class MemoryStorageAdapter
   extends BaseMemoryStorageAdapter
   implements StorageAdapter
 {
-  private readonly _documentStore = new Map<string, SearchDocument>();
+  private readonly _documentStore = new Map<
+    string,
+    Omit<SearchDocument, "tags">
+  >();
 
   private readonly _tenantIndex = new Map<string, Set<string>>();
 
@@ -40,7 +43,7 @@ export class MemoryStorageAdapter
     });
   }
 
-  private _storeDocument(document: SearchDocument) {
+  private _storeDocument(document: Omit<SearchDocument, "tags">) {
     this._documentStore.set(document.id, document);
 
     if (!this._tenantIndex.has(document.tenant)) {
@@ -87,7 +90,9 @@ export class MemoryStorageAdapter
 
     const ids = Array.from(indexSet ?? []);
     const sortedDocuments = this._getSortedDocuments();
-    const bucket = new Array(sortedDocuments.length).fill(null);
+    const bucket: SearchDocument[] = new Array(sortedDocuments.length).fill(
+      null,
+    );
 
     ids.forEach((id) => {
       if (!this._deleted.has(id)) {
@@ -96,7 +101,12 @@ export class MemoryStorageAdapter
           (document) => document?.id === id,
         );
 
-        bucket[index] = document;
+        if (document && index !== -1) {
+          bucket[index] = {
+            ...document,
+            tags: Array.from(this._tags.get(id) ?? []),
+          };
+        }
       }
     });
 
@@ -125,7 +135,9 @@ export class MemoryStorageAdapter
 
     const ids = Array.from(indexSet ?? []);
     const sortedDocuments = this._getSortedDocuments();
-    const bucket = new Array(sortedDocuments.length).fill(null);
+    const bucket: SearchDocument[] = new Array(sortedDocuments.length).fill(
+      null,
+    );
 
     ids.forEach((id) => {
       if (!this._deleted.has(id) && tagSet.has(id)) {
@@ -134,7 +146,12 @@ export class MemoryStorageAdapter
           (document) => document?.id === id,
         );
 
-        bucket[index] = document;
+        if (document && index !== -1) {
+          bucket[index] = {
+            ...document,
+            tags: Array.from(this._tags.get(id) ?? []),
+          };
+        }
       }
     });
 
@@ -142,7 +159,13 @@ export class MemoryStorageAdapter
   }
 
   public async getDocument(id: string): Promise<SearchDocument | null> {
-    return this._documentStore.get(id) ?? null;
+    const document = this._documentStore.get(id);
+
+    if (!document || this._deleted.has(id)) {
+      return null;
+    }
+
+    return { ...document, tags: Array.from(this._tags.get(id) ?? []) };
   }
 
   public async upsertDocument(
@@ -175,7 +198,7 @@ export class MemoryStorageAdapter
 
     this._deleted.delete(document.id);
 
-    return searchDocument;
+    return { ...searchDocument, tags };
   }
 
   public async deleteDocument(id: string): Promise<void> {
@@ -184,26 +207,6 @@ export class MemoryStorageAdapter
 
   public async getTags(): Promise<string[]> {
     return Array.from(this._tags.keys());
-  }
-
-  public async tagDocument(id: string, tag: string): Promise<void> {
-    if (!this._tags.has(tag)) {
-      this._tags.set(tag, new Set<string>());
-    }
-
-    const tagSet = this._tags.get(tag);
-
-    tagSet?.add(id);
-  }
-
-  public async untagDocument(id: string, tag: string): Promise<void> {
-    if (!this._tags.has(tag)) {
-      return;
-    }
-
-    const tagSet = this._tags.get(tag);
-
-    tagSet?.delete(id);
   }
 
   public reset() {
