@@ -20,7 +20,7 @@
     "@radix-ui/react-tooltip": "~1.0.6",
     "@sindresorhus/slugify": "~2.1.0",
     "class-variance-authority": "~0.7.0",
-    "clsx": "~1.2.1",
+    "clsx": "~2.0.0",
     "fast-glob": "~3.3.1",
     "flexsearch": "~0.7.31",
     "focus-visible": "~5.2.0",
