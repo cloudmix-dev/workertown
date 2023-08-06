@@ -5,31 +5,34 @@ description: Workertown packages that require persistant storage provide a simpl
 
 Most Workertown services require some kind of persistant storage, i.e. data that
 lives between requests. Following the "sensible defaults" paradigm, each of
-these services provides a default storage adapter built upon Cloudflare's D1
-SQLite database, but there are other options available, and also the ability to
-bring your own storage adapter entirely.
+these services provides a default storage adapter built upon Cloudflare's
+[D1 database](https://developers.cloudflare.com/d1/) but there are other options
+available, and also the ability to bring your own storage adapter entirely.
 
 ---
 
 ## How it works
 
-Workertown services that require storage expose a `storage` configuration option
-that allows you to specify a storage adapter to use.
+Workertown services that require storage expose a `runetime` configuration
+option that allows you to specify a storage adapter to use.
 
 ```ts
 import { search } from "@workertown/search";
 import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
 
 export default search({
-  storage: new SqliteStorageAdapter({
-    // Options go here...
-  }),
+  runtime: {
+    storage: new SqliteStorageAdapter({
+      // Options go here...
+    }),
+    // Other options go here...
+  }
 });
 ```
 
 ---
 
-## Supported storage adapters
+## Built-in storage adapters
 
 Every Workertown service with storage support has a set of supported first-party
 storage adapters provided within the package.
@@ -39,7 +42,7 @@ storage adapters provided within the package.
 The [Cloudflare D1](https://developers.cloudflare.com/d1/) storage adapter is
 the **default** storage adapter for all Workertown services, and so any
 Workertown service that requires storage will require a bound D1 database to
-run.
+run by default.
 
 The `D1StorageAdapter` is exposed from each package, but in reality you should
 **never** have to manually instantiate this adapter.
@@ -49,8 +52,9 @@ import { search } from "@workertown/search";
 import { D1StorageAdapter } from "@workertown/search/storage/d1";
 
 export default search({
-  storage: new D1StorageAdapter({
-    d1: { /*...*/ }, // The D1Namespace instance from the environment
+  runtime: (options, env) => ({
+    storage: new D1StorageAdapter({ d1: env.D1 }),
+    // Other options go here...
   }),
 });
 ```
@@ -63,13 +67,6 @@ database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-{% callout type="warning" title="The above won't work" %}
-The example above is contrived, and won't actually work within the Cloudflare
-Workers runtime. In reality, you would have to create your own `fetch`
-implementation that retrieves the `D1Namespace`` instance from the environment
-and then builds the Workertown service on each request.
-{% /callout %}
-
 ### Planetscale
 
 [Planetscale](https://planetscale.com) is a hosted MySQL database that provides
@@ -81,11 +78,14 @@ import { search } from "@workertown/search";
 import { PlanetscaleStorageAdapter } from "@workertown/search/storage/planetscale";
 
 export default search({
-  storage: new PlanetscaleStorageAdapter({
-    url: "...", // The URL of the Planetscale database
-    username: "username", // The Planetscale username to use for authentication
-    password: "password", // The Planetscale password to use for authentication
-  }),
+  runtime: {
+    storage: new PlanetscaleStorageAdapter({
+      url: "...", // The URL of the Planetscale database
+      username: "username", // The Planetscale username to use for authentication
+      password: "password", // The Planetscale password to use for authentication
+    }),
+    // Other options go here...
+  },
 });
 ```
 
@@ -107,10 +107,13 @@ import { search } from "@workertown/search";
 import { TursoStorageAdapter } from "@workertown/search/storage/turso";
 
 export default search({
-  storage: new TursoStorageAdapter({
-    url: "...", // The URL of the Turso database
-    authToken: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // The Turso auth token to use for authentication
-  }),
+  runtime: {
+    storage: new TursoStorageAdapter({
+      url: "...", // The URL of the Turso database
+      authToken: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // The Turso auth token to use for authentication
+    }),
+    // Other options go here...
+  },
 });
 ```
 
@@ -125,9 +128,12 @@ import { search } from "@workertown/search";
 import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
 
 export default search({
-  storage: new SqliteStorageAdapter({
-    db: "db.sqlite", // The path to the Sqlite database file
-  }),
+  runtime: {
+    storage: new SqliteStorageAdapter({
+      db: "db.sqlite", // The path to the Sqlite database file
+    }),
+    // Other options go here...
+  },
 });
 ```
 
@@ -151,13 +157,16 @@ import { search } from "@workertown/search";
 import { MemoryStorageAdapter } from "@workertown/search/storage/memory";
 
 export default search({
-  storage: new MemoryStorageAdapter(),
+  runtime: {
+    storage: new MemoryStorageAdapter(),
+    // Other options go here...
+  },
 });
 ```
 
 {% callout type="warning" title="For development use only" %}
 The memory storage adapter is not intended for production use of any kind, and
-should only be used in development environments.
+should only be used in development/test environments.
 {% /callout %}
 
 ---
@@ -176,7 +185,10 @@ class CustomStorageAdapter extends StorageAdapter {
 }
 
 export default search({
-  storage: new CustomStorageAdapter(),
+  runtime:{
+    storage: new CustomStorageAdapter(),
+    // Other options go here...
+  },
 });
 ```
 

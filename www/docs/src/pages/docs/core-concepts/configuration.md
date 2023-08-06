@@ -237,7 +237,7 @@ import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
 
 serve(
   search({
-    runtime: (config, env) => ({
+    runtime: (options, env) => ({
       cache: false,
       storage: new SqliteStorageAdapter({
         db: config.env.db,
