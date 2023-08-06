@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: Workertown adheres to a principal we call "sensible defaults, absolute configuration".
+description: Workertown adheres to a principal we call "sensible defaults, advanced configuration".
 ---
 
 Sensible defaults, absolute configuration. That statement is at the core of our
