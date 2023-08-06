@@ -137,6 +137,40 @@ endpoint, **not** the entire path - e.g. setting `endpoints.v1.search` to
 
 ---
 
+## `env`
+
+The `env` property is used to configure the various environment variables used
+by the service. By default, the environment variables are configured as follows:
+
+```ts
+import { search } from "@workertown/search";
+
+export default search({
+  env: {
+    cache: "SEARCH_CACHE",
+    db: "SEARCH_DB",
+  },
+});
+```
+
+While **all** the `env` property options have **predefined** uses within the
+**built-in** runtimes, they can be repurposed for use with your own custom
+configurations when using the [`runtime`](#runtime) property.
+
+### `env.cache`
+
+The `env.cache` property is a `string` identifying which environment variable
+contains the name of the
+[KV namespace](https://developers.cloudflare.com/workers/learning/how-kv-works/)
+for the cache.
+
+### `env.db`
+
+The `env.db` property is a `string` identifying which environment variable
+contains the name of the [D1 database](https://developers.cloudflare.com/d1/)
+binding for the storage, **or** a `string` identifying the file path to the
+`.sqlite` database file in [NodeJS](https://nodejs.org/) environments.
+
 ## `runtime`
 
 The `@workertown/search` package expects a `runtime` property that returns a
