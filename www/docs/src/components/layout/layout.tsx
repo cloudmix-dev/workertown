@@ -37,6 +37,7 @@ export const navigation: {
       { title: "Storage", href: "/docs/core-concepts/storage" },
       { title: "Cache", href: "/docs/core-concepts/cache" },
       { title: "Queues", href: "/docs/core-concepts/queues" },
+      { title: "Environments", href: "/docs/core-concepts/environments" },
       { title: "REST", href: "/docs/core-concepts/rest" },
     ],
   },
@@ -46,10 +47,6 @@ export const navigation: {
       {
         title: "Introduction",
         href: "/docs/packages/search/introduction",
-      },
-      {
-        title: "Getting started",
-        href: "/docs/packages/search/getting-started",
       },
       {
         title: "Using the API",

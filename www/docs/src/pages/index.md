@@ -19,11 +19,11 @@ Workertown provides...
 
 {% quick-link title="Events" icon="events" description="Kafka-like events streaming." /%}
 
-{% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags" description="Feature flags made simple." /%}
+{% quick-link title="Feature Flags" icon="flags" description="Feature flags made simple." /%}
 
-{% quick-link title="KV" icon="kv" href="/docs/packages/kv" description="Simple key/value storage." /%}
+{% quick-link title="KV" icon="kv" description="Simple key/value storage." /%}
 
-{% quick-link title="Pub Sub" icon="pubsub" href="/docs/packages/pub-sub" description="Webhook based system messaging." /%}
+{% quick-link title="Pub Sub" icon="pubsub" description="Webhook based system messaging." /%}
 
 {% quick-link title="Queues" icon="queues" description="Distributed, prioritized task processing." /%}
 
