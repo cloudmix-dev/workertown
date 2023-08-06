@@ -188,6 +188,11 @@ export default search({
 });
 ```
 
+### `endpoints`
+
+To see how the `endpoints` option works in general, see
+[routing](/docs/core-concepts/routing).
+
 ### `runtime`
 
 All Workertown services expose the ability to customise the runtime options to

@@ -48,10 +48,15 @@ construct your server to make use of the provided `test` runtime:
 
 ```ts
 // server.ts
-import { search, type RuntimeResolver } from "@workertown/search";
+import { search, type CreateServerOptions } from "@workertown/search";
 
-export function createServer(runtime?: RuntimeResolver) {
-  return search({ runtime });
+export function createServer(options?: CreateServerOptions) {
+  return search({
+    ...options,
+    endpoints: {
+      public: "/public",
+    },
+  });
 }
 ```
 
@@ -59,11 +64,7 @@ export function createServer(runtime?: RuntimeResolver) {
 // index.ts
 import { createServer } from "./server";
 
-export default createServer({
-  endpoints: {
-    public: "/public",
-  },
-});
+export default createServer();
 ```
 
 ```ts
@@ -74,7 +75,7 @@ import { request } from "@workertown/utils/test";
 import { createServer } from "./server";
 
 test("it works", (t) => {
-  const server = createServer(runtime);
+  const server = createServer({ runtime });
   const res = await request(server, "/public/health");
 
   t.is(res.status, 200);

@@ -17,8 +17,9 @@ Install the `@workertown/node` package and call the `serve` export:
 ```ts
 import { serve } from "@workertown/node";
 import { search } from "@workertown/search";
+import { runtime } from "@workertown/search/node";
 
-serve(search());
+serve(search({ runtime }));
 
 console.log("Server running at http://localhost:3000");
 ```
@@ -30,9 +31,11 @@ argument with various options to customise the server:
 
 ```ts
 import { serve } from "@workertown/node";
-import { search } from "@workertown/search";
+import { runtime } from "@workertown/search/node";
 
-serve(search(), { port: 8080, hostname: "api.local" });
+serve(search({ runtime }));
+
+serve(search({ runtime }), { port: 8080, hostname: "api.local" });
 
 console.log("Server running at http://localhost:8080");
 ```
@@ -63,12 +66,13 @@ signal is received. By default, it will listen for the `SIGINT` and `SIGTERM`
 signals and exit the process with a `1` exit code.
 
 ```ts
-import { search } from "@workertown/search";
 import { serve } from "@workertown/node";
 import { exitOnSignals } from "@workertown/node/utils";
+import { search } from "@workertown/search";
+import { runtime } from "@workertown/search/node";
 
 exitOnSignals();
-serve(search());
+serve(search({ runtime }));
 
 console.log("Server running at http://localhost:3000");
 ```
@@ -77,9 +81,9 @@ You can customise the `signals` to listen for, as well as the exit `code` and
 the `on` and `exit` listeners to register to:
 
 ```ts
-import { search } from "@workertown/search";
 import { serve } from "@workertown/node";
 import { exitOnSignals } from "@workertown/node/utils";
+import { runtime } from "@workertown/search/node";
 
 function customOn(event: string | symbol, listener: (...args: any[]) => void) {
   console.log(`Adding listener for signal ${event}`);
@@ -92,7 +96,7 @@ function customExit(code: number = 99) {
 }
 
 exitOnSignals(["SIGMADEUP"], { code: 99, exit: customExit, on: customOn });
-serve(search());
+serve(search({ runtime }));
 
 console.log("Server running at http://localhost:3000");
 ```
@@ -114,11 +118,12 @@ Nested options are supported by using `_` (underscore) as a delimiter, e.g.
 `options_auth_basic_username` is equal to `auth.basic.username`.
 
 ```ts
-import { search } from "@workertown/search";
 import { serve } from "@workertown/node";
 import { parseOptionsFromEnv } from "@workertown/node/utils";
+import { runtime } from "@workertown/search/node";
 
-serve(search({ ...parseOptionsFromEnv() }));
+serve(search({ runtime }));
+serve(search({ ...parseOptionsFromEnv(), runtime }));
 
 console.log("Server running at http://localhost:3000");
 ```
@@ -128,9 +133,10 @@ You can explicitly pass in the `env` object to parse values from, and both the
 argument:
 
 ```ts
-import { search } from "@workertown/search";
 import { serve } from "@workertown/node";
 import { parseOptionsFromEnv } from "@workertown/node/utils";
+import { search } from "@workertown/search";
+import { runtime } from "@workertown/search/node";
 
 serve(
   search({
@@ -141,6 +147,7 @@ serve(
         delimiter: ">",
       },
     ), // e.g. search_options>auth>basic>username
+    runtime,
   }),
 );
 
