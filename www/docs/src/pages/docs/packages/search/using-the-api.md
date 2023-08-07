@@ -30,7 +30,7 @@ You **must** provide a `tenant` and `index` property in the request body - if
 you do **not** intend to search/siggest across multiple tenants/indexes, you can
 use a "default" value for both and use it in all requests.
 
-`data` can be any JSON object you want - it has no predefined structure. **Any**
+`data` can be any `JSON` object you want - it has no predefined structure. **Any**
 `string` fields on the object will be accessible via [searches](#searching) and
 [suggestions](#suggestions), although you can (and *should*) narrow that down
 when performing a [search](#searching)/[suggestion](#suggestions).

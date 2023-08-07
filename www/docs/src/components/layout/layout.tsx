@@ -91,6 +91,35 @@ export const navigation: {
     ],
   },
   {
+    title: "Feature flags",
+    links: [
+      {
+        title: "Introduction",
+        href: "/docs/packages/feature-flags/introduction",
+      },
+      {
+        title: "Using the API",
+        href: "/docs/packages/feature-flags/using-the-api",
+      },
+      {
+        title: "Configuration",
+        href: "/docs/packages/feature-flags/configuration",
+      },
+      {
+        title: "Storage",
+        href: "/docs/packages/feature-flags/storage",
+      },
+      {
+        title: "Cache",
+        href: "/docs/packages/feature-flags/cache",
+      },
+      {
+        title: "Tutorial",
+        href: "/docs/packages/feature-flags/tutorial",
+      },
+    ],
+  },
+  {
     title: "Search",
     links: [
       {

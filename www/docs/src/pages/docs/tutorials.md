@@ -10,6 +10,12 @@ Workertown service, deployed to production on Cloudflare Workers.
 
 ## Tutorials
 
+### Feature flags
+
+Try out the `@workertown/feature-flags` tutorial
+[here](/docs/packages/feature-flags/tutorial).
+
 ### Search
 
-Try out the `@workertown/search` tutorial [here](/docs/packages/search/tutorial).
+Try out the `@workertown/search` tutorial
+[here](/docs/packages/search/tutorial).

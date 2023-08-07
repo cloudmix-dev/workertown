@@ -201,7 +201,7 @@ implemented for full storage support in a particular Workertown service.
 
 For storage adapters built upon relational databases, each Workertown service
 exposes an endpoint to run the migrations required to run the service. The
-endpoint takes a `POST` request with an empty JSON body to run the migrations.
+endpoint takes a `POST` request with an empty `JSON` body to run the migrations.
 
 By **default**, this endpoint is exposed at `/v1/admin/migrate`, but this can be
 configured via the `endpoints.v1.admin` configuration option.

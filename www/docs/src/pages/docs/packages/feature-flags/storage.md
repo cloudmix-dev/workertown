@@ -1,10 +1,10 @@
 ---
 title: "Storage"
-description: How to customise how persistant data is stored in @workertown/search.
+description: How to customise how persistant data is stored in @workertown/feature-flags.
 ---
 
-In `@workertown/search`, the storage is used to persist data about your
-documents.
+In `@workertown/feature-flags`, the storage is used to persist data about your
+feature flags.
 
 For more information on how storage works in Workertown services more generally,
 see [storage](/docs/core-concepts/storage)
@@ -16,36 +16,33 @@ see [storage](/docs/core-concepts/storage)
 The `StorageAdapter` interface is defined as follows:
 
 ```ts
-interface GetDocumentsOptions {
-  limit: number;
-  index?: string;
-  tenant: string;
+interface FlagCondition {
+  field: string;
+  operator: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "in" | "nin";
+  value: string | number | boolean | string[] | number[] | boolean[];
 }
 
-interface SearchDocument {
-  id: string;
-  tenant: string;
-  index: string;
-  data: Record<string, unknown>;
-  tags: string[];
+interface Flag {
+  name: string;
+  description?: string;
+  enabled: boolean;
+  conditions?: FlagCondition[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface UpsertSearchDocumentBody {
-  id: string;
-  tenant: string;
-  index: string;
-  data: Record<string, unknown>;
+interface UpsertFlagBody {
+  name: string;
+  description?: string;
+  enabled: boolean;
+  conditions?: FlagCondition[];
 }
 
 declare class StorageAdapter {
-  getDocuments(options: GetDocumentsOptions): Promise<SearchDocument[]>;
-  getDocumentsByTags(tags: string[], options: GetDocumentsOptions ): Promise<SearchDocument[]>;
-  getDocument(id: string): Promise<SearchDocument | null>;
-  upsertDocument(item: UpsertSearchDocumentBody, tags: string[]): Promise<SearchDocument>;
-  deleteDocument(id: string): Promise<void>;
-  getTags(): Promise<string[]>;
+  getFlags(disabled: boolean = false): Promise<Flag[]>;
+  getFlag(name: string): Promise<Flag | null>;
+  upsertFlag(flag: UpsertFlagBody): Promise<Flag>;
+  deleteFlag(name: string): Promise<void>:
 }
 ```
 
@@ -53,8 +50,8 @@ declare class StorageAdapter {
 
 ## Built-in `StorageAdapter`s
 
-`@workertown/search` provides several built-in `StorageAdapter`s that can be
-used via the `runtime` configuration option.
+`@workertown/feature-flags` provides several built-in `StorageAdapter`s that can
+be used via the `runtime` configuration option.
 
 ### `D1StorageAdapter`
 
@@ -63,8 +60,8 @@ other `StorageAdapter` is specified. It uses Cloudflare's
 [D1](https://developers.cloudflare.com/d1/) to store the data.
 
 ```ts
-import { search } from "@workertown/search";
-import { D1StorageAdapter } from "@workertown/search/storage/d1";
+import { search } from "@workertown/feature-flags";
+import { D1StorageAdapter } from "@workertown/feature-flags/storage/d1";
 
 export default search({
   runtime: (options, env) => ({
@@ -80,8 +77,8 @@ The `PlanetscaleStorageAdapter` uses [Planetscale](https://planetscale.com/) (a
 distributed MySQL solution) to store the data.
 
 ```ts
-import { search } from "@workertown/search";
-import { PlanetscaleStorageAdapter } from "@workertown/search/storage/planetscale";
+import { search } from "@workertown/feature-flags";
+import { PlanetscaleStorageAdapter } from "@workertown/feature-flags/storage/planetscale";
 
 export default search({
   runtime: (options, env) => ({
@@ -102,8 +99,8 @@ store the data. It is intended to be used in [NodeJS](https://nodejs.org/)
 environments as it requires access to file storage.
 
 ```ts
-import { search } from "@workertown/search";
-import { SqliteStorageAdapter } from "@workertown/search/storage/sqlite";
+import { search } from "@workertown/feature-flags";
+import { SqliteStorageAdapter } from "@workertown/feature-flags/storage/sqlite";
 
 export default search({
   runtime: (options, env) => ({
@@ -119,8 +116,8 @@ The `TursoStorageAdapter` uses [Turso](https://turso.tech/) (a distributed
 SQLite solution) to store the data.
 
 ```ts
-import { search } from "@workertown/search";
-import { TursoStorageAdapter } from "@workertown/search/storage/turso";
+import { search } from "@workertown/feature-flags";
+import { TursoStorageAdapter } from "@workertown/feature-flags/storage/turso";
 
 export default search({
   runtime: (options, env) => ({
@@ -140,8 +137,8 @@ memory. It is **not** recommended for production use, but can be useful for
 development and testing.
 
 ```ts
-import { search } from "@workertown/search";
-import { MemoryStorageAdapter } from "@workertown/search/storage/memory";
+import { search } from "@workertown/feature-flags";
+import { MemoryStorageAdapter } from "@workertown/feature-flags/storage/memory";
 
 export default search({
   runtime: (options, env) => ({
@@ -159,16 +156,14 @@ You can also provide your own **custom** `CacheAdapter` by extending the
 `CacheAdapter` class.
 
 ```ts
-import { search } from "@workertown/search";
-import { StorageAdapter } from "@workertown/search/storage";
+import { search } from "@workertown/feature-flags";
+import { StorageAdapter } from "@workertown/feature-flags/storage";
 
 class CustomStorageAdapter extends StorageAdapter {
-  async getDocuments(options: GetDocumentsOptions) { /* ... */ },
-  async getDocumentsByTags(tags: string[], options: GetDocumentsOptions ) { /* ... */ },
-  async getDocument(id: string) { /* ... */ },
-  async upsertDocument(item: UpsertSearchDocumentBody, tags: string[]) { /* ... */ },
-  async deleteDocument(id: string) { /* ... */ },
-  async getTags() { /* ... */ },
+  async getFlags(disabled: boolean = false) { /* ... */ },
+  async getFlag(name: string) { /* ... */ },
+  async upsertFlag(flag: UpsertFlagBody) { /* ... */ },
+  async deleteFlag(name: string) { /* ... */ },
 }
 
 export default search({

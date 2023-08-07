@@ -1,10 +1,10 @@
 ---
 title: "Configuration"
-description: How to configure @workertown/search to best suite your requirements.
+description: How to configure @workertown/feature-flags to best suite your requirements.
 ---
 
-As with all Workertown services, `@workertown/search` is highly configurable.
-This page describes the various configuration options available.
+As with all Workertown services, `@workertown/feature-flags` is highly
+configurable. This page describes the various configuration options available.
 
 **All** configuration options are **optional**.
 
@@ -29,13 +29,13 @@ environment variables. For details on how to configure the `auth` property, see
 By default, the `auth.apiKey` strategy is **enabled** and configured as follows:
 
 ```ts
-import { search } from "@workertown/search";
+import { featureFlags } from "@workertown/feature-flags";
 
-export default search({
+export default featureFlags({
   auth: {
     apiKey: {
       env: {
-        apiKey: "SEARCH_API_KEY",
+        apiKey: "FLAGS_API_KEY",
       },
     },
   },
@@ -50,14 +50,14 @@ For details on how to configure the `auth.apiKey` strategy, see
 By default, the `auth.basic` strategy is **enabled** and configured as follows:
 
 ```ts
-import { search } from "@workertown/search";
+import { featureFlags } from "@workertown/feature-flags";
 
-export default search({
+export default featureFlags({
   auth: {
     basic: {
       env: {
-        username: "SEARCH_USERNAME",
-        password: "SEARCH_PASSWORD",
+        username: "FLAGS_USERNAME",
+        password: "FLAGS_PASSWORD",
       },
     },
   },
@@ -73,16 +73,16 @@ For details on how to configure the `auth.basic` strategy, see
 By default, the `auth.jwt` strategy is **enabled** and configured as follows:
 
 ```ts
-import { search } from "@workertown/search";
+import { featureFlags } from "@workertown/feature-flags";
 
-export default search({
+export default featureFlags({
   auth: {
     jwt: {
       env: {
-        jwksUrl: "SEARCH_JWKS_URL",
-        secret: "SEARCH_JWT_SECRET",
-        audience: "SEARCH_JWT_AUDIENCE",
-        issuer: "SEARCH_JWT_ISSUER",
+        jwksUrl: "FLAGS_JWKS_URL",
+        secret: "FLAGS_JWT_SECRET",
+        audience: "FLAGS_JWT_AUDIENCE",
+        issuer: "FLAGS_JWT_ISSUER",
       },
     },
   },
@@ -114,16 +114,14 @@ The `endpoints` property is used to configure the various endpoints exposed by
 the service. By default, the endpoints are configured as follows:
 
 ```ts
-import { search } from "@workertown/search";
+import { featureFlags } from "@workertown/feature-flags";
 
-export default search({
+export default featureFlags({
   endpoints: {
     v1: {
       admin: "/v1/admin",
-      documents: "/v1/docs",
-      search: "/v1/search",
-      suggest: "/v1/suggest",
-      tags: "/v1/tags",
+      ask: "/v1/ask",
+      flags: "/v1/flags",
     },
     public: "/",
   },
@@ -131,9 +129,8 @@ export default search({
 ```
 
 Changing these endpoints will **only** change the prefix of a particular
-endpoint, **not** the entire path - e.g. setting `endpoints.v1.search` to
-`"custom-search"` will change `/v1/search/:tenant/:index` to
-`/custom-search/:tenant/:index`.
+endpoint, **not** the entire path - e.g. setting `endpoints.v1.flags` to
+`"custom-flags"` will change `/v1/flags` to `/custom-flags`.
 
 ---
 
@@ -143,12 +140,12 @@ The `env` property is used to configure the various environment variables used
 by the service. By default, the environment variables are configured as follows:
 
 ```ts
-import { search } from "@workertown/search";
+import { featureFlags } from "@workertown/feature-flags";
 
-export default search({
+export default featureFlags({
   env: {
-    cache: "SEARCH_CACHE",
-    db: "SEARCH_DB",
+    cache: "FLAGS_CACHE",
+    db: "FLAGS_DB",
   },
 });
 ```
@@ -182,7 +179,7 @@ By default, the logger is **enabled**. For details on how to configure the
 
 ## `runtime`
 
-The `@workertown/search` package expects a `runtime` property that returns a
+The `@workertown/feature-flags` package expects a `runtime` property that returns a
 `cache` value and a `storage` value. This can *either* be an `object` with those
 properties set, or a `function` that returns an `object` with those properties
 set.
@@ -192,43 +189,43 @@ For more details on how runtime in WorkerTown services work, see
 
 ### The default runtime
 
-The **default** runtime for `@workertown/search` assumes that the service is
+The **default** runtime for `@workertown/feature-flags` assumes that the service is
 running in a Cloudflare Worker with a
 [KV namespace](https://developers.cloudflare.com/workers/learning/how-kv-works/)
 bound for the `cache` and [D1 database](https://developers.cloudflare.com/d1/)
 bound for the `storage`.
 
-This **default runtime** is exposed via `@workertown/search/cloudflare-workers`.
+This **default runtime** is exposed via `@workertown/feature-flags/cloudflare-workers`.
 
 ```ts
-import { search } from "@workertown/search";
-import { runtime } from "@workertown/search/cloudflare-workers";
+import { featureFlags } from "@workertown/feature-flags";
+import { runtime } from "@workertown/feature-flags/cloudflare-workers";
 
-export default search({ runtime });
+export default featureFlags({ runtime });
 ```
 
 ### Built-in runtimes
 
-The `@workertown/search` package comes with a number of built-in runtimes that
+The `@workertown/feature-flags` package comes with a number of built-in runtimes that
 can be used to configure the service for a particular environment.
 
 Aside from the **default** [Cloudflare Workers runtime](#the-default-runtime),
-`@workertown/search` also provides a runtime for [NodeJS](https://nodejs.org/)
-and a `test` runtime.
+`@workertown/feature-flags` also provides a runtime for
+[NodeJS](https://nodejs.org/) and a `test` runtime.
 
 ```ts
 import { serve } from "@workertown/node";
-import { search } from "@workertown/search";
-import { runtime } from "@workertown/search/node";
+import { featureFlags } from "@workertown/feature-flags";
+import { runtime } from "@workertown/feature-flags/node";
 
-serve(search({ runtime }));
+serve(featureFlags({ runtime }));
 ```
 
 ```ts
-import { search } from "@workertown/search";
-import { runtime } from "@workertown/search/test";
+import { featureFlags } from "@workertown/feature-flags";
+import { runtime } from "@workertown/feature-flags/test";
 
-export default search({ runtime });
+export default featureFlags({ runtime });
 ```
 
 ### Custom runtimes
@@ -241,11 +238,11 @@ to your adapters of choice.
 Setting it to `false` **diables** caching for **all** requests.
 
 ```ts
-import { search } from "@workertown/search";
-import { CacheAdapter } from "@workertown/search/cache";
-import { StorageAdapter } from "@workertown/search/storage";
+import { featureFlags } from "@workertown/feature-flags";
+import { CacheAdapter } from "@workertown/feature-flags/cache";
+import { StorageAdapter } from "@workertown/feature-flags/storage";
 
-export default search({
+export default featureFlags({
   runtime: {
     cache: false, // Or new CacheAdapter(...)
     storage: new StorageAdapter(/* ... */),
@@ -254,113 +251,15 @@ export default search({
 ```
 
 ```ts
-import { search } from "@workertown/search";
-import { CacheAdapter } from "@workertown/search/cache";
-import { StorageAdapter } from "@workertown/search/storage";
+import { featureFlags } from "@workertown/feature-flags";
+import { CacheAdapter } from "@workertown/feature-flags/cache";
+import { StorageAdapter } from "@workertown/feature-flags/storage";
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false, // Or new CacheAdapter(...)
     storage: new StorageAdapter(/* ... */),
   }),
-});
-```
-
----
-
-## `search`
-
-The `search` property is used to configure how search/suggestions are run via
-[Minisearch](https://www.npmjs.com/package/minisearch).
-
-By default, the `search` property is configured as follows:
-
-```ts
-import { search } from "@workertown/search";
-
-export default search({
-  search: {
-    scanRange: 1000,
-    stopWords: [/* ... */], // See https://gist.github.com/sebleier/554280 for the default list of stop words used
-  },
-});
-```
-
-### `search.boostDocument`
-
-`search.boostDocument` is an *optional* function that can be used to boost
-a given document. It receives the `document` and the matching `term` and returns
-a `number` to be added to the `document`'s score to boost it.
-
-```ts
-import { search } from "@workertown/search";
-
-export default search({
-  search: {
-    boostDocument: (document, term) => {
-      if (term === "boosted") {
-        return 1;
-      }
-
-      return 0;
-    },
-  },
-});
-```
-
-### `search.filterDocument`
-
-`search.filterDocument` is an *optional* function that can be used to filter
-a given document. It receives the `document` and it's `result` (the search
-result) and returns a `boolean` indicating whether the `document` should be
-included in the results.
-
-```ts
-import { search } from "@workertown/search";
-
-export default search({
-  search: {
-    filterDocument: (document, result) => {
-      if (result.score < 0.2) {
-        return false;
-      }
-
-      return true;
-    },
-  },
-});
-```
-
-### `search.scanRange`
-
-`search.scanRange` is an *optional* number that can be used to configure the
-number of documents to scan out of `storage` to perform a search on. This
-property can be used to tweak performance in situations where memory constraints
-are affecting your search requests. By default, it is set to `1000`.
-
-```ts
-import { search } from "@workertown/search";
-
-export default search({
-  search: {
-    scanRange: 100,
-  },
-});
-```
-
-### `search.stopWords`
-
-`search.stopWords` is an *optional* `Set<string>` (or `string[]`) that can be
-contains a list of words to **not** be searched on during a search/suggestion.
-The default list used can be found [here](https://gist.github.com/sebleier/554280).
-
-```ts
-import { search } from "@workertown/search";
-
-export default search({
-  search: {
-    stopWords: new Set(["a", "an", "the"]),
-  },
 });
 ```
 

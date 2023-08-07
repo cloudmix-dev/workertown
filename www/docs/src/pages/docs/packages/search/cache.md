@@ -36,7 +36,7 @@ interface SearchDocument {
 
 declare class CacheAdapter {
   get<SearchDocument[]>(key: string): Promise<T | null>;
-  set(key: string, value: unknown, ttl?: number): Promise<void>;
+  set(key: string, value: SearchDocument, ttl?: number): Promise<void>;
   delete(key?: string): Promise<void>;
 }
 ```
@@ -62,7 +62,7 @@ import { StorageAdapter } from "@workertown/search/storage";
 
 export default search({
   runtime: (options, env) => ({
-    cache: new KVCacheAdapter({ kv: env.KV }), // `kv` is the KVNamespace bound to the CloudflareWorker to use for the cache
+    cache: new KVCacheAdapter({ kv: env.KV }), // `kv` is the KVNamespace bound to the Cloudflare Worker to use for the cache
     storage: new StorageAdapter(/* ... */),
   }),
 });
@@ -119,12 +119,12 @@ You can also provide your own **custom** `CacheAdapter` by extending the
 
 ```ts
 import { search } from "@workertown/search";
-import { CacheAdapter } from "@workertown/search/cache";
+import { CacheAdapter, type SearchDocument } from "@workertown/search/cache";
 import { StorageAdapter } from "@workertown/search/storage";
 
 class CustomCacheAdapter extends CacheAdapter {
   async get(key: string) { /* .. */ },
-  async set(key: string, value: unknown, ttl?: number) { /* .. */ },
+  async set(key: string, value: SearchDocument, ttl?: number) { /* .. */ },
   async delete(key?: string) { /* .. */ },
 }
 

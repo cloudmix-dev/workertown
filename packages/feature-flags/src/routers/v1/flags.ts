@@ -2,7 +2,7 @@ import { createRouter, validate } from "@workertown/internal-hono";
 import { z } from "zod";
 
 import { CACHE } from "../../constants.js";
-import { Flag } from "../../storage/storage-adapter.js";
+import { type Flag } from "../../storage/storage-adapter.js";
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
@@ -50,7 +50,7 @@ router.put(
     "json",
     z.object({
       description: z.string().optional(),
-      enabled: z.boolean().default(true),
+      enabled: z.boolean().optional().default(true),
       conditions: z
         .array(
           z.object({
@@ -99,12 +99,15 @@ router.put(
 );
 
 router.delete("/:name", async (ctx) => {
+  const cache = ctx.get("cache");
   const storage = ctx.get("storage");
   const name = ctx.req.param("name");
 
   await storage.deleteFlag(name);
+  await cache.delete(CACHE.FLAGS.ALL);
+  await cache.delete(CACHE.FLAGS.ENABLED);
 
-  return ctx.json({ status: 200, success: true, data: true });
+  return ctx.json({ status: 200, success: true, data: { name } });
 });
 
 export { router };
