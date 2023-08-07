@@ -11,6 +11,7 @@ const SEARCH_DOCUMENTS: SearchDocument[] = [
       title: "Test document 1",
       content: "This is some test content",
     },
+    tags: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -22,6 +23,7 @@ const SEARCH_DOCUMENTS: SearchDocument[] = [
       title: "Test document 2",
       content: "This is some more test content",
     },
+    tags: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -33,6 +35,7 @@ const SEARCH_DOCUMENTS: SearchDocument[] = [
       title: "Test document 3",
       content: "This doesn't contain that 't' word",
     },
+    tags: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -44,6 +47,7 @@ const SEARCH_DOCUMENTS: SearchDocument[] = [
       title: "Test document 4",
       content: "This index contain that 't' word",
     },
+    tags: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -55,6 +59,7 @@ const SEARCH_DOCUMENTS: SearchDocument[] = [
       title: "Test document 5",
       content: "This tenant or index contain that 't' word",
     },
+    tags: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -73,6 +78,7 @@ export function createTestService(
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
+    logger: false,
     runtime: (config, env) =>
       runtime(config, env, {
         cache: false,

@@ -15,6 +15,7 @@ export function createTestService(
   return search({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
+    logger: false,
     runtime: (config, env) => runtime(config, env, { initialValues }),
   });
 }

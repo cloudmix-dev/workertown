@@ -4,7 +4,12 @@ import { type WorkertownHono, createServer } from "@workertown/internal-hono";
 export function combine(...args: WorkertownHono<any>[]) {
   const server = args.reduce(
     (acc, hono) => acc.route("/", hono),
-    createServer(),
+    createServer({
+      access: { ip: false, rateLimit: false },
+      auth: { apiKey: false, basic: false, jwt: false },
+      logger: false,
+      sentry: false,
+    }),
   );
 
   return server;

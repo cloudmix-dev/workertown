@@ -8,8 +8,8 @@ interface TestResponse {
 }
 
 test("combine", async (t) => {
-  const server1 = createServer();
-  const server2 = createServer();
+  const server1 = createServer({ logger: false });
+  const server2 = createServer({ logger: false });
 
   server1.get("/server-1/test", async (ctx) => ctx.json({ success: true }));
   server2.get("/server-2/test", async (ctx) => ctx.json({ success: true }));

@@ -27,6 +27,10 @@ export default combine(
 // ⬆️ A combined search and Feature Flags API
 ```
 
+The combined API will have it's `access`, `auth`, `logger` and `sentry` options
+**disabled**, so these **must** be configured on the individual services as they
+apply.
+
 {% callout type="warning" title="Remember to set the `basePath`!" %}
 By default, combined services are mounted at the root of the API (`/`). If you
 would like to _namespace_ each service within the combined API, you must set

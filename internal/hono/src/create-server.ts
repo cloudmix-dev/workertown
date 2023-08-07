@@ -11,12 +11,14 @@ import {
   type BasicOptions,
   type IpOptions,
   type JwtOptions,
+  type LoggerFunc,
   type RateLimitOptions,
   type SentryOptions,
   apiKey as apiKeyMiddleware,
   basic as basicMiddleware,
   ip as ipMiddleware,
   jwt as jwtMiddleware,
+  logger as loggerMiddleware,
   rateLimit as rateLimitMiddleware,
   sentry as sentryMiddleware,
 } from "./middleware/index.js";
@@ -60,6 +62,7 @@ export interface CreateServerOptions {
         exposeHeaders?: string[];
       }
     | false;
+  logger?: LoggerFunc | false;
   sentry?: SentryOptions | false;
 }
 
@@ -71,6 +74,7 @@ export function createServer<T extends Context>(
     auth: authOptions,
     basePath = "/",
     cors: corsOptions,
+    logger: loggerFunc,
     sentry: sentryOptions,
   } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
@@ -90,6 +94,10 @@ export function createServer<T extends Context>(
 
   if (accessOptions?.rateLimit) {
     server.use("*", rateLimitMiddleware(accessOptions?.rateLimit));
+  }
+
+  if (loggerFunc !== false) {
+    server.use("*", loggerMiddleware(loggerFunc));
   }
 
   if (sentryOptions) {
