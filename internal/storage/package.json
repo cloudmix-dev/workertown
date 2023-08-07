@@ -42,7 +42,7 @@
     "kysely-planetscale": "~1.4.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "~4.20230710.1",
+    "@cloudflare/workers-types": "~4.20230801.0",
     "@planetscale/database": "~1.10.0",
     "better-sqlite3": "~8.5.0"
   },
