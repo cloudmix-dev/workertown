@@ -50,6 +50,28 @@ const server = search();
 server.fire();
 ```
 
+## Google Cloud Functions
+
+```ts
+import { search } from "@workertown/search";
+import { serve } from "@workertown/google-cloud-functions";
+
+serve(search());
+```
+
+## Google Cloud Run
+
+```ts
+import { serve } from "@workertown/node";
+import { search } from "@workertown/search";
+
+const server = search();
+
+serve(server, {
+  port: 8080,
+});
+```
+
 ## Lagon
 
 ```ts

@@ -13,12 +13,14 @@ import {
   serve as awsLambdaServe,
 } from "./aws-lambda.js";
 import { serve as cloudflarePagesServe } from "./cloudflare-pages.js";
+import { serve as googleCloudFunctionsServe } from "./google-cloud-functions.js";
 import { serve as vercelServe } from "./vercel.js";
 
 export {
   awsLambdaEdgeServe,
   awsLambdaServe,
   cloudflarePagesServe,
+  googleCloudFunctionsServe,
   vercelServe,
   type APIGatewayProxyEvent,
   type APIGatewayProxyEventV2,
