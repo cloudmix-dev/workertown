@@ -193,6 +193,38 @@ export default search({
 To see how the `endpoints` option works in general, see
 [routing](/docs/core-concepts/routing).
 
+### `logger`
+
+By default, all Workertown services log to `console.log` in the format:
+
+```bash
+<METHOD> <URL PATH> <STATUS CODE> <RESPONSE TIME>ms
+```
+
+This logger functionality can be customised by passing in a `logger` function
+that takes the `method`, URL `path`, `status`, and `elapsed` time as arguments
+that returns `void` or `Promise<void>`.
+
+```ts
+import { search } from "@workertown/search";
+
+export defult search({
+  logger: (method: string, path: string, status: number, elapsed: string) => {
+    console.log(status, method, path, elapsed);
+  },
+});
+```
+
+It can be **disabled** entirely by passing in `false` instead.
+
+```ts
+import { search } from "@workertown/search";
+
+export defult search({
+  logger: false,
+});
+```
+
 ### `runtime`
 
 All Workertown services expose the ability to customise the runtime options to
