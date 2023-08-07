@@ -19,7 +19,7 @@ Workertown provides...
 
 {% quick-link title="Events" icon="events" description="Kafka-like events streaming." /%}
 
-{% quick-link title="Feature Flags" icon="flags" description="Feature flags made simple." /%}
+{% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags/introduction" description="Feature flags made simple." /%}
 
 {% quick-link title="KV" icon="kv" description="Simple key/value storage." /%}
 
