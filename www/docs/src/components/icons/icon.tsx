@@ -4,6 +4,7 @@ import { useId } from "react";
 import { AuthIcon } from "./auth-icon";
 import { CMSIcon } from "./cms-icon";
 import { EventsIcon } from "./events-icon";
+import { FilesIcon } from "./files-icon";
 import { FlagsIcon } from "./flags-icon";
 import { InstallationIcon } from "./installation-icon";
 import { KVIcon } from "./kv-icon";
@@ -20,6 +21,7 @@ const icons = {
   auth: AuthIcon,
   cms: CMSIcon,
   events: EventsIcon,
+  files: FilesIcon,
   flags: FlagsIcon,
   installation: InstallationIcon,
   kv: KVIcon,

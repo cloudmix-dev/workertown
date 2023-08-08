@@ -264,7 +264,14 @@ function Header({ navigation }) {
       {version && (
         <div className="flex justify-center items-center px-3 py-1 bg-yellow-400 text-yellow-950 text-xs font-semibold">
           The current version is{" "}
-          <span className="ml-1 underline">{version}</span>
+          <a
+            href="https://github.com/cloudmix-dev/workertown"
+            target="_blank"
+            rel="noreferrer"
+            className="ml-1 underline"
+          >
+            {version}
+          </a>
         </div>
       )}
     </header>
