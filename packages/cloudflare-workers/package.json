@@ -1,6 +1,6 @@
 {
   "name": "@workertown/cloudflare-workers",
-  "version": "0.0.2-alpha.14",
+  "version": "0.0.2-alpha.15",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

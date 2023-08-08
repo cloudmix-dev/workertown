@@ -1,6 +1,6 @@
 {
   "name": "@workertown/google-cloud-functions",
-  "version": "0.0.2-alpha.14",
+  "version": "0.0.2-alpha.15",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,7 +9,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.2-alpha.14"
+    "@workertown/internal-hono": "~0.0.2-alpha.15"
   },
   "engines": {
     "node": ">=18.0.0"

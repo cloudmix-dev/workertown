@@ -1,5 +1,11 @@
 # @workertown/cloudflare-workers
 
+## 0.0.2-alpha.15
+
+### Patch Changes
+
+- Alpha.15 Release
+
 ## 0.0.2-alpha.14
 
 ### Patch Changes
