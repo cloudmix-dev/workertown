@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { startTransition, useCallback, useEffect, useState } from "react";
 
+import { cn } from "../../lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "../atoms/alert";
 import { Button } from "../atoms/button";
 import { Prose } from "../prose/prose";
@@ -12,56 +13,6 @@ import { Hero } from "./hero";
 import { MobileNavigation } from "./mobile-navigation";
 import { Navigation } from "./navigation";
 import { Search } from "./search";
-
-// More or less taken from: https://github.com/uidotdev/usehooks/blob/experimental/index.js#L792
-// function useLocalStorage(key, initialValue) {
-//   const isBrowser = typeof globalThis?.window !== "undefined";
-//   const readValue = useCallback(() => {
-//     try {
-//       const item = window.localStorage.getItem(key);
-
-//       return item ? JSON.parse(item) : initialValue;
-//     } catch (_) {
-//       return initialValue;
-//     }
-//   }, [key, initialValue]);
-//   const [localState, setLocalState] = useState(readValue);
-//   const handleSetState = useCallback(
-//     (value) => {
-//       try {
-//         const nextState =
-//           typeof value === "function" ? value(localState) : value;
-//         window.localStorage.setItem(key, JSON.stringify(nextState));
-//         setLocalState(nextState);
-//         window.dispatchEvent(new Event("local-storage"));
-//       } catch (e) {
-//         console.warn(e);
-//       }
-//     },
-//     [key, localState],
-//   );
-//   const onStorageChange = useCallback((event) => {
-//     if (event?.key && event.key !== key) {
-//       return;
-//     }
-
-//     setLocalState(readValue());
-//   }, []);
-
-//   useEffect(() => {
-//     if (isBrowser) {
-//       window.addEventListener("storage", onStorageChange);
-//       window.addEventListener("local-storage", onStorageChange);
-
-//       return () => {
-//         window.removeEventListener("storage", onStorageChange);
-//         window.removeEventListener("local-storage", onStorageChange);
-//       };
-//     }
-//   }, [isBrowser]);
-
-//   return [localState, handleSetState];
-// }
 
 export const navigation: {
   title: string;
@@ -191,26 +142,27 @@ function GitHubIcon(props) {
 function Header({ navigation }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [version, setVersion] = useState<string | null>(null);
+  const [isPreVersion, setIsPreVersion] = useState(false);
 
   useEffect(() => {
-    if (!version) {
-      (async () => {
-        try {
-          const res = await fetch(
-            "https://registry.npmjs.org/@workertown/search/latest",
-          );
+    (async () => {
+      try {
+        const res = await fetch(
+          "https://registry.npmjs.org/@workertown/search/latest",
+        );
 
-          if (res.ok) {
-            const { version } = (await res.json()) as { version: string };
+        if (res.ok) {
+          const { version } = (await res.json()) as { version: string };
 
-            if (version.includes("alpha") || version.includes("beta")) {
-              setVersion(version);
-            }
+          setVersion(version);
+
+          if (version.includes("alpha") || version.includes("beta")) {
+            setIsPreVersion(true);
           }
-        } catch (_) {}
-      })();
-    }
-  }, [version]);
+        }
+      } catch (_) {}
+    })();
+  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -262,7 +214,12 @@ function Header({ navigation }) {
         </div>
       </div>
       {version && (
-        <div className="flex justify-center items-center px-3 py-1 bg-yellow-400 text-yellow-950 text-xs font-semibold">
+        <div
+          className={cn(
+            "flex justify-center items-center px-3 py-1 text-xs font-semibold",
+            isPreVersion ? "bg-yellow-400 text-yellow-950" : "bg-zinc-800",
+          )}
+        >
           The current version is{" "}
           <a
             href="https://github.com/cloudmix-dev/workertown"
