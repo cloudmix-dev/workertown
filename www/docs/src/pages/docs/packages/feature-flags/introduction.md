@@ -136,14 +136,41 @@ A condition is made up of three parts:
 The `field` and `value` can be any valid `JSON` value, and the `operator` can be
 any of the following:
 
-- `eq` - Equals (`string` / `number` / `boolean`)
-- `neq` - Not equals (`string` / `number` / `boolean`)
-- `gt` - Greater than (`string` / `number`)
-- `gte` - Greater than or equal to (`string` / `number`)
-- `lt` - Less than (`string` / `number`)
-- `lte` - Less than or equal to (`string` / `number`)
-- `in` - In (`Array<string>` / `Array<number>` / `Array<boolean>`)
-- `nin` - Not in (`Array<string>` / `Array<number>` / `Array<boolean>`)
+{% table %}
+* Operator
+* Description
+* Types
+---
+* `neq`
+* Not equals
+* `string` / `number` / `boolean`
+---
+* `gt`
+* Greater than
+* `string` / `number`
+---
+* `gte`
+* Greater than or equal to
+* `string` / `number`
+---
+* `lt`
+* Less than
+* `string` / `number`
+---
+* `lte`
+* Less than or equal to
+* `string` / `number`
+---
+* `in`
+* In
+* `Array<string>` / `Array<number>` / `Array<boolean>`
+---
+* `nin`
+* Not in
+* `Array<string>` / `Array<number>` / `Array<boolean>`
+{% /table %}
+
+Any invalid conditions will be **ignored** at runtime when evaluating the flag.
 
 An example flag conditon looks like this:
 
