@@ -37,6 +37,10 @@
       "default": "./dist/storage/sqlite.js",
       "types": "./dist/storage/sqlite.d.ts"
     },
+    "./storage/upstash-redis": {
+      "default": "./dist/storage/upstash-redis.js",
+      "types": "./dist/storage/upstash-redis.d.ts"
+    },
     "./storage/turso": {
       "default": "./dist/storage/turso.js",
       "types": "./dist/storage/turso.d.ts"
@@ -61,6 +65,10 @@
       "default": "./dist/runtime/cloudflare-workers.js",
       "types": "./dist/runtime/cloudflare-workers.d.ts"
     },
+    "./edge": {
+      "default": "./dist/runtime/edge.js",
+      "types": "./dist/runtime/edge.d.ts"
+    },
     "./node": {
       "default": "./dist/runtime/node.js",
       "types": "./dist/runtime/node.d.ts"
@@ -82,10 +90,12 @@
     "zod": "~3.21.4"
   },
   "devDependencies": {
+    "@upstash/redis": "~1.22.0",
     "@workertown/internal-types": "~0.0.2-alpha.15"
   },
   "peerDependencies": {
     "@planetscale/database": "~1.8.0",
+    "@upstash/redis": "~1.22.0",
     "better-sqlite3": "~8.4.0"
   },
   "engines": {

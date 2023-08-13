@@ -80,8 +80,8 @@ export default search({
   runtime: {
     storage: new DynamoDBStorageAdapter({
       credentials: {
-        accessKeyId: "...", // The AWS access key ID to use for authentication
-        secretAccessKey: "...", // The AWS secret access key to use for authentication
+        accessKeyId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // The AWS access key ID to use for authentication
+        secretAccessKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // The AWS secret access key to use for authentication
       },
       region: "...", // The AWS region the DynamoDB table is located in
       table: "example_table", // Optionally, the name of the DynamoDB table - otherwise each service has a default

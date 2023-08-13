@@ -206,7 +206,7 @@ curl -X POST \
   https://flags.example.com/v1/ask
 ```
 
-You will receive a `200 OK` response listing the **enabled** feature fkags for
+You will receive a `200 OK` response listing the **enabled** feature flags for
 the request if it was successful.
 
 ```json

@@ -53,7 +53,10 @@ quickly get up and running in a specific environment.
 
 The `cloudflare-workers` runtime is the **default** runtime for all Workertown
 services, and so any Workertown service that **does not** specify a `runtime`
-will use this by default.
+will use this by default. This runtime requires
+[D1](https://developers.cloudflare.com/d1/) for storage, and *optionally*
+[KV](https://developers.cloudflare.com/workers/learning/how-kv-works/) for the
+cache (where caching is supported).
 
 Each Workertown package exposes a Cloudflare Workers `runtime` that can be used
 when creating the service.
@@ -65,10 +68,53 @@ import { runtime } from "@workertown/search/cloudflare-workers";
 export default search({ runtime });
 ```
 
+The `cloudflare-workers` runtime will attempt to retrieve the necessary
+[KV](https://developers.cloudflare.com/workers/learning/how-kv-works/) and
+[D1](https://developers.cloudflare.com/d1/) bindings from the environment based
+on the `env.cache` and `env.db` values in the service's `options`, e.g. if
+`env.cache` is set to `MY_CACHE` then the runtime will attempt to retrieve the
+[KV](https://developers.cloudflare.com/workers/learning/how-kv-works/) binding
+from `env.MY_CACHE`.
+
+### Edge
+
+The `edge` runtime is a runtime that can be used to run Workertown services
+within edge (WinterCG compatible) environment. This environment will use
+[Planetscale](https://planetscale.com/) for storage and
+[Upstash Redis](https://docs.upstash.com/redis) for the cache (where caching is
+supported).
+
+Each Workertown package exposes an edge `runtime` that can be used when creating
+the service.
+
+```ts
+import { search } from "@workertown/search";
+import { runtime } from "@workertown/search/edge";
+
+export default search({ runtime });
+```
+
+The `edge` runtime will attempt to retrieve the necessary
+[Planetscale](https://planetscale.com/) and
+[Upstash Redis](https://docs.upstash.com/redis) options from the environment,
+based on the `env.db` and `env.cache` values in the service's `options`, e.g. if
+`env.db` is set to `MY_DB` then the runtime will attempt to retrieve the
+[Planetscale](https://planetscale.com/) URL from `env.MY_DB`.
+
+The [Planetscale](https://planetscale.com/) URL should be set in the environment
+in the format `mysql://<USERNAME>:<PASSWORD>@<URL>`, where `USERNAME` and
+`PASSWORD` are your database credentials.
+
+The [Upstash Redis](https://docs.upstash.com/redis) URL should be set in the
+environment in the format `https://<TOKEN>@<URL>`, where `TOKEN` is your
+authentication token.
+
 ### NodeJS
 
 The `nodejs` runtime is a runtime that can be used to run Workertown services
-within a NodeJS environment.
+within a NodeJS environment. This environment will use 
+[Sqlite](https://www.sqlite.org/index.html) for storage, and an in-memory cache
+for the cache (where caching is supported).
 
 Each Workertown package exposes a NodeJS `runtime` that can be used when
 creating the service.
@@ -79,6 +125,12 @@ import { runtime } from "@workertown/search/node"
 
 export default search({ runtime });
 ```
+
+The `nodejs` runtime will attempt to retrieve the
+[Sqlite](https://www.sqlite.org/index.html) file path from the environment based
+on the `env.db` value in the service's `options`, e.g. if `env.db` is set to
+`MY_DB` then the runtime will attempt to load/create the database file at the
+value set in `process.env.MY_DB` (**as long as** it ends in `.sqlite`).
 
 ### Test runtime
 

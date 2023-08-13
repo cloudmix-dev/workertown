@@ -21,6 +21,10 @@
       "default": "./dist/cache/kv.js",
       "types": "./dist/cache/kv.d.ts"
     },
+    "./cache/upstash-redis": {
+      "default": "./dist/cache/upstash-redis.js",
+      "types": "./dist/cache/upstash-redis.d.ts"
+    },
     "./cache/memory": {
       "default": "./dist/cache/memory.js",
       "types": "./dist/cache/memory.d.ts"
@@ -73,6 +77,10 @@
       "default": "./dist/runtime/cloudflare-workers.js",
       "types": "./dist/runtime/cloudflare-workers.d.ts"
     },
+    "./edge": {
+      "default": "./dist/runtime/edge.js",
+      "types": "./dist/runtime/edge.d.ts"
+    },
     "./node": {
       "default": "./dist/runtime/node.js",
       "types": "./dist/runtime/node.d.ts"
@@ -104,6 +112,7 @@
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",
     "@planetscale/database": "~1.8.0",
+    "@upstash/redis": "~1.22.0",
     "better-sqlite3": "~8.4.0"
   },
   "engines": {

@@ -2,21 +2,21 @@ import { KVNamespace } from "@cloudflare/workers-types";
 
 import { StorageAdapter } from "./storage-adapter.js";
 
-interface KVAdapterOptions {
+interface KVStorageAdapterOptions {
   kv: KVNamespace;
 }
 
 export class KVStorageAdapter extends StorageAdapter {
   private readonly _kv: KVNamespace;
 
-  constructor(options: KVAdapterOptions) {
+  constructor(options: KVStorageAdapterOptions) {
     super();
 
     this._kv = options.kv;
   }
 
   private _formatKey(key: string) {
-    return key.replaceAll(/\//g, "_");
+    return `kv_${key.replaceAll(/\//g, "_")}`;
   }
 
   public async getValue<T = unknown>(key: string) {
