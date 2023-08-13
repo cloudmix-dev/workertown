@@ -44,9 +44,12 @@ export interface CreateServerOptions {
     jwt?: JwtOptions | false;
     apiKey?: ApiKeyOptions | false;
     authenticateRequest?: (
-      request: WorkertownRequest,
+      request: Request,
       user: User | null,
-    ) => boolean | Promise<boolean>;
+    ) =>
+      | { id: string; [x: string]: unknown }
+      | null
+      | Promise<{ id: string; [y: string]: unknown } | null>;
   };
   basePath?: string;
   cors?: // Copy/pasted from cors/hono
@@ -118,13 +121,13 @@ export function createServer<T extends Context>(
 
   if (typeof authOptions?.authenticateRequest === "function") {
     server.use("*", async (ctx, next) => {
-      const allowed = await authOptions.authenticateRequest?.(
-        ctx.req as unknown as HonoRequest,
+      const user = await authOptions.authenticateRequest?.(
+        ctx.req as unknown as Request,
         // rome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
         (ctx as any).get("user") ?? null,
       );
 
-      if (!allowed) {
+      if (!user?.id) {
         return ctx.json(
           {
             success: false,
@@ -139,6 +142,9 @@ export function createServer<T extends Context>(
           },
         );
       }
+
+      // rome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
+      (ctx as any).set("user", user);
 
       return next();
     });

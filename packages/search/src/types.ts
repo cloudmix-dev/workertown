@@ -1,7 +1,6 @@
 import {
   type CreateServerOptions as BaseCreateServerOptions,
   type WorkertownContext,
-  type WorkertownRequest,
 } from "@workertown/internal-hono";
 import { type SearchResult } from "minisearch";
 
@@ -30,16 +29,12 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
       document: SearchDocument,
       result: SearchResult,
     ) => boolean;
-    scanRange:
-      | number
-      // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
-      | ((req: WorkertownRequest<any, any>) => number | Promise<number>);
+    scanRange: number | ((req: Request) => number | Promise<number>);
     stopWords:
       | string[]
       | Set<string>
       | ((
-          // rome-ignore lint/suspicious/noExplicitAny: We don't care about the specifics of the WorkertownRequest
-          req: WorkertownRequest<any, any>,
+          req: Request,
         ) => string[] | Set<string> | Promise<string[] | Set<string>>);
   };
 }

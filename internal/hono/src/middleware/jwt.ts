@@ -1,4 +1,3 @@
-import { type WorkertownRequest } from "../index.js";
 import { User } from "../types.js";
 import { type fetch as CFFetch } from "@cloudflare/workers-types";
 import { type DeepPartial } from "@workertown/internal-types";
@@ -20,7 +19,7 @@ interface JwtOptions {
     issuer: string;
     audience: string;
   };
-  getCredentials: (req: WorkertownRequest) => string | null | undefined;
+  getCredentials: (req: Request) => string | null | undefined;
   issuer?: string;
   jwks?: {
     url?: string;
@@ -85,7 +84,7 @@ export function jwt(options?: JwtOptionsOptional) {
       const authHeader = ctx.req.headers.get("Authorization");
 
       if (typeof authHeader === "string") {
-        const credentials = getCredentials(ctx.req);
+        const credentials = getCredentials(ctx.req as unknown as Request);
         let signingCredentials: (() => Promise<KeyLike>) | string = secret;
 
         if (credentials) {

@@ -481,8 +481,8 @@ export const OPEN_API_SPEC = {
                     title: "Test item 1",
                     content: "This is some test content",
                   },
-                  createdAt: "<SOME DATE>",
-                  updatedAt: "<SOME DATE>",
+                  createdAt: "2023-08-07T07:48:53.852Z",
+                  updatedAt: "2023-08-07T07:48:53.852Z",
                 },
               },
               score: {

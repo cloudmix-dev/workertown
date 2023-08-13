@@ -73,11 +73,11 @@ router.get(
       ctx.req.valid("query");
     const scanRange =
       typeof scanRangeFn === "function"
-        ? await scanRangeFn(ctx.req)
+        ? await scanRangeFn(ctx.req as unknown as Request)
         : scanRangeFn;
     const stopWords = new Set(
       typeof stopWordsFn === "function"
-        ? await stopWordsFn(ctx.req)
+        ? await stopWordsFn(ctx.req as unknown as Request)
         : stopWordsFn,
     );
     // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents

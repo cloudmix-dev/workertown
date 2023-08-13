@@ -1,4 +1,3 @@
-import { type WorkertownRequest } from "../index.js";
 import { User } from "../types.js";
 import { type DeepPartial } from "@workertown/internal-types";
 import { type MiddlewareHandler } from "hono";
@@ -9,7 +8,7 @@ interface ApiKeyOptions {
   env: {
     apiKey: string;
   };
-  getCredentials: (req: WorkertownRequest) => string | null | undefined;
+  getCredentials: (req: Request) => string | null | undefined;
   verifyCredentials?: (apiKey: string) => boolean | Promise<boolean>;
 }
 
@@ -44,7 +43,7 @@ export function apiKey(options?: ApiKeyOptionsOptional) {
     const user = ctx.get("user") ?? null;
 
     if (user === null) {
-      const credentials = getCredentials(ctx.req);
+      const credentials = getCredentials(ctx.req as unknown as Request);
       const allowed =
         typeof verifyCredentials === "function"
           ? await verifyCredentials(credentials ?? "")

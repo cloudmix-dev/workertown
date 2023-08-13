@@ -308,9 +308,9 @@ export default search({
 
 Every Workertown service supports an `authenticateRequest` function that can be
 passed within the `auth` argument when creating the service. This function
-returns a `boolean` (or a `Promise<boolean>`) that determines whether the
-request is allowed to continue or not. It runs **after** the authentication
-middlewares listed above.
+returns a `User` object or `null` (or a `Promise<User | null>`) where a `User`
+is an `object` with an `id` property that identifies the user. It runs **after**
+the authentication middlewares listed above.
 
 Here is an example:
 
@@ -321,19 +321,19 @@ export default search({
   auth: {
     authenticateRequest: async (req, user) => {
       // `req` is the incoming `Request` object
-      // `user` is the authenticated user object (or `null`)
+      // `user` is the already authenticated `User` object (or `null`)
 
-      return user?.id === "123";
+      return user?.id === "123" ? user : null;
     },
   },
 });
 ```
 
-The `User` object has an `id` property, and a strategy property that is one of
-`jwt`, `api-key`, or `basic`, identifying which strategy was used to
-authenticate the user. If the user was authenticated with the `jwt` strategy,
-the `User` object will also contain a `claims` property containing all of the
-JWT's claims.
+The incoming `user` object (if not `null`) has an `id` property, and a strategy
+property that is one of `jwt`, `api-key`, or `basic`, identifying which strategy
+was used to authenticate the user. If the user was authenticated with the `jwt`
+strategy, the `user` object will also contain a `claims` property containing all
+of the JWT's claims.
 
 ___
 

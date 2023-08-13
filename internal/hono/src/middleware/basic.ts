@@ -1,4 +1,3 @@
-import { type WorkertownRequest } from "../index.js";
 import { User } from "../types.js";
 import { type DeepPartial } from "@workertown/internal-types";
 import { type MiddlewareHandler } from "hono";
@@ -12,7 +11,7 @@ interface BasicOptions {
     password: string;
   };
   getCredentials: (
-    req: WorkertownRequest,
+    req: Request,
   ) => [username: string, password: string] | null | undefined;
   verifyCredentials?: (
     username: string,
@@ -59,7 +58,7 @@ export function basic(options?: BasicOptionsOptional) {
     const user = ctx.get("user") ?? null;
 
     if (user === null) {
-      const credentials = getCredentials(ctx.req);
+      const credentials = getCredentials(ctx.req as unknown as Request);
 
       if (credentials) {
         const [credentialsUsername, credentialsPassword] = credentials;
