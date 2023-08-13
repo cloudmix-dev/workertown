@@ -1,12 +1,8 @@
 {
   "name": "@cloudmix-dev/workertown",
   "private": true,
-  "workspaces": [
-    "examples/*",
-    "internal/*",
-    "packages/*",
-    "www/*"
-  ],
+  "license": "MIT",
+  "workspaces": ["examples/*", "internal/*", "packages/*", "www/*"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev --no-cache --continue --concurrency=30",
