@@ -67,6 +67,49 @@ database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
+### DynamoDB
+
+[DynamoDB](https://aws.amazon.com/pm/dynamodb) is AWS's NoSQL database service
+that provides a REST API for interacting with databases.
+
+```ts
+import { search } from "@workertown/search";
+import { DynamoDBStorageAdapter } from "@workertown/search/storage/dynamodb";
+
+export default search({
+  runtime: {
+    storage: new DynamoDBStorageAdapter({
+      credentials: {
+        accessKeyId: "...", // The AWS access key ID to use for authentication
+        secretAccessKey: "...", // The AWS secret access key to use for authentication
+      },
+      region: "...", // The AWS region the DynamoDB table is located in
+      table: "example_table", // Optionally, the name of the DynamoDB table - otherwise each service has a default
+      options: {
+        billingMode: "PROVISIONED",
+        readCapacityUnits: 1,
+        writeCapacityUnits: 1,
+      }, // Optionally, additional options about the table's billing mode and capacities - otherwise it will set the billing mode to PAY_PER_REQUEST
+    }),
+    // Other options go here...
+  },
+});
+```
+
+The `DynamodDBStorageAdapter`s provide [migration](#migrations) support, which
+will provision the table if it does not already exist, using the `table` and
+`options` provided to set the table name and billing mode/capacities. If you
+would like to manage the table yourself, you can omit `options` and simply
+provide the `table` name for the adapter to use.
+
+Each `DynamodDBStorageAdapter` has a dependency on the
+`@aws-sdk/client-dynamodb` package, and therefore you must install this package
+as a dependency of your project.
+
+```bash
+npm install @aws-sdk/client-dynamodb
+```
+
 ### Planetscale
 
 [Planetscale](https://planetscale.com) is a hosted MySQL database that provides
@@ -97,26 +140,6 @@ project.
 npm install @planetscale/database
 ```
 
-### Turso
-
-[Turso](https://turso.tech) is a hosted Sqlite (libsql) database provider that
-provides a REST API for interacting with Sqlite databases.
-
-```ts
-import { search } from "@workertown/search";
-import { TursoStorageAdapter } from "@workertown/search/storage/turso";
-
-export default search({
-  runtime: {
-    storage: new TursoStorageAdapter({
-      url: "...", // The URL of the Turso database
-      authToken: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // The Turso auth token to use for authentication
-    }),
-    // Other options go here...
-  },
-});
-```
-
 ### Sqlite
 
 If you are running your Workertown service in a NodeJS environment, you can use
@@ -142,6 +165,26 @@ and therefore you must install this package as a dependency of your project.
 
 ```bash
 npm install better-sqlite3
+```
+
+### Turso
+
+[Turso](https://turso.tech) is a hosted Sqlite (libsql) database provider that
+provides a REST API for interacting with Sqlite databases.
+
+```ts
+import { search } from "@workertown/search";
+import { TursoStorageAdapter } from "@workertown/search/storage/turso";
+
+export default search({
+  runtime: {
+    storage: new TursoStorageAdapter({
+      url: "...", // The URL of the Turso database
+      authToken: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", // The Turso auth token to use for authentication
+    }),
+    // Other options go here...
+  },
+});
 ```
 
 ### Memory (dev only)

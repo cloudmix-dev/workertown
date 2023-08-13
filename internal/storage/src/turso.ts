@@ -4,7 +4,7 @@ import { Kysely, Migrator } from "kysely";
 import { MigrationProvider } from "./migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
-interface TursoStorageAdapterOptions {
+export interface TursoStorageAdapterOptions {
   url?: string;
   authToken?: string;
 }
@@ -21,11 +21,13 @@ export class TursoStorageAdapter<T = {}> extends StorageAdapter {
   }
 
   public async runMigrations() {
-    const migrator = new Migrator({
-      db: this.client,
-      provider: new MigrationProvider(this.migrations),
-    });
+    if (this.migrations.length > 0) {
+      const migrator = new Migrator({
+        db: this.client,
+        provider: new MigrationProvider(this.migrations),
+      });
 
-    await migrator.migrateToLatest();
+      await migrator.migrateToLatest();
+    }
   }
 }

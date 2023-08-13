@@ -4,7 +4,7 @@ import { PlanetScaleDialect } from "kysely-planetscale";
 import { MigrationProvider } from "./migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
-interface PlanetscaleStorageAdapterOptions {
+export interface PlanetscaleStorageAdapterOptions {
   url?: string;
   username?: string;
   password?: string;
@@ -22,11 +22,13 @@ export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
   }
 
   public async runMigrations() {
-    const migrator = new Migrator({
-      db: this.client,
-      provider: new MigrationProvider(this.migrations),
-    });
+    if (this.migrations.length > 0) {
+      const migrator = new Migrator({
+        db: this.client,
+        provider: new MigrationProvider(this.migrations),
+      });
 
-    await migrator.migrateToLatest();
+      await migrator.migrateToLatest();
+    }
   }
 }

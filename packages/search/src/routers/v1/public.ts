@@ -11,14 +11,14 @@ const CORS_HEADERS = {
 
 const router = createRouter<Context>({ public: true });
 
-router.options("*", (ctx) =>
+router.options("/open-api.json", (ctx) =>
   ctx.text("OK", {
     headers: CORS_HEADERS,
   }),
 );
 
 router.get("/open-api.json", (ctx) => {
-  const { basePath, endpoints } = ctx.get("config");
+  const { basePath = "/", endpoints } = ctx.get("config");
   const url = new URL(ctx.req.url);
   const searchPath = `${`${basePath}${endpoints.v1.search}`.replace(
     "//",
@@ -55,10 +55,7 @@ router.get("/open-api.json", (ctx) => {
 });
 
 router.get("/health", async (ctx) =>
-  ctx.json(
-    { status: 200, success: true, data: "OK" },
-    { headers: CORS_HEADERS },
-  ),
+  ctx.json({ status: 200, success: true, data: "OK" }),
 );
 
 export { router };

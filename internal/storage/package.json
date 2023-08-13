@@ -14,6 +14,10 @@
       "default": "./dist/d1.js",
       "types": "./dist/d1.d.ts"
     },
+    "./dynamodb": {
+      "default": "./dist/dynamodb.js",
+      "types": "./dist/dynamodb.d.ts"
+    },
     "./planetscale": {
       "default": "./dist/planetscale.js",
       "types": "./dist/planetscale.d.ts"
@@ -42,11 +46,13 @@
     "kysely-planetscale": "~1.4.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "~3.388.0",
     "@cloudflare/workers-types": "~4.20230710.1",
     "@planetscale/database": "~1.10.0",
     "better-sqlite3": "~8.5.0"
   },
   "peerDependencies": {
+    "@aws-sdk/client-dynamodb": "~3.388.0",
     "@planetscale/database": "~1.10.0",
     "better-sqlite3": "~8.4.0"
   },
