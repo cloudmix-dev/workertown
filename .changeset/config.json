@@ -13,7 +13,8 @@
     "@workertown/pub-sub-example",
     "@workertown/search-example",
     "@workertown/auth",
-    "@workertown/files"
+    "@workertown/files",
+    "@workertown/internal-websockets"
   ],
   "linked": [],
   "updateInternalDependencies": "patch"
