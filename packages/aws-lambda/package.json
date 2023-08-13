@@ -1,6 +1,7 @@
 {
   "name": "@workertown/aws-lambda",
   "version": "0.0.2-alpha.16",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
