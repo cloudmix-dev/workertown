@@ -7,6 +7,6 @@
     "start": "NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/kv": "~0.0.2-alpha.15"
+    "@workertown/kv": "~0.0.2-alpha.16"
   }
 }
