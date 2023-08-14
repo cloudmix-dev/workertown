@@ -4,11 +4,12 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
       - synchronize
     branches:
       - main
     paths:
-      - packages/utils
+      - packages/utils/**
       - .github/workflows/test-utils.yml
   workflow_dispatch:
 

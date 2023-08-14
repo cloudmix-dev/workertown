@@ -4,11 +4,12 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
       - synchronize
     branches:
       - main
     paths:
-      - internal/hono
+      - internal/hono/**
       - .github/workflows/test-internal-hono.yml
   workflow_dispatch:
 

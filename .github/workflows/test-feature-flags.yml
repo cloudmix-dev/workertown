@@ -4,11 +4,12 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
       - synchronize
     branches:
       - main
     paths:
-      - packages/feature-flags
+      - packages/feature-flags/**
       - .github/workflows/test-feature-flags.yml
   workflow_dispatch:
 
