@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Highlight, { type Language, defaultProps } from "prism-react-renderer";
+import { Highlight, type Language } from "prism-react-renderer";
 import { Fragment } from "react";
 
 interface CodeBlockProps {
@@ -24,10 +24,12 @@ export function CodeBlock({ code, language }: CodeBlockProps) {
         ))}
       </div>
       <Highlight
-        {...defaultProps}
         code={code}
         language={language}
-        theme={undefined}
+        theme={{
+          plain: {},
+          styles: [],
+        }}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre

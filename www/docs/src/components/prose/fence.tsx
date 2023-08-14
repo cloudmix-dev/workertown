@@ -1,4 +1,4 @@
-import Highlight, { defaultProps } from "prism-react-renderer";
+import { Highlight } from "prism-react-renderer";
 import { Fragment, useState } from "react";
 
 import { cn } from "../../lib/utils";
@@ -116,10 +116,12 @@ export function Fence({ children, language }) {
   return (
     <div className="relative">
       <Highlight
-        {...defaultProps}
         code={children.trimEnd()}
         language={language}
-        theme={undefined}
+        theme={{
+          plain: {},
+          styles: [],
+        }}
       >
         {({ className, style, tokens, getTokenProps }) => {
           const text = tokens
