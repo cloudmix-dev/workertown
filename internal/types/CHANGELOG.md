@@ -1,5 +1,11 @@
 # @workertown/internal-types
 
+## 0.0.2-alpha.17
+
+### Patch Changes
+
+- Alpha.17 Release
+
 ## 0.0.2-alpha.16
 
 ### Patch Changes

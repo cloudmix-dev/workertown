@@ -1,6 +1,6 @@
 {
   "name": "@workertown/aws-lambda-edge",
-  "version": "0.0.2-alpha.16",
+  "version": "0.0.2-alpha.17",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -10,7 +10,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.2-alpha.16"
+    "@workertown/internal-hono": "~0.0.2-alpha.17"
   },
   "engines": {
     "node": ">=18.0.0"

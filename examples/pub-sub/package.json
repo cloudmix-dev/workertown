@@ -7,6 +7,6 @@
     "start": "NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/pub-sub": "~0.0.2-alpha.16"
+    "@workertown/pub-sub": "~0.0.2-alpha.17"
   }
 }

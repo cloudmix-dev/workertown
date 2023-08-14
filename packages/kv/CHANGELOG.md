@@ -1,5 +1,14 @@
 # @workertown/kv
 
+## 0.0.2-alpha.17
+
+### Patch Changes
+
+- Alpha.17 Release
+- Updated dependencies
+  - @workertown/internal-hono@0.0.2-alpha.17
+  - @workertown/internal-storage@0.0.2-alpha.17
+
 ## 0.0.2-alpha.16
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "name": "@workertown/internal-hono",
   "description": "Internal custom Hono implementation for WorkerTown",
-  "version": "0.0.2-alpha.16",
+  "version": "0.0.2-alpha.17",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@types/lodash.merge": "~4.6.7",
     "@upstash/redis": "~1.22.0",
-    "@workertown/internal-queue": "~0.0.2-alpha.16"
+    "@workertown/internal-queue": "~0.0.2-alpha.17"
   },
   "peerDependencies": {
     "@upstash/redis": "~1.22.0"
