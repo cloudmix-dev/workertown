@@ -31,8 +31,8 @@ interface SearchTagTable {
 }
 
 export interface DatabaseSchema {
-  search_documents: SearchDocumentTable;
-  search_tags: SearchTagTable;
+  wt_search_documents: SearchDocumentTable;
+  wt_search_tags: SearchTagTable;
 }
 
 const MIGRATIONS: Migrations = [
@@ -41,7 +41,7 @@ const MIGRATIONS: Migrations = [
     migration: {
       async up(db) {
         await db.schema
-          .createTable("search_documents")
+          .createTable("wt_search_documents")
           .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("tenant", "text", (col) => col.notNull())
@@ -52,66 +52,66 @@ const MIGRATIONS: Migrations = [
           .execute();
 
         await db.schema
-          .createTable("search_tags")
+          .createTable("wt_search_tags")
           .ifNotExists()
           .addColumn("tag", "text", (col) => col.notNull())
           .addColumn("search_document_id", "text", (col) => col.notNull())
           .execute();
 
         await db.schema
-          .createIndex("search_documents_id_idx")
+          .createIndex("wt_search_documents_id_idx")
           .unique()
           .ifNotExists()
-          .on("search_documents")
+          .on("wt_search_documents")
           .columns(["id"])
           .execute();
 
         await db.schema
-          .createIndex("search_documents_tenant_idx")
+          .createIndex("wt_search_documents_tenant_idx")
           .ifNotExists()
-          .on("search_documents")
+          .on("wt_search_documents")
           .columns(["tenant", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
         await db.schema
-          .createIndex("search_documents_tenant_index_idx")
+          .createIndex("wt_search_documents_tenant_index_idx")
           .ifNotExists()
-          .on("search_documents")
+          .on("wt_search_documents")
           .columns(["tenant", "index", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
         await db.schema
-          .createIndex("search_tags_unique_idx")
+          .createIndex("wt_search_tags_unique_idx")
           .unique()
           .ifNotExists()
-          .on("search_tags")
+          .on("wt_search_tags")
           .columns(["tag", "search_document_id"])
           .execute();
       },
       async down(db) {
         await db.schema
-          .dropIndex("search_tags_unique_idx")
+          .dropIndex("wt_search_tags_unique_idx")
           .ifExists()
           .execute();
 
         await db.schema
-          .dropIndex("search_documents_tenant_index_idx")
+          .dropIndex("wt_search_documents_tenant_index_idx")
           .ifExists()
           .execute();
 
         await db.schema
-          .dropIndex("search_documents_tenant_idx")
+          .dropIndex("wt_search_documents_tenant_idx")
           .ifExists()
           .execute();
 
         await db.schema
-          .dropIndex("search_documents_id_idx")
+          .dropIndex("wt_search_documents_id_idx")
           .ifExists()
           .execute();
 
-        await db.schema.dropTable("search_tags").ifExists().execute();
+        await db.schema.dropTable("wt_search_tags").ifExists().execute();
 
-        await db.schema.dropTable("search_documents").ifExists().execute();
+        await db.schema.dropTable("wt_search_documents").ifExists().execute();
       },
     },
   },
@@ -122,6 +122,8 @@ export class SqliteStorageAdapter
   implements StorageAdapter
 {
   public readonly migrations = MIGRATIONS;
+
+  public readonly migrationsPrefix = "wt_search";
 
   private _formatDocument(document: SearchDocumentRow): SearchDocument {
     return {
@@ -139,9 +141,9 @@ export class SqliteStorageAdapter
     options: GetDocumentsOptions,
   ): Promise<SearchDocument[]> {
     let query = this.client
-      .selectFrom("search_documents")
-      .innerJoin("search_tags", "search_tags.search_document_id", "id")
-      .where("search_documents.tenant", "=", options.tenant);
+      .selectFrom("wt_search_documents")
+      .innerJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
+      .where("wt_search_documents.tenant", "=", options.tenant);
 
     if (options.index) {
       query = query.where("index", "=", options.index);
@@ -149,16 +151,16 @@ export class SqliteStorageAdapter
 
     const records = await query
       .select([
-        "search_documents.id",
-        "search_documents.tenant",
-        "search_documents.index",
-        "search_documents.data",
-        "search_documents.created_at",
-        "search_documents.updated_at",
-        sql<string>`group_concat(search_tags.tag, ',')`.as("tags"),
+        "wt_search_documents.id",
+        "wt_search_documents.tenant",
+        "wt_search_documents.index",
+        "wt_search_documents.data",
+        "wt_search_documents.created_at",
+        "wt_search_documents.updated_at",
+        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
       ])
-      .groupBy("search_documents.id")
-      .orderBy("search_documents.updated_at", "desc")
+      .groupBy("wt_search_documents.id")
+      .orderBy("wt_search_documents.updated_at", "desc")
       .limit(options?.limit)
       .execute();
 
@@ -170,32 +172,32 @@ export class SqliteStorageAdapter
     options: GetDocumentsOptions,
   ) {
     let query = this.client
-      .selectFrom("search_tags")
+      .selectFrom("wt_search_tags")
       .innerJoin(
-        "search_documents",
-        "search_tags.search_document_id",
-        "search_documents.id",
+        "wt_search_documents",
+        "wt_search_tags.search_document_id",
+        "wt_search_documents.id",
       )
-      .where("search_tags.tag", "in", tags)
-      .where("search_documents.tenant", "=", options.tenant);
+      .where("wt_search_tags.tag", "in", tags)
+      .where("wt_search_documents.tenant", "=", options.tenant);
 
     if (options?.index) {
-      query = query.where("search_documents.index", "=", options.index);
+      query = query.where("wt_search_documents.index", "=", options.index);
     }
 
     const records = await query
       .select([
-        "search_documents.id",
-        "search_documents.tenant",
-        "search_documents.index",
-        "search_documents.data",
-        "search_documents.created_at",
-        "search_documents.updated_at",
-        sql<string>`group_concat(search_tags.tag, ',')`.as("tags"),
+        "wt_search_documents.id",
+        "wt_search_documents.tenant",
+        "wt_search_documents.index",
+        "wt_search_documents.data",
+        "wt_search_documents.created_at",
+        "wt_search_documents.updated_at",
+        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
       ])
-      .groupBy("search_documents.id")
-      .having((eb) => eb.fn.count("search_documents.id"), "=", tags.length)
-      .orderBy("search_documents.updated_at", "desc")
+      .groupBy("wt_search_documents.id")
+      .having((eb) => eb.fn.count("wt_search_documents.id"), "=", tags.length)
+      .orderBy("wt_search_documents.updated_at", "desc")
       .limit(options?.limit)
       .execute();
 
@@ -204,18 +206,18 @@ export class SqliteStorageAdapter
 
   public async getDocument(id: string) {
     const result = await this.client
-      .selectFrom("search_documents")
-      .innerJoin("search_tags", "search_tags.search_document_id", "id")
+      .selectFrom("wt_search_documents")
+      .innerJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
       .select([
-        "search_documents.id",
-        "search_documents.tenant",
-        "search_documents.index",
-        "search_documents.data",
-        "search_documents.created_at",
-        "search_documents.updated_at",
-        sql<string>`group_concat(search_tags.tag, ',')`.as("tags"),
+        "wt_search_documents.id",
+        "wt_search_documents.tenant",
+        "wt_search_documents.index",
+        "wt_search_documents.data",
+        "wt_search_documents.created_at",
+        "wt_search_documents.updated_at",
+        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
       ])
-      .groupBy("search_documents.id")
+      .groupBy("wt_search_documents.id")
       .where("id", "=", id)
       .executeTakeFirst();
 
@@ -232,7 +234,7 @@ export class SqliteStorageAdapter
   ) {
     const now = new Date();
     const existing = await this.client
-      .selectFrom("search_documents")
+      .selectFrom("wt_search_documents")
       .select(["id", "created_at"])
       .where("id", "=", document.id)
       .where("tenant", "=", document.tenant)
@@ -241,7 +243,7 @@ export class SqliteStorageAdapter
 
     if (!existing) {
       await this.client
-        .insertInto("search_documents")
+        .insertInto("wt_search_documents")
         .values({
           ...document,
           data: JSON.stringify(document.data),
@@ -251,7 +253,7 @@ export class SqliteStorageAdapter
         .execute();
     } else {
       await this.client
-        .updateTable("search_documents")
+        .updateTable("wt_search_documents")
         .where("id", "=", document.id)
         .where("tenant", "=", document.tenant)
         .where("index", "=", document.index)
@@ -264,7 +266,7 @@ export class SqliteStorageAdapter
 
     if (tags.length > 0) {
       const existingTags = await this.client
-        .selectFrom("search_tags")
+        .selectFrom("wt_search_tags")
         .selectAll()
         .where("search_document_id", "=", document.id)
         .execute();
@@ -280,7 +282,7 @@ export class SqliteStorageAdapter
 
       if (tagsToAdd.length > 0) {
         await this.client
-          .insertInto("search_tags")
+          .insertInto("wt_search_tags")
           .values(
             tagsToAdd.map((tag) => ({ tag, search_document_id: document.id })),
           )
@@ -289,7 +291,7 @@ export class SqliteStorageAdapter
 
       if (tagsToRemove.length > 0) {
         await this.client
-          .deleteFrom("search_tags")
+          .deleteFrom("wt_search_tags")
           .where("search_document_id", "=", document.id)
           .where(
             "tag",
@@ -310,18 +312,18 @@ export class SqliteStorageAdapter
 
   public async deleteDocument(id: string) {
     await this.client
-      .deleteFrom("search_documents")
+      .deleteFrom("wt_search_documents")
       .where("id", "=", id)
       .execute();
     await this.client
-      .deleteFrom("search_tags")
+      .deleteFrom("wt_search_tags")
       .where("search_document_id", "=", id)
       .execute();
   }
 
   public async getTags() {
     const tags = await this.client
-      .selectFrom("search_tags")
+      .selectFrom("wt_search_tags")
       .select("tag")
       .distinct()
       .execute();

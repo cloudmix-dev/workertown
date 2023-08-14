@@ -24,7 +24,7 @@ interface SubscriptionsTable {
 type SubscriptionRow = Selectable<SubscriptionsTable>;
 
 export interface DatabaseSchema {
-  subscriptions: SubscriptionsTable;
+  wt_pub_sub_subscriptions: SubscriptionsTable;
 }
 
 const MIGRATIONS: Migrations = [
@@ -33,7 +33,7 @@ const MIGRATIONS: Migrations = [
     migration: {
       async up(db) {
         await db.schema
-          .createTable("subscriptions")
+          .createTable("wt_pub_sub_subscriptions")
           .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("topic", "text", (col) => col.notNull())
@@ -45,30 +45,36 @@ const MIGRATIONS: Migrations = [
           .execute();
 
         await db.schema
-          .createIndex("subscriptions_id_idx")
+          .createIndex("wt_pub_sub_subscriptions_id_idx")
           .unique()
           .ifNotExists()
-          .on("subscriptions")
+          .on("wt_pub_sub_subscriptions")
           .columns(["id"])
           .execute();
 
         await db.schema
-          .createIndex("subscriptions_topic_idx")
+          .createIndex("wt_pub_sub_subscriptions_topic_idx")
           .unique()
           .ifNotExists()
-          .on("subscriptions")
+          .on("wt_pub_sub_subscriptions")
           .columns(["topic"])
           .execute();
       },
       async down(db) {
         await db.schema
-          .dropIndex("subscriptions_topic_idx")
+          .dropIndex("wt_pub_sub_subscriptions_topic_idx")
           .ifExists()
           .execute();
 
-        await db.schema.dropIndex("subscriptions_id_idx").ifExists().execute();
+        await db.schema
+          .dropIndex("wt_pub_sub_subscriptions_id_idx")
+          .ifExists()
+          .execute();
 
-        await db.schema.dropTable("subscriptions").ifExists().execute();
+        await db.schema
+          .dropTable("wt_pub_sub_subscriptions")
+          .ifExists()
+          .execute();
       },
     },
   },
@@ -79,6 +85,8 @@ export class SqliteStorageAdapter
   implements StorageAdapter
 {
   public readonly migrations = MIGRATIONS;
+
+  public readonly migrationsPrefix = "wt_pub_sub";
 
   private _formatSubscription(subscription: SubscriptionRow): Subscription {
     return {
@@ -98,7 +106,7 @@ export class SqliteStorageAdapter
 
   async getSubscriptions() {
     const records = await this.client
-      .selectFrom("subscriptions")
+      .selectFrom("wt_pub_sub_subscriptions")
       .selectAll()
       .execute();
 
@@ -107,7 +115,7 @@ export class SqliteStorageAdapter
 
   async getSubscriptionsByTopic(topic: string) {
     const records = await this.client
-      .selectFrom("subscriptions")
+      .selectFrom("wt_pub_sub_subscriptions")
       .selectAll()
       .where("topic", "=", topic)
       .execute();
@@ -120,7 +128,7 @@ export class SqliteStorageAdapter
     const now = new Date();
 
     await this.client
-      .insertInto("subscriptions")
+      .insertInto("wt_pub_sub_subscriptions")
       .values({
         id,
         topic: subscription.topic,
@@ -145,7 +153,7 @@ export class SqliteStorageAdapter
 
   async deleteSubscription(id: string) {
     await this.client
-      .deleteFrom("subscriptions")
+      .deleteFrom("wt_pub_sub_subscriptions")
       .where("id", "=", id)
       .execute();
   }

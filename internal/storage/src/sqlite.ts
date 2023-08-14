@@ -5,11 +5,14 @@ import { MigrationProvider } from "./migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
 export interface SqliteStorageAdapterOptions {
-  db: string;
+  db?: string;
+  migrationsPrefix?: string;
 }
 
 export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
   public readonly client: Kysely<T>;
+
+  public readonly migrationsPrefix: string = "wt";
 
   constructor(options?: SqliteStorageAdapterOptions) {
     super();
@@ -25,6 +28,7 @@ export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
         database: db,
       }),
     });
+    this.migrationsPrefix = options?.migrationsPrefix ?? this.migrationsPrefix;
   }
 
   public async runMigrations() {
@@ -32,6 +36,8 @@ export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
       const migrator = new Migrator({
         db: this.client,
         provider: new MigrationProvider(this.migrations),
+        migrationLockTableName: `${this.migrationsPrefix}_migrations_lock`,
+        migrationTableName: `${this.migrationsPrefix}_migrations`,
       });
 
       return await migrator.migrateToLatest();

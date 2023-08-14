@@ -8,10 +8,13 @@ export interface PlanetscaleStorageAdapterOptions {
   url?: string;
   username?: string;
   password?: string;
+  migrationsPrefix?: string;
 }
 
 export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
   public readonly client: Kysely<T>;
+
+  public readonly migrationsPrefix: string = "wt";
 
   constructor(options: PlanetscaleStorageAdapterOptions = {}) {
     super();
@@ -19,6 +22,7 @@ export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
     this.client = new Kysely<T>({
       dialect: new PlanetScaleDialect(options),
     });
+    this.migrationsPrefix = options.migrationsPrefix ?? this.migrationsPrefix;
   }
 
   public async runMigrations() {
@@ -26,6 +30,8 @@ export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
       const migrator = new Migrator({
         db: this.client,
         provider: new MigrationProvider(this.migrations),
+        migrationLockTableName: `${this.migrationsPrefix}_migrations_lock`,
+        migrationTableName: `${this.migrationsPrefix}_migrations`,
       });
 
       return await migrator.migrateToLatest();

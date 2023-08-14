@@ -10,7 +10,7 @@ interface KeyValueTable {
 }
 
 export interface DatabaseSchema {
-  key_values: KeyValueTable;
+  wt_kv_key_values: KeyValueTable;
 }
 
 const MIGRATIONS: Migrations = [
@@ -19,7 +19,7 @@ const MIGRATIONS: Migrations = [
     migration: {
       async up(db) {
         await db.schema
-          .createTable("key_values")
+          .createTable("wt_kv_key_values")
           .ifNotExists()
           .addColumn("name", "text", (col) => col.notNull())
           .addColumn("value", "text", (col) => col.notNull())
@@ -27,17 +27,20 @@ const MIGRATIONS: Migrations = [
           .execute();
 
         await db.schema
-          .createIndex("key_values_name_idx")
+          .createIndex("wt_kv_key_values_name_idx")
           .unique()
           .ifNotExists()
-          .on("key_values")
+          .on("wt_kv_key_values")
           .columns(["name"])
           .execute();
       },
       async down(db) {
-        await db.schema.dropIndex("key_values_name_idx").ifExists().execute();
+        await db.schema
+          .dropIndex("wt_kv_key_values_name_idx")
+          .ifExists()
+          .execute();
 
-        await db.schema.dropTable("key_values").ifExists().execute();
+        await db.schema.dropTable("wt_kv_key_values").ifExists().execute();
       },
     },
   },
@@ -49,9 +52,11 @@ export class D1StorageAdapter
 {
   public readonly migrations = MIGRATIONS;
 
+  public readonly migrationsPrefix = "wt_kv";
+
   public async getValue<T = unknown>(key: string) {
     const record = await this.client
-      .selectFrom("key_values")
+      .selectFrom("wt_kv_key_values")
       .where("name", "=", key)
       .select("value")
       .executeTakeFirst();
@@ -65,14 +70,14 @@ export class D1StorageAdapter
 
   public async setValue<T = unknown>(key: string, value: T) {
     const existing = await this.client
-      .selectFrom("key_values")
+      .selectFrom("wt_kv_key_values")
       .where("name", "=", key)
       .select("value")
       .executeTakeFirst();
 
     if (existing) {
       await this.client
-        .updateTable("key_values")
+        .updateTable("wt_kv_key_values")
         .set({
           value: JSON.stringify(value),
           updated_at: Date.now(),
@@ -81,7 +86,7 @@ export class D1StorageAdapter
         .execute();
     } else {
       await this.client
-        .insertInto("key_values")
+        .insertInto("wt_kv_key_values")
         .values({
           name: key,
           value: JSON.stringify(value),
@@ -95,7 +100,7 @@ export class D1StorageAdapter
 
   public async deleteValue(key: string) {
     await this.client
-      .deleteFrom("key_values")
+      .deleteFrom("wt_kv_key_values")
       .where("name", "=", key)
       .execute();
   }

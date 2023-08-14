@@ -24,7 +24,7 @@ interface FlagsTable {
 type FlagRow = Selectable<FlagsTable>;
 
 export interface DatabaseSchema {
-  flags: FlagsTable;
+  wt_flags_flags: FlagsTable;
 }
 
 const MIGRATIONS: Migrations = [
@@ -33,7 +33,7 @@ const MIGRATIONS: Migrations = [
     migration: {
       async up(db) {
         await db.schema
-          .createTable("flags")
+          .createTable("wt_flags_flags")
           .ifNotExists()
           .addColumn("name", "text", (col) => col.notNull())
           .addColumn("description", "text")
@@ -44,26 +44,32 @@ const MIGRATIONS: Migrations = [
           .execute();
 
         await db.schema
-          .createIndex("flags_name_idx")
+          .createIndex("wt_flags_flags_name_idx")
           .unique()
           .ifNotExists()
-          .on("flags")
+          .on("wt_flags_flags")
           .columns(["name"])
           .execute();
 
         await db.schema
-          .createIndex("flags_disabled_at_idx")
+          .createIndex("wt_flags_flags_disabled_at_idx")
           .ifNotExists()
-          .on("flags")
+          .on("wt_flags_flags")
           .columns(["disabled_at"])
           .execute();
       },
       async down(db) {
-        await db.schema.dropIndex("flags_disabled_at_idx").ifExists().execute();
+        await db.schema
+          .dropIndex("wt_flags_flags_disabled_at_idx")
+          .ifExists()
+          .execute();
 
-        await db.schema.dropIndex("flags_name_idx").ifExists().execute();
+        await db.schema
+          .dropIndex("wt_flags_flags_name_idx")
+          .ifExists()
+          .execute();
 
-        await db.schema.dropTable("flags").ifExists().execute();
+        await db.schema.dropTable("wt_flags_flags").ifExists().execute();
       },
     },
   },
@@ -74,6 +80,8 @@ export class D1StorageAdapter
   implements StorageAdapter
 {
   public readonly migrations = MIGRATIONS;
+
+  public readonly migrationsPrefix = "wt_flags_flags";
 
   private _formatFlag(flag: FlagRow): Flag {
     return {
@@ -89,7 +97,7 @@ export class D1StorageAdapter
   }
 
   public async getFlags(disabled = false) {
-    let query = this.client.selectFrom("flags").selectAll();
+    let query = this.client.selectFrom("wt_flags_flags").selectAll();
 
     if (!disabled) {
       query = query.where("disabled_at", "is", null);
@@ -102,7 +110,7 @@ export class D1StorageAdapter
 
   public async getFlag(name: string) {
     const record = await this.client
-      .selectFrom("flags")
+      .selectFrom("wt_flags_flags")
       .selectAll()
       .where("name", "=", name)
       .executeTakeFirst();
@@ -117,14 +125,14 @@ export class D1StorageAdapter
   public async upsertFlag(flag: UpsertFlagBody) {
     const now = new Date();
     const existing = await this.client
-      .selectFrom("flags")
+      .selectFrom("wt_flags_flags")
       .selectAll()
       .where("name", "=", flag.name)
       .executeTakeFirst();
 
     if (!existing) {
       await this.client
-        .insertInto("flags")
+        .insertInto("wt_flags_flags")
         .values({
           name: flag.name,
           description: flag.description,
@@ -138,7 +146,7 @@ export class D1StorageAdapter
         .execute();
     } else {
       await this.client
-        .updateTable("flags")
+        .updateTable("wt_flags_flags")
         .where("name", "=", flag.name)
         .set({
           description: flag.description,
@@ -159,6 +167,9 @@ export class D1StorageAdapter
   }
 
   public async deleteFlag(name: string) {
-    await this.client.deleteFrom("flags").where("name", "=", name).execute();
+    await this.client
+      .deleteFrom("wt_flags_flags")
+      .where("name", "=", name)
+      .execute();
   }
 }
