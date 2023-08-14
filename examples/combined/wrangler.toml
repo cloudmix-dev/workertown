@@ -6,12 +6,12 @@ compatibility_date = "2023-05-30"
 API_KEY = "super_secret_api"
 
 [[kv_namespaces]]
-binding = "CACHE"
+binding = "KV"
 id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [[d1_databases]]
-binding = "DB"
+binding = "D1"
 database_name = "combined-example"
 database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
