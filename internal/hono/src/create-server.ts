@@ -65,6 +65,7 @@ export interface CreateServerOptions {
         exposeHeaders?: string[];
       }
     | false;
+  getEnv?: (env: Record<string, string>) => Record<string, string>;
   logger?: LoggerFunc | false;
   sentry?: SentryOptions | false;
 }
@@ -78,14 +79,20 @@ export function createServer<T extends Context>(
     basePath = "/",
     cors: corsOptions,
     logger: loggerFunc,
+    getEnv,
     sentry: sentryOptions,
   } = options;
   const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
 
-  // This sets `ctx.env` to NodeJS' `process.env` if we're in that environment
+  // This sets `ctx.env` to NodeJS's `process.env` if we're an environment that
+  // supports it, or an optionally provided `getEnv` function.
   server.use(async (ctx, next) => {
     if (!ctx.env && globalThis.process?.env) {
       ctx.env = globalThis.process.env;
+    }
+
+    if (typeof getEnv === "function") {
+      ctx.env = getEnv((ctx.env as Record<string, string>) ?? {});
     }
 
     await next();

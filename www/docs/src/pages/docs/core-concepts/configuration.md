@@ -193,6 +193,29 @@ export default search({
 To see how the `endpoints` option works in general, see
 [routing](/docs/core-concepts/routing).
 
+### `getEnv`
+
+By default, a Workertown service will read environment variables from either the
+`env` argument passed to the service function (in Cloudflare Workers), or from
+`process.env`.
+
+You can customise this behaviour by passing in a `getEnv` function that takes
+whatever has been parsed from the environment as an `env` `object` argument and
+returns an `object` of environment variables. This will **override** any
+environment variables set via `env`/`provess.env`, so ensure to include any
+variables you need from the passed in `env` `object`.
+
+```ts
+import { search } from "@workertown/search";
+
+export default search({
+  getEnv: (env) => ({
+    ...env,
+    db: "SEARCH_DB",
+  }),
+});
+```
+
 ### `logger`
 
 By default, all Workertown services log to `console.log` in the format:
