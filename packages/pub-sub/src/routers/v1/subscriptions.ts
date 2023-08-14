@@ -34,9 +34,9 @@ router.post(
   validate(
     "json",
     z.object({
-      method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
       topic: z.string(),
       endpoint: z.string().url(),
+      method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]).default("POST"),
       headers: z.record(z.string(), z.string()).optional(),
       queryParameters: z.record(z.string(), z.string()).optional(),
     }),
@@ -55,7 +55,9 @@ router.post(
         headers,
         queryParameters,
       });
-    } catch (_) {}
+    } catch (_) {
+      console.log(_);
+    }
 
     const status = subscription ? 200 : 400;
 
@@ -72,7 +74,13 @@ router.delete("/:id", async (ctx) => {
 
   await storage.deleteSubscription(id);
 
-  return ctx.json({ status: 200, success: true, data: true });
+  return ctx.json({
+    status: 200,
+    success: true,
+    data: {
+      id,
+    },
+  });
 });
 
 export { router };

@@ -65,7 +65,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "ava"
   },
   "dependencies": {
     "@workertown/internal-hono": "~0.0.2-alpha.16",
