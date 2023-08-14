@@ -10,11 +10,17 @@ export class MemoryCacheAdapter<T = unknown> extends CacheAdapter<T> {
   }
 
   public async get(key: string): Promise<T | null> {
-    return (this._cache.get(this._prefixKey(key)) as T) ?? null;
+    const value = this._cache.get(this._prefixKey(key));
+
+    if (!value) {
+      return null;
+    }
+
+    return JSON.parse(value as string) as T;
   }
 
   public async set(key: string, value: unknown, ttl?: number): Promise<void> {
-    this._cache.set(this._prefixKey(key), value);
+    this._cache.set(this._prefixKey(key), JSON.stringify(value));
 
     if (typeof ttl === "number") {
       setTimeout(() => {

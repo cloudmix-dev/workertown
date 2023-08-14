@@ -1,9 +1,11 @@
-import { StorageAdapter } from "./storage-adapter.js";
 import {
   CreateTableCommand,
   DescribeTableCommand,
   DynamoDBClient,
 } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
+
+import { StorageAdapter } from "./storage-adapter.js";
 
 export type DynamoDBTableOptions = {
   globalSecondaryIndexes: number;
@@ -26,10 +28,11 @@ export interface DynamoDBStorageAdapterOptions {
   options?: DynamoDBTableOptions;
   region: string;
   table: string;
+  endpoint?: string;
 }
 
 export class DynamoDBStorageAdapter extends StorageAdapter {
-  public readonly client: DynamoDBClient;
+  public readonly client: DynamoDBDocument;
 
   public readonly table: string;
 
@@ -49,12 +52,15 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
 
     super();
 
-    this.client = new DynamoDBClient({
-      credentials: {
-        accessKeyId: options.credentials.accessKeyId,
-        secretAccessKey: options.credentials.secretAccessKey,
-      },
-    });
+    this.client = DynamoDBDocument.from(
+      new DynamoDBClient({
+        credentials: {
+          accessKeyId: options.credentials.accessKeyId,
+          secretAccessKey: options.credentials.secretAccessKey,
+        },
+        endpoint: options.endpoint,
+      }),
+    );
     this.table = options.table;
     this._tableOptions = {
       ...(options.options ?? {
@@ -90,6 +96,18 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
               AttributeName: "sk",
               AttributeType: "S",
             },
+            ...new Array(this._tableOptions.globalSecondaryIndexes)
+              .fill(null)
+              .flatMap((_, i) => [
+                {
+                  AttributeName: this.getGsiKey(i + 1, "pk"),
+                  AttributeType: "S",
+                },
+                {
+                  AttributeName: this.getGsiKey(i + 1, "sk"),
+                  AttributeType: "S",
+                },
+              ]),
           ],
           KeySchema: [
             {
@@ -128,6 +146,13 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
               Projection: {
                 ProjectionType: "ALL",
               },
+              ProvisionedThroughput:
+                this._tableOptions.billingMode === "PROVISIONED"
+                  ? {
+                      ReadCapacityUnits: this._tableOptions.readCapacityUnits,
+                      WriteCapacityUnits: this._tableOptions.writeCapacityUnits,
+                    }
+                  : undefined,
             })),
         }),
       );

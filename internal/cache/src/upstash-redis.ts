@@ -30,13 +30,15 @@ export class UpstashRedisCacheAdapter<T = unknown> extends CacheAdapter<T> {
       return null;
     }
 
-    return JSON.parse(value as string) as T;
+    return value as T;
   }
 
   public async set(key: string, value: unknown, ttl?: number) {
-    await this._client.set(this._prefixKey(key), JSON.stringify(value), {
-      ex: ttl ?? 0,
-    });
+    await this._client.set(
+      this._prefixKey(key),
+      value,
+      ttl ? { ex: ttl } : undefined,
+    );
   }
 
   public async delete(key?: string): Promise<void> {

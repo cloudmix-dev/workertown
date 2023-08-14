@@ -40,6 +40,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
+    "@aws-sdk/lib-dynamodb": "~3.388.0",
     "@libsql/kysely-libsql": "~0.3.0",
     "kysely": "~0.26.1",
     "kysely-d1": "~0.3.0",
