@@ -28,7 +28,9 @@ export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
         provider: new MigrationProvider(this.migrations),
       });
 
-      await migrator.migrateToLatest();
+      return await migrator.migrateToLatest();
     }
+
+    return { results: [] };
   }
 }

@@ -34,6 +34,4 @@ export class KVStorageAdapter extends StorageAdapter {
   public async deleteValue(key: string) {
     await this._kv.delete(this._formatKey(key));
   }
-
-  async runMigrations() {}
 }

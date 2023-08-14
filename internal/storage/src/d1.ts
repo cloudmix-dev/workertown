@@ -23,11 +23,15 @@ export class D1StorageAdapter<T = {}> extends StorageAdapter {
   }
 
   public async runMigrations() {
-    const migrator = new Migrator({
-      db: this.client,
-      provider: new MigrationProvider(this.migrations),
-    });
+    if (this.migrations.length > 0) {
+      const migrator = new Migrator({
+        db: this.client,
+        provider: new MigrationProvider(this.migrations),
+      });
 
-    await migrator.migrateToLatest();
+      return await migrator.migrateToLatest();
+    }
+
+    return { results: [] };
   }
 }

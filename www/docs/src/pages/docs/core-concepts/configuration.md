@@ -118,7 +118,7 @@ import { search } from "@workertown/search";
 import { RateLimiter } from "@workertown/search/rate-limit";
 
 class CustomRateLimiter extends RateLimiter {
-  // ...
+  //...
 }
 
 export default search({

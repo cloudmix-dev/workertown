@@ -32,11 +32,11 @@ call it.
 ```ts
 import { featureFlags } from "@workertown/feature-flags";
 
-// ...or `import featureFlags from "@workertown/feature-flags";`
+//...or `import featureFlags from "@workertown/feature-flags";`
 
 const server = featureFlags();
 
-// ...propbably `export default server;`
+//...propbably `export default server;`
 ```
 
 Like all Workertown services, the created server is a [Hono](https://hono.dev)
@@ -87,7 +87,7 @@ const server = featureFlags({
     database: "FLAGS_DB", // Environment variable for the D1 database binding (Cloudflare Workers only)
   },
 });
-// ...
+//...
 ```
 
 ---

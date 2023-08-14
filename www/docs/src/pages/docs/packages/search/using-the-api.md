@@ -340,3 +340,173 @@ intended for overall tag "management". If you would like to power tag
 **suggestion** interfaces, you can place a `_tags` field on your
 [document](#documents) as a space-delimited string of the tags for the document,
 and then perform a [suggestion](#suggestions) request against the `_tags` field.
+
+---
+
+## Admin
+
+### Info
+
+You can send a `GET` request to the `/v1/admin/info` endpoint to get see the
+currently active configuration for your service. This is useful for debugging in
+live-like environments.
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  https://search.example.com/v1/admin/info
+```
+
+You will receive a `200 OK` response if the config was successfully retrieved.
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "data": {
+    "auth": {
+      "apiKey": {
+        "env": {
+          "apiKey": "SEARCH_API_KEY"
+        }
+      },
+      "basic": {
+        "env": {
+          "username": "SEARCH_USERNAME",
+          "password": "SEARCH_PASSWORD"
+        }
+      },
+      "jwt": {
+        "env": {
+          "jwksUrl": "SEARCH_JWKS_URL",
+          "secret": "SEARCH_JWT_SECRET",
+          "audience": "SEARCH_JWT_AUDIENCE",
+          "issuer": "SEARCH_JWT_ISSUER"
+        }
+      }
+    },
+    "endpoints": {
+      "v1": {
+        "admin": "/v1/admin",
+        "documents": "/v1/docs",
+        "search": "/v1/search",
+        "suggest": "/v1/suggest",
+        "tags": "/v1/tags"
+      },
+      "public": "/"
+    },
+    "env": {
+      "cache": "SEARCH_CACHE",
+      "db": "SEARCH_DB"
+    },
+    "search": {
+      "scanRange": 1000,
+      "stopWords": [
+          //...
+      ]
+    }
+  }
+}
+```
+
+### Migrate
+
+You can send `POST` request to the `/v1/admin/migrate` endpoint to run the
+migrations required for your storage adapter to keep your database up to date.
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  https://search.example.com/v1/admin/migrate
+```
+
+You will receive a `200 OK` response if the migrations were successfully run.
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "data": [
+    //...
+  ]
+}
+```
+
+If **any** errors occur durin the migration, you will receive a `500 Internal
+Server Error` response, which will include the error as well as the details for
+**any** successful migrations that were run. If **no** migrations were run,
+`data` will be `null`.
+
+```json
+{
+  "status": 500,
+  "success": false,
+  "data": [
+    //...
+  ],
+  "error": "..."
+}
+```
+
+---
+
+## Public 
+
+### Health
+
+You can send a `GET` request to the `/health` endpoint to see if the service is
+healthy.
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  https://search.example.com/health
+```
+
+If the service is running, you should receive a `200 OK` response.
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "data": "OK"
+}
+```
+
+### Open API v3
+
+You can send a `GET` request to the `/open-api.json` endpoint to see the OpenAPI
+v3 specification for the service.
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  https://search.example.com/open-api.json
+```
+
+You will receive a `200 OK` response if the specification was successfully
+retreived.
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Workertown Search",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "..."
+    }
+  ],
+  "paths": {
+    //...
+  },
+  "components": {
+    //...
+  }
+}
+```

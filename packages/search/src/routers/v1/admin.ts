@@ -22,18 +22,15 @@ router.get("/info", async (ctx) => {
 
 router.post("/migrate", async (ctx) => {
   const storage = ctx.get("storage");
-  let success = true;
 
   try {
-    await storage.runMigrations();
-  } catch (_) {
-    success = false;
-  }
+    const { results, error } = await storage.runMigrations();
+    const status = error ? 500 : 200;
 
-  return ctx.json(
-    { status: success ? 200 : 500, success, data: success },
-    success ? 200 : 500,
-  );
+    return ctx.json({ status, success: !error, data: results, error }, status);
+  } catch (error) {
+    return ctx.json({ status: 500, success: false, data: null, error }, 500);
+  }
 });
 
 export { router };

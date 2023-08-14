@@ -37,11 +37,11 @@ call it.
 ```ts
 import { search } from "@workertown/search";
 
-// ...or `import search from "@workertown/search";`
+//...or `import search from "@workertown/search";`
 
 const server = search();
 
-// ...propbably `export default server;`
+//...propbably `export default server;`
 ```
 
 Like all Workertown services, the created server is a [Hono](https://hono.dev)
@@ -100,7 +100,7 @@ const server = search({
     ]), // Set of words to ignore when matching search results
   },
 });
-// ...
+//...
 ```
 
 ---

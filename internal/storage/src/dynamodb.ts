@@ -132,5 +132,7 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
         }),
       );
     }
+
+    return { results: [] };
   }
 }

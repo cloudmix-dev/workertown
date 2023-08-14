@@ -189,6 +189,6 @@ export class SqliteQueueAdapter extends QueueAdapter {
       provider: new MigrationProvider(MIGRATIONS),
     });
 
-    await migrator.migrateToLatest();
+    return await migrator.migrateToLatest();
   }
 }

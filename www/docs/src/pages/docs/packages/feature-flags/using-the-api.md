@@ -218,3 +218,165 @@ the request if it was successful.
   ]
 }
 ```
+
+---
+
+## Admin
+
+### Info
+
+You can send a `GET` request to the `/v1/admin/info` endpoint to get see the
+currently active configuration for your service. This is useful for debugging in
+live-like environments.
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  https://flags.example.com/v1/admin/info
+```
+
+You will receive a `200 OK` response if the config was successfully retrieved.
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "data": {
+    "auth": {
+      "apiKey": {
+        "env": {
+          "apiKey": "FLAGS_API_KEY"
+        }
+      },
+      "basic": {
+        "env": {
+          "username": "FLAGS_USERNAME",
+          "password": "FLAGS_PASSWORD"
+        }
+      },
+      "jwt": {
+        "env": {
+          "jwksUrl": "FLAGS_JWKS_URL",
+          "secret": "FLAGS_JWT_SECRET",
+          "audience": "FLAGS_JWT_AUDIENCE",
+          "issuer": "FLAGS_JWT_ISSUER"
+        }
+      },
+    },
+    "endpoints": {
+      "v1": {
+        "admin": "/v1/admin",
+        "ask": "/v1/ask",
+        "flags": "/v1/flags"
+      },
+      "public": "/"
+    },
+    "env": {
+      "cache": "FLAGS_CACHE",
+      "db": "FLAGS_DB"
+    }
+  }
+}
+```
+
+### Migrate
+
+You can send `POST` request to the `/v1/admin/migrate` endpoint to run the
+migrations required for your storage adapter to keep your database up to date.
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  https://flags.example.com/v1/admin/migrate
+```
+
+You will receive a `200 OK` response if the migrations were successfully run.
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "data": [
+    //...
+  ]
+}
+```
+
+If **any** errors occur durin the migration, you will receive a `500 Internal
+Server Error` response, which will include the error as well as the details for
+**any** successful migrations that were run. If **no** migrations were run,
+`data` will be `null`.
+
+```json
+{
+  "status": 500,
+  "success": false,
+  "data": [
+    //...
+  ],
+  "error": "..."
+}
+```
+
+---
+
+## Public 
+
+### Health
+
+You can send a `GET` request to the `/health` endpoint to see if the service is
+healthy.
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  https://flags.example.com/health
+```
+
+If the service is running, you should receive a `200 OK` response.
+
+```json
+{
+  "status": 200,
+  "success": true,
+  "data": "OK"
+}
+```
+
+### Open API v3
+
+You can send a `GET` request to the `/open-api.json` endpoint to see the OpenAPI
+v3 specification for the service.
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  https://flags.example.com/open-api.json
+```
+
+You will receive a `200 OK` response if the specification was successfully
+retreived.
+
+```json
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Workertown Feature Flags",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "..."
+    }
+  ],
+  "paths": {
+    //...
+  },
+  "components": {
+    //...
+  }
+}
+```

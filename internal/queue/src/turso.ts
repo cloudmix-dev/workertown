@@ -181,6 +181,6 @@ export class TursoQueueAdapter extends QueueAdapter {
       provider: new MigrationProvider(MIGRATIONS),
     });
 
-    await migrator.migrateToLatest();
+    return await migrator.migrateToLatest();
   }
 }

@@ -34,7 +34,9 @@ export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
         provider: new MigrationProvider(this.migrations),
       });
 
-      await migrator.migrateToLatest();
+      return await migrator.migrateToLatest();
     }
+
+    return { results: [] };
   }
 }
