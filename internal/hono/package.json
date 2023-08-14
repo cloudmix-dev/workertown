@@ -41,7 +41,7 @@
     "@hono/sentry": "~0.2.1",
     "@hono/zod-validator": "~0.1.5",
     "@whatwg-node/server": "~0.9.8",
-    "hono": "~3.4.1",
+    "hono": "~3.4.3",
     "jose": "~4.14.4",
     "lodash.merge": "~4.6.2",
     "range_check": "~2.0.4",
@@ -50,8 +50,8 @@
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230807.0",
     "@types/lodash.merge": "~4.6.7",
-    "@workertown/internal-types": "~0.0.2-alpha.17",
-    "@upstash/redis": "~1.22.0"
+    "@upstash/redis": "~1.22.0",
+    "@workertown/internal-types": "~0.0.2-alpha.17"
   },
   "peerDependencies": {
     "@upstash/redis": "~1.22.0"
