@@ -1,8 +1,18 @@
 import { StorageAdapter as BaseStorageAdapter } from "@workertown/internal-storage";
 
+export type FlagConditionOperator =
+  | "eq"
+  | "neq"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "in"
+  | "nin";
+
 export interface FlagCondition {
   field: string;
-  operator: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "in" | "nin";
+  operator: FlagConditionOperator;
   value: string | number | boolean | string[] | number[] | boolean[];
 }
 
