@@ -1,10 +1,9 @@
 import {
-  type AttributeValue,
-  DeleteItemCommand,
-  GetItemCommand,
+  DeleteCommand,
+  GetCommand,
   QueryCommand,
-  UpdateItemCommand,
-} from "@aws-sdk/client-dynamodb";
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
 import {
   DynamoDBStorageAdapter as BaseDynamoDBStorageAdapter,
   type DynamoDBStorageAdapterOptions as BaseDynamoDBStorageAdapterOptions,
@@ -20,25 +19,25 @@ import {
 
 interface SearchDocumentItem {
   // Tracks items in the tenant by unique ID
-  pk: AttributeValue.SMember;
-  sk: AttributeValue.SMember;
+  pk: string;
+  sk: string;
   // Tracks *all* items in the tenanr
-  gsi_1_pk: AttributeValue.SMember;
-  gsi_1_sk: AttributeValue.SMember;
+  gsi_1_pk: string;
+  gsi_1_sk: string;
   // Tracks items in the tenant by index
-  gsi_2_pk: AttributeValue.SMember;
-  gsi_2_sk: AttributeValue.SMember;
+  gsi_2_pk: string;
+  gsi_2_sk: string;
   // The item data in full as we return it from the API
   data: {
-    id: AttributeValue.SMember;
-    tenant: AttributeValue.SMember;
-    index: AttributeValue.SMember;
-    data: AttributeValue.MMember;
-    createdAt: AttributeValue.SMember;
-    updatedAt: AttributeValue.SMember;
+    id: string;
+    tenant: string;
+    index: string;
+    data: Record<string, unknown>;
+    createdAt: string;
+    updatedAt: string;
   };
   // The item's tags
-  tags: AttributeValue.SSMember;
+  tags: string[];
 }
 
 type DynamoDBStorageAdapterOptions = Omit<
@@ -56,6 +55,7 @@ export class DynamoDBStorageAdapter
   constructor(options: DynamoDBStorageAdapterOptions) {
     super({
       credentials: options.credentials,
+      endpoint: options.endpoint,
       options: {
         ...(options.options ?? {}),
         globalSecondaryIndexes: 2,
@@ -71,13 +71,13 @@ export class DynamoDBStorageAdapter
 
   private _formatDocument(document: SearchDocumentItem): SearchDocument {
     return {
-      id: document.data.id.S,
-      tenant: document.data.tenant.S,
-      index: document.data.index.S,
-      data: document.data.data.M,
-      tags: document.tags.SS,
-      createdAt: new Date(document.data.createdAt.S),
-      updatedAt: new Date(document.data.updatedAt.S),
+      id: document.data.id,
+      tenant: document.data.tenant,
+      index: document.data.index,
+      data: document.data.data,
+      tags: document.tags,
+      createdAt: new Date(document.data.createdAt),
+      updatedAt: new Date(document.data.updatedAt),
     };
   }
 
@@ -86,12 +86,10 @@ export class DynamoDBStorageAdapter
     const key = this._getPrimaryKey(options.tenant, options.index);
     const keyCondition = "#pk = :pk";
     const expressionAttributeNames = {
-      "#pk": this.getGsiKey(1, "pk"),
+      "#pk": this.getGsiKey(gsi, "pk"),
     };
     const expressionAttributeValues = {
-      ":pk": {
-        S: key,
-      },
+      ":pk": key,
     };
     const result = await this.client.send(
       new QueryCommand({
@@ -99,9 +97,7 @@ export class DynamoDBStorageAdapter
         IndexName: this.getGsiName(gsi),
         Select: "ALL_ATTRIBUTES",
         KeyConditionExpression: keyCondition,
-        // @ts-ignore
         ExpressionAttributeNames: expressionAttributeNames,
-        // @ts-ignore
         ExpressionAttributeValues: expressionAttributeValues,
         Limit: options.limit,
       }),
@@ -121,23 +117,20 @@ export class DynamoDBStorageAdapter
     const gsi = options.index ? 2 : 1;
     const key = this._getPrimaryKey(options.tenant, options.index);
     const keyCondition = "#pk = :pk";
-    const filterExpression = `tags in (${tags
-      .map((_, index) => `:tag_${index + 1}`)
-      .join(", ")})`;
+    const filterExpression = `${tags
+      .map((_, i) => `contains (#tags, :tag_${i + 1})`)
+      .join(" AND")}`;
     const expressionAttributeNames = {
       "#pk": this.getGsiKey(1, "pk"),
+      "#tags": "tags",
     };
     const expressionAttributeValues = {
-      ":pk": {
-        S: key,
-      },
+      ":pk": key,
     };
 
-    tags.forEach((tag) => {
+    tags.forEach((tag, i) => {
       // @ts-ignore
-      expressionAttributeValues[`:tag_${index + 1}`] = {
-        S: tag,
-      };
+      expressionAttributeValues[`:tag_${i + 1}`] = tag;
     });
 
     const result = await this.client.send(
@@ -147,9 +140,7 @@ export class DynamoDBStorageAdapter
         Select: "ALL_ATTRIBUTES",
         KeyConditionExpression: keyCondition,
         FilterExpression: filterExpression,
-        // @ts-ignore
         ExpressionAttributeNames: expressionAttributeNames,
-        // @ts-ignore
         ExpressionAttributeValues: expressionAttributeValues,
         Limit: options.limit,
       }),
@@ -164,15 +155,11 @@ export class DynamoDBStorageAdapter
 
   public async getDocument(id: string): Promise<SearchDocument | null> {
     const result = await this.client.send(
-      new GetItemCommand({
+      new GetCommand({
         TableName: this.table,
         Key: {
-          pk: {
-            S: this._getPrimaryKey(id),
-          },
-          sk: {
-            S: id,
-          },
+          pk: this._getPrimaryKey(id),
+          sk: id,
         },
       }),
     );
@@ -189,25 +176,17 @@ export class DynamoDBStorageAdapter
     const existing = await this.getDocument(item.id);
     const now = new Date();
     const newItem: Record<string, unknown> = {
-      ...(existing?.data ?? {}),
       ...item,
+      createdAt: existing?.createdAt?.toISOString() ?? now.toISOString(),
       updatedAt: now.toISOString(),
     };
 
-    if (!newItem.createdAt) {
-      newItem.createdAt = now.toISOString();
-    }
-
     await this.client.send(
-      new UpdateItemCommand({
+      new UpdateCommand({
         TableName: this.table,
         Key: {
-          pk: {
-            S: this._getPrimaryKey(item.id),
-          },
-          sk: {
-            S: item.id,
-          },
+          pk: this._getPrimaryKey(item.id),
+          sk: item.id,
         },
         UpdateExpression:
           "SET #data = :data, #tags = :tags, #gsi1pk = :gsi1pk, #gsi1sk = :gsi1sk, #gsi2pk = :gsi2pk, #gsi2sk = :gsi2sk",
@@ -220,41 +199,25 @@ export class DynamoDBStorageAdapter
           "#gsi2sk": this.getGsiKey(2, "sk"),
         },
         ExpressionAttributeValues: {
-          ":data": {
-            M: newItem as Record<string, AttributeValue>,
-          },
-          ":tags": {
-            SS: tags,
-          },
-          ":gsi1pk": {
-            S: this._getPrimaryKey(item.tenant),
-          },
-          ":gsi1sk": {
-            S: `${Number.MAX_SAFE_INTEGER - now.getTime()}`,
-          },
-          ":gsi2pk": {
-            S: this._getPrimaryKey(item.tenant, item.index),
-          },
-          ":gsi2sk": {
-            S: `${Number.MAX_SAFE_INTEGER - now.getTime()}`,
-          },
+          ":data": newItem,
+          ":tags": tags,
+          ":gsi1pk": this._getPrimaryKey(item.tenant),
+          ":gsi1sk": `${Number.MAX_SAFE_INTEGER - now.getTime()}#${item.id}`,
+          ":gsi2pk": this._getPrimaryKey(item.tenant, item.index),
+          ":gsi2sk": `${Number.MAX_SAFE_INTEGER - now.getTime()}#${item.id}}`,
         },
-        ReturnValues: "ALL_NEW",
+        ReturnValues: "NONE",
       }),
     );
 
     await Promise.allSettled(
       tags.map((tag) =>
         this.client.send(
-          new UpdateItemCommand({
+          new UpdateCommand({
             TableName: this.table,
             Key: {
-              pk: {
-                S: this._getPrimaryKey("tags"),
-              },
-              sk: {
-                S: tag,
-              },
+              pk: this._getPrimaryKey("tags"),
+              sk: tag,
             },
           }),
         ),
@@ -274,15 +237,11 @@ export class DynamoDBStorageAdapter
 
   public async deleteDocument(id: string): Promise<void> {
     await this.client.send(
-      new DeleteItemCommand({
+      new DeleteCommand({
         TableName: this.table,
         Key: {
-          pk: {
-            S: this._getPrimaryKey(id),
-          },
-          sk: {
-            S: id,
-          },
+          pk: this._getPrimaryKey(id),
+          sk: id,
         },
       }),
     );
@@ -298,13 +257,11 @@ export class DynamoDBStorageAdapter
           "#pk": "pk",
         },
         ExpressionAttributeValues: {
-          ":pk": {
-            S: this._getPrimaryKey("tags"),
-          },
+          ":pk": this._getPrimaryKey("tags"),
         },
       }),
     );
 
-    return tags.Items?.map((item) => item.sk?.S as string) ?? [];
+    return tags.Items?.map((item) => item.sk as string) ?? [];
   }
 }

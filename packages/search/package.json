@@ -112,6 +112,7 @@
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",
+    "@aws-sdk/lib-dynamodb": "~3.388.0",
     "@planetscale/database": "~1.8.0",
     "@upstash/redis": "~1.22.0",
     "better-sqlite3": "~8.4.0"

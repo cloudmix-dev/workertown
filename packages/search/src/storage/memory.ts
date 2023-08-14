@@ -71,7 +71,7 @@ export class MemoryStorageAdapter
 
   private _getSortedDocuments() {
     const sortedDocuments = Array.from(this._updatedIndex.entries()).sort(
-      ([a], [b]) => (b > a ? 1 : -1),
+      ([a], [b]) => (b > a ? -1 : 1),
     );
 
     return sortedDocuments.map(([, id]) => this._documentStore.get(id));

@@ -1,0 +1,54 @@
+version: "3.4"
+
+services:
+  # Planetscale local
+  planetscale:
+    image: cloudmix/planetscale-local:0.0.1
+    depends_on:
+      - mysql
+    ports:
+      - 3000:8080
+    environment:
+      - PORT=8080
+      - MYSQL_URL=mysql://workertown:workertown@mysql:3306/workertown
+  # Upstash local
+  upstash_redis:
+    image: cloudmix/upstash-redis-local:0.0.2
+    depends_on:
+      - redis
+    ports:
+      - 3001:8080
+    environment:
+      - PORT=8080
+      - REDIS_URL=redis://redis:6379
+  # MYSQL
+  mysql:
+    image: mysql:8.0.32
+    hostname: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=workertown
+      - MYSQL_DATABASE=workertown
+      - MYSQL_USER=workertown
+      - MYSQL_PASSWORD=workertown
+  # DynamoDB
+  dynamodb:
+    image: amazon/dynamodb-local:2.0.0
+    ports:
+      - 3002:8000
+  # Redis
+  redis:
+    image: redis:6.2.6
+    hostname: redis
+    command: redis-server --save 60 1 --loglevel warning
+  # Kafka
+  zookeeper:
+    image: bitnami/zookeeper:3.8.1
+    hostname: zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka:3.4.0
+    hostname: kafka
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181

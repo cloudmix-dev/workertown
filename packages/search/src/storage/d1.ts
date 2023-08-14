@@ -142,7 +142,7 @@ export class D1StorageAdapter
   ): Promise<SearchDocument[]> {
     let query = this.client
       .selectFrom("wt_search_documents")
-      .innerJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
+      .leftJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
       .where("wt_search_documents.tenant", "=", options.tenant);
 
     if (options.index) {
@@ -161,7 +161,7 @@ export class D1StorageAdapter
       ])
       .groupBy("id")
       .orderBy("wt_search_documents.updated_at", "desc")
-      .limit(options?.limit)
+      .limit(options.limit)
       .execute();
 
     return records.map((record) => this._formatDocument(record));
@@ -173,7 +173,7 @@ export class D1StorageAdapter
   ) {
     let query = this.client
       .selectFrom("wt_search_tags")
-      .innerJoin(
+      .leftJoin(
         "wt_search_documents",
         "wt_search_tags.search_document_id",
         "wt_search_documents.id",
@@ -198,16 +198,22 @@ export class D1StorageAdapter
       .groupBy("wt_search_documents.id")
       .having((eb) => eb.fn.count("wt_search_documents.id"), "=", tags.length)
       .orderBy("wt_search_documents.updated_at", "desc")
-      .limit(options?.limit)
+      .limit(options.limit)
       .execute();
 
-    return records.map((record) => this._formatDocument(record));
+    return records.map((record) =>
+      this._formatDocument(record as SearchDocumentRow),
+    );
   }
 
   public async getDocument(id: string) {
     const result = await this.client
       .selectFrom("wt_search_documents")
-      .innerJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
+      .leftJoin(
+        "wt_search_tags",
+        "wt_search_tags.search_document_id",
+        "wt_search_documents.id",
+      )
       .select([
         "wt_search_documents.id",
         "wt_search_documents.tenant",
@@ -218,7 +224,7 @@ export class D1StorageAdapter
         sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
       ])
       .groupBy("wt_search_documents.id")
-      .where("wt_search_documents.id", "=", id)
+      .where("id", "=", id)
       .executeTakeFirst();
 
     if (!result) {
@@ -237,15 +243,15 @@ export class D1StorageAdapter
       .selectFrom("wt_search_documents")
       .select(["id", "created_at"])
       .where("id", "=", document.id)
-      .where("tenant", "=", document.tenant)
-      .where("index", "=", document.index)
       .executeTakeFirst();
 
     if (!existing) {
       await this.client
         .insertInto("wt_search_documents")
         .values({
-          ...document,
+          id: document.id,
+          tenant: document.tenant,
+          index: document.index,
           data: JSON.stringify(document.data),
           created_at: now.getTime(),
           updated_at: now.getTime(),
@@ -254,30 +260,26 @@ export class D1StorageAdapter
     } else {
       await this.client
         .updateTable("wt_search_documents")
-        .where("id", "=", document.id)
-        .where("tenant", "=", document.tenant)
-        .where("index", "=", document.index)
         .set({
+          tenant: document.tenant,
+          index: document.index,
           data: JSON.stringify(document.data),
           updated_at: now.getTime(),
         })
+        .where("id", "=", document.id)
         .execute();
     }
 
     if (tags.length > 0) {
       const existingTags = await this.client
         .selectFrom("wt_search_tags")
-        .selectAll()
+        .select("tag")
         .where("search_document_id", "=", document.id)
         .execute();
-      const tagsToAdd = tags.filter(
-        (tag) =>
-          existingTags.find((existingTag) => existingTag.tag === tag) ===
-          undefined,
-      );
+      const tagSet = new Set(existingTags.map((tag) => tag.tag));
+      const tagsToAdd = tags.filter((tag) => !tagSet.has(tag));
       const tagsToRemove = existingTags.filter(
-        (existingTag) =>
-          tags.find((tag) => tag === existingTag.tag) === undefined,
+        (existingTag) => !tagSet.has(existingTag.tag),
       );
 
       if (tagsToAdd.length > 0) {

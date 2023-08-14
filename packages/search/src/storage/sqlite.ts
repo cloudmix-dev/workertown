@@ -142,7 +142,7 @@ export class SqliteStorageAdapter
   ): Promise<SearchDocument[]> {
     let query = this.client
       .selectFrom("wt_search_documents")
-      .innerJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
+      .leftJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
       .where("wt_search_documents.tenant", "=", options.tenant);
 
     if (options.index) {
@@ -161,7 +161,7 @@ export class SqliteStorageAdapter
       ])
       .groupBy("wt_search_documents.id")
       .orderBy("wt_search_documents.updated_at", "desc")
-      .limit(options?.limit)
+      .limit(options.limit)
       .execute();
 
     return records.map((record) => this._formatDocument(record));
@@ -173,7 +173,7 @@ export class SqliteStorageAdapter
   ) {
     let query = this.client
       .selectFrom("wt_search_tags")
-      .innerJoin(
+      .leftJoin(
         "wt_search_documents",
         "wt_search_tags.search_document_id",
         "wt_search_documents.id",
@@ -198,16 +198,22 @@ export class SqliteStorageAdapter
       .groupBy("wt_search_documents.id")
       .having((eb) => eb.fn.count("wt_search_documents.id"), "=", tags.length)
       .orderBy("wt_search_documents.updated_at", "desc")
-      .limit(options?.limit)
+      .limit(options.limit)
       .execute();
 
-    return records.map((record) => this._formatDocument(record));
+    return records.map((record) =>
+      this._formatDocument(record as SearchDocumentRow),
+    );
   }
 
   public async getDocument(id: string) {
     const result = await this.client
       .selectFrom("wt_search_documents")
-      .innerJoin("wt_search_tags", "wt_search_tags.search_document_id", "id")
+      .leftJoin(
+        "wt_search_tags",
+        "wt_search_tags.search_document_id",
+        "wt_search_documents.id",
+      )
       .select([
         "wt_search_documents.id",
         "wt_search_documents.tenant",
@@ -255,8 +261,6 @@ export class SqliteStorageAdapter
       await this.client
         .updateTable("wt_search_documents")
         .where("id", "=", document.id)
-        .where("tenant", "=", document.tenant)
-        .where("index", "=", document.index)
         .set({
           data: JSON.stringify(document.data),
           updated_at: now.getTime(),
