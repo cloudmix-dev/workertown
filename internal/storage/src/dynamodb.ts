@@ -1,5 +1,6 @@
 import {
   CreateTableCommand,
+  DeleteTableCommand,
   DescribeTableCommand,
   DynamoDBClient,
 } from "@aws-sdk/client-dynamodb";
@@ -78,84 +79,93 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
     return `gsi_${index}_${key}`;
   }
 
-  public async runMigrations() {
-    try {
-      await this.client.send(
-        new DescribeTableCommand({ TableName: this.table }),
-      );
-    } catch (_) {
-      await this.client.send(
-        new CreateTableCommand({
-          TableName: this.table,
-          AttributeDefinitions: [
-            {
-              AttributeName: "pk",
-              AttributeType: "S",
-            },
-            {
-              AttributeName: "sk",
-              AttributeType: "S",
-            },
-            ...new Array(this._tableOptions.globalSecondaryIndexes)
-              .fill(null)
-              .flatMap((_, i) => [
-                {
-                  AttributeName: this.getGsiKey(i + 1, "pk"),
-                  AttributeType: "S",
-                },
-                {
-                  AttributeName: this.getGsiKey(i + 1, "sk"),
-                  AttributeType: "S",
-                },
-              ]),
-          ],
-          KeySchema: [
-            {
-              AttributeName: "pk",
-              KeyType: "HASH",
-            },
-            {
-              AttributeName: "sk",
-              KeyType: "RANGE",
-            },
-          ],
-          BillingMode: this._tableOptions.billingMode,
-          ProvisionedThroughput:
-            this._tableOptions.billingMode === "PROVISIONED"
-              ? {
-                  ReadCapacityUnits: this._tableOptions.readCapacityUnits,
-                  WriteCapacityUnits: this._tableOptions.writeCapacityUnits,
-                }
-              : undefined,
-          GlobalSecondaryIndexes: new Array(
-            this._tableOptions.globalSecondaryIndexes,
-          )
-            .fill(null)
-            .map((_, i) => ({
-              IndexName: this.getGsiName(i + 1),
-              KeySchema: [
-                {
-                  AttributeName: this.getGsiKey(i + 1, "pk"),
-                  KeyType: "HASH",
-                },
-                {
-                  AttributeName: this.getGsiKey(i + 1, "sk"),
-                  KeyType: "RANGE",
-                },
-              ],
-              Projection: {
-                ProjectionType: "ALL",
+  public async runMigrations(down = false) {
+    if (!down) {
+      try {
+        await this.client.send(
+          new DescribeTableCommand({ TableName: this.table }),
+        );
+      } catch (_) {
+        await this.client.send(
+          new CreateTableCommand({
+            TableName: this.table,
+            AttributeDefinitions: [
+              {
+                AttributeName: "pk",
+                AttributeType: "S",
               },
-              ProvisionedThroughput:
-                this._tableOptions.billingMode === "PROVISIONED"
-                  ? {
-                      ReadCapacityUnits: this._tableOptions.readCapacityUnits,
-                      WriteCapacityUnits: this._tableOptions.writeCapacityUnits,
-                    }
-                  : undefined,
-            })),
-        }),
-      );
+              {
+                AttributeName: "sk",
+                AttributeType: "S",
+              },
+              ...new Array(this._tableOptions.globalSecondaryIndexes)
+                .fill(null)
+                .flatMap((_, i) => [
+                  {
+                    AttributeName: this.getGsiKey(i + 1, "pk"),
+                    AttributeType: "S",
+                  },
+                  {
+                    AttributeName: this.getGsiKey(i + 1, "sk"),
+                    AttributeType: "S",
+                  },
+                ]),
+            ],
+            KeySchema: [
+              {
+                AttributeName: "pk",
+                KeyType: "HASH",
+              },
+              {
+                AttributeName: "sk",
+                KeyType: "RANGE",
+              },
+            ],
+            BillingMode: this._tableOptions.billingMode,
+            ProvisionedThroughput:
+              this._tableOptions.billingMode === "PROVISIONED"
+                ? {
+                    ReadCapacityUnits: this._tableOptions.readCapacityUnits,
+                    WriteCapacityUnits: this._tableOptions.writeCapacityUnits,
+                  }
+                : undefined,
+            GlobalSecondaryIndexes: new Array(
+              this._tableOptions.globalSecondaryIndexes,
+            )
+              .fill(null)
+              .map((_, i) => ({
+                IndexName: this.getGsiName(i + 1),
+                KeySchema: [
+                  {
+                    AttributeName: this.getGsiKey(i + 1, "pk"),
+                    KeyType: "HASH",
+                  },
+                  {
+                    AttributeName: this.getGsiKey(i + 1, "sk"),
+                    KeyType: "RANGE",
+                  },
+                ],
+                Projection: {
+                  ProjectionType: "ALL",
+                },
+                ProvisionedThroughput:
+                  this._tableOptions.billingMode === "PROVISIONED"
+                    ? {
+                        ReadCapacityUnits: this._tableOptions.readCapacityUnits,
+                        WriteCapacityUnits:
+                          this._tableOptions.writeCapacityUnits,
+                      }
+                    : undefined,
+              })),
+          }),
+        );
+      }
+    } else {
+      try {
+        await this.client.send(
+          new DeleteTableCommand({ TableName: this.table }),
+        );
+      } catch (_) {}
     }
 
     return { results: [] };

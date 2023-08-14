@@ -279,17 +279,13 @@ export class PlanetscaleStorageAdapter
     if (tags.length > 0) {
       const existingTags = await this.client
         .selectFrom("wt_search_tags")
-        .selectAll()
+        .select("tag")
         .where("search_document_id", "=", document.id)
         .execute();
-      const tagsToAdd = tags.filter(
-        (tag) =>
-          existingTags.find((existingTag) => existingTag.tag === tag) ===
-          undefined,
-      );
+      const tagSet = new Set(existingTags.map((tag) => tag.tag));
+      const tagsToAdd = tags.filter((tag) => !tagSet.has(tag));
       const tagsToRemove = existingTags.filter(
-        (existingTag) =>
-          tags.find((tag) => tag === existingTag.tag) === undefined,
+        (existingTag) => !tagSet.has(existingTag.tag),
       );
 
       if (tagsToAdd.length > 0) {

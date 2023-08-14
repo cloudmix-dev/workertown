@@ -210,8 +210,15 @@ export class DynamoDBStorageAdapter
       }),
     );
 
-    await Promise.allSettled(
-      tags.map((tag) =>
+    const existingTags = existing?.tags ?? [];
+    const tagSet = new Set(existingTags);
+    const tagsToAdd = tags.filter((tag) => !tagSet.has(tag));
+    const tagsToRemove = existingTags.filter(
+      (existingTag) => !tagSet.has(existingTag),
+    );
+
+    await Promise.allSettled([
+      ...tagsToAdd.map((tag) =>
         this.client.send(
           new UpdateCommand({
             TableName: this.table,
@@ -219,10 +226,37 @@ export class DynamoDBStorageAdapter
               pk: this._getPrimaryKey("tags"),
               sk: tag,
             },
+            UpdateExpression:
+              "SET #count = if_not_exists(#count, :zero) + :inc",
+            ExpressionAttributeNames: {
+              "#count": "count",
+            },
+            ExpressionAttributeValues: {
+              ":inc": 1,
+              ":zero": 0,
+            },
           }),
         ),
       ),
-    );
+      ...tagsToRemove.map((tag) =>
+        this.client.send(
+          new UpdateCommand({
+            TableName: this.table,
+            Key: {
+              pk: this._getPrimaryKey("tags"),
+              sk: tag,
+            },
+            UpdateExpression: "SET #count = if_not_exists(#count, :inc) - :inc",
+            ExpressionAttributeNames: {
+              "#count": "count",
+            },
+            ExpressionAttributeValues: {
+              ":inc": 1,
+            },
+          }),
+        ),
+      ),
+    ]);
 
     return {
       id: newItem.id as string,
@@ -253,11 +287,14 @@ export class DynamoDBStorageAdapter
         TableName: this.table,
         Select: "ALL_ATTRIBUTES",
         KeyConditionExpression: "#pk = :pk",
+        FilterExpression: "#count > :zero",
         ExpressionAttributeNames: {
           "#pk": "pk",
+          "#count": "count",
         },
         ExpressionAttributeValues: {
           ":pk": this._getPrimaryKey("tags"),
+          ":zero": 0,
         },
       }),
     );

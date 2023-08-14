@@ -35,6 +35,7 @@ services:
     image: amazon/dynamodb-local:2.0.0
     ports:
       - 3002:8000
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ."
   # Redis
   redis:
     image: redis:6.2.6
