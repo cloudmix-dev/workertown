@@ -45,26 +45,15 @@ router.post(
     const storage = ctx.get("storage");
     const { topic, endpoint, method, headers, queryParameters } =
       ctx.req.valid("json");
-    let subscription: Subscription | null = null;
+    const subscription = await storage.createSubscription({
+      topic,
+      endpoint,
+      method,
+      headers,
+      queryParameters,
+    });
 
-    try {
-      subscription = await storage.createSubscription({
-        topic,
-        endpoint,
-        method,
-        headers,
-        queryParameters,
-      });
-    } catch (_) {
-      console.log(_);
-    }
-
-    const status = subscription ? 200 : 400;
-
-    return ctx.json(
-      { status, success: subscription ? true : null, data: subscription },
-      status,
-    );
+    return ctx.json({ status: 200, success: true, data: subscription });
   },
 );
 
