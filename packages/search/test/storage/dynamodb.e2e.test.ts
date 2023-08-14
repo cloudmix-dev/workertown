@@ -1,5 +1,4 @@
 import test from "ava";
-import { v2 as compose } from "docker-compose";
 import crypto from "node:crypto";
 
 import { type StorageAdapter } from "../../src/storage";
@@ -25,9 +24,5 @@ test("DynamoDBStorageAdapter", async (t) => {
     },
   }) as unknown as StorageAdapter;
 
-  await compose.upOne("dynamodb");
-
   await testStorageAdapterE2E(t, storage);
-
-  await compose.execCompose("kill", "dynamodb");
 });
