@@ -17,4 +17,5 @@ test("UpstashRedisCacheAdapter", async (t) => {
   await testCacheAdapterE2E(t, cache);
 
   await compose.execCompose("kill", "upstash_redis");
+  await compose.execCompose("kill", "redis");
 });
