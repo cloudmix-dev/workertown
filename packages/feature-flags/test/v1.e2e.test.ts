@@ -213,7 +213,7 @@ test("v1 flags delete", async (t) => {
 
   const result2 = (await res2.json()) as DeleteFlagResponse;
 
-  t.is(result2.data, true);
+  t.deepEqual(result2.data, { name: "test" });
 
   const res3 = await makeRequest(service, "/v1/flags/test");
 
@@ -646,7 +646,7 @@ test("v1 admin migrate", async (t) => {
 
   const result = (await res.json()) as AdminMigrateResponse;
 
-  t.true(result.data);
+  t.deepEqual(result.data, []);
 });
 
 test("v1 admin w/ custom endpoint", async (t) => {

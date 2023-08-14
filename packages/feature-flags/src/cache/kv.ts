@@ -2,4 +2,6 @@ import { KVCacheAdapter as BaseKVCacheAdapter } from "@workertown/internal-cache
 
 import { type Flag } from "../storage/storage-adapter.js";
 
-export class KVCacheAdapter extends BaseKVCacheAdapter<Flag[]> {}
+export class KVCacheAdapter extends BaseKVCacheAdapter<Flag[]> {
+  public readonly prefix: string = "wt_flags";
+}

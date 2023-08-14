@@ -297,7 +297,11 @@ You will receive a `200 OK` response if the migrations were successfully run.
   "status": 200,
   "success": true,
   "data": [
-    //...
+    {
+      "migrationName": "1688823193041_add_initial_tables_and_indexes",
+      "direction": "Up",
+      "status": "Success"
+    }
   ]
 }
 ```

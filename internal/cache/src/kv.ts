@@ -8,19 +8,19 @@ interface KVCacheAdapterOptions {
 }
 
 export class KVCacheAdapter<T = unknown> extends CacheAdapter<T> {
-  public readonly _prefix: string = "wt_search_cache";
+  private readonly _kv: KVNamespace;
 
-  public readonly _kv: KVNamespace;
+  public readonly prefix: string = "wt";
 
   constructor(options: KVCacheAdapterOptions) {
     super();
 
     this._kv = options.kv;
-    this._prefix = options?.prefix ?? this._prefix;
+    this.prefix = options?.prefix ?? this.prefix;
   }
 
   private _prefixKey(key: string) {
-    return `${this._prefix}_${key}`;
+    return `${this.prefix}_${key}`;
   }
 
   public async get(key: string) {
@@ -44,7 +44,7 @@ export class KVCacheAdapter<T = unknown> extends CacheAdapter<T> {
 
     while (!done) {
       const { keys, list_complete: listComplete } = await this._kv.list({
-        prefix: key ? this._prefixKey(key) : this._prefix,
+        prefix: key ? this._prefixKey(key) : this.prefix,
       });
 
       for (const key of keys) {
