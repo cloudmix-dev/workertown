@@ -2,7 +2,6 @@ import {
   type ExportedHandlerQueueHandler,
   type ExportedHandlerScheduledHandler,
 } from "@cloudflare/workers-types";
-import { type QueueMessage } from "@workertown/internal-queue";
 import { Hono, type HonoRequest, type Input } from "hono";
 import { cors } from "hono/cors";
 
@@ -25,7 +24,8 @@ import {
 import { type Context, User } from "./types.js";
 
 export class WorkertownHono<T extends Context> extends Hono<T> {
-  queue?: ExportedHandlerQueueHandler<T["Variables"], QueueMessage>;
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the message type here
+  queue?: ExportedHandlerQueueHandler<T["Variables"], any>;
   scheduled?: ExportedHandlerScheduledHandler;
 }
 

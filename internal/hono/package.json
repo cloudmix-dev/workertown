@@ -49,8 +49,7 @@
   },
   "devDependencies": {
     "@types/lodash.merge": "~4.6.7",
-    "@upstash/redis": "~1.22.0",
-    "@workertown/internal-queue": "~0.0.2-alpha.17"
+    "@upstash/redis": "~1.22.0"
   },
   "peerDependencies": {
     "@upstash/redis": "~1.22.0"
