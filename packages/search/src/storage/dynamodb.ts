@@ -121,7 +121,7 @@ export class DynamoDBStorageAdapter
       .map((_, i) => `contains (#tags, :tag_${i + 1})`)
       .join(" AND")}`;
     const expressionAttributeNames = {
-      "#pk": this.getGsiKey(1, "pk"),
+      "#pk": this.getGsiKey(2, "pk"),
       "#tags": "tags",
     };
     const expressionAttributeValues = {
@@ -136,7 +136,7 @@ export class DynamoDBStorageAdapter
     const result = await this.client.send(
       new QueryCommand({
         TableName: this.table,
-        IndexName: gsi ? this.getGsiName(1) : undefined,
+        IndexName: gsi ? this.getGsiName(gsi) : undefined,
         Select: "ALL_ATTRIBUTES",
         KeyConditionExpression: keyCondition,
         FilterExpression: filterExpression,

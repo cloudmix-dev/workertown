@@ -51,8 +51,8 @@ test("v1 search w/ tenant, multiple fields", async (t) => {
   t.is(result.data.length, 4);
   t.is(result.data[0].id, "document_1");
   t.is(result.data[1].id, "document_2");
-  t.is(result.data[2].id, "document_4");
-  t.is(result.data[3].id, "document_3");
+  t.is(result.data[2].id, "document_3");
+  t.is(result.data[3].id, "document_4");
 });
 
 test("v1 search w/ tenant, index, single field", async (t) => {

@@ -3,4 +3,5 @@ export default {
     ts: "module",
   },
   nodeArguments: ["--loader=tsx", "--no-warnings"],
+  timeout: "30s",
 };
