@@ -1,0 +1,14 @@
+{
+  "name": "@workertown/combined-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "NO_D1_WARNING=true && wrangler dev"
+  },
+  "dependencies": {
+    "@workertown/feature-flags": "~0.0.2-alpha.16",
+    "@workertown/search": "~0.0.2-alpha.16",
+    "@workertown/utils": "~0.0.2-alpha.16"
+  }
+}
