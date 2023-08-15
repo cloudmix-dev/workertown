@@ -3,7 +3,7 @@ import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
 import { QueueAdapter, type QueueMessage } from "./queue/index.js";
-import { v1 } from "./routers/index.js";
+import { publicRouter, v1 } from "./routers/index.js";
 import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { StorageAdapter } from "./storage/index.js";
 import { type Context, type CreateServerOptions } from "./types.js";
@@ -77,7 +77,7 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
   server.route(endpoints.v1.publish, v1.publishRouter);
   server.route(endpoints.v1.subscriptions, v1.subscriptionsRouter);
 
-  server.route(endpoints.public, v1.publicRouter);
+  server.route(endpoints.public, publicRouter);
 
   server.queue = async (batch) => {
     const results = await Promise.allSettled(

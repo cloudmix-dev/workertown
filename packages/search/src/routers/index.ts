@@ -1,3 +1,4 @@
+import { router as publicRouter } from "./public.js";
 import * as v1 from "./v1/index.js";
 
-export { v1 };
+export { publicRouter, v1 };

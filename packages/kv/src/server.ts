@@ -2,7 +2,7 @@ import { createServer } from "@workertown/internal-hono";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
-import { v1 } from "./routers/index.js";
+import { publicRouter, v1 } from "./routers/index.js";
 import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { type StorageAdapter } from "./storage/storage-adapter.js";
 import { type Context, type CreateServerOptions } from "./types.js";
@@ -77,7 +77,7 @@ export function createKvServer(options?: CreateServerOptionsOptional) {
   }
 
   if (endpoints.public !== false) {
-    server.route(endpoints.public, v1.publicRouter);
+    server.route(endpoints.public, publicRouter);
   }
 
   return server;

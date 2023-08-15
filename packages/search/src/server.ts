@@ -5,7 +5,7 @@ import merge from "lodash.merge";
 import { type CacheAdapter } from "./cache/index.js";
 import { NoOpCacheAdapter } from "./cache/no-op.js";
 import { DEFAULT_SCAN_RANGE, DEFAUlT_STOP_WORDS } from "./constants.js";
-import { v1 } from "./routers/index.js";
+import { publicRouter, v1 } from "./routers/index.js";
 import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { type StorageAdapter } from "./storage/storage-adapter.js";
 import { type Context, type CreateServerOptions } from "./types.js";
@@ -102,7 +102,7 @@ export function createSearchServer(options?: CreateServerOptionsOptional) {
   }
 
   if (endpoints.public !== false) {
-    server.route(endpoints.public, v1.publicRouter);
+    server.route(endpoints.public, publicRouter);
   }
 
   return server;
