@@ -153,7 +153,7 @@ export class DynamoDBStorageAdapter
     );
   }
 
-  public async getDocument(id: string): Promise<SearchDocument | null> {
+  public async getDocument(id: string) {
     const result = await this.client.send(
       new GetCommand({
         TableName: this.table,
@@ -172,7 +172,7 @@ export class DynamoDBStorageAdapter
   public async upsertDocument(
     item: UpsertSearchDocumentBody,
     tags: string[] = [],
-  ): Promise<SearchDocument> {
+  ) {
     const existing = await this.getDocument(item.id);
     const now = new Date();
     const newItem: Record<string, unknown> = {
@@ -269,7 +269,7 @@ export class DynamoDBStorageAdapter
     };
   }
 
-  public async deleteDocument(id: string): Promise<void> {
+  public async deleteDocument(id: string) {
     await this.client.send(
       new DeleteCommand({
         TableName: this.table,
@@ -281,7 +281,7 @@ export class DynamoDBStorageAdapter
     );
   }
 
-  public async getTags(): Promise<string[]> {
+  public async getTags() {
     const tags = await this.client.send(
       new QueryCommand({
         TableName: this.table,

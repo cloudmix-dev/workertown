@@ -129,34 +129,36 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
                     WriteCapacityUnits: this._tableOptions.writeCapacityUnits,
                   }
                 : undefined,
-            GlobalSecondaryIndexes: new Array(
-              this._tableOptions.globalSecondaryIndexes,
-            )
-              .fill(null)
-              .map((_, i) => ({
-                IndexName: this.getGsiName(i + 1),
-                KeySchema: [
-                  {
-                    AttributeName: this.getGsiKey(i + 1, "pk"),
-                    KeyType: "HASH",
-                  },
-                  {
-                    AttributeName: this.getGsiKey(i + 1, "sk"),
-                    KeyType: "RANGE",
-                  },
-                ],
-                Projection: {
-                  ProjectionType: "ALL",
-                },
-                ProvisionedThroughput:
-                  this._tableOptions.billingMode === "PROVISIONED"
-                    ? {
-                        ReadCapacityUnits: this._tableOptions.readCapacityUnits,
-                        WriteCapacityUnits:
-                          this._tableOptions.writeCapacityUnits,
-                      }
-                    : undefined,
-              })),
+            GlobalSecondaryIndexes:
+              this._tableOptions.globalSecondaryIndexes > 0
+                ? new Array(this._tableOptions.globalSecondaryIndexes)
+                    .fill(null)
+                    .map((_, i) => ({
+                      IndexName: this.getGsiName(i + 1),
+                      KeySchema: [
+                        {
+                          AttributeName: this.getGsiKey(i + 1, "pk"),
+                          KeyType: "HASH",
+                        },
+                        {
+                          AttributeName: this.getGsiKey(i + 1, "sk"),
+                          KeyType: "RANGE",
+                        },
+                      ],
+                      Projection: {
+                        ProjectionType: "ALL",
+                      },
+                      ProvisionedThroughput:
+                        this._tableOptions.billingMode === "PROVISIONED"
+                          ? {
+                              ReadCapacityUnits:
+                                this._tableOptions.readCapacityUnits,
+                              WriteCapacityUnits:
+                                this._tableOptions.writeCapacityUnits,
+                            }
+                          : undefined,
+                    }))
+                : undefined,
           }),
         );
       }

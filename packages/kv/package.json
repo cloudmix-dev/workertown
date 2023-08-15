@@ -26,6 +26,10 @@
       "default": "./dist/storage/d1.js",
       "types": "./dist/storage/d1.d.ts"
     },
+    "./storage/dynamodb": {
+      "default": "./dist/storage/dynamodb.js",
+      "types": "./dist/storage/dynamodb.d.ts"
+    },
     "./storage/kv": {
       "default": "./dist/storage/kv.js",
       "types": "./dist/storage/kv.d.ts"
@@ -95,6 +99,8 @@
     "@workertown/internal-types": "~0.0.2-alpha.17"
   },
   "peerDependencies": {
+    "@aws-sdk/client-dynamodb": "~3.388.0",
+    "@aws-sdk/lib-dynamodb": "~3.388.0",
     "@planetscale/database": "~1.8.0",
     "@upstash/redis": "~1.22.0",
     "better-sqlite3": "~8.4.0"
