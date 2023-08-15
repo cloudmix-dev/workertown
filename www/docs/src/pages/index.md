@@ -21,7 +21,7 @@ Workertown provides...
 
 {% quick-link title="Files" icon="files" description="Easy file storage at the edge." /%}
 
-{% quick-link title="KV" icon="kv" description="Simple key/value storage." /%}
+{% quick-link title="KV" icon="kv" href="/docs/packages/kv/introduction" description="Simple key/value storage." /%}
 
 {% quick-link title="Pub Sub" icon="pubsub" description="Webhook based system messaging." /%}
 

@@ -26,8 +26,8 @@ npm install @workertown/feature-flags
 
 ### Creating a server
 
-In your main file (e.g. `worker.ts`), import the `search` factory function and
-call it.
+In your main file (e.g. `worker.ts`), import the `featureFlags` factory function
+and call it.
 
 ```ts
 import { featureFlags } from "@workertown/feature-flags";

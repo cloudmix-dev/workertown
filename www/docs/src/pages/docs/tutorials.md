@@ -15,6 +15,11 @@ Workertown service, deployed to production on Cloudflare Workers.
 Try out the `@workertown/feature-flags` tutorial
 [here](/docs/packages/feature-flags/tutorial).
 
+### KV
+
+Try out the `@workertown/kv` tutorial
+[here](/docs/packages/kv/tutorial).
+
 ### Search
 
 Try out the `@workertown/search` tutorial

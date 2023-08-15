@@ -70,6 +70,31 @@ export const navigation: {
     ],
   },
   {
+    title: "KV",
+    links: [
+      {
+        title: "Introduction",
+        href: "/docs/packages/kv/introduction",
+      },
+      {
+        title: "Using the API",
+        href: "/docs/packages/kv/using-the-api",
+      },
+      {
+        title: "Configuration",
+        href: "/docs/packages/kv/configuration",
+      },
+      {
+        title: "Storage",
+        href: "/docs/packages/kv/storage",
+      },
+      {
+        title: "Tutorial",
+        href: "/docs/packages/kv/tutorial",
+      },
+    ],
+  },
+  {
     title: "Search",
     links: [
       {
