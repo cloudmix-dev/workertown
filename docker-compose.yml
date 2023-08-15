@@ -21,6 +21,17 @@ services:
     environment:
       - PORT=8080
       - REDIS_URL=redis://redis:6379
+  # DynamoDB
+  dynamodb:
+    image: amazon/dynamodb-local:2.0.0
+    ports:
+      - 3002:8000
+    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ."
+  # Turso
+  turso:
+    image: ghcr.io/libsql/sqld:v0.17.2
+    ports:
+      - 3003:8080
   # MYSQL
   mysql:
     image: mysql:8.0.32
@@ -30,12 +41,6 @@ services:
       - MYSQL_DATABASE=workertown
       - MYSQL_USER=workertown
       - MYSQL_PASSWORD=workertown
-  # DynamoDB
-  dynamodb:
-    image: amazon/dynamodb-local:2.0.0
-    ports:
-      - 3002:8000
-    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ."
   # Redis
   redis:
     image: redis:6.2.6
