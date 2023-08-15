@@ -23,7 +23,7 @@ export class UpstashRedisStorageAdapter extends StorageAdapter {
   public async getValue<T = unknown>(key: string) {
     const value = await this._client.get<string>(this._formatKey(key));
 
-    return value ? (JSON.parse(value) as T) : null;
+    return (value as T) ?? null;
   }
 
   public async setValue<T = unknown>(key: string, value: T) {

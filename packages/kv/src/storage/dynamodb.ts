@@ -33,7 +33,7 @@ export class DynamoDBStorageAdapter
         globalSecondaryIndexes: 0,
       } as DynamoDBTableOptions,
       region: options.region,
-      table: options.table ?? "wt-search",
+      table: options.table ?? "wt-kv",
     });
   }
 
