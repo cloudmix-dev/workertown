@@ -323,8 +323,169 @@ test("v1 suggest w/ custom endpoint", async (t) => {
   t.is(result.data[0].terms[0], "test");
 });
 
-// Documents
-// Documents (custom endpoint)
+// Search documents
+interface DocumentResponse extends SuccessfulResponse {
+  data: {
+    id: string;
+    tenant: string;
+    index: string;
+    data: Record<string, unknown>;
+    tags: string[];
+    createdAt: string;
+    updatedAt: string;
+  } | null;
+}
+
+test("v1 index search document", async (t) => {
+  const service = createTestService();
+  const res1 = await makeRequest(service, "/v1/docs/test_doc", {
+    method: "PUT",
+    body: {
+      tenant: "test",
+      index: "test",
+      data: {
+        title: "test",
+        content: "test",
+      },
+    },
+  });
+
+  t.is(res1.status, 200);
+
+  const result1 = (await res1.json()) as DocumentResponse;
+
+  t.is(result1.data?.id, "test_doc");
+  t.is(result1.data?.data.title, "test");
+
+  const res2 = await makeRequest(service, "/v1/docs/test_doc");
+
+  t.is(res2.status, 200);
+
+  const result2 = (await res2.json()) as DocumentResponse;
+
+  t.is(result2.data?.id, "test_doc");
+  t.is(result2.data?.data.title, "test");
+
+  await makeRequest(service, "/v1/docs/test_doc", {
+    method: "PUT",
+    body: {
+      tenant: "test",
+      index: "test",
+      data: {
+        title: "other",
+        content: "test",
+      },
+    },
+  });
+
+  const res3 = await makeRequest(service, "/v1/docs/test_doc");
+
+  t.is(res3.status, 200);
+
+  const result3 = (await res3.json()) as DocumentResponse;
+
+  t.is(result3.data?.id, "test_doc");
+  t.is(result3.data?.data.title, "other");
+});
+
+test("v1 get document", async (t) => {
+  const service = createTestService();
+
+  await makeRequest(service, "/v1/docs/test_doc", {
+    method: "PUT",
+    body: {
+      tenant: "test",
+      index: "test",
+      data: {
+        title: "test",
+        content: "test",
+      },
+    },
+  });
+
+  const res = await makeRequest(service, "/v1/docs/test_doc");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as DocumentResponse;
+
+  t.is(result.data?.id, "test_doc");
+  t.is(result.data?.data.title, "test");
+});
+
+test("v1 delete document", async (t) => {
+  const service = createTestService();
+
+  await makeRequest(service, "/v1/docs/test_doc", {
+    method: "PUT",
+    body: {
+      tenant: "test",
+      index: "test",
+      data: {
+        title: "test",
+        content: "test",
+      },
+    },
+  });
+
+  const res1 = await makeRequest(service, "/v1/docs/test_doc");
+
+  t.is(res1.status, 200);
+
+  const result1 = (await res1.json()) as DocumentResponse;
+
+  t.is(result1.data?.id, "test_doc");
+  t.is(result1.data?.data.title, "test");
+
+  const res2 = await makeRequest(service, "/v1/docs/test_doc", {
+    method: "DELETE",
+  });
+
+  t.is(res2.status, 200);
+
+  const result2 = (await res2.json()) as DocumentResponse;
+
+  t.is(result2.data?.id, "test_doc");
+
+  const res3 = await makeRequest(service, "/v1/docs/test_doc");
+
+  t.is(res3.status, 404);
+
+  const result3 = (await res3.json()) as DocumentResponse;
+
+  t.is(result3.data, null);
+});
+
+test("v1 documents w/ custom endpoint", async (t) => {
+  const service = createTestService({
+    endpoints: {
+      v1: {
+        documents: "/custom-documents",
+      },
+    },
+  });
+
+  await makeRequest(service, "/custom-documents/test_doc", {
+    method: "PUT",
+    body: {
+      tenant: "test",
+      index: "test",
+      data: {
+        title: "test",
+        content: "test",
+      },
+    },
+  });
+
+  const res = await makeRequest(service, "/custom-documents/test_doc");
+
+  t.is(res.status, 200);
+
+  const result = (await res.json()) as DocumentResponse;
+
+  t.is(result.data?.id, "test_doc");
+  t.is(result.data?.data.title, "test");
+});
 
 // Tags
 interface TagsResponse extends SuccessfulResponse {

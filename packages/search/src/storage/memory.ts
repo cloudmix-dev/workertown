@@ -174,7 +174,8 @@ export class MemoryStorageAdapter
   ): Promise<SearchDocument> {
     const now = new Date();
     const existing = this._documentStore.get(document.id);
-    const searchDocument = existing ?? {
+    const searchDocument = {
+      ...(existing ?? {}),
       ...document,
       updatedAt: now,
       createdAt: now,
