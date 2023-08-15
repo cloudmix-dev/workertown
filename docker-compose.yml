@@ -1,16 +1,6 @@
 version: "3.4"
 
 services:
-  # Planetscale local
-  planetscale:
-    image: cloudmix/planetscale-local:0.0.1
-    depends_on:
-      - mysql
-    ports:
-      - 3000:8080
-    environment:
-      - PORT=8080
-      - MYSQL_URL=mysql://workertown:workertown@mysql:3306/workertown
   # Upstash local
   upstash_redis:
     image: cloudmix/upstash-redis-local:0.0.2
@@ -32,6 +22,16 @@ services:
     image: ghcr.io/libsql/sqld:v0.17.2
     ports:
       - 3003:8080
+  # Planetscale local
+  planetscale:
+    image: cloudmix/planetscale-local:0.0.1
+    depends_on:
+      - mysql
+    ports:
+      - 3004:8080
+    environment:
+      - PORT=8080
+      - MYSQL_URL=mysql://workertown:workertown@mysql:3306/workertown
   # MYSQL
   mysql:
     image: mysql:8.0.32
