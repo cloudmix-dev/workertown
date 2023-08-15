@@ -15,8 +15,6 @@ Workertown provides...
 
 {% quick-links %}
 
-{% quick-link title="Auth" icon="auth" description="OAuth 2 and SAML, but easy to understand." /%}
-
 {% quick-link title="Events" icon="events" description="Kafka-like events streaming." /%}
 
 {% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags/introduction" description="Feature flags made simple." /%}

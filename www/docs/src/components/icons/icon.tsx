@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useId } from "react";
 
-import { AuthIcon } from "./auth-icon";
 import { CMSIcon } from "./cms-icon";
 import { EventsIcon } from "./events-icon";
 import { FilesIcon } from "./files-icon";
@@ -18,7 +17,6 @@ import { ThemingIcon } from "./theming-icon";
 import { WarningIcon } from "./warning-icon";
 
 const icons = {
-  auth: AuthIcon,
   cms: CMSIcon,
   events: EventsIcon,
   files: FilesIcon,
