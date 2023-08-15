@@ -1,4 +1,4 @@
-name: Test @workertown/feature-flags
+name: Test storage adapters
 
 on:
   pull_request:
@@ -9,12 +9,12 @@ on:
     branches:
       - main
     paths:
-      - packages/feature-flags/**
-      - .github/workflows/test-feature-flags.yml
+      - "/internal/storage/**"
+      - .github/workflows/test-storage-adapters.yml
   workflow_dispatch:
 
 jobs:
-  test-feature-flags:
+  test-storage-adapters:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -26,7 +26,7 @@ jobs:
           node-version: 18.x
 
       - name: Install Dependencies
-        run: npm -w @workertown/feature-flags i
+        run: npm i
 
       - name: Start local services
         uses: isbang/compose-action@v1.5.1
@@ -37,4 +37,4 @@ jobs:
             turso
 
       - name: Run Tests
-        run: npm test -- --filter=@workertown/feature-flags
+        run: npm run test -- --filter=@workertown/{feature-flags,search} -- 'test/storage/*.e2e.test.ts'

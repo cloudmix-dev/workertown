@@ -28,5 +28,13 @@ jobs:
       - name: Install Dependencies
         run: npm -w @workertown/search i
 
+      - name: Start local services
+        uses: isbang/compose-action@v1.5.1
+        with:
+          services: |
+            upstash-redis
+            dynamodb
+            turso
+
       - name: Run Tests
         run: npm test -- --filter=@workertown/search
