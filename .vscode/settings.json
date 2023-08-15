@@ -5,9 +5,7 @@
     "source.organizeImports.rome": true
   },
   "files.associations": {
-    ".commitlintrc": "json",
-    ".eslintignore": "ignore",
-    ".dockerignore": "ignore"
+    ".commitlintrc": "json"
   },
   "[json]": {
     "editor.defaultFormatter": "rome.rome"
