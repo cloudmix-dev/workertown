@@ -5,7 +5,7 @@ description: Each Workertown package supports customisation of its runtime behav
 
 All Workertown services expose the ability to customise their runtime behaviour
 depending on the environment they are running in - this is a powerful
-configuration that ensures that the service can run essentially **anywhere**.
+configuration that ensures that the service can run essentially **anywhere**™.
 
 ---
 
@@ -36,8 +36,8 @@ export default search({ runtime });
 ```
 
 {% callout title="Check the docs!" %}
-Each Workertown service has a different set of required values to satisfy their
-`RuntimeResolver` type.
+Each Workertown service has a similar but different set of required values to
+satisfy their `RuntimeResolver` type.
 
 Read the docs for the service you're using to see what options are available.
 {% /callout %}

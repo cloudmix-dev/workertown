@@ -228,7 +228,7 @@ base64 encoded `username:password` passed as a `Basic` credential as part of the
 `Authorization` header:
 
 ```bash
-Authorization: Basic <base64<username:password>>
+Authorization: Basic base64(<username>:<password>)
 ```
 
 ### Configuration
@@ -354,6 +354,7 @@ export default search({
 {% callout type="warning" title="Do not disable all strategies" %}
 The internals of Workertown services require an authenticated user to be present
 within the context of a request to function. While you can set each
-`auth.<strategy>` to `false`, this isn't advised as you won't be able to call
-any of the service's non-public endpoints.
+`auth.<strategy>` to `false` without setting an `authenticateRequest` function,
+this isn't advised as you won't be able to call any of the service's non-public
+endpoints.
 {% /callout %}

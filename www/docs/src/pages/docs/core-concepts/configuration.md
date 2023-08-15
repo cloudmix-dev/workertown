@@ -3,8 +3,10 @@ title: Configuration
 description: Workertown adheres to a principal we call "sensible defaults, advanced configuration".
 ---
 
-Sensible defaults, absolute configuration. That statement is at the core of our
-design decisions when it comes to Workertown.
+> Sensible defaults, absolute configuration.
+> 
+That statement is at the core of our design decisions when it comes to
+Workertown.
 
 We feel very strongly that creating a Workertown service should be as simple as
 importing and calling a function - however, we all know that the real world can
@@ -65,7 +67,7 @@ export default search({
 The values passed in to the `access.ip` array can either be an IPv4/v6 string,
 or an IPv4/v6 CIDR block describing an IP range to allow.
 
-Any requests that do not originate from an IP address whutelisted in the
+Any requests that do not originate from an IP address whitelisted in the
 `access.ip` array will be rejected with a `403 Forbidden` response.
 
 #### `access.rateLimit`
@@ -202,7 +204,7 @@ By default, a Workertown service will read environment variables from either the
 You can customise this behaviour by passing in a `getEnv` function that takes
 whatever has been parsed from the environment as an `env` `object` argument and
 returns an `object` of environment variables. This will **override** any
-environment variables set via `env`/`provess.env`, so ensure to include any
+environment variables set via `env`/`process.env`, so ensure to include any
 variables you need from the passed in `env` `object`.
 
 ```ts
@@ -255,9 +257,10 @@ allow support for different environments. By default, every Workertown package
 assumes it is running within a **Cloudflare Worker** (and therefore makes some
 assumptions about bindings that are available).
 
-Workertown comes with **three** out-of-the-box runtimes:
+Workertown comes with **four** out-of-the-box runtimes:
 
 - `cloudflare-workers`
+- `edge`
 - `node`
 - `test`
 

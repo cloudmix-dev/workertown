@@ -34,7 +34,7 @@ The `KVCacheAdapter` is exposed from each package, but in reality you should
 
 ```ts
 import { search } from "@workertown/search";
-import { KVCacheAdapter } from "@workertown/search/storage/d1";
+import { KVCacheAdapter } from "@workertown/search/cache/kv";
 
 export default search({
   runtime: (options, env) => ({
@@ -53,7 +53,23 @@ preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 ### Upstash Redis
 
-Coming soon...
+The [Upstash Redis](https://docs.upstash.com/redis)  cache adapter uses
+Upstash's Redis cache API to provide an edge-compatible cache.
+
+```ts
+import { search } from "@workertown/search";
+import { UpstashRedisCacheAdapter } from "@workertown/search/cache/upstash-redis";
+
+export default search({
+  runtime: (options, env) => ({
+   cache: new UpstashRedisCacheAdapter({ 
+      url: env.UPSTASH_REDIS_URL,
+      token: env.UPSTASH_REDIS_TOKEN,
+    }),
+    // Other options go here...
+  }),
+});
+```
 
 ### Memory
 
@@ -83,7 +99,7 @@ usually only be used in development/test environments.
 
 ### No-op
 
-The `NoopCacheAdapter` is a special cache adapter that does **nothing**. It is
+The `NoopCacheAdapter` is a special cache adapter that does **nothing**™. It is
 useful for disabling cache support entirely in situations where you still want
 to provide a `CacheAdapter` instance.
 
@@ -98,5 +114,3 @@ export default search({
   },
 });
 ```
-
----

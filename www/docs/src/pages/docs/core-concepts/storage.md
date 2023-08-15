@@ -103,11 +103,11 @@ would like to manage the table yourself, you can omit `options` and simply
 provide the `table` name for the adapter to use.
 
 Each `DynamodDBStorageAdapter` has a dependency on the
-`@aws-sdk/client-dynamodb` package, and therefore you must install this package
-as a dependency of your project.
+`@aws-sdk/client-dynamodb` and `@aws-sdk/lib-dynamodb` packages, and therefore
+you must install them as dependencies of your project.
 
 ```bash
-npm install @aws-sdk/client-dynamodb
+npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 ```
 
 ### Planetscale
@@ -170,7 +170,8 @@ npm install better-sqlite3
 ### Turso
 
 [Turso](https://turso.tech) is a hosted Sqlite (libsql) database provider that
-provides a REST API for interacting with Sqlite databases.
+provides a REST API for interacting with
+[Sqlite](https://www.sqlite.org/index.html) databases.
 
 ```ts
 import { search } from "@workertown/search";
@@ -242,9 +243,10 @@ implemented for full storage support in a particular Workertown service.
 
 ## Migrations
 
-For storage adapters built upon relational databases, each Workertown service
-exposes an endpoint to run the migrations required to run the service. The
-endpoint takes a `POST` request with an empty `JSON` body to run the migrations.
+For storage adapters built upon relational databases (or
+[DynamoDB](https://aws.amazon.com/pm/dynamodb)), each Workertown service exposes
+an endpoint to run the migrations required to run the service. The endpoint
+takes a `POST` request with an empty `JSON` body to run the migrations.
 
 By **default**, this endpoint is exposed at `/v1/admin/migrate`, but this can be
 configured via the `endpoints.v1.admin` configuration option.

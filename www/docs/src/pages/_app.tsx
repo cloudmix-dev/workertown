@@ -1,9 +1,14 @@
 import { slugifyWithCounter } from "@sindresorhus/slugify";
 import "focus-visible";
 import Head from "next/head";
+import { Prism } from "prism-react-renderer";
 
 import { Layout } from "../components/layout/layout";
 import "../styles/tailwind.css";
+
+// This is horrible, but Prism sucks:
+// https://www.npmjs.com/package/prism-react-renderer#custom-language-support
+globalThis.Prism = Prism;
 
 function getNodeText(node) {
   let text = "";

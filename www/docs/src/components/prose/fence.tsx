@@ -1,4 +1,5 @@
 import { Highlight } from "prism-react-renderer";
+import "prismjs/components/prism-json";
 import { Fragment, useState } from "react";
 
 import { cn } from "../../lib/utils";

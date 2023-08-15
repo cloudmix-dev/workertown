@@ -8,8 +8,9 @@ description: "@workertown/kv provides production-ready feature flags, with suppo
 `@workertown/kvs` provides simple REST API for exposing a JSON compatible
 key/value store.
 
-Think of it like HTTP over
-[KV](https://developers.cloudflare.com/workers/learning/how-kv-works/).
+Think of it like
+[Cloudflare Workers KV](https://developers.cloudflare.com/workers/learning/how-kv-works/)
+over HTTP.
 
 ---
 
