@@ -156,6 +156,37 @@ export default search({ runtime });
 Below, you will find simple (i.e. contrived) examples of how to create and start
 a Workertown service in various environments.
 
+### AWS Lambda
+
+```ts
+import { serve } from "@workertown/aws-lambda";
+import { search } from "@workertown/search";
+
+export const handler = serve(search());
+```
+
+### AWS Lambda@Edge
+
+```ts
+import { serve } from "@workertown/aws-lambda-edge";
+import { search } from "@workertown/search";
+
+export const handler = serve(search());
+```
+
+### Bun
+
+```ts
+import { search } from "@workertown/search";
+
+const server = search();
+
+export default {
+  port: 3000,
+  fetch: server.fetch,
+};
+```
+
 ### Cloudflare Workers
 
 ```ts
@@ -171,19 +202,6 @@ import { serve } from "@workertown/cloudflare-pages";
 import { search } from "@workertown/search";
 
 export const onRequest = serve(search());
-```
-
-### Bun
-
-```ts
-import { search } from "@workertown/search";
-
-const server = search();
-
-export default {
-  port: 3000,
-  fetch: server.fetch,
-};
 ```
 
 ### Fastly Compute@Edge
@@ -228,33 +246,6 @@ const server = search();
 export const handler = server.fetch;
 ```
 
-### Vercel
-
-```ts
-import { search } from "@workertown/search";
-import { serve } from "@workertown/vercel";
-
-export default serve(search());
-```
-
-### AWS Lambda
-
-```ts
-import { serve } from "@workertown/aws-lambda";
-import { search } from "@workertown/search";
-
-export const handler = serve(search());
-```
-
-### AWS Lambda@Edge
-
-```ts
-import { serve } from "@workertown/aws-lambda-edge";
-import { search } from "@workertown/search";
-
-export const handler = serve(search());
-```
-
 ### Node.js
 
 ```ts
@@ -266,4 +257,13 @@ const server = search();
 serve(server, {
   port: 3000,
 });
+```
+
+### Vercel
+
+```ts
+import { search } from "@workertown/search";
+import { serve } from "@workertown/vercel";
+
+export default serve(search());
 ```
