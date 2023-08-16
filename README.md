@@ -6,6 +6,14 @@ Workertown is a collection of packages for building edge-runtime architectures.
 
 You can check out the docs [here](https://workertown.cloudmix.dev).
 
+## Packages
+
+- [@workertown/feature-flags](https://www.npmjs.com/package/@workertown/feature-flags)
+- [@workertown/files](https://www.npmjs.com/package/@workertown/files)
+- [@workertown/kv](https://www.npmjs.com/package/@workertown/kv)
+- [@workertown/pub-sub](https://www.npmjs.com/package/@workertown/pub-sub)
+- [@workertown/search](https://www.npmjs.com/package/@workertown/search)
+
 ## TL;DR
 
 ### Create a production-ready feature flag service on the edge
@@ -18,7 +26,7 @@ npx wrangler init feature-flags && cd ./feature-flags
 npm i @workertown/feature-flags
 ```
 
-```js
+```ts
 // src/worker.ts
 import { featureFlags } from "@workertown/feature-flags";
 
@@ -53,6 +61,47 @@ preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 npx wrangler publish
 ```
 
+### Create a production-ready file service on the edge
+
+```bash
+npx wrangler init files && cd ./files
+```
+
+```bash
+npm i @workertown/files
+```
+
+```ts
+// src/worker.ts
+import { files } from "@workertown/files";
+
+export default files();
+```
+
+```c
+// wrangler.toml
+name = "files"
+main = "src/worker.ts"
+compatibility_date = "2023-05-30"
+
+workers_dev = false
+route = { pattern = "files.example.com/*", zone_name = "example.com" }
+
+[vars]
+FLAGS_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[[d1_databases]]
+binding = "FLAGS_DB"
+database_name = "files"
+database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[[r2_buckets]]
+binding = "FILES_FILES"
+bucket_name = "files"
+preview_bucket_name = "files"
+```
+
 ### Create a production-ready key/value service on the edge
 
 ```bash
@@ -63,7 +112,7 @@ npx wrangler init kv && cd ./kv
 npm i @workertown/kv
 ```
 
-```js
+```ts
 // src/worker.ts
 import { kv } from "@workertown/kv";
 
@@ -102,7 +151,7 @@ npx wrangler init pub-sub && cd ./pub-sub
 npm i @workertown/pub-sub
 ```
 
-```js
+```ts
 // src/worker.ts
 import { pubSub } from "@workertown/pub-sub";
 
@@ -152,7 +201,7 @@ npx wrangler init search && cd ./search
 npm i @workertown/search
 ```
 
-```js
+```ts
 // src/worker.ts
 import { search } from "@workertown/search";
 
