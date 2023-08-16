@@ -1,4 +1,5 @@
 import { createRouter } from "@workertown/internal-hono";
+import { generateOpenApiSpec } from "@workertown/internal-open-api";
 
 import { OPEN_API_SPEC } from "../constants.js";
 import { type Context } from "../types.js";
@@ -20,36 +21,22 @@ router.options("/open-api.json", (ctx) =>
 router.get("/open-api.json", (ctx) => {
   const { basePath = "/", endpoints } = ctx.get("config");
   const url = new URL(ctx.req.url);
-  const searchPath = `${`${basePath}${endpoints.v1.search}`.replace(
-    "//",
-    "/",
-  )}/{tenant}`;
-  const searchIndexPath = `${`${basePath}${endpoints.v1.search}`.replace(
-    "//",
-    "/",
-  )}/{tenant}/{index}`;
+  const replacementPaths: Record<string, string | false> = {
+    "/v1/search": endpoints.v1.search,
+    "/v1/suggest": endpoints.v1.suggest,
+    "/v1/docs": endpoints.v1.documents,
+    "/v1/admin": endpoints.v1.admin,
+    "/health": endpoints.public
+      ? `${endpoints.public === "/" ? "" : endpoints.public}/health`
+      : false,
+  };
+  const spec = generateOpenApiSpec(OPEN_API_SPEC, {
+    basePath,
+    urls: [`${url.protocol}//${url.host}`],
+    endpoints: replacementPaths,
+  });
 
-  if (OPEN_API_SPEC.servers?.[0]) {
-    OPEN_API_SPEC.servers[0].url = `${url.protocol}//${url.host}`;
-  }
-
-  if (!OPEN_API_SPEC.paths[searchPath]) {
-    const search = OPEN_API_SPEC.paths["/v1/search/{tenant}"];
-
-    OPEN_API_SPEC.paths[searchPath] = search;
-
-    OPEN_API_SPEC.paths["/v1/search/{tenant}"] = undefined;
-  }
-
-  if (!OPEN_API_SPEC.paths[searchIndexPath]) {
-    const searchIndex = OPEN_API_SPEC.paths["/v1/search/{tenant}/{index}"];
-
-    OPEN_API_SPEC.paths[searchIndexPath] = searchIndex;
-
-    OPEN_API_SPEC.paths["/v1/search/{tenant}/{index}"] = undefined;
-  }
-
-  return ctx.json(OPEN_API_SPEC, {
+  return ctx.json(spec, {
     headers: CORS_HEADERS,
   });
 });

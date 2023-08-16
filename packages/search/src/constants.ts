@@ -1,3 +1,5 @@
+import { type OpenApiSpec } from "@workertown/internal-open-api";
+
 export const DEFAULT_SCAN_RANGE = 1000;
 
 export const DEFAULT_SORT_FIELD = "updated_at";
@@ -133,7 +135,7 @@ export const DEFAUlT_STOP_WORDS = new Set([
   "now",
 ]);
 
-export const OPEN_API_SPEC = {
+export const OPEN_API_SPEC: OpenApiSpec = {
   openapi: "3.0.0",
   info: {
     version: "1.0.0",
@@ -438,6 +440,215 @@ export const OPEN_API_SPEC = {
         },
       },
     },
+    "/v1/docs/{id}": {
+      get: {
+        summary: "Get a search document",
+        security: [{ BasicAuth: [] }, { BearerAuth: [] }],
+        operationId: "getDocument",
+        tags: ["Documents"],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            description: "The ID of the search document",
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          "200": {
+            description: "The search document",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/GetDocumentResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+      put: {
+        summary: "Upsert a search document",
+        security: [{ BasicAuth: [] }, { BearerAuth: [] }],
+        operationId: "upsertDocument",
+        tags: ["Documents"],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            description: "The ID of the search document",
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          "200": {
+            description: "The upserted document",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/UpsertDocumentResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+      delete: {
+        summary: "Delete a search document",
+        security: [{ BasicAuth: [] }, { BearerAuth: [] }],
+        operationId: "deleteDocument",
+        tags: ["Documents"],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            description: "The ID of the search document",
+            schema: {
+              type: "string",
+            },
+          },
+        ],
+        responses: {
+          "200": {
+            description: "The deleted document ID",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/DeleteDocumentResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/v1/tags": {
+      get: {
+        summary: "Get all tags",
+        security: [{ BasicAuth: [] }, { BearerAuth: [] }],
+        operationId: "getTags",
+        tags: ["Tags"],
+        responses: {
+          "200": {
+            description: "An array of tags",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/TagsResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/v1/admin/info": {
+      get: {
+        summary: "Get configuration information",
+        security: [{ BasicAuth: [] }, { BearerAuth: [] }],
+        operationId: "adminInfo",
+        tags: ["Admin"],
+        responses: {
+          "200": {
+            description: "The current configuration",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/AdminInfoResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/health": {
+      get: {
+        summary: "Get service health",
+        security: [],
+        operationId: "health",
+        tags: ["Public"],
+        responses: {
+          "200": {
+            description: "The service health status",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/PublicHealthResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     // rome-ignore lint/suspicious/noExplicitAny: We don't care about the type here
   } as any,
   components: {
@@ -452,6 +663,40 @@ export const OPEN_API_SPEC = {
       },
     },
     schemas: {
+      SearchDocument: {
+        properties: {
+          id: {
+            type: "string",
+            example: "1",
+          },
+          tenant: {
+            type: "string",
+            example: "test",
+          },
+          index: {
+            type: "string",
+            example: "test",
+          },
+          data: {
+            type: "object",
+            additionalProperties: true,
+            example: {
+              title: "Test item 1",
+              content: "This is some test content",
+            },
+          },
+          createdAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-08-07T07:48:53.852Z",
+          },
+          updatedAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-08-07T07:48:53.852Z",
+          },
+        },
+      },
       SearchResult: {
         properties: {
           status: {
@@ -471,19 +716,7 @@ export const OPEN_API_SPEC = {
                 example: "a2282e3f-553a-44c2-aa93-590f7b711eba",
               },
               item: {
-                type: "object",
-                additionalProperties: true,
-                example: {
-                  id: "1",
-                  tenant: "test",
-                  index: "test",
-                  data: {
-                    title: "Test item 1",
-                    content: "This is some test content",
-                  },
-                  createdAt: "2023-08-07T07:48:53.852Z",
-                  updatedAt: "2023-08-07T07:48:53.852Z",
-                },
+                $ref: "#/components/schemas/SearchDocument",
               },
               score: {
                 type: "number",
@@ -542,6 +775,113 @@ export const OPEN_API_SPEC = {
                 },
               },
             },
+          },
+        },
+      },
+      GetDocumentResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            $ref: "#/components/schemas/SearchDocument",
+          },
+        },
+      },
+      UpsertDocumentResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            $ref: "#/components/schemas/SearchDocument",
+          },
+        },
+      },
+      DeleteDocumentResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            type: "object",
+            properties: {
+              id: {
+                type: "string",
+                example: "1",
+              },
+            },
+          },
+        },
+      },
+      TagsResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            type: "array",
+            items: {
+              type: "string",
+            },
+            example: ["test"],
+          },
+        },
+      },
+      AdminInfoResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            type: "object",
+          },
+        },
+      },
+      PublicHealthResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            type: "string",
+            example: "OK",
           },
         },
       },
