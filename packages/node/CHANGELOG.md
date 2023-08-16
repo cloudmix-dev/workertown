@@ -1,5 +1,11 @@
 # @workertown/node
 
+## 0.0.2-alpha.18
+
+### Patch Changes
+
+- Alpha.18 Release
+
 ## 0.0.2-alpha.17
 
 ### Patch Changes

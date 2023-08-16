@@ -1,7 +1,7 @@
 {
   "name": "@workertown/internal-hono",
   "description": "Internal custom Hono implementation for WorkerTown",
-  "version": "0.0.2-alpha.17",
+  "version": "0.0.2-alpha.18",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -50,7 +50,7 @@
     "@cloudflare/workers-types": "~4.20230814.0",
     "@types/lodash.merge": "~4.6.7",
     "@upstash/redis": "~1.22.0",
-    "@workertown/internal-types": "~0.0.2-alpha.17",
+    "@workertown/internal-types": "~0.0.2-alpha.18",
     "zod": "~3.21.4"
   },
   "peerDependencies": {
