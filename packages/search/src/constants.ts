@@ -619,6 +619,36 @@ export const OPEN_API_SPEC: OpenApiSpec = {
         },
       },
     },
+    "/v1/admin/migrate": {
+      post: {
+        summary: "Run database migrations",
+        security: [{ BasicAuth: [] }, { BearerAuth: [] }],
+        operationId: "adminMigrate",
+        tags: ["Admin"],
+        responses: {
+          "200": {
+            description: "The successfully run migrations",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/AdminMigrateResult",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     "/health": {
       get: {
         summary: "Get service health",
@@ -865,6 +895,39 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
           data: {
             type: "object",
+          },
+        },
+      },
+      AdminMigrateResult: {
+        properties: {
+          status: {
+            type: "integer",
+            format: "int32",
+            example: 200,
+          },
+          success: {
+            type: "boolean",
+            example: true,
+          },
+          data: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                migrationName: {
+                  type: "string",
+                  example: "1688823193041_add_initial_tables_and_indexes",
+                },
+                direction: {
+                  type: "string",
+                  example: "Up",
+                },
+                status: {
+                  type: "string",
+                  example: "Success",
+                },
+              },
+            },
           },
         },
       },
