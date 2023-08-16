@@ -177,14 +177,14 @@ database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [[queues.producers]]
-  queue = "pub-sub-queue"
-  binding = "PUBSUB_QUEUE"
+queue = "pub-sub"
+binding = "PUBSUB_QUEUE"
 
 [[queues.consumers]]
-  queue = "pub-sub-queue"
-  max_batch_size = 100
-  max_batch_timeout = 30
-  max_concurrency = 10
+queue = "pub-sub"
+max_batch_size = 100
+max_batch_timeout = 30
+max_concurrency = 10
 ```
 
 ```bash
