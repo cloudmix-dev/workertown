@@ -13,7 +13,6 @@
     "@workertown/nodejs-example",
     "@workertown/pub-sub-example",
     "@workertown/search-example",
-    "@workertown/files",
     "@workertown/internal-websockets"
   ],
   "linked": [],
