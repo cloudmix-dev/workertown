@@ -88,10 +88,10 @@ workers_dev = false
 route = { pattern = "files.example.com/*", zone_name = "example.com" }
 
 [vars]
-FLAGS_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+FILES_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [[d1_databases]]
-binding = "FLAGS_DB"
+binding = "FILES_DB"
 database_name = "files"
 database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
