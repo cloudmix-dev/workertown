@@ -309,7 +309,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      DeleteFlagResponse: {
+      DeleteValueResponse: {
         properties: {
           status: {
             type: "integer",
