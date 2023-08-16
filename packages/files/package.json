@@ -1,0 +1,75 @@
+{
+  "name": "@workertown/files",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./storage/d1": {
+      "default": "./dist/storage/d1.js",
+      "types": "./dist/storage/d1.d.ts"
+    },
+    "./storage/dynamodb": {
+      "default": "./dist/storage/dynamodb.js",
+      "types": "./dist/storage/dynamodb.d.ts"
+    },
+    "./storage/planetscale": {
+      "default": "./dist/storage/planetscale.js",
+      "types": "./dist/storage/planetscale.d.ts"
+    },
+    "./storage/sqlite": {
+      "default": "./dist/storage/sqlite.js",
+      "types": "./dist/storage/sqlite.d.ts"
+    },
+    "./storage/turso": {
+      "default": "./dist/storage/turso.js",
+      "types": "./dist/storage/turso.d.ts"
+    },
+    "./storage/memory": {
+      "default": "./dist/storage/memory.js",
+      "types": "./dist/storage/memory.d.ts"
+    },
+    "./files": {
+      "default": "./dist/files/index.js",
+      "types": "./dist/files/index.d.ts"
+    },
+    "./files/r2": {
+      "default": "./dist/files/r2.js",
+      "types": "./dist/files/r2.d.ts"
+    },
+    "./files/s3": {
+      "default": "./dist/files/s3.js",
+      "types": "./dist/files/s3.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@workertown/internal-cache": "~0.0.2-alpha.17",
+    "@workertown/internal-files": "~0.0.0",
+    "@workertown/internal-hono": "~0.0.2-alpha.17",
+    "@workertown/internal-open-api": "~0.0.0",
+    "@workertown/internal-storage": "~0.0.2-alpha.17",
+    "lodash.merge": "~4.6.2",
+    "zod": "~3.21.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "~4.20230814.0",
+    "@types/better-sqlite3": "~7.6.4",
+    "@workertown/internal-types": "~0.0.2-alpha.17"
+  },
+  "peerDependencies": {
+    "@planetscale/database": "~1.8.0",
+    "better-sqlite3": "~8.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

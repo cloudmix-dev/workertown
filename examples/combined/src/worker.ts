@@ -1,4 +1,5 @@
 import { featureFlags } from "@workertown/feature-flags";
+import { files } from "@workertown/files";
 import { kv } from "@workertown/kv";
 import { pubSub } from "@workertown/pub-sub";
 import { search } from "@workertown/search";
@@ -6,6 +7,7 @@ import { combine } from "@workertown/utils/combine";
 
 const KV_KEY = "KV";
 const D1_KEY = "D1";
+const R2_KEY = "R2";
 const BASE_OPTIONS = {
   auth: {
     apiKey: {
@@ -23,6 +25,14 @@ export default combine(
     env: {
       cache: KV_KEY,
       db: D1_KEY,
+    },
+  }),
+  files({
+    ...BASE_OPTIONS,
+    basePath: "/files",
+    env: {
+      db: D1_KEY,
+      files: R2_KEY,
     },
   }),
   kv({

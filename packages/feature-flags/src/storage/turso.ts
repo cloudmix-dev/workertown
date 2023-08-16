@@ -16,9 +16,9 @@ interface FlagTable {
   name: string;
   description: string | null;
   conditions: string | null;
-  disabled_at: ColumnType<Date | number, number, number> | null;
-  created_at: ColumnType<Date | number, number, never>;
-  updated_at: ColumnType<Date | number, number, number>;
+  disabled_at: ColumnType<number, number, number> | null;
+  created_at: ColumnType<number, number, never>;
+  updated_at: ColumnType<number, number, number>;
 }
 
 type FlagRow = Selectable<FlagTable>;

@@ -15,8 +15,8 @@ interface QueueMessagesTable {
   id: string;
   body: string;
   attempts: number;
-  timestamp: ColumnType<Date | number, number, number>;
-  dlq_at: ColumnType<Date | number, number, number> | null;
+  timestamp: ColumnType<number, number, never>;
+  dlq_at: ColumnType<number, number, number> | null;
 }
 
 type QueueMessageRow = Selectable<QueueMessagesTable>;

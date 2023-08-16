@@ -6,7 +6,7 @@ import { type StorageAdapter } from "./storage-adapter.js";
 interface KeyValueTable {
   name: string;
   value: string;
-  updated_at: ColumnType<Date | number, number, number>;
+  updated_at: ColumnType<number, number, number>;
 }
 
 export interface DatabaseSchema {

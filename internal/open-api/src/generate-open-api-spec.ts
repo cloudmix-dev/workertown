@@ -1,12 +1,3 @@
-type MethodKey =
-  | "get"
-  | "post"
-  | "put"
-  | "patch"
-  | "delete"
-  | "head"
-  | "options";
-
 export interface OpenApiSpec {
   openapi: "3.0.0";
   info: {
@@ -19,7 +10,7 @@ export interface OpenApiSpec {
   servers: {
     url: string;
   }[];
-  paths: Record<string, Record<MethodKey, object>>;
+  paths: Record<string, Record<string, object>>;
   components: Record<string, Record<string, object>>;
 }
 
@@ -54,10 +45,7 @@ export function generateOpenApiSpec(
         if (specPath.startsWith(path)) {
           const newPath = specPath.replace(path, fullReplacement);
 
-          spec.paths[newPath] = spec.paths[specPath] as Record<
-            MethodKey,
-            object
-          >;
+          spec.paths[newPath] = spec.paths[specPath] as Record<string, object>;
 
           delete spec.paths[specPath];
         }

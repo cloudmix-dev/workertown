@@ -324,8 +324,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
         },
       },
     },
-    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the type here
-  } as any,
+  },
   components: {
     securitySchemes: {
       BasicAuth: {

@@ -200,7 +200,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/SearchResult",
+                  $ref: "#/components/schemas/SearchResponse",
                 },
               },
             },
@@ -277,7 +277,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/SearchResult",
+                  $ref: "#/components/schemas/SearchResponse",
                 },
               },
             },
@@ -345,7 +345,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/SuggestResult",
+                  $ref: "#/components/schemas/SuggestResponse",
                 },
               },
             },
@@ -422,7 +422,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/SuggestResult",
+                  $ref: "#/components/schemas/SuggestResponse",
                 },
               },
             },
@@ -463,7 +463,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/GetDocumentResult",
+                  $ref: "#/components/schemas/GetDocumentResponse",
                 },
               },
             },
@@ -513,7 +513,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/UpsertDocumentResult",
+                  $ref: "#/components/schemas/UpsertDocumentResponse",
                 },
               },
             },
@@ -552,7 +552,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/DeleteDocumentResult",
+                  $ref: "#/components/schemas/DeleteDocumentResponse",
                 },
               },
             },
@@ -582,7 +582,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/TagsResult",
+                  $ref: "#/components/schemas/TagsResponse",
                 },
               },
             },
@@ -612,7 +612,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/AdminInfoResult",
+                  $ref: "#/components/schemas/AdminInfoResponse",
                 },
               },
             },
@@ -642,7 +642,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/AdminMigrateResult",
+                  $ref: "#/components/schemas/AdminMigrateResponse",
                 },
               },
             },
@@ -672,7 +672,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/PublicHealthResult",
+                  $ref: "#/components/schemas/PublicHealthResponse",
                 },
               },
             },
@@ -690,8 +690,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
         },
       },
     },
-    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the type here
-  } as any,
+  },
   components: {
     securitySchemes: {
       BasicAuth: {
@@ -767,7 +766,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      SearchResult: {
+      SearchResponse: {
         properties: {
           status: {
             type: "integer",
@@ -811,7 +810,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      SuggestResult: {
+      SuggestResponse: {
         properties: {
           status: {
             type: "integer",
@@ -848,7 +847,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      GetDocumentResult: {
+      GetDocumentResponse: {
         properties: {
           status: {
             type: "integer",
@@ -864,7 +863,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      UpsertDocumentResult: {
+      UpsertDocumentResponse: {
         properties: {
           status: {
             type: "integer",
@@ -880,7 +879,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      DeleteDocumentResult: {
+      DeleteDocumentResponse: {
         properties: {
           status: {
             type: "integer",
@@ -902,7 +901,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      TagsResult: {
+      TagsResponse: {
         properties: {
           status: {
             type: "integer",
@@ -922,7 +921,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      AdminInfoResult: {
+      AdminInfoResponse: {
         properties: {
           status: {
             type: "integer",
@@ -938,7 +937,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      AdminMigrateResult: {
+      AdminMigrateResponse: {
         properties: {
           status: {
             type: "integer",
@@ -971,7 +970,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
           },
         },
       },
-      PublicHealthResult: {
+      PublicHealthResponse: {
         properties: {
           status: {
             type: "integer",
