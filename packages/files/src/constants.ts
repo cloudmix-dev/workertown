@@ -160,6 +160,28 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             },
           },
         },
+        responses: {
+          "200": {
+            description: "An array of matching items",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/CreateUploadUrlResponse",
+                },
+              },
+            },
+          },
+          default: {
+            description: "Unexpected error",
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/InternalServerError",
+                },
+              },
+            },
+          },
+        },
       },
     },
     "/v1/admin/info": {
