@@ -496,6 +496,17 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             },
           },
         ],
+        requestBody: {
+          description: "The search document to upsert",
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/UpsertDocumentBody",
+              },
+            },
+          },
+        },
         responses: {
           "200": {
             description: "The upserted document",
@@ -724,6 +735,35 @@ export const OPEN_API_SPEC: OpenApiSpec = {
             type: "string",
             format: "date-time",
             example: "2023-08-07T07:48:53.852Z",
+          },
+        },
+      },
+      UpsertDocumentBody: {
+        properties: {
+          tenant: {
+            type: "string",
+            example: "test",
+            required: true,
+          },
+          index: {
+            type: "string",
+            example: "test",
+            required: true,
+          },
+          data: {
+            type: "object",
+            additionalProperties: true,
+            example: {
+              title: "Test item 1",
+              content: "This is some test content",
+            },
+          },
+          tags: {
+            type: "array",
+            items: {
+              type: "string",
+              example: "test",
+            },
           },
         },
       },

@@ -91,6 +91,7 @@
   "dependencies": {
     "@workertown/internal-cache": "~0.0.2-alpha.17",
     "@workertown/internal-hono": "~0.0.2-alpha.17",
+    "@workertown/internal-open-api": "~0.0.0",
     "@workertown/internal-storage": "~0.0.2-alpha.17",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
