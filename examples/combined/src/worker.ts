@@ -8,6 +8,7 @@ import { combine } from "@workertown/utils/combine";
 const KV_KEY = "KV";
 const D1_KEY = "D1";
 const R2_KEY = "R2";
+const QUEUES_KEY = "QUEUES";
 const BASE_OPTIONS = {
   auth: {
     apiKey: {
@@ -18,43 +19,53 @@ const BASE_OPTIONS = {
   },
 };
 
-export default combine(
-  featureFlags({
-    ...BASE_OPTIONS,
-    basePath: "/flags",
-    env: {
-      cache: KV_KEY,
-      db: D1_KEY,
-    },
-  }),
-  files({
-    ...BASE_OPTIONS,
-    basePath: "/files",
-    env: {
-      db: D1_KEY,
-      files: R2_KEY,
-    },
-  }),
-  kv({
-    ...BASE_OPTIONS,
-    basePath: "/kv",
-    env: {
-      db: D1_KEY,
-    },
-  }),
-  pubSub({
-    ...BASE_OPTIONS,
-    basePath: "/pubsub",
-    env: {
-      db: D1_KEY,
-    },
-  }),
-  search({
-    ...BASE_OPTIONS,
-    basePath: "/search",
-    env: {
-      cache: KV_KEY,
-      db: D1_KEY,
-    },
-  }),
-);
+const featureFlagsService = featureFlags({
+  ...BASE_OPTIONS,
+  basePath: "/flags",
+  env: {
+    cache: KV_KEY,
+    db: D1_KEY,
+  },
+});
+const filesService = files({
+  ...BASE_OPTIONS,
+  basePath: "/files",
+  env: {
+    db: D1_KEY,
+    files: R2_KEY,
+  },
+});
+const kvService = kv({
+  ...BASE_OPTIONS,
+  basePath: "/kv",
+  env: {
+    db: D1_KEY,
+  },
+});
+const pubSubService = pubSub({
+  ...BASE_OPTIONS,
+  basePath: "/pubsub",
+  env: {
+    db: D1_KEY,
+    queue: QUEUES_KEY,
+  },
+});
+const searchService = search({
+  ...BASE_OPTIONS,
+  basePath: "/search",
+  env: {
+    cache: KV_KEY,
+    db: D1_KEY,
+  },
+});
+
+export default {
+  ...combine(
+    featureFlagsService,
+    filesService,
+    kvService,
+    pubSubService,
+    searchService,
+  ),
+  queue: pubSubService.queue,
+};

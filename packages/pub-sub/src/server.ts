@@ -105,7 +105,10 @@ export function createPubSubServer(options?: CreateServerOptionsOptional) {
         const res = await fetch(url.toString(), {
           method,
           headers: reqHeaders,
-          body: body ? JSON.stringify(body) : undefined,
+          body:
+            method !== "GET" && method !== "DELETE" && body
+              ? JSON.stringify(body)
+              : undefined,
         });
 
         if (!res.ok) {

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "NO_D1_WARNING=true && wrangler dev"
+    "start": "export NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
     "@workertown/search": "~0.0.2-alpha.17"

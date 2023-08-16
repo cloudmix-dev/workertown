@@ -20,3 +20,13 @@ preview_database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 binding = "R2"
 bucket_name = "combined-example"
 preview_bucket_name = "combined-example"
+
+[[queues.producers]]
+queue = "combined-example"
+binding = "QUEUES"
+
+[[queues.consumers]]
+queue = "combined-example"
+max_batch_size = 100
+max_batch_timeout = 30
+max_concurrency = 10
