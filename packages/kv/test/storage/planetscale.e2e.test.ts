@@ -7,9 +7,9 @@ import { testStorageAdapterE2E } from "./_e2e";
 test("PlanetscaleStorageAdapter", async (t) => {
   // @ts-ignore - weird test TS issues
   const storage = new PlanetscaleStorageAdapter({
-    url: "http://localhost:3000",
-    username: "planetscale",
-    password: "planetscale",
+    url: "http://localhost:3004",
+    username: "workertown",
+    password: "workertown",
   }) as unknown as StorageAdapter;
 
   t.true(true);
