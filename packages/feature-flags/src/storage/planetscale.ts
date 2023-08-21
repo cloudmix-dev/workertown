@@ -35,9 +35,9 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createTable("wt_flags_flags")
           .ifNotExists()
-          .addColumn("name", "varchar", (col) => col.notNull())
-          .addColumn("description", "varchar")
-          .addColumn("conditions", "varchar")
+          .addColumn("name", "varchar(255)", (col) => col.notNull())
+          .addColumn("description", "varchar(255)")
+          .addColumn("conditions", "varchar(255)")
           .addColumn("disabled_at", "timestamp")
           .addColumn("created_at", "timestamp", (col) => col.notNull())
           .addColumn("updated_at", "timestamp", (col) => col.notNull())
@@ -139,9 +139,11 @@ export class PlanetscaleStorageAdapter
           conditions: flag.conditions
             ? JSON.stringify(flag.conditions)
             : undefined,
-          disabled_at: flag.enabled ? undefined : now.toISOString(),
-          created_at: now.toISOString(),
-          updated_at: now.toISOString(),
+          disabled_at: flag.enabled
+            ? undefined
+            : now.toISOString().substring(0, 19).replace("T", " "),
+          created_at: now.toISOString().substring(0, 19).replace("T", " "),
+          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
         })
         .execute();
     } else {
@@ -153,8 +155,10 @@ export class PlanetscaleStorageAdapter
           conditions: flag.conditions
             ? JSON.stringify(flag.conditions)
             : undefined,
-          disabled_at: flag.enabled ? undefined : now.toISOString(),
-          updated_at: now.toISOString(),
+          disabled_at: flag.enabled
+            ? undefined
+            : now.toISOString().substring(0, 19).replace("T", " "),
+          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
         })
         .execute();
     }

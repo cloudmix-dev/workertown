@@ -35,10 +35,10 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createTable("wt_files_upload_urls")
           .ifNotExists()
-          .addColumn("id", "varchar", (col) => col.notNull())
-          .addColumn("file_name", "varchar", (col) => col.notNull())
-          .addColumn("callback_url", "varchar")
-          .addColumn("metadata", "varchar")
+          .addColumn("id", "varchar(255)", (col) => col.notNull())
+          .addColumn("file_name", "varchar(255)", (col) => col.notNull())
+          .addColumn("callback_url", "varchar(255)")
+          .addColumn("metadata", "varchar(255)")
           .addColumn("expires_at", "timestamp", (col) => col.notNull())
           .addColumn("created_at", "timestamp", (col) =>
             col.defaultTo(sql`now()`).notNull(),

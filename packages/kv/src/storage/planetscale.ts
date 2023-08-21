@@ -21,8 +21,8 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createTable("wt_kv_key_values")
           .ifNotExists()
-          .addColumn("name", "varchar", (col) => col.notNull())
-          .addColumn("value", "varchar", (col) => col.notNull())
+          .addColumn("name", "varchar(255)", (col) => col.notNull())
+          .addColumn("value", "varchar(255)", (col) => col.notNull())
           .addColumn("updated_at", "timestamp", (col) => col.notNull())
           .execute();
 
@@ -81,7 +81,7 @@ export class PlanetscaleStorageAdapter
         .updateTable("wt_kv_key_values")
         .set({
           value: JSON.stringify(value),
-          updated_at: now.toISOString(),
+          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
         })
         .where("name", "=", key)
         .execute();
@@ -91,7 +91,7 @@ export class PlanetscaleStorageAdapter
         .values({
           name: key,
           value: JSON.stringify(value),
-          updated_at: now.toISOString(),
+          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
         })
         .execute();
     }

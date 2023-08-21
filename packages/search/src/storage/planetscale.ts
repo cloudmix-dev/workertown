@@ -45,10 +45,10 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createTable("wt_search_documents")
           .ifNotExists()
-          .addColumn("id", "varchar", (col) => col.notNull())
-          .addColumn("tenant", "varchar", (col) => col.notNull())
-          .addColumn("index", "varchar", (col) => col.notNull())
-          .addColumn("data", "varchar", (col) => col.notNull())
+          .addColumn("id", "varchar(255)", (col) => col.notNull())
+          .addColumn("tenant", "varchar(255)", (col) => col.notNull())
+          .addColumn("index", "varchar(255)", (col) => col.notNull())
+          .addColumn("data", "varchar(255)", (col) => col.notNull())
           .addColumn("created_at", "timestamp", (col) =>
             col.defaultTo(sql`now()`).notNull(),
           )
@@ -60,28 +60,27 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createTable("wt_search_tags")
           .ifNotExists()
-          .addColumn("id", "varchar", (col) => col.notNull())
-          .addColumn("search_document_id", "varchar", (col) => col.notNull())
+          .addColumn("tag", "varchar(255)", (col) => col.notNull())
+          .addColumn("search_document_id", "varchar(255)", (col) =>
+            col.notNull(),
+          )
           .execute();
 
         await db.schema
           .createIndex("wt_search_documents_id_idx")
           .unique()
-          .ifNotExists()
           .on("wt_search_documents")
-          .columns(["id"])
+          .column("id")
           .execute();
 
         await db.schema
           .createIndex("wt_search_documents_tenant_idx")
-          .ifNotExists()
           .on("wt_search_documents")
           .columns(["tenant", DEFAULT_SORT_FIELD, "id"])
           .execute();
 
         await db.schema
           .createIndex("wt_search_documents_tenant_index_idx")
-          .ifNotExists()
           .on("wt_search_documents")
           .columns(["tenant", "index", DEFAULT_SORT_FIELD, "id"])
           .execute();
@@ -89,7 +88,6 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createIndex("wt_search_tags_unique_idx")
           .unique()
-          .ifNotExists()
           .on("wt_search_tags")
           .columns(["tag", "search_document_id"])
           .execute();
@@ -163,7 +161,7 @@ export class PlanetscaleStorageAdapter
         "wt_search_documents.data",
         "wt_search_documents.created_at",
         "wt_search_documents.updated_at",
-        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
+        sql<string>`group_concat(wt_search_tags.tag)`.as("tags"),
       ])
       .groupBy("wt_search_documents.id")
       .orderBy("wt_search_documents.updated_at", "desc")
@@ -199,7 +197,7 @@ export class PlanetscaleStorageAdapter
         "wt_search_documents.data",
         "wt_search_documents.created_at",
         "wt_search_documents.updated_at",
-        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
+        sql<string>`group_concat(wt_search_tags.tag)`.as("tags"),
       ])
       .groupBy("wt_search_documents.id")
       .having((eb) => eb.fn.count("wt_search_documents.id"), "=", tags.length)
@@ -259,8 +257,8 @@ export class PlanetscaleStorageAdapter
         .values({
           ...document,
           data: JSON.stringify(document.data),
-          created_at: now.toISOString(),
-          updated_at: now.toISOString(),
+          created_at: now.toISOString().slice(0, 19).replace("T", " "),
+          updated_at: now.toISOString().slice(0, 19).replace("T", " "),
         })
         .execute();
     } else {
@@ -271,7 +269,7 @@ export class PlanetscaleStorageAdapter
         .where("index", "=", document.index)
         .set({
           data: JSON.stringify(document.data),
-          updated_at: now.toISOString(),
+          updated_at: now.toISOString().slice(0, 19).replace("T", " "),
         })
         .execute();
     }
