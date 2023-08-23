@@ -87,12 +87,10 @@ export function createServer<T extends Context>(
   // This sets `ctx.env` to NodeJS's `process.env` if we're an environment that
   // supports it, or an optionally provided `getEnv` function.
   server.use(async (ctx, next) => {
-    if (!ctx.env && globalThis.process?.env) {
-      ctx.env = globalThis.process.env;
-    }
-
     if (typeof getEnv === "function") {
       ctx.env = getEnv((ctx.env as Record<string, string>) ?? {});
+    } else if (!ctx.env && globalThis.process?.env) {
+      ctx.env = globalThis.process.env;
     }
 
     await next();
