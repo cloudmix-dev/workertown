@@ -40,8 +40,9 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
     public: "/",
   },
   env: {
-    files: "FILES_FILES",
     db: "FILES_DB",
+    files: "FILES_FILES",
+    signingKey: "FILES_SIGNING_KEY",
   },
   files: {
     uploadUrlTtl: 10 * 60,

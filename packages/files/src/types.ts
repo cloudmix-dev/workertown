@@ -18,8 +18,10 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   env: {
     db: string;
     files: string;
+    signingKey: string;
   };
   files: {
+    uploadSigningKey?: string;
     uploadUrlTtl: number;
   };
   runtime?: RuntimeResolver;

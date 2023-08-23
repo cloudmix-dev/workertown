@@ -41,7 +41,7 @@ export class MemoryStorageAdapter
 
     const uploadUrl: UploadUrl = {
       id,
-      fileName: body.fileName,
+      path: body.path,
       callbackUrl: body.callbackUrl,
       metadata: body.metadata,
       createdAt: new Date(),

@@ -290,7 +290,7 @@ export const OPEN_API_SPEC: OpenApiSpec = {
       CreateUploadUrlBody: {
         type: "object",
         properties: {
-          fileName: {
+          path: {
             type: "string",
             example: "test.csv",
             required: true,

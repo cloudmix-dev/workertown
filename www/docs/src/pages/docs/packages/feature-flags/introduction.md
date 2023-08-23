@@ -96,7 +96,7 @@ const server = featureFlags({
 
 ### Flags
 
-`@workertown/feature-flags` store flags which describe can describe a feature,
+`@workertown/feature-flags` stores flags which describe can describe a feature,
 logic split, A/B test.. whatever you'd like. A flag is identified by a unique
 `string` name, with an *optional* description and whether it is enabled/disabled
 by default.

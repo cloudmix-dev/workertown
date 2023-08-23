@@ -19,7 +19,7 @@ Workertown provides...
 
 {% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags/introduction" description="Feature flags made simple." /%}
 
-{% quick-link title="Files" icon="files" description="Easy file storage at the edge." /%}
+{% quick-link title="Files" icon="files" href="/docs/packages/files/introduction" description="Easy file storage at the edge." /%}
 
 {% quick-link title="KV" icon="kv" href="/docs/packages/kv/introduction" description="Simple key/value storage." /%}
 

@@ -13,7 +13,7 @@ import {
 
 interface UploadUrlTable {
   id: string;
-  file_name: string;
+  path: string;
   callback_url: string | null;
   metadata: string | null;
   expires_at: ColumnType<number, number, number>;
@@ -35,7 +35,7 @@ const MIGRATIONS: Migrations = [
           .createTable("wt_files_upload_urls")
           .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
-          .addColumn("file_name", "text", (col) => col.notNull())
+          .addColumn("path", "text", (col) => col.notNull())
           .addColumn("callback_url", "text")
           .addColumn("metadata", "text")
           .addColumn("expires_at", "integer", (col) => col.notNull())
@@ -70,7 +70,7 @@ export class TursoStorageAdapter
   private _formatUploadUrl(url: UploadUrlTableRow): UploadUrl {
     return {
       id: url.id,
-      fileName: url.file_name,
+      path: url.path,
       callbackUrl: url.callback_url ?? undefined,
       metadata: url.metadata ? JSON.parse(url.metadata) : undefined,
       expiresAt: new Date(url.expires_at),
@@ -100,7 +100,7 @@ export class TursoStorageAdapter
       .insertInto("wt_files_upload_urls")
       .values({
         id,
-        file_name: url.fileName,
+        path: url.path,
         callback_url: url.callbackUrl,
         metadata: url.metadata ? JSON.stringify(url.metadata) : null,
         expires_at: url.expiresAt.getTime(),
@@ -110,7 +110,7 @@ export class TursoStorageAdapter
 
     return {
       id,
-      fileName: url.fileName,
+      path: url.path,
       callbackUrl: url.callbackUrl ?? undefined,
       metadata: url.metadata ?? undefined,
       expiresAt: url.expiresAt,

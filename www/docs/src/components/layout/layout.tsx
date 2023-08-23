@@ -70,6 +70,35 @@ export const navigation: {
     ],
   },
   {
+    title: "Files",
+    links: [
+      {
+        title: "Introduction",
+        href: "/docs/packages/files/introduction",
+      },
+      {
+        title: "Using the API",
+        href: "/docs/packages/files/using-the-api",
+      },
+      {
+        title: "Configuration",
+        href: "/docs/packages/files/configuration",
+      },
+      {
+        title: "Storage",
+        href: "/docs/packages/files/storage",
+      },
+      {
+        title: "File storage",
+        href: "/docs/packages/files/files",
+      },
+      {
+        title: "Tutorial",
+        href: "/docs/packages/files/tutorial",
+      },
+    ],
+  },
+  {
     title: "KV",
     links: [
       {

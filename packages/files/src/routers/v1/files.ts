@@ -9,17 +9,17 @@ import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
-function getKey(
+function getPath(
   req: WorkertownRequest<"/*">,
   config: Context["Variables"]["config"],
 ) {
   const { files: filesPrefix } = config.endpoints.v1;
   const url = new URL(req.url);
-  const key = url.pathname
+  const path = url.pathname
     .replace(filesPrefix as string, "")
     .replace(/^\//, "");
 
-  return key;
+  return path;
 }
 
 router.get(
@@ -37,15 +37,15 @@ router.get(
     const config = ctx.get("config");
     const files = ctx.get("files");
     const { metadata } = ctx.req.valid("query");
-    const key = getKey(ctx.req, config);
+    const path = getPath(ctx.req, config);
 
     if (metadata) {
-      const metadata = await files.getMetadata(key);
+      const metadata = await files.getMetadata(path);
 
       return ctx.json({ status: 200, success: true, data: { metadata } });
     }
 
-    const file = await files.get(key);
+    const file = await files.get(path);
 
     if (!file) {
       return ctx.json(
@@ -62,31 +62,38 @@ router.get(
   },
 );
 
-router.put("/*", async (ctx) => {
-  const config = ctx.get("config");
-  const files = ctx.get("files");
-  const key = getKey(ctx.req, config);
+router.put(
+  "/*",
+  validate(
+    "form",
+    z.object({
+      file: z.any(),
+      metadata: z
+        .string()
+        .optional()
+        .transform((val) => (val ? JSON.parse(val) : null)),
+    }),
+  ),
+  async (ctx) => {
+    const config = ctx.get("config");
+    const files = ctx.get("files");
+    const { file: fileData, metadata } = ctx.req.valid("form");
+    const path = getPath(ctx.req, config);
 
-  if (!ctx.req.body) {
-    return ctx.json(
-      { status: 400, success: false, data: null, error: "No body provided" },
-      400,
-    );
-  }
+    await files.put(path, fileData, metadata ?? undefined);
 
-  await files.put(key, ctx.req.body);
-
-  return ctx.json({ status: 200, success: true, data: { key } });
-});
+    return ctx.json({ status: 200, success: true, data: { path } });
+  },
+);
 
 router.delete("/*", async (ctx) => {
   const config = ctx.get("config");
   const files = ctx.get("files");
-  const key = getKey(ctx.req, config);
+  const path = getPath(ctx.req, config);
 
-  await files.delete(key);
+  await files.delete(path);
 
-  return ctx.json({ status: 200, success: true, data: { key } });
+  return ctx.json({ status: 200, success: true, data: { path } });
 });
 
 export { router };

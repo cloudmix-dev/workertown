@@ -2,7 +2,7 @@ import { StorageAdapter as BaseStorageAdapter } from "@workertown/internal-stora
 
 export interface UploadUrl {
   id: string;
-  fileName: string;
+  path: string;
   callbackUrl?: string;
   metadata?: Record<string, unknown>;
   createdAt: Date;
@@ -10,7 +10,7 @@ export interface UploadUrl {
 }
 
 export interface CreateUploadUrlBody {
-  fileName: string;
+  path: string;
   callbackUrl?: string;
   metadata?: Record<string, unknown>;
   expiresAt: Date;

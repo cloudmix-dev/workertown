@@ -1,5 +1,6 @@
-import { createRouter } from "@workertown/internal-hono";
+import { createRouter, validate } from "@workertown/internal-hono";
 import { generateOpenApiSpec } from "@workertown/internal-open-api";
+import { z } from "zod";
 
 import { OPEN_API_SPEC } from "../constants.js";
 import { type Context } from "../types.js";
@@ -18,56 +19,92 @@ router.options("/upload/:id", (ctx) =>
   }),
 );
 
-router.post("/upload/:id", async (ctx) => {
-  const storage = ctx.get("storage");
-  const files = ctx.get("files");
-  const id = ctx.req.param("id");
-  const uploadUrl = await storage.getUploadUrl(id);
+router.post(
+  "/upload/:id",
+  validate(
+    "form",
+    z.object({
+      file: z.any(),
+    }),
+  ),
+  async (ctx) => {
+    const config = ctx.get("config");
+    const storage = ctx.get("storage");
+    const files = ctx.get("files");
+    const id = ctx.req.param("id");
+    const { file: fileData } = ctx.req.valid("form");
+    const uploadUrl = await storage.getUploadUrl(id);
+    const signingKey =
+      config.files.uploadSigningKey ??
+      (ctx.env[config.env.signingKey] as string);
 
-  if (!ctx.req.body) {
-    return ctx.json(
-      { status: 400, success: false, data: null, error: "No body provided" },
-      400,
-    );
-  }
-
-  if (!uploadUrl) {
-    return ctx.json(
-      { status: 404, success: false, data: null, error: "Not found" },
-      404,
-    );
-  }
-
-  const { fileName, metadata } = uploadUrl;
-
-  await files.put(fileName, ctx.req.body as ReadableStream, metadata);
-
-  if (uploadUrl.callbackUrl) {
-    let attempts = 0;
-
-    while (attempts < 3) {
-      attempts += 1;
-
-      try {
-        const res = await fetch(uploadUrl.callbackUrl, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(metadata),
-        });
-
-        if (res.ok) {
-          break;
-        }
-      } catch (_) {}
+    if (!uploadUrl) {
+      return ctx.json(
+        { status: 404, success: false, data: null, error: "Not found" },
+        404,
+      );
     }
-  }
 
-  await storage.deleteUploadUrl(id);
+    await files.put(uploadUrl.path, fileData, uploadUrl.metadata);
 
-  return ctx.json({ status: 200, success: true, data: { id } });
-});
+    if (uploadUrl.callbackUrl) {
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder();
+      const key = await crypto.subtle.importKey(
+        "raw",
+        encoder.encode(signingKey),
+        "HMAC",
+        false,
+        ["sign"],
+      );
+      const signature = await crypto.subtle.sign(
+        "HMAC",
+        key,
+        new TextEncoder().encode(
+          JSON.stringify({
+            id,
+            path: uploadUrl.path,
+            callbackUrl: uploadUrl.callbackUrl,
+            metadata: uploadUrl.metadata,
+          }),
+        ),
+      );
+      let attempts = 0;
+
+      while (attempts < 3) {
+        attempts += 1;
+
+        try {
+          const res = await fetch(uploadUrl.callbackUrl, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              "x-workertown-signature": decoder.decode(signature),
+            },
+            body: JSON.stringify({
+              id,
+              path: uploadUrl.path,
+              callbackUrl: uploadUrl.callbackUrl,
+              metadata: uploadUrl.metadata,
+            }),
+          });
+
+          if (res.ok) {
+            break;
+          }
+        } catch (_) {}
+      }
+    }
+
+    await storage.deleteUploadUrl(id);
+
+    return ctx.json({
+      status: 200,
+      success: true,
+      data: { path: uploadUrl.path },
+    });
+  },
+);
 
 router.options("/open-api.json", (ctx) =>
   ctx.text("OK", {
