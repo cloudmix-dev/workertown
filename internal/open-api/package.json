@@ -1,7 +1,7 @@
 {
   "name": "@workertown/internal-open-api",
   "description": "Internal Open API v3 utils for WorkerTown",
-  "version": "0.0.2-alpha.18",
+  "version": "0.0.2-alpha.19",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

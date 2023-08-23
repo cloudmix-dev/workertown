@@ -1,5 +1,15 @@
 # @workertown/kv
 
+## 0.0.2-alpha.19
+
+### Patch Changes
+
+- Alpha.19 Release
+- Updated dependencies
+  - @workertown/internal-hono@0.0.2-alpha.19
+  - @workertown/internal-open-api@0.0.2-alpha.19
+  - @workertown/internal-storage@0.0.2-alpha.19
+
 ## 0.0.2-alpha.18
 
 ### Patch Changes

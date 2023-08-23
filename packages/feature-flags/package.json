@@ -1,6 +1,6 @@
 {
   "name": "@workertown/feature-flags",
-  "version": "0.0.2-alpha.18",
+  "version": "0.0.2-alpha.19",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -89,17 +89,17 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-cache": "~0.0.2-alpha.18",
-    "@workertown/internal-hono": "~0.0.2-alpha.18",
-    "@workertown/internal-open-api": "~0.0.2-alpha.18",
-    "@workertown/internal-storage": "~0.0.2-alpha.18",
+    "@workertown/internal-cache": "~0.0.2-alpha.19",
+    "@workertown/internal-hono": "~0.0.2-alpha.19",
+    "@workertown/internal-open-api": "~0.0.2-alpha.19",
+    "@workertown/internal-storage": "~0.0.2-alpha.19",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230814.0",
     "@types/better-sqlite3": "~7.6.4",
-    "@workertown/internal-types": "~0.0.2-alpha.18"
+    "@workertown/internal-types": "~0.0.2-alpha.19"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",

@@ -1,6 +1,6 @@
 {
   "name": "@workertown/cloudflare-pages",
-  "version": "0.0.2-alpha.18",
+  "version": "0.0.2-alpha.19",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -10,7 +10,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.2-alpha.18"
+    "@workertown/internal-hono": "~0.0.2-alpha.19"
   },
   "engines": {
     "node": ">=18.0.0"
