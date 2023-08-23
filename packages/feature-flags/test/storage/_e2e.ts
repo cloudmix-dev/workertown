@@ -58,13 +58,13 @@ export async function testStorageAdapterE2E(
   // Get flag
   const getResult = await storage.getFlag(featureFlags[0].name);
 
-  t.deepEqual(getResult?.name, featureFlags[0].name);
+  t.is(getResult?.name, featureFlags[0].name);
 
   // Get all flags
   const getAllResult = await storage.getFlags();
 
   t.is(getAllResult.length, 2);
-  t.deepEqual(getAllResult[0].name, featureFlags[0].name);
+  t.is(getAllResult[0].name, featureFlags[0].name);
 
   // Delete flag
   await storage.deleteFlag(featureFlags[0].name);

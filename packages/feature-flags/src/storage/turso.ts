@@ -103,7 +103,7 @@ export class TursoStorageAdapter
       query = query.where("disabled_at", "is", null);
     }
 
-    const records = await query.execute();
+    const records = await query.orderBy("name").execute();
 
     return records.map((record) => this._formatFlag(record));
   }
