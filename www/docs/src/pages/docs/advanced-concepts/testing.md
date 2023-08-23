@@ -50,7 +50,7 @@ construct your server to make use of the provided `test` runtime:
 // server.ts
 import { search, type CreateServerOptions } from "@workertown/search";
 
-export function createServer(options?: CreateServerOptions) {
+export function createServer(options: CreateServerOptions = {}) {
   return search({
     ...options,
     endpoints: {
