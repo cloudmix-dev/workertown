@@ -1,7 +1,7 @@
-import { User } from "../types.js";
 import { type DeepPartial } from "@workertown/internal-types";
-import { type MiddlewareHandler } from "hono";
 import merge from "lodash.merge";
+
+import { type Middleware, type User } from "../types.js";
 
 interface ApiKeyOptions {
   apiKey?: string;
@@ -38,7 +38,7 @@ export function apiKey(options?: ApiKeyOptionsOptional) {
     getCredentials,
     verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const apiKey = (optionsApiKey ?? ctx.env?.[apiKeyEnvKey]) as string;
     const user = ctx.get("user") ?? null;
 

@@ -1,3 +1,3 @@
-import { UpstashRedisRateLimiter } from "@workertown/internal-hono/rate-limit/upstash-redis";
+import { UpstashRedisRateLimiter } from "@workertown/internal-server/rate-limit/upstash-redis";
 
 export { UpstashRedisRateLimiter };

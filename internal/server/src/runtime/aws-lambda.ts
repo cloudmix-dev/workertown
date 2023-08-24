@@ -1,6 +1,6 @@
 import { handle } from "hono/aws-lambda";
 
-import { type WorkertownHono } from "../create-server.js";
+import { type Server } from "../server.js";
 
 // These interfaces are copy/paste from hono/aws-lambda because they are not
 // exported...
@@ -123,8 +123,8 @@ export interface APIGatewayProxyResult {
 }
 
 export function serve(
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the WorkertownHono server here, and the return type is broken
-  server: WorkertownHono<any>,
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the Server here, and the return type is broken
+  server: Server<any>,
 ): (
   event: APIGatewayProxyEventV2 | APIGatewayProxyEvent | LambdaFunctionUrlEvent,
 ) => Promise<APIGatewayProxyResult> {

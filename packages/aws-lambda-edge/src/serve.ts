@@ -4,7 +4,7 @@ import {
   type CloudFrontResponse,
   type CloudFrontResult,
   awsLambdaEdgeServe as serve,
-} from "@workertown/internal-hono/runtime";
+} from "@workertown/internal-server/runtime";
 
 export {
   serve,

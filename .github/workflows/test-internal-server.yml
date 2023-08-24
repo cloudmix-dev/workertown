@@ -1,4 +1,4 @@
-name: Test @workertown/internal-hono
+name: Test @workertown/internal-server
 
 on:
   pull_request:
@@ -9,12 +9,12 @@ on:
     branches:
       - main
     paths:
-      - internal/hono/**
-      - .github/workflows/test-internal-hono.yml
+      - internal/server/**
+      - .github/workflows/test-internal-server.yml
   workflow_dispatch:
 
 jobs:
-  test-internal-hono:
+  test-internal-server:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -26,7 +26,7 @@ jobs:
           node-version: 18.x
 
       - name: Install Dependencies
-        run: npm -w @workertown/internal-hono i
+        run: npm -w @workertown/internal-server i
 
       - name: Run Tests
-        run: npm test -- --filter=@workertown/internal-hono
+        run: npm test -- --filter=@workertown/internal-server

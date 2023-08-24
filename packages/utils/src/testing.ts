@@ -1,8 +1,7 @@
-import { type WorkertownHono } from "@workertown/internal-hono";
+import { type Server } from "@workertown/internal-server";
 
 export async function request(
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the WorkertownHono server here
-  service: WorkertownHono<any>,
+  service: Server,
   path: string,
   { body, headers = {}, ...options }: RequestInit = {},
 ) {

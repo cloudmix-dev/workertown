@@ -54,7 +54,6 @@ const MIGRATIONS: Migrations = [
 
         await db.schema
           .createIndex("wt_pub_sub_subscriptions_topic_idx")
-          .unique()
           .ifNotExists()
           .on("wt_pub_sub_subscriptions")
           .columns(["topic"])

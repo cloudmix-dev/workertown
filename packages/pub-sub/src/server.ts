@@ -1,4 +1,4 @@
-import { createServer } from "@workertown/internal-hono";
+import { type Server, createServer } from "@workertown/internal-server";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
@@ -46,7 +46,9 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   },
 };
 
-export function createPubSubServer(options?: CreateServerOptionsOptional) {
+export function createPubSubServer(
+  options?: CreateServerOptionsOptional,
+): Server<Context> {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
     endpoints,

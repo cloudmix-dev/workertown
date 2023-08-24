@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
-import { type WorkertownHono } from "./create-server.js";
 import { authenticated } from "./middleware/index.js";
+import { type Router } from "./router.js";
 import { type Context } from "./types.js";
 
 interface CreateRouterOptions {
@@ -9,7 +9,7 @@ interface CreateRouterOptions {
 }
 
 export function createRouter<T extends Context>(options?: CreateRouterOptions) {
-  const router = new Hono<T>() as WorkertownHono<T>;
+  const router = new Hono<T>() as Router<T>;
 
   if (!options?.public) {
     router.use("*", authenticated());

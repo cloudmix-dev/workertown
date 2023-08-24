@@ -1,3 +1,3 @@
-import { RateLimiter } from "@workertown/internal-hono/rate-limit";
+import { RateLimiter } from "@workertown/internal-server/rate-limit";
 
 export { RateLimiter };

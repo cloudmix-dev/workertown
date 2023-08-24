@@ -2,12 +2,15 @@ import {
   type Options as SentryOptions,
   sentry as sentryMiddleware,
 } from "@hono/sentry";
-import { type MiddlewareHandler } from "hono";
+
+import { type Middleware } from "../types.js";
 
 export { type SentryOptions };
 
 export function sentry(options?: SentryOptions) {
-  const handler: MiddlewareHandler = sentryMiddleware(options);
+  const handler: Middleware = sentryMiddleware(
+    options,
+  ) as unknown as Middleware;
 
   return handler;
 }

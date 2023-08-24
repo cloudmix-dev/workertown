@@ -1,7 +1,8 @@
 import { type DeepPartial } from "@workertown/internal-types";
-import { type MiddlewareHandler } from "hono";
 import merge from "lodash.merge";
 import { inRange } from "range_check";
+
+import { type Middleware } from "../types.js";
 
 interface IpOptions {
   ips: string[];
@@ -16,7 +17,7 @@ const DEFAULT_OPTIONS: IpOptions = {
 export function ip(options?: IpOptionsOptional) {
   const { ips } = merge({}, DEFAULT_OPTIONS, options);
 
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const ip =
       ctx.req.headers.get("cf-connecting-ip") ??
       ctx.req.headers.get("x-forwarded-for") ??

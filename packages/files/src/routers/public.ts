@@ -1,5 +1,5 @@
-import { createRouter, validate } from "@workertown/internal-hono";
 import { generateOpenApiSpec } from "@workertown/internal-open-api";
+import { createRouter, validate } from "@workertown/internal-server";
 import { z } from "zod";
 
 import { OPEN_API_SPEC } from "../constants.js";

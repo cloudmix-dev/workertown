@@ -1,7 +1,5 @@
-import { User } from "../types.js";
 import { type fetch as CFFetch } from "@cloudflare/workers-types";
 import { type DeepPartial } from "@workertown/internal-types";
-import { type MiddlewareHandler } from "hono";
 import {
   JSONWebKeySet,
   JWTPayload,
@@ -10,6 +8,8 @@ import {
   jwtVerify,
 } from "jose";
 import merge from "lodash.merge";
+
+import { type Middleware, type User } from "../types.js";
 
 interface JwtOptions {
   audience?: string;
@@ -69,7 +69,7 @@ export function jwt(options?: JwtOptionsOptional) {
     secret: optionsSecret,
     verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const jwks = (optionsJwks?.url ?? ctx.env?.[jwksUrlEnvKey]) as string;
     const secret = (optionsSecret ?? ctx.env?.[secretEnvKey]) as string;
     const issuer = (optionsIssuer ?? ctx.env?.[issuerEnvKey]) as

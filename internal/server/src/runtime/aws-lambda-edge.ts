@@ -4,7 +4,7 @@ import {
   handle,
 } from "hono/lambda-edge";
 
-import { type WorkertownHono } from "../create-server.js";
+import { type Server } from "../server.js";
 
 interface CloudFrontHeader {
   key: string;
@@ -39,8 +39,8 @@ export interface CloudFrontResult {
 export { type Callback, type CloudFrontEdgeEvent };
 
 export function serve(
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the WorkertownHono server here, and the return type is broken
-  server: WorkertownHono<any>,
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the Server here, and the return type is broken
+  server: Server<any>,
 ): (
   event: CloudFrontEdgeEvent,
   context?: CloudFrontContext,

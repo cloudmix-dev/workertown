@@ -1,7 +1,6 @@
-import { type WorkertownHono, createServer } from "@workertown/internal-hono";
+import { type Server, createServer } from "@workertown/internal-server";
 
-// rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the WorkertownHono server here
-export function combine(...args: WorkertownHono<any>[]) {
+export function combine(...args: Server[]): Server {
   const server = args.reduce(
     (acc, hono) => acc.route("/", hono),
     createServer({
@@ -12,5 +11,5 @@ export function combine(...args: WorkertownHono<any>[]) {
     }),
   );
 
-  return server;
+  return server as Server;
 }

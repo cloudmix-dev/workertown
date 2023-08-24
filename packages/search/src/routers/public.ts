@@ -1,5 +1,5 @@
-import { createRouter } from "@workertown/internal-hono";
 import { generateOpenApiSpec } from "@workertown/internal-open-api";
+import { createRouter } from "@workertown/internal-server";
 
 import { OPEN_API_SPEC } from "../constants.js";
 import { type Context } from "../types.js";

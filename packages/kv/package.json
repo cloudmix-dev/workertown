@@ -89,8 +89,8 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-hono": "~0.0.2-alpha.19",
     "@workertown/internal-open-api": "~0.0.2-alpha.19",
+    "@workertown/internal-server": "~0.0.0",
     "@workertown/internal-storage": "~0.0.2-alpha.19",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"

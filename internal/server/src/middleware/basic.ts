@@ -1,7 +1,7 @@
-import { User } from "../types.js";
 import { type DeepPartial } from "@workertown/internal-types";
-import { type MiddlewareHandler } from "hono";
 import merge from "lodash.merge";
+
+import { type Middleware, type User } from "../types.js";
 
 interface BasicOptions {
   username?: string;
@@ -52,7 +52,7 @@ export function basic(options?: BasicOptionsOptional) {
     getCredentials,
     verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const username = (optionsUsername ?? ctx.env?.[usernameEnvKey]) as string;
     const password = (optionsPassword ?? ctx.env?.[passwordEnvKey]) as string;
     const user = ctx.get("user") ?? null;

@@ -1,8 +1,4 @@
-import {
-  type ExportedHandlerQueueHandler,
-  type ExportedHandlerScheduledHandler,
-} from "@cloudflare/workers-types";
-import { Hono, type HonoRequest, type Input } from "hono";
+import { type Message } from "@cloudflare/workers-types";
 import { cors } from "hono/cors";
 
 import {
@@ -21,18 +17,8 @@ import {
   rateLimit as rateLimitMiddleware,
   sentry as sentryMiddleware,
 } from "./middleware/index.js";
+import { Server } from "./server.js";
 import { type Context, User } from "./types.js";
-
-export class WorkertownHono<T extends Context> extends Hono<T> {
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the message type here
-  queue?: ExportedHandlerQueueHandler<T["Variables"], any>;
-  scheduled?: ExportedHandlerScheduledHandler;
-}
-
-export type WorkertownRequest<
-  P extends string = "/",
-  I extends Input["out"] = {},
-> = HonoRequest<P, I>;
 
 export interface CreateServerOptions {
   access?: {
@@ -70,9 +56,10 @@ export interface CreateServerOptions {
   sentry?: SentryOptions | false;
 }
 
-export function createServer<T extends Context>(
-  options: CreateServerOptions = {},
-) {
+export function createServer<
+  T extends Context = Context,
+  M extends Message = Message,
+>(options: CreateServerOptions = {}): Server<T, M> {
   const {
     access: accessOptions,
     auth: authOptions,
@@ -82,7 +69,7 @@ export function createServer<T extends Context>(
     getEnv,
     sentry: sentryOptions,
   } = options;
-  const server = new Hono<T>().basePath(basePath) as WorkertownHono<T>;
+  const server = new Server<T>().basePath(basePath);
 
   // This sets `ctx.env` to NodeJS's `process.env` if we're an environment that
   // supports it, or an optionally provided `getEnv` function.
@@ -187,5 +174,5 @@ export function createServer<T extends Context>(
     );
   });
 
-  return server as WorkertownHono<T>;
+  return server;
 }

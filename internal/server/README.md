@@ -1,4 +1,4 @@
-# @workertown/internal-hono
+# @workertown/internal-server
 
 This is a package for **internal** use within the Workertown project **only**.
 

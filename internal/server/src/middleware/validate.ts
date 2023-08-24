@@ -7,13 +7,15 @@ import {
   type output as ZodOutput,
 } from "zod";
 
+type Targets = keyof Omit<ValidationTargets, "header" | "cookie">;
+
 // This is just a dumb copy/paste (and modification) of the types found at
 // @hono/zod-validator/dist/esm/index.d.ts
 export const validate = <
   Env extends HonoEnv,
   // rome-ignore lint/suspicious/noExplicitAny: We're just copy/pasting the types from zod-validator
   T extends ZodType<any, ZodTypeDef, any>,
-  Target extends keyof ValidationTargets,
+  Target extends Targets,
   P extends string,
   V extends {
     in: { [K in Target]: ZodInput<T> };

@@ -1,7 +1,7 @@
-import { type MiddlewareHandler } from "hono";
+import { type Middleware } from "../types.js";
 
 export function authenticated() {
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const user = ctx.get("user") ?? null;
 
     if (user === null) {

@@ -1,5 +1,5 @@
 import { serve as honoServe } from "@hono/node-server";
-import { type WorkertownHono } from "@workertown/internal-hono";
+import { type Server } from "@workertown/internal-server";
 
 const { PORT = "3000" } = process.env;
 
@@ -9,8 +9,7 @@ interface ServeOptions {
 }
 
 export function serve(
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the WorkertownHono server here
-  server: WorkertownHono<any>,
+  server: Server,
   options: ServeOptions = { port: parseInt(PORT, 10) },
 ) {
   return honoServe({ fetch: server.fetch, ...options });

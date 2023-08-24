@@ -1,3 +1,3 @@
-import { KvRateLimiter } from "@workertown/internal-hono/rate-limit/kv";
+import { KvRateLimiter } from "@workertown/internal-server/rate-limit/kv";
 
 export { KvRateLimiter };

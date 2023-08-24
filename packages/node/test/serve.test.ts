@@ -1,4 +1,4 @@
-import { createServer } from "@workertown/internal-hono";
+import { createServer } from "@workertown/internal-server";
 import test from "ava";
 import { Server } from "node:http";
 

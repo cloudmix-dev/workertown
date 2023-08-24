@@ -5,6 +5,7 @@ ARG VERSION=latest
 WORKDIR /usr/src/app
 
 ENV PORT=3000
+ENV SEARCH_DB=wt_search.sqlite
 
 # Create package.json
 RUN echo "{" \

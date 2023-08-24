@@ -1,4 +1,4 @@
-import { createRouter, validate } from "@workertown/internal-hono";
+import { createRouter, validate } from "@workertown/internal-server";
 import { z } from "zod";
 
 import { CACHE } from "../../constants.js";

@@ -1,7 +1,7 @@
 /**
  * This file is heavily inspired by: https://github.com/honojs/hono/blob/main/src/middleware/logger/index.ts
  */
-import { type MiddlewareHandler } from "hono";
+import { type Middleware } from "../types.js";
 
 export type LoggerFunc = (
   method: string,
@@ -43,7 +43,7 @@ const defaultLogger: LoggerFunc = (
 };
 
 export function logger(func: LoggerFunc = defaultLogger) {
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const url = new URL(ctx.req.url);
     const start = Date.now();
 

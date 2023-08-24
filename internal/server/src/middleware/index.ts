@@ -12,6 +12,7 @@ import {
   rateLimit,
 } from "./rate-limit.js";
 import { type SentryOptions, sentry } from "./sentry.js";
+import { validate } from "./validate.js";
 
 export {
   apiKey,
@@ -22,6 +23,7 @@ export {
   logger,
   rateLimit,
   sentry,
+  validate,
   type ApiKeyOptions,
   type BasicOptions,
   type IpOptions,

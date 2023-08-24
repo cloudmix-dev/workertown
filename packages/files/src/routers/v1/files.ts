@@ -1,18 +1,11 @@
-import {
-  type WorkertownRequest,
-  createRouter,
-  validate,
-} from "@workertown/internal-hono";
+import { createRouter, validate } from "@workertown/internal-server";
 import { z } from "zod";
 
 import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
-function getPath(
-  req: WorkertownRequest<"/*">,
-  config: Context["Variables"]["config"],
-) {
+function getPath(req: Request, config: Context["Variables"]["config"]) {
   const { files: filesPrefix } = config.endpoints.v1;
   const url = new URL(req.url);
   const path = url.pathname
@@ -37,7 +30,7 @@ router.get(
     const config = ctx.get("config");
     const files = ctx.get("files");
     const { metadata } = ctx.req.valid("query");
-    const path = getPath(ctx.req, config);
+    const path = getPath(ctx.req as unknown as Request, config);
 
     if (metadata) {
       const metadata = await files.getMetadata(path);
@@ -78,7 +71,7 @@ router.put(
     const config = ctx.get("config");
     const files = ctx.get("files");
     const { file: fileData, metadata } = ctx.req.valid("form");
-    const path = getPath(ctx.req, config);
+    const path = getPath(ctx.req as unknown as Request, config);
 
     await files.put(path, fileData, metadata ?? undefined);
 
@@ -89,7 +82,7 @@ router.put(
 router.delete("/*", async (ctx) => {
   const config = ctx.get("config");
   const files = ctx.get("files");
-  const path = getPath(ctx.req, config);
+  const path = getPath(ctx.req as unknown as Request, config);
 
   await files.delete(path);
 

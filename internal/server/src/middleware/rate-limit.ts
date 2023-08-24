@@ -1,10 +1,10 @@
 import { type KVNamespace } from "@cloudflare/workers-types";
 import { type DeepPartial } from "@workertown/internal-types";
-import { type MiddlewareHandler } from "hono";
 import merge from "lodash.merge";
 
 import { KvRateLimiter } from "../rate-limit/kv.js";
 import { type RateLimiter } from "../rate-limit/rate-limiter.js";
+import { type Middleware } from "../types.js";
 
 interface RateLimitOptions {
   env: {
@@ -33,7 +33,7 @@ export function rateLimit(options?: RateLimitOptionsOptional) {
     window: slidingWindow,
   } = merge({}, DEFAULT_OPTIONS, options);
 
-  const handler: MiddlewareHandler = async (ctx, next) => {
+  const handler: Middleware = async (ctx, next) => {
     const ip =
       ctx.req.headers.get("cf-connecting-ip") ??
       ctx.req.headers.get("x-forwarded-for") ??
