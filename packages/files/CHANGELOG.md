@@ -1,5 +1,17 @@
 # @workertown/files
 
+## 0.0.2-alpha.20
+
+### Patch Changes
+
+- Alpha.20 Release
+- Updated dependencies
+  - @workertown/internal-cache@0.0.2-alpha.20
+  - @workertown/internal-files@0.0.2-alpha.20
+  - @workertown/internal-open-api@0.0.2-alpha.20
+  - @workertown/internal-server@0.0.2-alpha.20
+  - @workertown/internal-storage@0.0.2-alpha.20
+
 ## 0.0.2-alpha.19
 
 ### Patch Changes

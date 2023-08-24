@@ -1,5 +1,15 @@
 # @workertown/pub-sub
 
+## 0.0.2-alpha.20
+
+### Patch Changes
+
+- Alpha.20 Release
+- Updated dependencies
+  - @workertown/internal-queue@0.0.2-alpha.20
+  - @workertown/internal-server@0.0.2-alpha.20
+  - @workertown/internal-storage@0.0.2-alpha.20
+
 ## 0.0.2-alpha.19
 
 ### Patch Changes

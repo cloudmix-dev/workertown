@@ -1,6 +1,6 @@
 {
   "name": "@workertown/kv",
-  "version": "0.0.2-alpha.19",
+  "version": "0.0.2-alpha.20",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -89,16 +89,16 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-open-api": "~0.0.2-alpha.19",
-    "@workertown/internal-server": "~0.0.0",
-    "@workertown/internal-storage": "~0.0.2-alpha.19",
+    "@workertown/internal-open-api": "~0.0.2-alpha.20",
+    "@workertown/internal-server": "~0.0.2-alpha.20",
+    "@workertown/internal-storage": "~0.0.2-alpha.20",
     "lodash.merge": "~4.6.2",
     "zod": "~3.21.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230814.0",
     "@upstash/redis": "~1.22.0",
-    "@workertown/internal-types": "~0.0.2-alpha.19"
+    "@workertown/internal-types": "~0.0.2-alpha.20"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",
