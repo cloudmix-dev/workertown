@@ -41,6 +41,15 @@ export const navigation: {
     ],
   },
   {
+    title: "Events",
+    links: [
+      {
+        title: "Coming soon...",
+        href: "/docs/packages/events/introduction",
+      },
+    ],
+  },
+  {
     title: "Feature flags",
     links: [
       {
@@ -88,10 +97,10 @@ export const navigation: {
         title: "Storage",
         href: "/docs/packages/files/storage",
       },
-      {
-        title: "File storage",
-        href: "/docs/packages/files/files",
-      },
+      // {
+      //   title: "File storage",
+      //   href: "/docs/packages/files/files",
+      // },
       {
         title: "Tutorial",
         href: "/docs/packages/files/tutorial",
@@ -120,6 +129,24 @@ export const navigation: {
       {
         title: "Tutorial",
         href: "/docs/packages/kv/tutorial",
+      },
+    ],
+  },
+  {
+    title: "Pub Sub",
+    links: [
+      {
+        title: "Coming soon...",
+        href: "/docs/packages/pub-sub/introduction",
+      },
+    ],
+  },
+  {
+    title: "Queues",
+    links: [
+      {
+        title: "Coming soon...",
+        href: "/docs/packages/queues/introduction",
       },
     ],
   },

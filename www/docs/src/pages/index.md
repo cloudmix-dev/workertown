@@ -15,19 +15,19 @@ Workertown provides...
 
 {% quick-links %}
 
-{% quick-link title="Events" icon="events" description="Kafka-like events streaming." /%}
+{% quick-link title="Events" icon="events" tag="Coming soon..." description="Kafka-like events streaming." /%}
 
-{% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags/introduction" description="Feature flags made simple." /%}
+{% quick-link title="Feature Flags" icon="flags" href="/docs/packages/feature-flags/introduction" tag="Alpha" description="Feature flags made simple." /%}
 
-{% quick-link title="Files" icon="files" href="/docs/packages/files/introduction" description="Easy file storage at the edge." /%}
+{% quick-link title="Files" icon="files" href="/docs/packages/files/introduction" tag="Alpha" description="Easy file storage at the edge." /%}
 
-{% quick-link title="KV" icon="kv" href="/docs/packages/kv/introduction" description="Simple key/value storage." /%}
+{% quick-link title="KV" icon="kv" href="/docs/packages/kv/introduction" tag="Alpha" description="Simple key/value storage." /%}
 
-{% quick-link title="Pub Sub" icon="pubsub" description="Webhook based system messaging." /%}
+{% quick-link title="Pub Sub" icon="pubsub" tag="Coming soon..." description="Webhook based system messaging." /%}
 
-{% quick-link title="Queues" icon="queues" description="Distributed, prioritized task processing." /%}
+{% quick-link title="Queues" icon="queues" tag="Coming soon..." description="Distributed, prioritized task processing." /%}
 
-{% quick-link title="Search" icon="search" href="/docs/packages/search/introduction" description="Full text search indexing for small to medium datasets." /%}
+{% quick-link title="Search" icon="search" href="/docs/packages/search/introduction" tag="Alpha" description="Full text search indexing for small to medium datasets." /%}
 
 {% /quick-links %}
 

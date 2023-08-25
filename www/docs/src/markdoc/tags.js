@@ -39,6 +39,7 @@ const tags = {
       description: { type: String },
       icon: { type: String },
       href: { type: String },
+      tag: { type: String },
     },
   },
 };
