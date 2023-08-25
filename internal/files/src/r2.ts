@@ -32,7 +32,7 @@ export class R2FilesAdapter extends FilesAdapter {
 
   async put(
     key: string,
-    stream: ReadableStream,
+    stream: ReadableStream | Uint8Array | Blob,
     metadata?: Record<string, string>,
   ) {
     await this._r2.put(key, stream as CFReadableStream, {

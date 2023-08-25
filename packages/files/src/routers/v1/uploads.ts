@@ -12,7 +12,7 @@ router.post(
     z.object({
       path: z.string(),
       callbackUrl: z.string().url().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string()).optional(),
     }),
   ),
   async (ctx) => {
@@ -20,8 +20,8 @@ router.post(
     const storage = ctx.get("storage");
     const { path, callbackUrl, metadata } = ctx.req.valid("json");
     const expiresAt = new Date(Date.now() + config.files.uploadUrlTtl * 1000);
-    const id = await storage.createUploadUrl({
-      path,
+    const uploadUrl = await storage.createUploadUrl({
+      path: path.startsWith("/") ? path.slice(1) : path,
       callbackUrl,
       metadata,
       expiresAt,
@@ -30,7 +30,7 @@ router.post(
     return ctx.json({
       status: 200,
       success: true,
-      data: { id, expiresAt: expiresAt.toISOString() },
+      data: { id: uploadUrl.id, expiresAt: expiresAt.toISOString() },
     });
   },
 );

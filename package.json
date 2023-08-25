@@ -27,6 +27,8 @@
     "@commitlint/config-conventional": "~17.6.6",
     "@miniflare/d1": "~2.14.0",
     "@miniflare/kv": "~2.14.0",
+    "@miniflare/queues": "~2.14.0",
+    "@miniflare/r2": "~2.14.0",
     "@miniflare/storage-memory": "~2.14.0",
     "@types/sinon": "~10.0.16",
     "ava": "~5.3.1",

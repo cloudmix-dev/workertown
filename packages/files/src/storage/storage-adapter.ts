@@ -4,7 +4,7 @@ export interface UploadUrl {
   id: string;
   path: string;
   callbackUrl?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, string>;
   createdAt: Date;
   expiresAt: Date;
 }
@@ -12,7 +12,7 @@ export interface UploadUrl {
 export interface CreateUploadUrlBody {
   path: string;
   callbackUrl?: string;
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, string>;
   expiresAt: Date;
 }
 
@@ -25,7 +25,7 @@ export class StorageAdapter extends BaseStorageAdapter {
   public async createUploadUrl(
     // rome-ignore lint/correctness/noUnusedVariables: stub class
     body: CreateUploadUrlBody,
-  ): Promise<UploadUrl | null> {
+  ): Promise<UploadUrl> {
     throw new Error("'createUploadUrl()' not implemented");
   }
 

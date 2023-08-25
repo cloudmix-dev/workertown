@@ -1,4 +1,4 @@
-import search, { type CreateServerOptions } from "../src";
+import pubSub, { type CreateServerOptions } from "../src";
 import { runtime } from "../src/runtime/test";
 import { type Subscription } from "../src/storage";
 
@@ -16,7 +16,7 @@ export function createTestService(
   options: CreateServerOptions = {},
   initialSubscriptions: Subscription[] = SUBSCRIPTIONS,
 ) {
-  return search({
+  return pubSub({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
     logger: false,
@@ -28,7 +28,7 @@ export function createTestService(
 }
 
 export function makeRequest(
-  service: ReturnType<typeof search>,
+  service: ReturnType<typeof pubSub>,
   path: string,
   {
     method = "GET",
@@ -36,7 +36,7 @@ export function makeRequest(
   }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: unknown } = {},
 ) {
   return service.fetch(
-    new Request(`http://search.local${path}`, {
+    new Request(`http://pub-sub.local${path}`, {
       method,
       headers: {
         authorization: "Bearer test",

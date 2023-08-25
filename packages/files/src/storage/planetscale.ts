@@ -106,8 +106,8 @@ export class PlanetscaleStorageAdapter
         path: url.path,
         callback_url: url.callbackUrl,
         metadata: url.metadata ? JSON.stringify(url.metadata) : null,
-        expires_at: url.expiresAt.toISOString(),
-        created_at: now.toISOString(),
+        expires_at: url.expiresAt.toISOString().slice(0, 19).replace("T", " "),
+        created_at: now.toISOString().slice(0, 19).replace("T", " "),
       })
       .execute();
 

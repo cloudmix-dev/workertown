@@ -49,7 +49,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "ava"
   },
   "dependencies": {
     "@workertown/internal-cache": "~0.0.2-alpha.20",

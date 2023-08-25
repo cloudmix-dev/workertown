@@ -1,4 +1,6 @@
 import {
+  CreateBucketCommand,
+  DeleteBucketCommand,
   DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
@@ -12,7 +14,7 @@ export interface S3FilesAdapterOptions {
     accessKeyId: string;
     secretAccessKey: string;
   };
-  region: string;
+  region?: string;
   endpoint?: string;
   bucket: string;
 }
@@ -33,22 +35,30 @@ export class S3FilesAdapter extends FilesAdapter {
     this._bucket = options.bucket;
   }
 
+  private _sanitizeKey(key: string) {
+    if (key.startsWith("/")) {
+      return key.slice(1);
+    }
+
+    return key;
+  }
+
   async get(key: string) {
     const file = await this._s3.send(
       new GetObjectCommand({
         Bucket: this._bucket,
-        Key: key,
+        Key: this._sanitizeKey(key),
       }),
     );
 
-    return (file.Body as ReadableStream) ?? null;
+    return file.Body?.transformToWebStream() ?? null;
   }
 
   async getMetadata(key: string) {
     const file = await this._s3.send(
       new GetObjectCommand({
         Bucket: this._bucket,
-        Key: key,
+        Key: this._sanitizeKey(key),
       }),
     );
 
@@ -57,13 +67,13 @@ export class S3FilesAdapter extends FilesAdapter {
 
   async put(
     key: string,
-    stream: ReadableStream,
+    stream: ReadableStream | Uint8Array | Blob,
     metadata?: Record<string, string>,
   ) {
     await this._s3.send(
       new PutObjectCommand({
         Bucket: this._bucket,
-        Key: key,
+        Key: this._sanitizeKey(key),
         Body: stream,
         Metadata: metadata,
       }),
@@ -74,8 +84,30 @@ export class S3FilesAdapter extends FilesAdapter {
     await this._s3.send(
       new DeleteObjectCommand({
         Bucket: this._bucket,
-        Key: key,
+        Key: this._sanitizeKey(key),
       }),
     );
+  }
+
+  public async setup(down?: boolean) {
+    try {
+      if (!down) {
+        await this._s3.send(
+          new CreateBucketCommand({
+            Bucket: this._bucket,
+          }),
+        );
+      } else {
+        await this._s3.send(
+          new DeleteBucketCommand({
+            Bucket: this._bucket,
+          }),
+        );
+      }
+
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }

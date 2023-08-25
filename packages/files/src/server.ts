@@ -2,6 +2,7 @@ import { type Server, createServer } from "@workertown/internal-server";
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
+import { type FilesAdapter } from "./files/files-adapter.js";
 import { publicRouter, v1 } from "./routers/index.js";
 import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { type StorageAdapter } from "./storage/storage-adapter.js";
@@ -61,10 +62,11 @@ export function createFilesServer(
 
   const server = createServer<Context>(baseConfig);
   let storage: StorageAdapter;
+  let files: FilesAdapter;
 
   server.use(async (ctx, next) => {
     if (!storage) {
-      ({ storage } =
+      ({ files, storage } =
         typeof runtime === "function"
           ? runtime(config, ctx.env)
           : runtime ?? cloudflareWorkersRuntime(config, ctx.env));
@@ -72,6 +74,7 @@ export function createFilesServer(
 
     ctx.set("config", config);
     ctx.set("storage", storage);
+    ctx.set("files", files);
 
     return next();
   });

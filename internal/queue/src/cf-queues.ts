@@ -4,6 +4,7 @@ import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface CfQueuesQueueAdapterOptions {
   queue: Queue<unknown>;
+  pullMessages?: () => Promise<QueueMessage[]>;
 }
 
 export class CfQueuesQueueAdapter extends QueueAdapter {
@@ -13,6 +14,10 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     super();
 
     this._queue = options.queue;
+
+    if (options.pullMessages) {
+      this.pullMessages = options.pullMessages;
+    }
   }
 
   // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body

@@ -14,10 +14,23 @@ export class MemoryFilesAdapter extends FilesAdapter {
 
   async put(
     key: string,
-    stream: ReadableStream,
+    stream: ReadableStream | Uint8Array | Blob,
     metadata?: Record<string, string>,
   ) {
-    this._fileStore.set(key, stream);
+    let realStream: ReadableStream = stream as ReadableStream;
+
+    if (stream instanceof Blob) {
+      realStream = stream.stream();
+    } else if (stream instanceof Uint8Array) {
+      realStream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(stream);
+          controller.close();
+        },
+      });
+    }
+
+    this._fileStore.set(key, realStream);
     this._metadataStore.set(key, metadata ?? {});
   }
 

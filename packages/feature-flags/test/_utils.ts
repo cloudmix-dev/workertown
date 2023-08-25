@@ -1,4 +1,4 @@
-import search, { type CreateServerOptions } from "../src";
+import featureFlags, { type CreateServerOptions } from "../src";
 import { runtime } from "../src/runtime/test";
 import { type Flag } from "../src/storage";
 
@@ -131,7 +131,7 @@ export function createTestService(
   options: CreateServerOptions = {},
   initialFlags: Flag[] = FLAGS,
 ) {
-  return search({
+  return featureFlags({
     ...options,
     auth: { apiKey: { apiKey: "test" } },
     logger: false,
@@ -141,7 +141,7 @@ export function createTestService(
 }
 
 export function makeRequest(
-  service: ReturnType<typeof search>,
+  service: ReturnType<typeof featureFlags>,
   path: string,
   {
     method = "GET",
