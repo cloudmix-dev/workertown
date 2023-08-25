@@ -1,4 +1,4 @@
-name: Test storage adapters
+name: Test files adapters
 
 on:
   pull_request:
@@ -9,12 +9,12 @@ on:
     branches:
       - main
     paths:
-      - "/internal/storage/**"
-      - .github/workflows/test-storage-adapters.yml
+      - "/internal/files/**"
+      - .github/workflows/test-files-adapters.yml
   workflow_dispatch:
 
 jobs:
-  test-storage-adapters:
+  test-files-adapters:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -37,4 +37,4 @@ jobs:
             turso
 
       - name: Run Tests
-        run: npm run test -- --filter=@workertown/{feature-flags,files,kv,search} -- 'test/storage/*.e2e.test.ts'
+        run: npm run test -- --filter=@workertown/files -- 'test/files/*.e2e.test.ts'
