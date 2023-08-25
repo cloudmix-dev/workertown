@@ -41,7 +41,8 @@ export class TursoStorageAdapter<T = {}> extends StorageAdapter {
 
         try {
           let results;
-          for (const _migration of this.migrations) {
+
+          for (const _ of this.migrations) {
             ({ results, error } = await migrator.migrateDown());
 
             allResults.push(...(results as MigrationResult[]));

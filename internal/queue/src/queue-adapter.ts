@@ -1,3 +1,5 @@
+import { type MigrationResultSet } from "kysely";
+
 export type QueueMessage<T = Record<string, unknown>> = {
   id: string;
   body: T;
@@ -22,5 +24,10 @@ export class QueueAdapter {
 
   async pullMessages(): Promise<QueueMessage[]> {
     return [];
+  }
+
+  // rome-ignore lint/correctness/noUnusedVariables: stub class
+  public async runMigrations(down?: boolean): Promise<MigrationResultSet> {
+    return { results: [] };
   }
 }

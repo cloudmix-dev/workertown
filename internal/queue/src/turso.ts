@@ -5,6 +5,7 @@ import {
   type ColumnType,
   Kysely,
   type MigrationInfo,
+  type MigrationResult,
   Migrator,
   type Selectable,
 } from "kysely";
@@ -74,12 +75,15 @@ interface TursoQueueAdapterOptions {
   url?: string;
   authToken?: string;
   maxRetries?: number;
+  migrationsPrefix?: string;
 }
 
 export class TursoQueueAdapter extends QueueAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
   private readonly _maxRetries: number;
+
+  private readonly _migrationsPrefix: string = "wt_queue";
 
   constructor(options: TursoQueueAdapterOptions = {}) {
     super();
@@ -88,6 +92,7 @@ export class TursoQueueAdapter extends QueueAdapter {
       dialect: new LibsqlDialect(options),
     });
     this._maxRetries = options?.maxRetries ?? 5;
+    this._migrationsPrefix = options.migrationsPrefix ?? this._migrationsPrefix;
   }
 
   private _formatQueueMessage(
@@ -175,12 +180,41 @@ export class TursoQueueAdapter extends QueueAdapter {
     }
   }
 
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new MigrationProvider(MIGRATIONS),
-    });
+  public async runMigrations(down = false) {
+    if (MIGRATIONS.length > 0) {
+      const migrator = new Migrator({
+        db: this._client,
+        provider: new MigrationProvider(MIGRATIONS),
+        migrationLockTableName: `${this._migrationsPrefix}_migrations_lock`,
+        migrationTableName: `${this._migrationsPrefix}_migrations`,
+      });
 
-    return await migrator.migrateToLatest();
+      if (!down) {
+        return await migrator.migrateToLatest();
+      } else {
+        const allResults: MigrationResult[] = [];
+        let error: unknown;
+
+        try {
+          let results;
+
+          for (const _ of MIGRATIONS) {
+            ({ results, error } = await migrator.migrateDown());
+
+            allResults.push(...(results as MigrationResult[]));
+
+            if (error) {
+              break;
+            }
+          }
+        } catch (_) {
+          error = (_ as Error).message;
+        }
+
+        return { results: allResults, error };
+      }
+    }
+
+    return { results: [] };
   }
 }

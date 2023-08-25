@@ -5,6 +5,7 @@ import {
   type ColumnType,
   Kysely,
   type MigrationInfo,
+  type MigrationResult,
   Migrator,
   type Selectable,
   SqliteDialect,
@@ -74,12 +75,15 @@ const MIGRATIONS: MigrationInfo[] = [
 interface SqliteQueueAdapterOptions {
   db?: string;
   maxRetries?: number;
+  migrationsPrefix?: string;
 }
 
 export class SqliteQueueAdapter extends QueueAdapter {
   private readonly _client: Kysely<DatabaseSchema>;
 
   private readonly _maxRetries: number;
+
+  private readonly _migrationsPrefix: string = "wt_queue";
 
   constructor(options: SqliteQueueAdapterOptions = {}) {
     super();
@@ -96,6 +100,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
       }),
     });
     this._maxRetries = options?.maxRetries ?? 5;
+    this._migrationsPrefix = options.migrationsPrefix ?? this._migrationsPrefix;
   }
 
   private _formatQueueMessage(
@@ -183,12 +188,41 @@ export class SqliteQueueAdapter extends QueueAdapter {
     }
   }
 
-  async runMigrations() {
-    const migrator = new Migrator({
-      db: this._client,
-      provider: new MigrationProvider(MIGRATIONS),
-    });
+  public async runMigrations(down = false) {
+    if (MIGRATIONS.length > 0) {
+      const migrator = new Migrator({
+        db: this._client,
+        provider: new MigrationProvider(MIGRATIONS),
+        migrationLockTableName: `${this._migrationsPrefix}_migrations_lock`,
+        migrationTableName: `${this._migrationsPrefix}_migrations`,
+      });
 
-    return await migrator.migrateToLatest();
+      if (!down) {
+        return await migrator.migrateToLatest();
+      } else {
+        const allResults: MigrationResult[] = [];
+        let error: unknown;
+
+        try {
+          let results;
+
+          for (const _ of MIGRATIONS) {
+            ({ results, error } = await migrator.migrateDown());
+
+            allResults.push(...(results as MigrationResult[]));
+
+            if (error) {
+              break;
+            }
+          }
+        } catch (_) {
+          error = (_ as Error).message;
+        }
+
+        return { results: allResults, error };
+      }
+    }
+
+    return { results: [] };
   }
 }
