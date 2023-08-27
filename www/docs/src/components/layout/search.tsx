@@ -185,7 +185,7 @@ function SearchResults({ autocomplete, query, collection }) {
 }
 
 interface SearchInputProps {
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the autocomplete here
+  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the autocomplete here
   autocomplete: any;
   autocompleteState: { [x: string]: unknown };
   onClose: () => void;
@@ -300,7 +300,7 @@ function SearchDialog({ open, setOpen, className }: SearchDialogProps) {
               ref={formRef}
               {...(autocomplete.getFormProps({
                 inputElement: inputRef.current,
-                // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the props here
+                // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the props here
               }) as any)}
             >
               <SearchInput
@@ -312,7 +312,7 @@ function SearchDialog({ open, setOpen, className }: SearchDialogProps) {
               <div
                 ref={panelRef}
                 className="border-t border-zinc-200 bg-white px-2 py-3 empty:hidden dark:border-zinc-400/10 dark:bg-zinc-800"
-                // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the the props here
+                // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the props here
                 {...(autocomplete.getPanelProps({}) as any)}
               >
                 {autocompleteState.isOpen && (

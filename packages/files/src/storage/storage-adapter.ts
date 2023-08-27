@@ -17,19 +17,19 @@ export interface CreateUploadUrlBody {
 }
 
 export class StorageAdapter extends BaseStorageAdapter {
-  // rome-ignore lint/correctness/noUnusedVariables: stub class
+  // rome-ignore lint/correctness/noUnusedVariables: Stub class
   public async getUploadUrl(id: string): Promise<UploadUrl | null> {
     throw new Error("'getUploadUrl()' not implemented");
   }
 
   public async createUploadUrl(
-    // rome-ignore lint/correctness/noUnusedVariables: stub class
+    // rome-ignore lint/correctness/noUnusedVariables: Stub class
     body: CreateUploadUrlBody,
   ): Promise<UploadUrl> {
     throw new Error("'createUploadUrl()' not implemented");
   }
 
-  // rome-ignore lint/correctness/noUnusedVariables: stub class
+  // rome-ignore lint/correctness/noUnusedVariables: Stub class
   public async deleteUploadUrl(id: string): Promise<void> {
     throw new Error("'deleteUploadUrl()' not implemented");
   }
