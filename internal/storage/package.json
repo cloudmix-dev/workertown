@@ -50,7 +50,7 @@
     "@aws-sdk/lib-dynamodb": "~3.388.0",
     "@cloudflare/workers-types": "~4.20230814.0",
     "@planetscale/database": "~1.11.0",
-    "better-sqlite3": "~8.5.0"
+    "better-sqlite3": "~8.5.2"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",
