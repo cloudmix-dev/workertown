@@ -56,8 +56,9 @@ export default function App({ Component, pageProps }) {
   const title = pageProps.markdoc?.frontmatter.title;
 
   const pageTitle =
-    pageProps.markdoc?.frontmatter.pageTitle ||
-    `${pageProps.markdoc?.frontmatter.title} - Workertown`;
+    pageProps.markdoc?.frontmatter.pageTitle ?? title
+      ? `${title} - Workertown`
+      : "Workertown";
 
   const description = pageProps.markdoc?.frontmatter.description;
 
