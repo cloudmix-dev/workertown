@@ -97,10 +97,10 @@ export const navigation: {
         title: "Storage",
         href: "/docs/packages/files/storage",
       },
-      // {
-      //   title: "File storage",
-      //   href: "/docs/packages/files/files",
-      // },
+      {
+        title: "File storage",
+        href: "/docs/packages/files/files",
+      },
       {
         title: "Tutorial",
         href: "/docs/packages/files/tutorial",
