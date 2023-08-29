@@ -148,14 +148,12 @@ export function makeRequest(
     body,
   }: { method?: "GET" | "POST" | "PUT" | "DELETE"; body?: unknown } = {},
 ) {
-  return service.fetch(
-    new Request(`http://feature-flags.local${path}`, {
-      method,
-      headers: {
-        authorization: "Bearer test",
-        "content-type": "application/json",
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    }),
-  );
+  return service.request(path, {
+    method,
+    headers: {
+      authorization: "Bearer test",
+      "content-type": "application/json",
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
 }

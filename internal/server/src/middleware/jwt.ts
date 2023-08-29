@@ -110,7 +110,7 @@ export function jwt(options?: JwtOptionsOptional) {
                 );
 
                 if (jwksRes.ok) {
-                  const jwksJson = (await jwksRes.json()) as JSONWebKeySet;
+                  const jwksJson = await jwksRes.json<JSONWebKeySet>();
 
                   signingCredentials = await createLocalJWKSet(jwksJson);
                 }

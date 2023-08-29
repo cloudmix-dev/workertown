@@ -14,15 +14,13 @@ export function makeRequest(
     headers?: Record<string, string>;
   } = {},
 ) {
-  return service.fetch(
-    new Request(`http://service.local${path}`, {
-      method,
-      headers: {
-        authorization: "Bearer test",
-        "content-type": "application/json",
-        ...headers,
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    }),
-  );
+  return service.request(path, {
+    method,
+    headers: {
+      authorization: "Bearer test",
+      "content-type": "application/json",
+      ...headers,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
 }

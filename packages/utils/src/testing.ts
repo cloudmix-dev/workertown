@@ -5,14 +5,12 @@ export async function request(
   path: string,
   { body, headers = {}, ...options }: RequestInit = {},
 ) {
-  return service.fetch(
-    new Request(`http://service.local${path}`, {
-      headers: {
-        "content-type": "application/json",
-        ...headers,
-      },
-      body: body ? JSON.stringify(body) : undefined,
-      ...options,
-    }),
-  );
+  return service.request(path, {
+    headers: {
+      "content-type": "application/json",
+      ...headers,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    ...options,
+  });
 }

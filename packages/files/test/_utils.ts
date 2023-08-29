@@ -56,13 +56,11 @@ export function makeRequest(
     headers["content-type"] = "application/json";
   }
 
-  return service.fetch(
-    new Request(`http://files.local${path}`, {
-      method,
-      headers,
-      body: bodyData,
-    }),
-  );
+  return service.request(path, {
+    method,
+    headers,
+    body: bodyData,
+  });
 }
 
 export async function readFile(stream: ReadableStream) {
