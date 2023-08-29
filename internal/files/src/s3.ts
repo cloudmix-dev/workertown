@@ -20,17 +20,18 @@ export interface S3FilesAdapterOptions {
 }
 
 export class S3FilesAdapter extends FilesAdapter {
-  private readonly _s3: S3Client;
+  private readonly _client: S3Client;
 
   private readonly _bucket: string;
 
   constructor(options: S3FilesAdapterOptions) {
     super();
 
-    this._s3 = new S3Client({
+    this._client = new S3Client({
       credentials: options.credentials,
       region: options.region,
       endpoint: options.endpoint,
+      forcePathStyle: true,
     });
     this._bucket = options.bucket;
   }
@@ -44,7 +45,7 @@ export class S3FilesAdapter extends FilesAdapter {
   }
 
   async get(key: string) {
-    const file = await this._s3.send(
+    const file = await this._client.send(
       new GetObjectCommand({
         Bucket: this._bucket,
         Key: this._sanitizeKey(key),
@@ -55,7 +56,7 @@ export class S3FilesAdapter extends FilesAdapter {
   }
 
   async getMetadata(key: string) {
-    const file = await this._s3.send(
+    const file = await this._client.send(
       new GetObjectCommand({
         Bucket: this._bucket,
         Key: this._sanitizeKey(key),
@@ -70,7 +71,7 @@ export class S3FilesAdapter extends FilesAdapter {
     stream: ReadableStream | Uint8Array | Blob,
     metadata?: Record<string, string>,
   ) {
-    await this._s3.send(
+    await this._client.send(
       new PutObjectCommand({
         Bucket: this._bucket,
         Key: this._sanitizeKey(key),
@@ -81,7 +82,7 @@ export class S3FilesAdapter extends FilesAdapter {
   }
 
   async delete(key: string) {
-    await this._s3.send(
+    await this._client.send(
       new DeleteObjectCommand({
         Bucket: this._bucket,
         Key: this._sanitizeKey(key),
@@ -92,13 +93,13 @@ export class S3FilesAdapter extends FilesAdapter {
   public async setup(down?: boolean) {
     try {
       if (!down) {
-        await this._s3.send(
+        await this._client.send(
           new CreateBucketCommand({
             Bucket: this._bucket,
           }),
         );
       } else {
-        await this._s3.send(
+        await this._client.send(
           new DeleteBucketCommand({
             Bucket: this._bucket,
           }),
