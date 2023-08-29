@@ -3,7 +3,7 @@ title: "Storage"
 description: How to customise how persistant data is stored in @workertown/feature-flags.
 ---
 
-In `@workertown/feature-flags`, the storage is used to persist data about your
+In `@workertown/feature-flags`, storage is used to persist data about your
 feature flags.
 
 For more information on how storage works in Workertown services more generally,
@@ -60,10 +60,10 @@ other `StorageAdapter` is specified. It uses Cloudflare's
 [D1](https://developers.cloudflare.com/d1/) to store the data.
 
 ```ts
-import { search } from "@workertown/feature-flags";
+import { featureFlags } from "@workertown/feature-flags";
 import { D1StorageAdapter } from "@workertown/feature-flags/storage/d1";
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false,
     storage: new D1StorageAdapter({ d1: env.D1 }), // `d1` is the D1 database bound to the Cloudflare Worker to use for storage
@@ -77,10 +77,10 @@ The `PlanetscaleStorageAdapter` uses [Planetscale](https://planetscale.com/) (a
 distributed MySQL solution) to store the data.
 
 ```ts
-import { search } from "@workertown/feature-flags";
+import { featureFlags } from "@workertown/feature-flags";
 import { PlanetscaleStorageAdapter } from "@workertown/feature-flags/storage/planetscale";
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false,
     storage: new PlanetscaleStorageAdapter({
@@ -99,10 +99,10 @@ store the data. It is intended to be used in [NodeJS](https://nodejs.org/)
 environments as it requires access to file storage.
 
 ```ts
-import { search } from "@workertown/feature-flags";
+import { featureFlags } from "@workertown/feature-flags";
 import { SqliteStorageAdapter } from "@workertown/feature-flags/storage/sqlite";
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false,
     storage: new SqliteStorageAdapter({ db: env.DB }), // `db` is the file path to the `.sqlite` file to use
@@ -116,10 +116,10 @@ The `TursoStorageAdapter` uses [Turso](https://turso.tech/) (a distributed
 SQLite solution) to store the data.
 
 ```ts
-import { search } from "@workertown/feature-flags";
+import { featureFlags } from "@workertown/feature-flags";
 import { TursoStorageAdapter } from "@workertown/feature-flags/storage/turso";
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false,
     storage: new TursoStorageAdapter({ 
@@ -137,10 +137,10 @@ memory. It is **not** recommended for production use, but can be useful for
 development and testing.
 
 ```ts
-import { search } from "@workertown/feature-flags";
+import { featureFlags } from "@workertown/feature-flags";
 import { MemoryStorageAdapter } from "@workertown/feature-flags/storage/memory";
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false,
     storage: new MemoryStorageAdapter(),
@@ -152,11 +152,11 @@ export default search({
 
 ## Custom `StorageAdapter`s
 
-You can also provide your own **custom** `CacheAdapter` by extending the
-`CacheAdapter` class.
+You can also provide your own **custom** `StorageAdapter` by extending the
+`StorageAdapter` class.
 
 ```ts
-import { search } from "@workertown/feature-flags";
+import { featureFlags } from "@workertown/feature-flags";
 import { StorageAdapter } from "@workertown/feature-flags/storage";
 
 class CustomStorageAdapter extends StorageAdapter {
@@ -166,7 +166,7 @@ class CustomStorageAdapter extends StorageAdapter {
   async deleteFlag(name: string) { /* ... */ },
 }
 
-export default search({
+export default featureFlags({
   runtime: (options, env) => ({
     cache: false,
     storage: new CustomStorageAdapter(),

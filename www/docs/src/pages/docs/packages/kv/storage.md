@@ -3,7 +3,7 @@ title: "Storage"
 description: How to customise how persistant data is stored in @workertown/kv.
 ---
 
-In `@workertown/kv`, the storage is used to persist data about your
+In `@workertown/kv`, storage is used to persist data about your
 feature flags.
 
 For more information on how storage works in Workertown services more generally,
@@ -44,10 +44,10 @@ The `D1StorageAdapter` uses Cloudflare's
 [D1](https://developers.cloudflare.com/d1/) to store the data.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { D1StorageAdapter } from "@workertown/kv/storage/d1";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new D1StorageAdapter({ d1: env.D1 }), // `d1` is the D1 database bound to the Cloudflare Worker to use for storage
@@ -63,10 +63,10 @@ other `StorageAdapter` is specified. It uses Cloudflare's
 the data.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { KVStorageAdapter } from "@workertown/kv/storage/kv";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new KVStorageAdapter({ d1: env.KV }), // `d1` is the KV namespace bound to the Cloudflare Worker to use for storage
@@ -80,10 +80,10 @@ The `PlanetscaleStorageAdapter` uses [Planetscale](https://planetscale.com/) (a
 distributed MySQL solution) to store the data.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { PlanetscaleStorageAdapter } from "@workertown/kv/storage/planetscale";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new PlanetscaleStorageAdapter({
@@ -102,10 +102,10 @@ store the data. It is intended to be used in [NodeJS](https://nodejs.org/)
 environments as it requires access to file storage.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { SqliteStorageAdapter } from "@workertown/kv/storage/sqlite";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new SqliteStorageAdapter({ db: env.DB }), // `db` is the file path to the `.sqlite` file to use
@@ -119,10 +119,10 @@ The `TursoStorageAdapter` uses [Turso](https://turso.tech/) (a distributed
 SQLite solution) to store the data.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { TursoStorageAdapter } from "@workertown/kv/storage/turso";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new TursoStorageAdapter({ 
@@ -140,10 +140,10 @@ The `UpstashRedisStorageAdapter` uses
 REST API, to store the data.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { UpstashRedisStorageAdapter } from "@workertown/kv/storage/upstash-redis";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new UpstashRedisStorageAdapter({ 
@@ -161,10 +161,10 @@ memory. It is **not** recommended for production use, but can be useful for
 development and testing.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { MemoryStorageAdapter } from "@workertown/kv/storage/memory";
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new MemoryStorageAdapter(),
@@ -180,7 +180,7 @@ You can also provide your own **custom** `CacheAdapter` by extending the
 `CacheAdapter` class.
 
 ```ts
-import { search } from "@workertown/kv";
+import { kv } from "@workertown/kv";
 import { StorageAdapter } from "@workertown/kv/storage";
 
 class CustomStorageAdapter extends StorageAdapter {
@@ -190,7 +190,7 @@ class CustomStorageAdapter extends StorageAdapter {
   async deleteFlag(name: string) { /* ... */ },
 }
 
-export default search({
+export default kv({
   runtime: (options, env) => ({
     cache: false,
     storage: new CustomStorageAdapter(),

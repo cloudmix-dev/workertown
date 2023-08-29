@@ -3,8 +3,7 @@ title: "Storage"
 description: How to customise how persistant data is stored in @workertown/files.
 ---
 
-In `@workertown/files`, the storage is used to persist data about your upload
-URLs.
+In `@workertown/files`, storage is used to persist data about your upload URLs.
 
 For more information on how storage works in Workertown services more generally,
 see [storage](/docs/core-concepts/storage)
@@ -53,10 +52,10 @@ other `StorageAdapter` is specified. It uses Cloudflare's
 [D1](https://developers.cloudflare.com/d1/) to store the data.
 
 ```ts
-import { search } from "@workertown/files";
+import { files } from "@workertown/files";
 import { D1StorageAdapter } from "@workertown/files/storage/d1";
 
-export default search({
+export default files({
   runtime: (options, env) => ({
     storage: new D1StorageAdapter({ d1: env.D1 }), // `d1` is the D1 database bound to the Cloudflare Worker to use for storage
     //...other options
@@ -70,10 +69,10 @@ The `PlanetscaleStorageAdapter` uses [Planetscale](https://planetscale.com/) (a
 distributed MySQL solution) to store the data.
 
 ```ts
-import { search } from "@workertown/files";
+import { files } from "@workertown/files";
 import { PlanetscaleStorageAdapter } from "@workertown/files/storage/planetscale";
 
-export default search({
+export default files({
   runtime: (options, env) => ({
     storage: new PlanetscaleStorageAdapter({
       url: env.PLANETSCALE_URL,
@@ -92,10 +91,10 @@ store the data. It is intended to be used in [NodeJS](https://nodejs.org/)
 environments as it requires access to file storage.
 
 ```ts
-import { search } from "@workertown/files";
+import { files } from "@workertown/files";
 import { SqliteStorageAdapter } from "@workertown/files/storage/sqlite";
 
-export default search({
+export default files({
   runtime: (options, env) => ({
     storage: new SqliteStorageAdapter({ db: env.DB }), // `db` is the file path to the `.sqlite` file to use
     //...other options
@@ -109,10 +108,10 @@ The `TursoStorageAdapter` uses [Turso](https://turso.tech/) (a distributed
 SQLite solution) to store the data.
 
 ```ts
-import { search } from "@workertown/files";
+import { files } from "@workertown/files";
 import { TursoStorageAdapter } from "@workertown/files/storage/turso";
 
-export default search({
+export default files({
   runtime: (options, env) => ({
     storage: new TursoStorageAdapter({ 
       url: env.TURSO_URL,
@@ -130,10 +129,10 @@ memory. It is **not** recommended for production use, but can be useful for
 development and testing.
 
 ```ts
-import { search } from "@workertown/files";
+import { files } from "@workertown/files";
 import { MemoryStorageAdapter } from "@workertown/files/storage/memory";
 
-export default search({
+export default files({
   runtime: (options, env) => ({
     storage: new MemoryStorageAdapter(),
     //...other options
@@ -145,11 +144,11 @@ export default search({
 
 ## Custom `StorageAdapter`s
 
-You can also provide your own **custom** `CacheAdapter` by extending the
-`CacheAdapter` class.
+You can also provide your own **custom** `StorageAdapter` by extending the
+`StorageAdapter` class.
 
 ```ts
-import { search } from "@workertown/files";
+import { files } from "@workertown/files";
 
 import { StorageAdapter } from "@workertown/files/storage";
 
@@ -159,7 +158,7 @@ class CustomStorageAdapter extends StorageAdapter {
   async deleteUploadUrl(id: string) { /* ... */ },
 }
 
-export default search({
+export default files({
   runtime: (options, env) => ({
     storage: new CustomStorageAdapter(),
     //...other options

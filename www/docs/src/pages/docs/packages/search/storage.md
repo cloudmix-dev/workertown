@@ -3,7 +3,7 @@ title: "Storage"
 description: How to customise how persistant data is stored in @workertown/search.
 ---
 
-In `@workertown/search`, the storage is used to persist data about your
+In `@workertown/search`, storage is used to persist data about your
 documents.
 
 For more information on how storage works in Workertown services more generally,
@@ -155,8 +155,8 @@ export default search({
 
 ## Custom `StorageAdapter`s
 
-You can also provide your own **custom** `CacheAdapter` by extending the
-`CacheAdapter` class.
+You can also provide your own **custom** `StorageAdapter` by extending the
+`StorageAdapter` class.
 
 ```ts
 import { search } from "@workertown/search";
