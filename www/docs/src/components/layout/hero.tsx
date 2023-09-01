@@ -111,8 +111,9 @@ export function Hero() {
                 </div>
               </div>
               <p className="mt-3 text-lg tracking-tight text-zinc-400 md:text-xl">
-                Out-of-the-box, edge runtime compatible services for scalable,
-                modern architectures.
+                <strong>Build your own cloud</strong>. Out-of-the-box, edge
+                runtime compatible services for scalable, cost-effective
+                architectures.
               </p>
               <div className="mt-8 flex gap-4 md:justify-center lg:justify-start">
                 <Button
