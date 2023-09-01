@@ -10,6 +10,6 @@ export class Server<
   E extends Env = any,
   M extends Message = Message,
 > extends Hono<E> {
-  queue?: ExportedHandlerQueueHandler<E, M>;
-  scheduled?: ExportedHandlerScheduledHandler<E>;
+  queue?: ExportedHandlerQueueHandler<E["Bindings"], M>;
+  scheduled?: ExportedHandlerScheduledHandler<E["Bindings"]>;
 }
