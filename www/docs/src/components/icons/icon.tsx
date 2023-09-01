@@ -11,6 +11,7 @@ import { LightbulbIcon } from "./lightbulb-icon";
 import { PluginsIcon } from "./plugins-icon";
 import { PresetsIcon } from "./presets-icon";
 import { PubSubIcon } from "./pubsub-icon";
+import { QuestionIcon } from "./question-icon";
 import { QueuesIcon } from "./queues-icon";
 import { SearchIcon } from "./search-icon";
 import { ThemingIcon } from "./theming-icon";
@@ -27,6 +28,7 @@ const icons = {
   plugins: PluginsIcon,
   presets: PresetsIcon,
   pubsub: PubSubIcon,
+  question: QuestionIcon,
   queues: QueuesIcon,
   search: SearchIcon,
   theming: ThemingIcon,

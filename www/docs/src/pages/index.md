@@ -29,6 +29,8 @@ Workertown provides...
 
 {% quick-link title="Search" icon="search" href="/docs/packages/search/introduction" tag="Alpha" description="Full text search indexing for small to medium datasets." /%}
 
+{% quick-link title="Next..?" icon="question" tag="Coming soon..." description="There are many more potential services in Workertown's future..." /%}
+
 {% /quick-links %}
 
 ---
