@@ -1,6 +1,6 @@
 {
   "recommendations": [
     "EditorConfig.EditorConfig",
-    "rome.rome"
+    "biomejs.biome"
   ]
 }
