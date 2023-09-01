@@ -18,6 +18,10 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   env: {
     db: string;
     queue: string;
+    signingKey: string;
+  };
+  pubSub?: {
+    signingKey?: string;
   };
   runtime?: RuntimeResolver;
 }

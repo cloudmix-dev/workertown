@@ -43,6 +43,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
   env: {
     db: "PUBSUB_DB",
     queue: "PUBSUB_QUEUE",
+    signingKey: "PUBSUB_SIGNING_KEY",
   },
 };
 
@@ -81,15 +82,32 @@ export function createPubSubServer(
 
   server.route(endpoints.public, publicRouter);
 
-  server.queue = async (batch) => {
+  server.queue = async (batch, env) => {
     const results = await Promise.allSettled(
       batch.messages.map(async (message) => {
         const { endpoint, headers, method, queryParameters, body } = (
           message.body as QueueMessage
         ).body;
+        const signingKey =
+          config.pubSub?.signingKey ?? (env[config.env.signingKey] as string);
         const url = new URL(endpoint);
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder();
+        const key = await crypto.subtle.importKey(
+          "raw",
+          encoder.encode(signingKey),
+          "HMAC",
+          false,
+          ["sign"],
+        );
+        const signature = await crypto.subtle.sign(
+          "HMAC",
+          key,
+          new TextEncoder().encode(JSON.stringify(body ?? null)),
+        );
         const reqHeaders = new Headers({
           "content-type": "application/json",
+          "x-workertown-signature": decoder.decode(signature),
         });
 
         if (headers) {
