@@ -36,7 +36,7 @@ import { featureFlags } from "@workertown/feature-flags";
 
 const server = featureFlags();
 
-//...propbably `export default server;`
+//...probably `export default server;`
 ```
 
 Like all Workertown services, the created server is a [Hono](https://hono.dev)
@@ -172,7 +172,7 @@ any of the following:
 
 Any invalid conditions will be **ignored** at runtime when evaluating the flag.
 
-An example flag conditon looks like this:
+An example flag condition looks like this:
 
 ```json
 {

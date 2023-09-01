@@ -3,7 +3,7 @@ title: Cache
 description: Quidem magni aut exercitationem maxime rerum eos.
 ---
 
-Come Workertown services provide the ability to configure a cache that sits in
+Some Workertown services provide the ability to configure a cache that sits in
 front of potentially expensive/slow `storage` operations. Following the
 "sensible defaults" paradigm, each of these services provides a default storage
 adapter built upon

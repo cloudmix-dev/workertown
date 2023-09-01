@@ -35,7 +35,7 @@ import { files } from "@workertown/files";
 
 const server = files();
 
-//...propbably `export default server;`
+//...probably `export default server;`
 ```
 
 Like all Workertown services, the created server is a [Hono](https://hono.dev)

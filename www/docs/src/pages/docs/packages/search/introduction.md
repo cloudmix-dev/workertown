@@ -41,7 +41,7 @@ import { search } from "@workertown/search";
 
 const server = search();
 
-//...propbably `export default server;`
+//...probably `export default server;`
 ```
 
 Like all Workertown services, the created server is a [Hono](https://hono.dev)

@@ -36,7 +36,7 @@ import { kv } from "@workertown/kv";
 
 const server = kv();
 
-//...propbably `export default server;`
+//...probably `export default server;`
 ```
 
 Like all Workertown services, the created server is a [Hono](https://hono.dev)
