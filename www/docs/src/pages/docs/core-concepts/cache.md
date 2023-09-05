@@ -11,7 +11,7 @@ adapter built upon
 but there are other options available, and also the ability to bring your own
 cache adapter entirely.
 
-Cachsupport is **always optional**, and while it is **on** by default it can be
+Cache support is **always optional**, and while it is **on** by default it can be
 disabled easily in the service's `runtime` configuration option.
 
 ---
