@@ -190,7 +190,7 @@ layer (database) - when a query is run, we load the whole index into memory and
 then instantiate [Minisearch](https://www.npmjs.com/package/minisearch) to
 actually perform the search. This may seem wasteful when it comes to resources,
 but this simple access pattern can make "hot" indexes/search terms highly
-cachable.
+cacheable.
 
 To help keep the amount of documents loaded for a search as few as possible,
 `@workertown/search` also provides a "tagging" mechanism to allow you to group

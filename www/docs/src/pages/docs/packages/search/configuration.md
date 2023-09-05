@@ -350,8 +350,8 @@ export default search({
 
 ### `search.stopWords`
 
-`search.stopWords` is an *optional* `Set<string>` (or `string[]`) that can be
-contains a list of words to **not** be searched on during a search/suggestion.
+`search.stopWords` is an *optional* `Set<string>` (or `string[]`) that can be a
+list of words to **not** be searched on during a search/suggestion.
 The default list used can be found [here](https://gist.github.com/sebleier/554280).
 
 ```ts
