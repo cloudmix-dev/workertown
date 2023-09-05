@@ -3,7 +3,7 @@ title: Design principles
 description: The Workertown project has a simple set of principles that guide its development.
 ---
 
-If you're interested in working on the Worketown project, please have a quick
+If you're interested in working on the Workertown project, please have a quick
 read of this page.
 
 ---
@@ -16,7 +16,7 @@ At Cloudmix, we believe that software should be entirely accessible, while
 providing well-designed ways to get out of the underlying opinions/decisions
 that we make.
 
-**Any and all** changes to Workertoen over time *should* provide a sensible
+**Any and all** changes to Workertown over time *should* provide a sensible
 default out-of-the-box (where applicable), and a straight-forward API to allow
 the user to configure the service to their needs. **Nothing** within the code
 should make an assumption **without** a way for that to be overridden
