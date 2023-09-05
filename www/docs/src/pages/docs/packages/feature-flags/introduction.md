@@ -5,7 +5,7 @@ description: "@workertown/feature-flags provides production-ready feature flags,
 
 ## What is it?
 
-`@workertown/feature-flags` provides simple REST API for implementing a feature
+`@workertown/feature-flags` provides a simple REST API for implementing a feature
 flagging system, with support for runtime contexts.
 
 You create feature flags, *optionally* with a set of **conditions** to be
@@ -102,8 +102,8 @@ logic split, A/B test.. whatever you'd like. A flag is identified by a unique
 by default.
 
 A flag can *optionally* have one or more
-[conditions](#flag-conditions-runtime-context) attached to describe **how** it
-it's enabled/disabled status should be evaluated at runtime for a given context.
+[conditions](#flag-conditions-runtime-context) attached to describe **how** it's
+enabled/disabled status should be evaluated at runtime for a given context.
 
 An example flag looks like this:
 

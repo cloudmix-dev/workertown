@@ -436,7 +436,7 @@ You will receive a `200 OK` response if the migrations were successfully run.
 }
 ```
 
-If **any** errors occur durin the migration, you will receive a `500 Internal
+If **any** errors occur during the migration, you will receive a `500 Internal
 Server Error` response, which will include the error as well as the details for
 **any** successful migrations that were run. If **no** migrations were run,
 `data` will be `null`.
