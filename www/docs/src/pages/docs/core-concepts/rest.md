@@ -40,7 +40,7 @@ All Workertown services expose an OpenAPI v3 specification at the
 configuration options that have been set for the service.
 
 {% callout title="The public endpoint" %}
-The `/open-api.json` endpoint served from the public endpoint of your
+The `/open-api.json` endpoint is served from the public endpoint of your
 Workertown service. If you customise the `basePath` or `endpoints.public`
 options of your service, this will change the path of URL that the OpenAPI
 specification is served from.
