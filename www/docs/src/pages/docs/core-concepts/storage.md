@@ -3,7 +3,7 @@ title: Storage
 description: Workertown packages that require persistant storage provide a simple way for you to provide your own storage implementations.
 ---
 
-Most Workertown services require some kind of persistant storage, i.e. data that
+Most Workertown services require some kind of persistent storage, i.e. data that
 lives between requests. Following the "sensible defaults" paradigm, each of
 these services provides a default storage adapter built upon Cloudflare's
 [D1 database](https://developers.cloudflare.com/d1/) but there are other options
@@ -13,7 +13,7 @@ available, and also the ability to bring your own storage adapter entirely.
 
 ## How it works
 
-Workertown services that require storage expose a `runetime` configuration
+Workertown services that require storage expose a `runtime` configuration
 option that allows you to specify a storage adapter to use.
 
 ```ts
