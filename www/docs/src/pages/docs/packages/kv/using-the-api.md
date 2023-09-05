@@ -88,7 +88,7 @@ You will receive a `200 OK` response if the value was successfully deleted.
 
 ### Info
 
-You can send a `GET` request to the `/v1/admin/info` endpoint to get see the
+You can send a `GET` request to the `/v1/admin/info` endpoint to get the
 currently active configuration for your service. This is useful for debugging in
 live-like environments.
 
@@ -142,7 +142,7 @@ You will receive a `200 OK` response if the config was successfully retrieved.
 
 ### Migrate
 
-You can send `POST` request to the `/v1/admin/migrate` endpoint to run the
+You can send a `POST` request to the `/v1/admin/migrate` endpoint to run the
 migrations required for your storage adapter to keep your database up to date.
 
 ```bash
@@ -167,7 +167,7 @@ You will receive a `200 OK` response if the migrations were successfully run.
 }
 ```
 
-If **any** errors occur durin the migration, you will receive a `500 Internal
+If **any** errors occur during the migration, you will receive a `500 Internal
 Server Error` response, which will include the error as well as the details for
 **any** successful migrations that were run. If **no** migrations were run,
 `data` will be `null`.
@@ -220,7 +220,7 @@ curl -X GET \
 ```
 
 You will receive a `200 OK` response if the specification was successfully
-retreived.
+retrieved.
 
 ```json
 {
