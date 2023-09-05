@@ -27,7 +27,7 @@ Authorization: Bearer <JWT>
 ```
 
 You can configure your service to check the signature of the JWT using either a
-fixed secret you provide it, or via a JWKS URL.
+fixed secret you provide, or via a JWKS URL.
 
 {% callout type="warning" title="You really should be using JWKS" %}
 Fixed secrets are very rarely a good idea in production environments, as they
