@@ -5,7 +5,7 @@ description: "@workertown/kv provides production-ready feature flags, with suppo
 
 ## What is it?
 
-`@workertown/kv` provides simple REST API for exposing a JSON compatible
+`@workertown/kv` provides a simple REST API for exposing a JSON compatible
 key/value store.
 
 Think of it like
