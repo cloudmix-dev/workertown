@@ -359,7 +359,7 @@ curl -X GET \
 ```
 
 You will receive a `200 OK` response if the specification was successfully
-retreived.
+retrieved.
 
 ```json
 {
