@@ -188,16 +188,16 @@ importers:
         version: 3.3.0
       '@hono/sentry':
         specifier: ~0.2.2
-        version: 0.2.2(hono@3.5.7)
+        version: 0.2.2(hono@3.5.8)
       '@hono/zod-validator':
         specifier: ~0.1.8
-        version: 0.1.8(hono@3.5.7)(zod@3.21.4)
+        version: 0.1.8(hono@3.5.8)(zod@3.21.4)
       '@whatwg-node/server':
         specifier: ~0.9.12
         version: 0.9.14
       hono:
-        specifier: ~3.5.1
-        version: 3.5.7
+        specifier: ~3.5.8
+        version: 3.5.8
       jose:
         specifier: ~4.14.4
         version: 4.14.5
@@ -250,12 +250,6 @@ importers:
         version: 8.5.2
 
   internal/types: {}
-
-  internal/websockets:
-    devDependencies:
-      hono:
-        specifier: ~3.4.1
-        version: 3.4.3
 
   packages/aws-lambda:
     dependencies:
@@ -2438,22 +2432,22 @@ packages:
     engines: {node: '>=18.0.0'}
     dev: false
 
-  /@hono/sentry@0.2.2(hono@3.5.7):
+  /@hono/sentry@0.2.2(hono@3.5.8):
     resolution: {integrity: sha512-0OxMaMNJFg3slHARn8AR+f2Lon14jeNnx9fi8P57FBV0y9EyWV6SVQM0volgUjEqnQBf9qCazigYlxIsh5OXBA==}
     peerDependencies:
       hono: ^3.2.3
     dependencies:
-      hono: 3.5.7
+      hono: 3.5.8
       toucan-js: 2.7.0
     dev: false
 
-  /@hono/zod-validator@0.1.8(hono@3.5.7)(zod@3.21.4):
+  /@hono/zod-validator@0.1.8(hono@3.5.8)(zod@3.21.4):
     resolution: {integrity: sha512-/Kd/p/dUVKM7/1TY3jafTV+ngwEh3fOLmXCJQKb9esWsCom5WOJaNmZYv8jeRhyipu1xBvmN5jceRA3Ev3rmQw==}
     peerDependencies:
       hono: 3.*
       zod: ^3.19.1
     dependencies:
-      hono: 3.5.7
+      hono: 3.5.8
       zod: 3.21.4
     dev: false
 
@@ -5686,13 +5680,8 @@ packages:
     resolution: {integrity: sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==}
     dev: false
 
-  /hono@3.4.3:
-    resolution: {integrity: sha512-HbVxZh9yC3hV25+mFjUaM65t7g8ia2mXbhAGmVHA0r8+guizTJq1Cg4f2SmB5+JrviG0vaqOnWJ9U3O05aikbA==}
-    engines: {node: '>=16.0.0'}
-    dev: true
-
-  /hono@3.5.7:
-    resolution: {integrity: sha512-FKbkgLYpO9tQKkX5dzsmsUKDlat03LSjOjHfP7emsonKpj4bbr4ewWp7wiF8PnH4QUIM8r7XL+Zhrofe//zO6Q==}
+  /hono@3.5.8:
+    resolution: {integrity: sha512-ZipTmGfHm43q5QOEBGog2wyejyNUcicjPt0BLDQ8yz9xij/y9RYXRpR1YPxMpQqeyNM7isvpsIAe9Ems51Wq0Q==}
     engines: {node: '>=16.0.0'}
     dev: false
 
