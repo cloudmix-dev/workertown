@@ -217,6 +217,9 @@ importers:
       '@upstash/redis':
         specifier: ~1.22.0
         version: 1.22.0
+      '@workertown/internal-types':
+        specifier: workspace:~0.0.2-alpha.20
+        version: link:../types
 
   internal/storage:
     dependencies:
