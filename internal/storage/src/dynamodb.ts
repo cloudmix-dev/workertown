@@ -60,6 +60,7 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
           secretAccessKey: options.credentials.secretAccessKey,
         },
         endpoint: options.endpoint,
+        region: options.region,
       }),
     );
     this.table = options.table;
