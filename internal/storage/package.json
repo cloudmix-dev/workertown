@@ -51,11 +51,6 @@
     "@cloudflare/workers-types": "~4.20230814.0",
     "@planetscale/database": "~1.11.0",
     "@types/better-sqlite3": "~7.6.4",
-    "@workertown/feature-flags": "workspace:0.0.2-alpha.20",
-    "@workertown/files": "workspace:0.0.2-alpha.20",
-    "@workertown/kv": "workspace:0.0.2-alpha.20",
-    "@workertown/pub-sub": "workspace:0.0.2-alpha.20",
-    "@workertown/search": "workspace:0.0.2-alpha.20",
     "better-sqlite3": "~8.5.0"
   },
   "peerDependencies": {

@@ -32,13 +32,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm i
 
-      - name: Start local services
-        uses: isbang/compose-action@v1.5.1
-        with:
-          services: |
-            upstash-redis
-            dynamodb
-            turso
+      # - name: Start local services
+      #   uses: isbang/compose-action@v1.5.1
+      #   with:
+      #     services: |
+      #       s3
 
       - name: Run Tests
-        run: pnpm run test -- --filter=@workertown/files -- 'test/files/*.e2e.test.ts'
+        run: pnpm test --filter=@workertown/files -- 'test/files/*.e2e.test.ts'
