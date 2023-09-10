@@ -36,7 +36,7 @@ jobs:
         uses: isbang/compose-action@v1.5.1
         with:
           services: |
-            upstash-redis
+            upstash_redis
             dynamodb
             turso
 
