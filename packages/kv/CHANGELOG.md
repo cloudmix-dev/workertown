@@ -1,5 +1,15 @@
 # @workertown/kv
 
+## 0.0.2-alpha.21
+
+### Patch Changes
+
+- Alpha.21 Release
+- Updated dependencies
+  - @workertown/internal-open-api@0.0.2-alpha.21
+  - @workertown/internal-server@0.0.2-alpha.21
+  - @workertown/internal-storage@0.0.2-alpha.21
+
 ## 0.0.2-alpha.20
 
 ### Patch Changes
