@@ -217,6 +217,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: ~4.20230821.0
         version: 4.20230821.0
+      '@types/lodash.merge':
+        specifier: ~4.6.7
+        version: 4.6.7
       '@upstash/redis':
         specifier: ~1.22.0
         version: 1.22.0
@@ -275,6 +278,12 @@ importers:
 
   internal/types: {}
 
+  internal/websockets:
+    devDependencies:
+      hono:
+        specifier: ~3.4.1
+        version: 3.4.3
+
   packages/aws-lambda:
     dependencies:
       '@workertown/internal-server':
@@ -319,9 +328,6 @@ importers:
       '@workertown/internal-open-api':
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/open-api
-      '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.20
-        version: link:../../internal/server
       '@workertown/internal-storage':
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/storage
@@ -341,9 +347,27 @@ importers:
       '@types/better-sqlite3':
         specifier: ~7.6.4
         version: 7.6.4
+      '@types/lodash.merge':
+        specifier: ~4.6.7
+        version: 4.6.7
+      '@workertown/files':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../files
+      '@workertown/internal-server':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../../internal/server
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/types
+      '@workertown/kv':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../kv
+      '@workertown/pub-sub':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../pub-sub
+      '@workertown/search':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../search
 
   packages/files:
     dependencies:
@@ -381,6 +405,9 @@ importers:
       '@types/better-sqlite3':
         specifier: ~7.6.4
         version: 7.6.4
+      '@types/lodash.merge':
+        specifier: ~4.6.7
+        version: 4.6.7
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/types
@@ -427,6 +454,9 @@ importers:
       '@types/better-sqlite3':
         specifier: ~7.6.4
         version: 7.6.4
+      '@types/lodash.merge':
+        specifier: ~4.6.7
+        version: 4.6.7
       '@upstash/redis':
         specifier: ~1.22.0
         version: 1.22.0
@@ -5697,6 +5727,11 @@ packages:
   /highlight-words-core@1.2.2:
     resolution: {integrity: sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==}
     dev: false
+
+  /hono@3.4.3:
+    resolution: {integrity: sha512-HbVxZh9yC3hV25+mFjUaM65t7g8ia2mXbhAGmVHA0r8+guizTJq1Cg4f2SmB5+JrviG0vaqOnWJ9U3O05aikbA==}
+    engines: {node: '>=16.0.0'}
+    dev: true
 
   /hono@3.5.8:
     resolution: {integrity: sha512-ZipTmGfHm43q5QOEBGog2wyejyNUcicjPt0BLDQ8yz9xij/y9RYXRpR1YPxMpQqeyNM7isvpsIAe9Ems51Wq0Q==}
