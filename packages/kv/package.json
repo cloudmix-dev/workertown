@@ -97,7 +97,6 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230814.0",
-    "@types/better-sqlite3": "~7.6.4",
     "@types/lodash.merge": "~4.6.7",
     "@upstash/redis": "~1.22.0",
     "@workertown/internal-types": "workspace:~0.0.2-alpha.20"
@@ -107,7 +106,7 @@
     "@aws-sdk/lib-dynamodb": "~3.388.0",
     "@planetscale/database": "~1.8.0",
     "@upstash/redis": "~1.22.0",
-    "better-sqlite3": "~8.5.0"
+    "better-sqlite3": "~8.6.0"
   },
   "engines": {
     "node": ">=18.0.0"
