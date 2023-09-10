@@ -25,8 +25,12 @@ jobs:
         with:
           node-version: 18.x
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Install Dependencies
-        run: npm i
+        run: pnpm i
 
       - name: Start local services
         uses: isbang/compose-action@v1.5.1
@@ -35,4 +39,4 @@ jobs:
             upstash-redis
 
       - name: Run Tests
-        run: npm run test -- --filter=@workertown/{feature-flags,search} -- 'test/cache/*.e2e.test.ts'
+        run: pnpm run test -- --filter=@workertown/{feature-flags,search} -- 'test/cache/*.e2e.test.ts'

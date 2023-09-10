@@ -1,0 +1,149 @@
+# TODOs
+
+## Core packages
+
+- [ ] Auth
+  - [ ] API
+  - [ ] Storage
+    - [ ] D1
+    - [ ] SQLite
+    - [ ] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Cache
+    - [ ] KV
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] CMS or Files (?)
+  - [ ] API
+  - [ ] Storage
+    - [ ] D1
+    - [ ] SQLite
+    - [ ] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Cache
+    - [ ] KV
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] Events
+  - [ ] API
+  - [ ] Storage
+    - [ ] D1
+    - [ ] SQLite
+    - [ ] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] Feature Flags
+  - [x] API
+  - [ ] Storage
+    - [x] D1
+    - [x] SQLite
+    - [x] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Cache
+    - [ ] KV
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] KV
+  - [x] API
+  - [ ] Storage/Cache
+    - [x] KV
+    - [ ] SQLite
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] Pub Sub
+  - [x] API
+  - [ ] Storage
+    - [x] D1
+    - [x] SQLite
+    - [ ] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Queue
+    - [x] CF Queues
+    - [x] SQLite
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] Queues
+  - [ ] API
+  - [ ] Storage
+    - [ ] D1
+    - [ ] SQLite
+    - [ ] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [ ] Memory
+  - [ ] Open API v3 spec
+- [ ] Search
+  - [x] API
+    - [x] Boost support
+    - [x] Fuzzy support
+    - [x] Filter support
+    - [x] Prefix support
+    - [x] Exact match support
+  - [ ] Storage
+    - [x] D1
+    - [x] SQLite
+    - [x] Planetscale
+    - [ ] KV
+    - [ ] Durable Objects
+    - [ ] Upstash Redis
+    - [x] Memory
+  - [ ] Cache
+    - [x] KV
+    - [x] Upstash Redis
+    - [x] Memory
+  - [ ] Open API v3 spec
+
+## Utilities
+
+- [x] NodeJS runtime (`serve()`)
+- [x] Combine APIs (`combine()`)
+- [x] CF Worker service (`service()`)
+
+## Sites
+
+- [ ] Docs
+  - [ ] Intro
+  - [ ] Tutorial
+  - [ ] Core concepts
+    - [ ] REST
+    - [ ] Configuration
+    - [ ] Authentication
+    - [ ] Storage
+    - [ ] Cache
+    - [ ] Queue
+    - [ ] Open API
+  - [ ] Auth
+  - [ ] CMS or Files (?)
+  - [ ] Events
+  - [ ] Feature Flags
+  - [ ] KV
+  - [ ] Pub Sub
+  - [ ] Queues
+  - [ ] Search
+  - [ ] Advanced concepts
+    - [x] NodeJS runtime
+    - [x] Combine APIs
+    - [ ] CF Worker service

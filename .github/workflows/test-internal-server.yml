@@ -25,8 +25,12 @@ jobs:
         with:
           node-version: 18.x
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Install Dependencies
-        run: npm -w @workertown/internal-server i
+        run: pnpm i
 
       - name: Run Tests
-        run: npm test -- --filter=@workertown/internal-server
+        run: pnpm test -- --filter=@workertown/internal-server

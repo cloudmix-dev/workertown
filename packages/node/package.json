@@ -26,6 +26,6 @@
   },
   "devDependencies": {
     "@types/lodash.set": "~4.3.7",
-    "@workertown/internal-server": "~0.0.2-alpha.20"
+    "@workertown/internal-server": "workspace:~0.0.2-alpha.20"
   }
 }

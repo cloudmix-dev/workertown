@@ -25,8 +25,12 @@ jobs:
         with:
           node-version: 18.x
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Install Dependencies
-        run: npm -w @workertown/kv i
+        run: pnpm i
 
       - name: Start local services
         uses: isbang/compose-action@v1.5.1
@@ -37,4 +41,4 @@ jobs:
             turso
 
       - name: Run Tests
-        run: npm test -- --filter=@workertown/kv
+        run: pnpm test -- --filter=@workertown/kv
