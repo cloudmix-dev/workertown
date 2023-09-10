@@ -45,25 +45,33 @@ export class S3FilesAdapter extends FilesAdapter {
   }
 
   async get(key: string) {
-    const file = await this._client.send(
-      new GetObjectCommand({
-        Bucket: this._bucket,
-        Key: this._sanitizeKey(key),
-      }),
-    );
+    try {
+      const file = await this._client.send(
+        new GetObjectCommand({
+          Bucket: this._bucket,
+          Key: this._sanitizeKey(key),
+        }),
+      );
 
-    return file.Body?.transformToWebStream() ?? null;
+      return file.Body?.transformToWebStream() ?? null;
+    } catch (_) {
+      return null;
+    }
   }
 
   async getMetadata(key: string) {
-    const file = await this._client.send(
-      new GetObjectCommand({
-        Bucket: this._bucket,
-        Key: this._sanitizeKey(key),
-      }),
-    );
+    try {
+      const file = await this._client.send(
+        new GetObjectCommand({
+          Bucket: this._bucket,
+          Key: this._sanitizeKey(key),
+        }),
+      );
 
-    return file.Metadata ?? null;
+      return file.Metadata ?? null;
+    } catch (_) {
+      return null;
+    }
   }
 
   async put(
@@ -82,12 +90,14 @@ export class S3FilesAdapter extends FilesAdapter {
   }
 
   async delete(key: string) {
-    await this._client.send(
-      new DeleteObjectCommand({
-        Bucket: this._bucket,
-        Key: this._sanitizeKey(key),
-      }),
-    );
+    try {
+      await this._client.send(
+        new DeleteObjectCommand({
+          Bucket: this._bucket,
+          Key: this._sanitizeKey(key),
+        }),
+      );
+    } catch (_) {}
   }
 
   public async setup(down?: boolean) {
