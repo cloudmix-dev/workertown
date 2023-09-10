@@ -72,7 +72,7 @@ export default featureFlags({
 });
 ```
 
-### `UpstashRedisCacheAdappter`
+### `UpstashRedisCacheAdapter`
 
 Coming soon...
 

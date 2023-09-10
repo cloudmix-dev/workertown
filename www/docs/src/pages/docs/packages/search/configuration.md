@@ -238,7 +238,7 @@ function that **returns** an `object`) with `cache` and `storage` properties set
 to your adapters of choice.
 
 `runtime.cache` can be *either* an instance of `CacheAdapter` **or** `false`.
-Setting it to `false` **diables** caching for **all** requests.
+Setting it to `false` **disables** caching for **all** requests.
 
 ```ts
 import { search } from "@workertown/search";
@@ -350,8 +350,8 @@ export default search({
 
 ### `search.stopWords`
 
-`search.stopWords` is an *optional* `Set<string>` (or `string[]`) that can be
-contains a list of words to **not** be searched on during a search/suggestion.
+`search.stopWords` is an *optional* `Set<string>` (or `string[]`) that can be a
+list of words to **not** be searched on during a search/suggestion.
 The default list used can be found [here](https://gist.github.com/sebleier/554280).
 
 ```ts

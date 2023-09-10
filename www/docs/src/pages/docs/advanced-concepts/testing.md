@@ -3,7 +3,7 @@ title: Testing
 description: Workertown provides some simple utilities to help you test your services.
 ---
 
-All Workertown services are tested end-to-end using within our codebase,
+All Workertown services are tested end-to-end within our codebase,
 including many combinations of configuration options. However, sometimes you
 need the piece of mind that your service will fucntion as intended **exactly**
 as you have it in production.

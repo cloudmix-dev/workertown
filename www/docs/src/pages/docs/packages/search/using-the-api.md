@@ -27,7 +27,7 @@ curl -X PUT \
 ```
 
 You **must** provide a `tenant` and `index` property in the request body - if
-you do **not** intend to search/siggest across multiple tenants/indexes, you can
+you do **not** intend to search/suggest across multiple tenants/indexes, you can
 use a "default" value for both and use it in all requests.
 
 `data` can be any `JSON` object you want - it has no predefined structure. **Any**
@@ -99,7 +99,7 @@ You will receive a `200 OK` response if the document was successfully retrieved.
 
 ### Updating a document
 
-Indexing a documents is performed as an "upsert", so therefore you can update a
+Indexing a document is performed as an "upsert", so therefore you can update a
 document via the [indexing](#indexing-a-document) endpoint.
 
 ### Deleting a document
@@ -219,7 +219,7 @@ curl -X GET \
 
 ### Exact search
 
-You can *optionally* set exact matching on the search by providing a `exact`
+You can *optionally* set exact matching on the search by providing an `exact`
 query parameter in the request URL, which is a `boolean` value indicated by `1`
 or `true` for **on**, or `0` or `false` for **off**. If the `exact` parameter
 is not provided, exact matching is **disabled** by default.
@@ -272,7 +272,7 @@ curl -X GET \
 ```
 
 `index` is optional, and if omitted the suggestions will be performed over
-**all** of the tenants indexes. You **must** provide a `term` query parameter in
+**all** of the tenant's indexes. You **must** provide a `term` query parameter in
 the request URL, which is the search term you are searching for.
 
 You will receive a `200 OK` response if the suggestions were successful.
@@ -298,15 +298,15 @@ matched the suggestion, and `score` is the relevancy score of the suggestion.
 
 ### Fuzzy suggestions
 
-Suggestions can fuzzy matched in the same way as [search](#fuzzy-search).
+Suggestions can be fuzzy matched in the same way as [search](#fuzzy-search).
 
 ### Prefix suggestions
 
-Suggestions can prefix matched in the same way as [search](#prefix-search).
+Suggestions can be prefix matched in the same way as [search](#prefix-search).
 
 ### Exact suggestions
 
-Suggestions can exact matched in the same way as [search](#exact-search).
+Suggestions can be exact matched in the same way as [search](#exact-search).
 
 ---
 
@@ -347,7 +347,7 @@ and then perform a [suggestion](#suggestions) request against the `_tags` field.
 
 ### Info
 
-You can send a `GET` request to the `/v1/admin/info` endpoint to get see the
+You can send a `GET` request to the `/v1/admin/info` endpoint to get the
 currently active configuration for your service. This is useful for debugging in
 live-like environments.
 
@@ -411,7 +411,7 @@ You will receive a `200 OK` response if the config was successfully retrieved.
 
 ### Migrate
 
-You can send `POST` request to the `/v1/admin/migrate` endpoint to run the
+You can send a `POST` request to the `/v1/admin/migrate` endpoint to run the
 migrations required for your storage adapter to keep your database up to date.
 
 ```bash
@@ -436,7 +436,7 @@ You will receive a `200 OK` response if the migrations were successfully run.
 }
 ```
 
-If **any** errors occur durin the migration, you will receive a `500 Internal
+If **any** errors occur during the migration, you will receive a `500 Internal
 Server Error` response, which will include the error as well as the details for
 **any** successful migrations that were run. If **no** migrations were run,
 `data` will be `null`.
@@ -489,7 +489,7 @@ curl -X GET \
 ```
 
 You will receive a `200 OK` response if the specification was successfully
-retreived.
+retrieved.
 
 ```json
 {

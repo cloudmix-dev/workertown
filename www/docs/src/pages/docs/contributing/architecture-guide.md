@@ -32,7 +32,7 @@ publishing process will automatically update the version to get it in line with
 the others.
 
 Create a `tsconfig.json` file that **extends** the `tsconfig.base.json` file
-found in the root of the repisitory. This ensures **consistent** build artifacts
+found in the root of the repository. This ensures **consistent** build artifacts
 across all packages.
 
 The source of the package should be in a `src` directory, and the entry point

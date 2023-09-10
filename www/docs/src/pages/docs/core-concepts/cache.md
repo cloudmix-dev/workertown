@@ -3,7 +3,7 @@ title: Cache
 description: Quidem magni aut exercitationem maxime rerum eos.
 ---
 
-Come Workertown services provide the ability to configure a cache that sits in
+Some Workertown services provide the ability to configure a cache that sits in
 front of potentially expensive/slow `storage` operations. Following the
 "sensible defaults" paradigm, each of these services provides a default storage
 adapter built upon
@@ -11,7 +11,7 @@ adapter built upon
 but there are other options available, and also the ability to bring your own
 cache adapter entirely.
 
-Cachsupport is **always optional**, and while it is **on** by default it can be
+Cache support is **always optional**, and while it is **on** by default it can be
 disabled easily in the service's `runtime` configuration option.
 
 ---

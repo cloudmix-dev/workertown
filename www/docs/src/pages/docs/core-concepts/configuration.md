@@ -286,7 +286,7 @@ runtime - this differs between packages) or a `function` that returns the
 expected runtime. The `function` option receives two arguments, the `options`
 set for the service and an `env` object that contains the environment
 variables/bindings available within the environment (the `env` object in a
-Cloudflare Worker, ot the `process.env` object in Node, for example).
+Cloudflare Worker, to the `process.env` object in Node, for example).
 
 ```ts
 import { serve } from "@workertown/node";
@@ -314,7 +314,7 @@ see what runtime options are available.
 
 ### `sentry`
 
-All Workertown service support Sentry error reporting at the edge (via
+All Workertown services support Sentry error reporting at the edge (via
 [Toucan.js](https://github.com/robertcepa/toucan-js)). This is **disabled** by
 default - to enable Sentry error reporting, simply set the `sentry` property.
 

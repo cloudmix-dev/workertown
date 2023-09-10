@@ -235,7 +235,7 @@ function that **returns** an `object`) with `cache` and `storage` properties set
 to your adapters of choice.
 
 `runtime.cache` can be *either* an instance of `CacheAdapter` **or** `false`.
-Setting it to `false` **diables** caching for **all** requests.
+Setting it to `false` **disables** caching for **all** requests.
 
 ```ts
 import { featureFlags } from "@workertown/feature-flags";

@@ -68,7 +68,7 @@ export default search({
 });
 ```
 
-### `UpstashRedisCacheAdappter`
+### `UpstashRedisCacheAdapter`
 
 Coming soon...
 
