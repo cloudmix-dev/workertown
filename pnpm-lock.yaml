@@ -177,6 +177,9 @@ importers:
       '@planetscale/database':
         specifier: ~1.11.0
         version: 1.11.0
+      '@types/better-sqlite3':
+        specifier: ~7.6.4
+        version: 7.6.4
       better-sqlite3:
         specifier: ~8.5.0
         version: 8.5.2
@@ -248,6 +251,24 @@ importers:
       '@planetscale/database':
         specifier: ~1.11.0
         version: 1.11.0
+      '@types/better-sqlite3':
+        specifier: ~7.6.4
+        version: 7.6.4
+      '@workertown/feature-flags':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../../packages/feature-flags
+      '@workertown/files':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../../packages/files
+      '@workertown/kv':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../../packages/kv
+      '@workertown/pub-sub':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../../packages/pub-sub
+      '@workertown/search':
+        specifier: workspace:0.0.2-alpha.20
+        version: link:../../packages/search
       better-sqlite3:
         specifier: ~8.5.0
         version: 8.5.2
@@ -311,8 +332,8 @@ importers:
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/storage
       better-sqlite3:
-        specifier: ~8.4.0
-        version: 8.4.0
+        specifier: ~8.5.0
+        version: 8.5.2
       lodash.merge:
         specifier: ~4.6.2
         version: 4.6.2
@@ -351,8 +372,8 @@ importers:
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/storage
       better-sqlite3:
-        specifier: ~8.4.0
-        version: 8.4.0
+        specifier: ~8.5.0
+        version: 8.5.2
       lodash.merge:
         specifier: ~4.6.2
         version: 4.6.2
@@ -397,8 +418,8 @@ importers:
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/storage
       better-sqlite3:
-        specifier: ~8.4.0
-        version: 8.4.0
+        specifier: ~8.5.0
+        version: 8.5.2
       lodash.merge:
         specifier: ~4.6.2
         version: 4.6.2
@@ -409,6 +430,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: ~4.20230814.0
         version: 4.20230814.0
+      '@types/better-sqlite3':
+        specifier: ~7.6.4
+        version: 7.6.4
       '@upstash/redis':
         specifier: ~1.22.0
         version: 1.22.0
@@ -447,8 +471,8 @@ importers:
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/storage
       better-sqlite3:
-        specifier: ~8.4.0
-        version: 8.4.0
+        specifier: ~8.5.0
+        version: 8.5.2
       lodash.merge:
         specifier: ~4.6.2
         version: 4.6.2
@@ -496,8 +520,8 @@ importers:
         specifier: workspace:~0.0.2-alpha.20
         version: link:../../internal/storage
       better-sqlite3:
-        specifier: ~8.4.0
-        version: 8.4.0
+        specifier: ~8.5.0
+        version: 8.5.2
       lodash.merge:
         specifier: ~4.6.2
         version: 4.6.2
@@ -4326,21 +4350,12 @@ packages:
       is-windows: 1.0.2
     dev: true
 
-  /better-sqlite3@8.4.0:
-    resolution: {integrity: sha512-NmsNW1CQvqMszu/CFAJ3pLct6NEFlNfuGM6vw72KHkjOD1UDnL96XNN1BMQc1hiHo8vE2GbOWQYIpZ+YM5wrZw==}
-    requiresBuild: true
-    dependencies:
-      bindings: 1.5.0
-      prebuild-install: 7.1.1
-    dev: false
-
   /better-sqlite3@8.5.2:
     resolution: {integrity: sha512-w/EZ/jwuZF+/47mAVC2+rhR2X/gwkZ+fd1pbX7Y90D5NRaRzDQcxrHY10t6ijGiYIonCVsBSF5v1cay07bP5sg==}
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.1
-    dev: true
 
   /big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
