@@ -1,7 +1,7 @@
 import test from "ava";
 
-import { type CacheAdapter } from "../../src/cache";
-import { MemoryCacheAdapter } from "../../src/cache/memory";
+import { type CacheAdapter } from "../src";
+import { MemoryCacheAdapter } from "../src/memory";
 import { testCacheAdapterE2E } from "./_e2e";
 
 test("MemoryCacheAdapter", async (t) => {

@@ -2,8 +2,8 @@ import { KVNamespace } from "@miniflare/kv";
 import { MemoryStorage } from "@miniflare/storage-memory";
 import test from "ava";
 
-import { type CacheAdapter } from "../../src/cache";
-import { KVCacheAdapter } from "../../src/cache/kv";
+import { type CacheAdapter } from "../src";
+import { KVCacheAdapter } from "../src/kv";
 import { testCacheAdapterE2E } from "./_e2e";
 
 test("KVCacheAdapter", async (t) => {

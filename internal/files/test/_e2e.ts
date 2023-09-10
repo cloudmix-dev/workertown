@@ -1,7 +1,8 @@
-import { type ExecutionContext } from "ava";
+// @ts-ignore
 import crypto from "node:crypto";
+import { type ExecutionContext } from "ava";
 
-import { FilesAdapter } from "../../src/files";
+import { FilesAdapter } from "../src";
 
 globalThis.crypto = crypto.webcrypto as Crypto;
 

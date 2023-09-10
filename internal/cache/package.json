@@ -29,7 +29,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "ava"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230814.0",

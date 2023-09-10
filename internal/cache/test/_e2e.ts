@@ -1,6 +1,6 @@
 import { type ExecutionContext } from "ava";
 
-import { CacheAdapter } from "../../src/cache";
+import { CacheAdapter } from "../src";
 
 export async function testCacheAdapterE2E(
   t: ExecutionContext,

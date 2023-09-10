@@ -1,7 +1,7 @@
 import test from "ava";
 
-import { type CacheAdapter } from "../../src/cache";
-import { UpstashRedisCacheAdapter } from "../../src/cache/upstash-redis";
+import { type CacheAdapter } from "../src";
+import { UpstashRedisCacheAdapter } from "../src/upstash-redis";
 import { testCacheAdapterE2E } from "./_e2e";
 
 test("UpstashRedisCacheAdapter", async (t) => {

@@ -1,7 +1,7 @@
 import test from "ava";
 
-import { type FilesAdapter } from "../../src/files";
-import { S3FilesAdapter } from "../../src/files/s3";
+import { type FilesAdapter } from "../src";
+import { S3FilesAdapter } from "../src/s3";
 import { testFilesAdapterE2E } from "./_e2e";
 
 test("S3FilesAdapter", async (t) => {
