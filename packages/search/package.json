@@ -30,10 +30,6 @@
       "default": "./dist/cache/memory.js",
       "types": "./dist/cache/memory.d.ts"
     },
-    "./client": {
-      "default": "./dist/client/index.js",
-      "types": "./dist/client/index.d.ts"
-    },
     "./storage": {
       "default": "./dist/storage/index.js",
       "types": "./dist/storage/index.d.ts"
