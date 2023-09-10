@@ -39,6 +39,7 @@ jobs:
             upstash_redis
             dynamodb
             turso
+            planetscale
 
       - name: Run Tests
         run: pnpm test --filter=@workertown/kv
