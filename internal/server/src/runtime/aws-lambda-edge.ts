@@ -39,7 +39,7 @@ export interface CloudFrontResult {
 export { type Callback, type CloudFrontEdgeEvent };
 
 export function serve(
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the Server here, and the return type is broken
+  // biome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the Server here, and the return type is broken
   server: Server<any>,
 ): (
   event: CloudFrontEdgeEvent,

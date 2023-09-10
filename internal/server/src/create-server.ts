@@ -115,7 +115,7 @@ export function createServer<
     server.use("*", async (ctx, next) => {
       const user = await authOptions.authenticateRequest?.(
         ctx.req as unknown as Request,
-        // rome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
+        // biome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
         (ctx as any).get("user") ?? null,
       );
 
@@ -135,7 +135,7 @@ export function createServer<
         );
       }
 
-      // rome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
+      // biome-ignore lint/suspicious/noExplicitAny: We know `user` will exist within the context here
       (ctx as any).set("user", user);
 
       return next();
@@ -163,7 +163,7 @@ export function createServer<
         success: false,
         status: 500,
         data: null,
-        // rome-ignore lint/suspicious/noExplicitAny: We need to reach inside of the Error
+        // biome-ignore lint/suspicious/noExplicitAny: We need to reach inside of the Error
         error: (error.cause as any)?.message ?? error.message,
       },
       500,

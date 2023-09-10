@@ -13,7 +13,7 @@ type Targets = keyof Omit<ValidationTargets, "header" | "cookie">;
 // @hono/zod-validator/dist/esm/index.d.ts
 export const validate = <
   Env extends HonoEnv,
-  // rome-ignore lint/suspicious/noExplicitAny: We're just copy/pasting the types from zod-validator
+  // biome-ignore lint/suspicious/noExplicitAny: We're just copy/pasting the types from zod-validator
   T extends ZodType<any, ZodTypeDef, any>,
   Target extends Targets,
   P extends string,

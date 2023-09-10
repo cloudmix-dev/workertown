@@ -64,7 +64,7 @@ test("gets the API key from ctx.env correctly", async (t) => {
 
   server.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
-    // rome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+    // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).AUTH_API_KEY = "test";
 
     return next();
@@ -93,7 +93,7 @@ test("gets the API key from a custom ctx.env value", async (t) => {
 
   server.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
-    // rome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+    // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).TEST_API_KEY = "test";
 
     return next();

@@ -20,7 +20,7 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     }
   }
 
-  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  // biome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
   async sendMessage(body: any) {
     const id = crypto.randomUUID();
 
@@ -30,7 +30,7 @@ export class CfQueuesQueueAdapter extends QueueAdapter {
     });
   }
 
-  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  // biome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
   async sendMessages(bodies: any[]) {
     const messagesToSend = bodies.map((body) => ({
       body: {

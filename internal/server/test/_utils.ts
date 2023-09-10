@@ -1,7 +1,7 @@
 import { type Hono } from "hono";
 
 export function makeRequest(
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the Hono server here
+  // biome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the Hono server here
   service: Hono<any, any, any>,
   path: string,
   {

@@ -5,7 +5,7 @@ import { type Migrations } from "./migrations.js";
 export class StorageAdapter {
   public readonly migrations: Migrations = [] as Migrations;
 
-  // rome-ignore lint/correctness/noUnusedVariables: Stub class
+  // biome-ignore lint/correctness/noUnusedVariables: Stub class
   public async runMigrations(down?: boolean): Promise<MigrationResultSet> {
     return { results: [] };
   }

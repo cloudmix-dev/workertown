@@ -23,7 +23,7 @@ export class MemoryQueueAdapter extends QueueAdapter {
     this._queue = this._queue.filter((message) => message.id !== id);
   }
 
-  // rome-ignore lint/correctness/noUnusedVariables: no-op
+  // biome-ignore lint/correctness/noUnusedVariables: no-op
   async retryMessage(id: string): Promise<void> {}
 
   async pullMessages(): Promise<QueueMessage[]> {

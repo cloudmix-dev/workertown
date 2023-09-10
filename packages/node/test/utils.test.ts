@@ -3,7 +3,7 @@ import test from "ava";
 import { exitOnSignals, parseOptionsFromEnv } from "../src/utils";
 
 test("parseOptionsFromEnv parses options from env", (t) => {
-  // rome-ignore lint/suspicious/noExplicitAny: We can see what the type of `result` is explicitlty
+  // biome-ignore lint/suspicious/noExplicitAny: We can see what the type of `result` is explicitlty
   const result = parseOptionsFromEnv<any>({
     options_string: "test",
     options_boolean: "true",
@@ -24,7 +24,7 @@ test("parseOptionsFromEnv parses options from env", (t) => {
 });
 
 test("parseOptionsFromEnv parses options with a custom delimeter", (t) => {
-  // rome-ignore lint/suspicious/noExplicitAny: We can see what the type of `result` is explicitlty
+  // biome-ignore lint/suspicious/noExplicitAny: We can see what the type of `result` is explicitlty
   const result = parseOptionsFromEnv<any>(
     {
       "options|string": "test",

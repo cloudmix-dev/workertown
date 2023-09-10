@@ -67,9 +67,9 @@ test("gets the username/password from ctx.env correctly", async (t) => {
 
   server.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
-    // rome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+    // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).AUTH_USERNAME = "test_username";
-    // rome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+    // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).AUTH_PASSWORD = "test_password";
 
     return next();
@@ -98,9 +98,9 @@ test("gets the username/password from a custom ctx.env value", async (t) => {
 
   server.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
-    // rome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+    // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).TEST_USERNAME = "test_username";
-    // rome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+    // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).TEST_PASSWORD = "test_password";
 
     return next();

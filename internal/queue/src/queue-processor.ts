@@ -4,7 +4,7 @@ import { QueueAdapter, type QueueMessage } from "./queue-adapter.js";
 
 interface CreateQueueProcessorOptions {
   adapter: QueueAdapter;
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
+  // biome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
   server: any;
   delay?: number;
   schedule?: (callback: () => Promise<void>, delay: number) => Promise<void>;
@@ -13,7 +13,7 @@ interface CreateQueueProcessorOptions {
 class QueueProcessor {
   private readonly _queue: QueueAdapter;
 
-  // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
+  // biome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the WorkertownHono server
   private readonly _server: any;
 
   private readonly _delay: number;

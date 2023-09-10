@@ -113,7 +113,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
     };
   }
 
-  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  // biome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
   async sendMessage(body: any): Promise<void> {
     await this._client
       .insertInto("queue_messages")
@@ -126,7 +126,7 @@ export class SqliteQueueAdapter extends QueueAdapter {
       .execute();
   }
 
-  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
+  // biome-ignore lint/suspicious/noExplicitAny: Need to allow any type of body
   async sendMessages(bodies: any[]): Promise<void> {
     if (bodies.length > 0) {
       await this._client

@@ -7,9 +7,9 @@ interface TestGetRuntimeOptions {
 }
 
 export function runtime(
-  // rome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
+  // biome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
   config: CreateServerOptions,
-  // rome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
+  // biome-ignore lint/correctness/noUnusedVariables: not needed for this runtime
   env: Record<string, unknown>,
   options: TestGetRuntimeOptions = {
     initialValues: {},

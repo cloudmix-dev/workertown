@@ -89,7 +89,7 @@ export function Gradient({ color = "blue", ...props }) {
 
 interface ThemeModeProps {
   className?: string;
-  // rome-ignore lint/suspicious/noExplicitAny: We need to allow any props to be passed through
+  // biome-ignore lint/suspicious/noExplicitAny: We need to allow any props to be passed through
   [x: string]: any;
 }
 

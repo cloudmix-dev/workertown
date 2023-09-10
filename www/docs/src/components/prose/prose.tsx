@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 interface ProseProps {
   className?: string;
-  // rome-ignore lint/suspicious/noExplicitAny: Need to allow any kind of prop through
+  // biome-ignore lint/suspicious/noExplicitAny: Need to allow any kind of prop through
   [x: string]: any;
 }
 

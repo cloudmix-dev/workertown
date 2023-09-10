@@ -83,11 +83,11 @@ router.get(
         ? await stopWordsFn(ctx.req as unknown as Request)
         : stopWordsFn,
     );
-    // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
+    // biome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
     let documents: any[] = [];
     let results: {
       id: string;
-      // rome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
+      // biome-ignore lint/suspicious/noExplicitAny: We don't care about the shape of the documents
       document: any;
       score: number;
       terms: string[];

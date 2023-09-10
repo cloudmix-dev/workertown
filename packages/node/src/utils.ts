@@ -3,7 +3,7 @@ import set from "lodash.set";
 interface ExitOnSignalsOptions {
   code?: number;
   exit?: (code?: number) => never;
-  // rome-ignore lint/suspicious/noExplicitAny: NodeJS needs these to be any for this to be types
+  // biome-ignore lint/suspicious/noExplicitAny: NodeJS needs these to be any for this to be types
   on?: (event: string | symbol, listener: (...args: any[]) => void) => any;
 }
 
