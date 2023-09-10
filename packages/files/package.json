@@ -68,7 +68,7 @@
   },
   "peerDependencies": {
     "@planetscale/database": "~1.8.0",
-    "better-sqlite3": "~8.4.0"
+    "better-sqlite3": "~8.5.0"
   },
   "engines": {
     "node": ">=18.0.0"
