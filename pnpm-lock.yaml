@@ -257,21 +257,6 @@ importers:
       '@types/better-sqlite3':
         specifier: ~7.6.4
         version: 7.6.4
-      '@workertown/feature-flags':
-        specifier: workspace:0.0.2-alpha.20
-        version: link:../../packages/feature-flags
-      '@workertown/files':
-        specifier: workspace:0.0.2-alpha.20
-        version: link:../../packages/files
-      '@workertown/kv':
-        specifier: workspace:0.0.2-alpha.20
-        version: link:../../packages/kv
-      '@workertown/pub-sub':
-        specifier: workspace:0.0.2-alpha.20
-        version: link:../../packages/pub-sub
-      '@workertown/search':
-        specifier: workspace:0.0.2-alpha.20
-        version: link:../../packages/search
       better-sqlite3:
         specifier: ~8.5.0
         version: 8.5.2
