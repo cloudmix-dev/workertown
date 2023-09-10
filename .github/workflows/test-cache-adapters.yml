@@ -39,4 +39,4 @@ jobs:
             upstash_redis
 
       - name: Run Tests
-        run: pnpm run test -- --filter=@workertown/{feature-flags,search} -- 'test/cache/*.e2e.test.ts'
+        run: pnpm test --filter=@workertown/{feature-flags,search} -- 'test/cache/*.e2e.test.ts'

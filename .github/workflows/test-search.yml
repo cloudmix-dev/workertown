@@ -41,4 +41,4 @@ jobs:
             turso
 
       - name: Run Tests
-        run: pnpm test -- --filter=@workertown/search
+        run: pnpm test --filter=@workertown/search
