@@ -10,7 +10,7 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "~4.20230814.0"
+    "@cloudflare/workers-types": "~4.20230904.0"
   },
   "engines": {
     "node": ">=18.0.0"
