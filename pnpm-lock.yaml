@@ -194,7 +194,7 @@ importers:
         version: 0.2.2(hono@3.5.8)
       '@hono/zod-validator':
         specifier: ~0.1.8
-        version: 0.1.8(hono@3.5.8)(zod@3.21.4)
+        version: 0.1.8(hono@3.5.8)(zod@3.22.2)
       '@whatwg-node/server':
         specifier: ~0.9.12
         version: 0.9.14
@@ -211,8 +211,8 @@ importers:
         specifier: ~2.0.4
         version: 2.0.4
       zod:
-        specifier: ~3.21.4
-        version: 3.21.4
+        specifier: ~3.22.2
+        version: 3.22.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230821.0
@@ -262,12 +262,6 @@ importers:
         version: 8.6.0
 
   internal/types: {}
-
-  internal/websockets:
-    devDependencies:
-      hono:
-        specifier: ~3.4.1
-        version: 3.4.3
 
   packages/aws-lambda:
     dependencies:
@@ -323,8 +317,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.21.4
-        version: 3.21.4
+        specifier: ~3.22.2
+        version: 3.22.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230814.0
@@ -378,8 +372,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.21.4
-        version: 3.21.4
+        specifier: ~3.22.2
+        version: 3.22.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230814.0
@@ -424,8 +418,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.21.4
-        version: 3.21.4
+        specifier: ~3.22.2
+        version: 3.22.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230814.0
@@ -477,8 +471,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.21.4
-        version: 3.21.4
+        specifier: ~3.22.2
+        version: 3.22.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230814.0
@@ -526,8 +520,8 @@ importers:
         specifier: ~6.1.0
         version: 6.1.0
       zod:
-        specifier: ~3.21.4
-        version: 3.21.4
+        specifier: ~3.22.2
+        version: 3.22.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230814.0
@@ -2468,14 +2462,14 @@ packages:
       toucan-js: 2.7.0
     dev: false
 
-  /@hono/zod-validator@0.1.8(hono@3.5.8)(zod@3.21.4):
+  /@hono/zod-validator@0.1.8(hono@3.5.8)(zod@3.22.2):
     resolution: {integrity: sha512-/Kd/p/dUVKM7/1TY3jafTV+ngwEh3fOLmXCJQKb9esWsCom5WOJaNmZYv8jeRhyipu1xBvmN5jceRA3Ev3rmQw==}
     peerDependencies:
       hono: 3.*
       zod: ^3.19.1
     dependencies:
       hono: 3.5.8
-      zod: 3.21.4
+      zod: 3.22.2
     dev: false
 
   /@iarna/toml@2.2.5:
@@ -5706,11 +5700,6 @@ packages:
     resolution: {integrity: sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==}
     dev: false
 
-  /hono@3.4.3:
-    resolution: {integrity: sha512-HbVxZh9yC3hV25+mFjUaM65t7g8ia2mXbhAGmVHA0r8+guizTJq1Cg4f2SmB5+JrviG0vaqOnWJ9U3O05aikbA==}
-    engines: {node: '>=16.0.0'}
-    dev: true
-
   /hono@3.5.8:
     resolution: {integrity: sha512-ZipTmGfHm43q5QOEBGog2wyejyNUcicjPt0BLDQ8yz9xij/y9RYXRpR1YPxMpQqeyNM7isvpsIAe9Ems51Wq0Q==}
     engines: {node: '>=16.0.0'}
@@ -8666,3 +8655,7 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+
+  /zod@3.22.2:
+    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
+    dev: false
