@@ -139,8 +139,8 @@ importers:
   internal/cache:
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@upstash/redis':
         specifier: ~1.22.0
         version: 1.22.0
@@ -151,8 +151,8 @@ importers:
         specifier: ~3.391.0
         version: 3.391.0
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
 
   internal/open-api: {}
 
@@ -172,8 +172,8 @@ importers:
         version: 1.4.0(@planetscale/database@1.11.0)(kysely@0.26.3)
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@planetscale/database':
         specifier: ~1.11.0
         version: 1.11.0
@@ -215,8 +215,8 @@ importers:
         version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230821.0
-        version: 4.20230821.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@types/lodash.merge':
         specifier: ~4.6.7
         version: 4.6.7
@@ -249,8 +249,8 @@ importers:
         specifier: ~3.388.0
         version: 3.388.0(@aws-sdk/client-dynamodb@3.388.0)
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@planetscale/database':
         specifier: ~1.11.0
         version: 1.11.0
@@ -284,8 +284,8 @@ importers:
   packages/cloudflare-workers:
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
 
   packages/feature-flags:
     dependencies:
@@ -321,8 +321,8 @@ importers:
         version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@types/lodash.merge':
         specifier: ~4.6.7
         version: 4.6.7
@@ -376,8 +376,8 @@ importers:
         version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@types/lodash.merge':
         specifier: ~4.6.7
         version: 4.6.7
@@ -422,8 +422,8 @@ importers:
         version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@types/lodash.merge':
         specifier: ~4.6.7
         version: 4.6.7
@@ -475,8 +475,8 @@ importers:
         version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@types/lodash.merge':
         specifier: ~4.6.7
         version: 4.6.7
@@ -524,8 +524,8 @@ importers:
         version: 3.21.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230814.0
-        version: 4.20230814.0
+        specifier: ~4.20230904.0
+        version: 4.20230904.0
       '@types/lodash.merge':
         specifier: ~4.6.7
         version: 4.6.7
@@ -1989,12 +1989,8 @@ packages:
       prettier: 2.8.8
     dev: true
 
-  /@cloudflare/workers-types@4.20230814.0:
-    resolution: {integrity: sha512-+jHiGjZg2UpULZSSHmHLqUG45TLg1s+uppSMlGvMn0u/xyFsRX9HX6b8Ydg/oHSp3jfSuPtX05GSvtgRAmrWTg==}
-    dev: true
-
-  /@cloudflare/workers-types@4.20230821.0:
-    resolution: {integrity: sha512-lVQSyr5E4CEkQw7WIdsrMTj+kHjsm28mJ0B5AhNFByKR+16KTFsU/RW/nGLKHHW2jxT5lvYI+HjNQMzC9QR8Ng==}
+  /@cloudflare/workers-types@4.20230904.0:
+    resolution: {integrity: sha512-IX4oJCe14ctblSPZBlW64BVZ9nYLUo6sD2I5gu3hX0ywByYWm1OuoKm9Xb/Zpbj8Ph18Z7Ryii6u2/ocnncXdA==}
     dev: true
 
   /@commitlint/cli@17.7.1:
