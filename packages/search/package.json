@@ -99,7 +99,7 @@
     "@workertown/internal-storage": "workspace:~0.0.2-alpha.21",
     "lodash.merge": "~4.6.2",
     "minisearch": "~6.1.0",
-    "zod": "~3.21.4"
+    "zod": "~3.22.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230904.0",
