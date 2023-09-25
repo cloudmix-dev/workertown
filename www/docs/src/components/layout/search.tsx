@@ -170,7 +170,7 @@ function SearchResults({ autocomplete, query, collection }) {
   }
 
   return (
-    <ul role="list" {...autocomplete.getListProps()}>
+    <ul {...autocomplete.getListProps()}>
       {collection.items.map((result) => (
         <SearchResult
           key={result.url}

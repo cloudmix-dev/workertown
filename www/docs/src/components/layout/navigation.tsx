@@ -18,16 +18,13 @@ export function Navigation({ navigation, className }: NavigationProps) {
 
   return (
     <nav className={clsx("text-base lg:text-sm", className)}>
-      <ul role="list" className="space-y-9">
+      <ul className="space-y-9">
         {navigation.map((section) => (
           <li key={section.title}>
             <h2 className="font-display font-medium text-zinc-900 dark:text-white">
               {section.title}
             </h2>
-            <ul
-              role="list"
-              className="mt-2 space-y-2 border-l-2 border-zinc-50 dark:border-zinc-800 lg:mt-4 lg:space-y-4 lg:border-zinc-200"
-            >
+            <ul className="mt-2 space-y-2 border-l-2 border-zinc-50 dark:border-zinc-800 lg:mt-4 lg:space-y-4 lg:border-zinc-200">
               {section.links.map((link) => (
                 <li key={link.href} className="relative">
                   <Link
