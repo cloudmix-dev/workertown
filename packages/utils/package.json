@@ -1,6 +1,6 @@
 {
   "name": "@workertown/utils",
-  "version": "0.0.2-alpha.21",
+  "version": "0.0.2-alpha.22",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,7 +21,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-server": "workspace:~0.0.2-alpha.21"
+    "@workertown/internal-server": "workspace:~0.0.2-alpha.22"
   },
   "devDependencies": {
     "@types/node": "~20.6.4"

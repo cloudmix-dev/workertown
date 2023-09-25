@@ -1,5 +1,17 @@
 # @workertown/files
 
+## 0.0.2-alpha.22
+
+### Patch Changes
+
+- Alpha.22 Release
+- Updated dependencies
+  - @workertown/internal-cache@0.0.2-alpha.22
+  - @workertown/internal-files@0.0.2-alpha.22
+  - @workertown/internal-open-api@0.0.2-alpha.22
+  - @workertown/internal-server@0.0.2-alpha.22
+  - @workertown/internal-storage@0.0.2-alpha.22
+
 ## 0.0.2-alpha.21
 
 ### Patch Changes

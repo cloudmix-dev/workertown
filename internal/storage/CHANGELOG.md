@@ -1,5 +1,11 @@
 # @workertown/internal-storage
 
+## 0.0.2-alpha.22
+
+### Patch Changes
+
+- Alpha.22 Release
+
 ## 0.0.2-alpha.21
 
 ### Patch Changes

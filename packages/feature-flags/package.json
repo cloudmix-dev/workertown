@@ -1,6 +1,6 @@
 {
   "name": "@workertown/feature-flags",
-  "version": "0.0.2-alpha.21",
+  "version": "0.0.2-alpha.22",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -89,21 +89,21 @@
     "test": "ava"
   },
   "dependencies": {
-    "@workertown/internal-cache": "workspace:~0.0.2-alpha.21",
-    "@workertown/internal-open-api": "workspace:~0.0.2-alpha.21",
-    "@workertown/internal-storage": "workspace:~0.0.2-alpha.21",
+    "@workertown/internal-cache": "workspace:~0.0.2-alpha.22",
+    "@workertown/internal-open-api": "workspace:~0.0.2-alpha.22",
+    "@workertown/internal-storage": "workspace:~0.0.2-alpha.22",
     "lodash.merge": "~4.6.2",
     "zod": "~3.22.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "~4.20230904.0",
     "@types/lodash.merge": "~4.6.7",
-    "@workertown/files": "workspace:0.0.2-alpha.21",
-    "@workertown/internal-server": "workspace:0.0.2-alpha.21",
-    "@workertown/internal-types": "workspace:~0.0.2-alpha.21",
-    "@workertown/kv": "workspace:0.0.2-alpha.21",
-    "@workertown/pub-sub": "workspace:0.0.2-alpha.21",
-    "@workertown/search": "workspace:0.0.2-alpha.21"
+    "@workertown/files": "workspace:0.0.2-alpha.22",
+    "@workertown/internal-server": "workspace:0.0.2-alpha.22",
+    "@workertown/internal-types": "workspace:~0.0.2-alpha.22",
+    "@workertown/kv": "workspace:0.0.2-alpha.22",
+    "@workertown/pub-sub": "workspace:0.0.2-alpha.22",
+    "@workertown/search": "workspace:0.0.2-alpha.22"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",

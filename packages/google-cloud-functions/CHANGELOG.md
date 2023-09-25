@@ -1,5 +1,13 @@
 # @workertown/google-cloud-functions
 
+## 0.0.2-alpha.22
+
+### Patch Changes
+
+- Alpha.22 Release
+- Updated dependencies
+  - @workertown/internal-server@0.0.2-alpha.22
+
 ## 0.0.2-alpha.21
 
 ### Patch Changes
