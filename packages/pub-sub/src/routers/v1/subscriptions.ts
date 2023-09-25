@@ -6,45 +6,42 @@ import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
-router.get(
-  "/",
-  validate(
-    "query",
-    z.object({
-      topic: z.string().optional(),
-    }),
-  ),
-  async (ctx) => {
-    const storage = ctx.get("storage");
-    const { topic } = ctx.req.valid("query");
-    let subscriptions: Subscription[];
+const getSubscriptionsQuerySchema = z.object({
+  topic: z.string().optional(),
+});
 
-    if (topic) {
-      subscriptions = await storage.getSubscriptionsByTopic(topic);
-    } else {
-      subscriptions = await storage.getSubscriptions();
-    }
+router.get("/", validate("query", getSubscriptionsQuerySchema), async (ctx) => {
+  const storage = ctx.get("storage");
+  const { topic } = ctx.req.valid("query" as never) as z.infer<
+    typeof getSubscriptionsQuerySchema
+  >;
+  let subscriptions: Subscription[];
 
-    return ctx.json({ status: 200, success: true, data: subscriptions });
-  },
-);
+  if (topic) {
+    subscriptions = await storage.getSubscriptionsByTopic(topic);
+  } else {
+    subscriptions = await storage.getSubscriptions();
+  }
+
+  return ctx.json({ status: 200, success: true, data: subscriptions });
+});
+
+const createSubscriptionBodySchema = z.object({
+  topic: z.string(),
+  endpoint: z.string().url(),
+  method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]).default("POST"),
+  headers: z.record(z.string(), z.string()).optional(),
+  queryParameters: z.record(z.string(), z.string()).optional(),
+});
 
 router.post(
   "/",
-  validate(
-    "json",
-    z.object({
-      topic: z.string(),
-      endpoint: z.string().url(),
-      method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]).default("POST"),
-      headers: z.record(z.string(), z.string()).optional(),
-      queryParameters: z.record(z.string(), z.string()).optional(),
-    }),
-  ),
+  validate("json", createSubscriptionBodySchema),
   async (ctx) => {
     const storage = ctx.get("storage");
-    const { topic, endpoint, method, headers, queryParameters } =
-      ctx.req.valid("json");
+    const { topic, endpoint, method, headers, queryParameters } = ctx.req.valid(
+      "json" as never,
+    ) as z.infer<typeof createSubscriptionBodySchema>;
     const subscription = await storage.createSubscription({
       topic,
       endpoint,
