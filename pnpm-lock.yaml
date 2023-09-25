@@ -63,55 +63,55 @@ importers:
   examples/combined:
     dependencies:
       '@workertown/feature-flags':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/feature-flags
       '@workertown/files':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/files
       '@workertown/kv':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/kv
       '@workertown/pub-sub':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/pub-sub
       '@workertown/search':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/search
       '@workertown/utils':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/utils
 
   examples/feature-flags:
     dependencies:
       '@workertown/feature-flags':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/feature-flags
 
   examples/kv:
     dependencies:
       '@workertown/kv':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/kv
 
   examples/node:
     dependencies:
       '@workertown/feature-flags':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/feature-flags
       '@workertown/kv':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/kv
       '@workertown/node':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/node
       '@workertown/pub-sub':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/pub-sub
       '@workertown/search':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/search
       '@workertown/utils':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/utils
     devDependencies:
       '@types/node':
@@ -127,13 +127,13 @@ importers:
   examples/pub-sub:
     dependencies:
       '@workertown/pub-sub':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/pub-sub
 
   examples/search:
     dependencies:
       '@workertown/search':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../packages/search
 
   internal/cache:
@@ -162,7 +162,7 @@ importers:
         specifier: ~0.3.0
         version: 0.3.0(kysely@0.26.3)
       '@workertown/internal-storage':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../storage
       kysely:
         specifier: ~0.26.1
@@ -224,7 +224,7 @@ importers:
         specifier: ~1.22.0
         version: 1.22.0
       '@workertown/internal-types':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../types
 
   internal/storage:
@@ -266,19 +266,19 @@ importers:
   packages/aws-lambda:
     dependencies:
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
 
   packages/aws-lambda-edge:
     dependencies:
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
 
   packages/cloudflare-pages:
     dependencies:
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
 
   packages/cloudflare-workers:
@@ -302,13 +302,13 @@ importers:
         specifier: ~1.22.0
         version: 1.22.0
       '@workertown/internal-cache':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/cache
       '@workertown/internal-open-api':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/open-api
       '@workertown/internal-storage':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/storage
       better-sqlite3:
         specifier: ~8.5.0
@@ -327,22 +327,22 @@ importers:
         specifier: ~4.6.7
         version: 4.6.7
       '@workertown/files':
-        specifier: workspace:0.0.2-alpha.21
+        specifier: workspace:0.0.2-alpha.22
         version: link:../files
       '@workertown/internal-server':
-        specifier: workspace:0.0.2-alpha.21
+        specifier: workspace:0.0.2-alpha.22
         version: link:../../internal/server
       '@workertown/internal-types':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/types
       '@workertown/kv':
-        specifier: workspace:0.0.2-alpha.21
+        specifier: workspace:0.0.2-alpha.22
         version: link:../kv
       '@workertown/pub-sub':
-        specifier: workspace:0.0.2-alpha.21
+        specifier: workspace:0.0.2-alpha.22
         version: link:../pub-sub
       '@workertown/search':
-        specifier: workspace:0.0.2-alpha.21
+        specifier: workspace:0.0.2-alpha.22
         version: link:../search
 
   packages/files:
@@ -351,19 +351,19 @@ importers:
         specifier: ~1.8.0
         version: 1.8.0
       '@workertown/internal-cache':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/cache
       '@workertown/internal-files':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/files
       '@workertown/internal-open-api':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/open-api
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
       '@workertown/internal-storage':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/storage
       better-sqlite3:
         specifier: ~8.6.0
@@ -382,13 +382,13 @@ importers:
         specifier: ~4.6.7
         version: 4.6.7
       '@workertown/internal-types':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/types
 
   packages/google-cloud-functions:
     dependencies:
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
 
   packages/kv:
@@ -403,13 +403,13 @@ importers:
         specifier: ~1.8.0
         version: 1.8.0
       '@workertown/internal-open-api':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/open-api
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
       '@workertown/internal-storage':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/storage
       better-sqlite3:
         specifier: ~8.6.0
@@ -431,7 +431,7 @@ importers:
         specifier: ~1.22.0
         version: 1.22.0
       '@workertown/internal-types':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/types
 
   packages/node:
@@ -447,7 +447,7 @@ importers:
         specifier: ~4.3.7
         version: 4.3.7
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
 
   packages/pub-sub:
@@ -456,13 +456,13 @@ importers:
         specifier: ~1.8.0
         version: 1.8.0
       '@workertown/internal-queue':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/queue
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
       '@workertown/internal-storage':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/storage
       better-sqlite3:
         specifier: ~8.6.0
@@ -481,7 +481,7 @@ importers:
         specifier: ~4.6.7
         version: 4.6.7
       '@workertown/internal-types':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/types
 
   packages/search:
@@ -499,16 +499,16 @@ importers:
         specifier: ~1.22.0
         version: 1.22.0
       '@workertown/internal-cache':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/cache
       '@workertown/internal-open-api':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/open-api
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
       '@workertown/internal-storage':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/storage
       better-sqlite3:
         specifier: ~8.6.0
@@ -530,13 +530,13 @@ importers:
         specifier: ~4.6.7
         version: 4.6.7
       '@workertown/internal-types':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/types
 
   packages/utils:
     dependencies:
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
     devDependencies:
       '@types/node':
@@ -546,7 +546,7 @@ importers:
   packages/vercel:
     dependencies:
       '@workertown/internal-server':
-        specifier: workspace:~0.0.2-alpha.21
+        specifier: workspace:~0.0.2-alpha.22
         version: link:../../internal/server
 
   www/docs:
@@ -616,11 +616,11 @@ importers:
         version: 1.2.1
     devDependencies:
       '@markdoc/markdoc':
-        specifier: 0.3.0
-        version: 0.3.0(@types/react@18.2.21)(react@18.2.0)
+        specifier: 0.3.2
+        version: 0.3.2(@types/react@18.2.21)(react@18.2.0)
       '@markdoc/next.js':
         specifier: ~0.3.1
-        version: 0.3.3(@markdoc/markdoc@0.3.0)(next@13.4.19)(react@18.2.0)
+        version: 0.3.3(@markdoc/markdoc@0.3.2)(next@13.4.19)(react@18.2.0)
       '@sindresorhus/slugify':
         specifier: ~2.2.1
         version: 2.2.1
@@ -2583,8 +2583,8 @@ packages:
       read-yaml-file: 1.1.0
     dev: true
 
-  /@markdoc/markdoc@0.3.0(@types/react@18.2.21)(react@18.2.0):
-    resolution: {integrity: sha512-QWCF8krIIw52ulflfnoff0yG1eKl9CCGA3KAiOjHyYtHNzSEouFh8lO52nAaO3qV2Ctj1GTB8TTb2rTfvISQfA==}
+  /@markdoc/markdoc@0.3.2(@types/react@18.2.21)(react@18.2.0):
+    resolution: {integrity: sha512-D0SaanaSkTIARvQu+zQqPEpKcvYUBR/mfac9e8JzS89P7eXhiNWPonUN7avRS1saZHpIQWIRote97qT+jGk5Gw==}
     engines: {node: '>=14.7.0'}
     peerDependencies:
       '@types/react': '*'
@@ -2601,14 +2601,14 @@ packages:
       '@types/markdown-it': 12.2.3
     dev: true
 
-  /@markdoc/next.js@0.3.3(@markdoc/markdoc@0.3.0)(next@13.4.19)(react@18.2.0):
+  /@markdoc/next.js@0.3.3(@markdoc/markdoc@0.3.2)(next@13.4.19)(react@18.2.0):
     resolution: {integrity: sha512-BmrEv76DiGpybTUzDNl6cQNZq7n4rQ+G4AWmpd/+2VlwVTgpT0M165No+Rl4Z3TEeaM66c54n4TdyRh/yY2YwA==}
     peerDependencies:
       '@markdoc/markdoc': '*'
       next: '*'
       react: '*'
     dependencies:
-      '@markdoc/markdoc': 0.3.0(@types/react@18.2.21)(react@18.2.0)
+      '@markdoc/markdoc': 0.3.2(@types/react@18.2.21)(react@18.2.0)
       js-yaml: 4.1.0
       next: 13.4.19(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
