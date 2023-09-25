@@ -1,5 +1,5 @@
 import {
-  type CreateServerOptionsOptional,
+  type ServerOptionsOptional,
   createFeatureFlagsServer,
 } from "./server.js";
 import { type Flag, type FlagCondition } from "./storage/storage-adapter.js";
@@ -9,7 +9,7 @@ export default createFeatureFlagsServer;
 export {
   createFeatureFlagsServer,
   createFeatureFlagsServer as featureFlags,
-  type CreateServerOptionsOptional as CreateServerOptions,
+  type ServerOptionsOptional as ServerOptions,
   type Flag,
   type FlagCondition,
   type RuntimeResolver,

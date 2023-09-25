@@ -1,8 +1,8 @@
 import test from "ava";
-import { Hono } from "hono";
 
 import { apiKey } from "../../src/middleware/api-key";
 import { authenticated } from "../../src/middleware/authenticated";
+import { Router } from "../../src/router";
 import { makeRequest } from "../_utils";
 
 interface SuccessfulResponse {
@@ -17,17 +17,16 @@ interface ErrorResponse {
 }
 
 test("allows authenticated requests", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", apiKey({ apiKey: "test" }));
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", apiKey({ apiKey: "test" }), authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
-      authorization: "Bearer test",
+      Authorization: "Bearer test",
     },
   });
 
@@ -39,15 +38,14 @@ test("allows authenticated requests", async (t) => {
 });
 
 test("doesn't allow unauthenticated requests", async (t) => {
-  const server = new Hono();
+  const router = new Router();
 
-  server.use("*", apiKey());
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", apiKey(), authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/");
+  const res = await makeRequest(router, "/");
 
   t.is(res.status, 401);
 
@@ -60,24 +58,23 @@ test("doesn't allow unauthenticated requests", async (t) => {
 });
 
 test("gets the API key from ctx.env correctly", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", (ctx, next) => {
+  router.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
     // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).AUTH_API_KEY = "test";
 
     return next();
   });
-  server.use("*", apiKey());
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", apiKey(), authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
-      authorization: "Bearer test",
+      Authorization: "Bearer test",
     },
   });
 
@@ -89,31 +86,31 @@ test("gets the API key from ctx.env correctly", async (t) => {
 });
 
 test("gets the API key from a custom ctx.env value", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", (ctx, next) => {
+  router.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
     // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).TEST_API_KEY = "test";
 
     return next();
   });
-  server.use(
+  router.use(
     "*",
     apiKey({
       env: {
         apiKey: "TEST_API_KEY",
       },
     }),
+    authenticated(),
   );
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
-      authorization: "Bearer test",
+      Authorization: "Bearer test",
     },
   });
 

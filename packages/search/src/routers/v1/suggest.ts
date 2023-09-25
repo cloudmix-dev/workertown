@@ -7,57 +7,56 @@ import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
+const suggestQuerySchema = z.object({
+  term: z.string(),
+  fields: z
+    .string()
+    .optional()
+    .transform((val) => val?.split(/,\s?/)),
+  tags: z
+    .string()
+    .optional()
+    .transform((val) => val?.split(/,\s?/)),
+  limit: z
+    .string()
+    .optional()
+    .default("100")
+    .transform((val) => {
+      const limit = parseInt(val, 10);
+
+      if (Number.isNaN(limit)) {
+        return 100;
+      }
+
+      return limit;
+    }),
+  fuzzy: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (val) {
+        const fuzzy = parseFloat(val);
+
+        if (Number.isNaN(fuzzy)) {
+          return undefined;
+        }
+
+        return fuzzy;
+      }
+    }),
+  prefix: z
+    .string()
+    .optional()
+    .transform((val) => val === "1" || val === "true"),
+  exact: z
+    .string()
+    .optional()
+    .transform((val) => val === "1" || val === "true"),
+});
+
 router.get(
   "/:tenant/:index?",
-  validate(
-    "query",
-    z.object({
-      term: z.string(),
-      fields: z
-        .string()
-        .optional()
-        .transform((val) => val?.split(/,\s?/)),
-      tags: z
-        .string()
-        .optional()
-        .transform((val) => val?.split(/,\s?/)),
-      limit: z
-        .string()
-        .optional()
-        .default("100")
-        .transform((val) => {
-          const limit = parseInt(val, 10);
-
-          if (Number.isNaN(limit)) {
-            return 100;
-          }
-
-          return limit;
-        }),
-      fuzzy: z
-        .string()
-        .optional()
-        .transform((val) => {
-          if (val) {
-            const fuzzy = parseFloat(val);
-
-            if (Number.isNaN(fuzzy)) {
-              return undefined;
-            }
-
-            return fuzzy;
-          }
-        }),
-      prefix: z
-        .string()
-        .optional()
-        .transform((val) => val === "1" || val === "true"),
-      exact: z
-        .string()
-        .optional()
-        .transform((val) => val === "1" || val === "true"),
-    }),
-  ),
+  validate("query", suggestQuerySchema),
   async (ctx) => {
     const tenant = ctx.req.param("tenant") as string;
     const index = ctx.req.param("index");
@@ -69,8 +68,9 @@ router.get(
       scanRange: scanRangeFn,
       stopWords: stopWordsFn,
     } = search;
-    const { term, tags, fields, limit, fuzzy, prefix, exact } =
-      ctx.req.valid("query");
+    const { term, tags, fields, limit, fuzzy, prefix, exact } = ctx.req.valid(
+      "query" as never,
+    ) as z.infer<typeof suggestQuerySchema>;
     const scanRange =
       typeof scanRangeFn === "function"
         ? await scanRangeFn(ctx.req as unknown as Request)

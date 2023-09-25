@@ -1,7 +1,7 @@
 /**
  * This file is heavily inspired by: https://github.com/honojs/hono/blob/main/src/middleware/logger/index.ts
  */
-import { type Middleware } from "../types.js";
+import { type MiddlewareHandler } from "../router.js";
 
 export type LoggerFunc = (
   method: string,
@@ -43,7 +43,8 @@ const defaultLogger: LoggerFunc = (
 };
 
 export function logger(func: LoggerFunc = defaultLogger) {
-  const handler: Middleware = async (ctx, next) => {
+  // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+  const handler: MiddlewareHandler<any> = async (ctx, next) => {
     const url = new URL(ctx.req.url);
     const start = Date.now();
 

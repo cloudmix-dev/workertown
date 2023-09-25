@@ -4,7 +4,7 @@ import merge from "lodash.merge";
 
 import { KvRateLimiter } from "../rate-limit/kv.js";
 import { type RateLimiter } from "../rate-limit/rate-limiter.js";
-import { type Middleware } from "../types.js";
+import { type MiddlewareHandler } from "../router.js";
 
 interface RateLimitOptions {
   env: {
@@ -33,7 +33,8 @@ export function rateLimit(options?: RateLimitOptionsOptional) {
     window: slidingWindow,
   } = merge({}, DEFAULT_OPTIONS, options);
 
-  const handler: Middleware = async (ctx, next) => {
+  // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+  const handler: MiddlewareHandler<any> = async (ctx, next) => {
     const ip =
       ctx.req.headers.get("cf-connecting-ip") ??
       ctx.req.headers.get("x-forwarded-for") ??
@@ -55,7 +56,7 @@ export function rateLimit(options?: RateLimitOptionsOptional) {
         },
         403,
         {
-          "x-workertown-hint": "The origin IP has exceeded the rate limit",
+          "X-Workertown-Hint": "The origin IP has exceeded the rate limit",
         },
       );
     }

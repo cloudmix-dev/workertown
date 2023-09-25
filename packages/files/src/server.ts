@@ -6,11 +6,11 @@ import { type FilesAdapter } from "./files/files-adapter.js";
 import { publicRouter, v1 } from "./routers/index.js";
 import { runtime as cloudflareWorkersRuntime } from "./runtime/cloudflare-workers.js";
 import { type StorageAdapter } from "./storage/storage-adapter.js";
-import { type Context, type CreateServerOptions } from "./types.js";
+import { type Context, type ServerOptions } from "./types.js";
 
-export type CreateServerOptionsOptional = DeepPartial<CreateServerOptions>;
+export type ServerOptionsOptional = DeepPartial<ServerOptions>;
 
-const DEFAULT_OPTIONS: CreateServerOptions = {
+const DEFAULT_OPTIONS: ServerOptions = {
   auth: {
     apiKey: {
       env: {
@@ -51,7 +51,7 @@ const DEFAULT_OPTIONS: CreateServerOptions = {
 };
 
 export function createFilesServer(
-  options?: CreateServerOptionsOptional,
+  options?: ServerOptionsOptional,
 ): Server<Context> {
   const config = merge({}, DEFAULT_OPTIONS, options);
   const {
@@ -64,7 +64,7 @@ export function createFilesServer(
   let storage: StorageAdapter;
   let files: FilesAdapter;
 
-  server.use(async (ctx, next) => {
+  server.use("*", async (ctx, next) => {
     if (!storage) {
       ({ files, storage } =
         typeof runtime === "function"

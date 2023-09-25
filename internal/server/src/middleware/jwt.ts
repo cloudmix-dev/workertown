@@ -9,7 +9,8 @@ import {
 } from "jose";
 import merge from "lodash.merge";
 
-import { type Middleware, type User } from "../types.js";
+import { type MiddlewareHandler } from "../router.js";
+import { type User } from "../types.js";
 
 interface JwtOptions {
   audience?: string;
@@ -69,7 +70,8 @@ export function jwt(options?: JwtOptionsOptional) {
     secret: optionsSecret,
     verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
-  const handler: Middleware = async (ctx, next) => {
+  // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+  const handler: MiddlewareHandler<any> = async (ctx, next) => {
     const jwks = (optionsJwks?.url ?? ctx.env?.[jwksUrlEnvKey]) as string;
     const secret = (optionsSecret ?? ctx.env?.[secretEnvKey]) as string;
     const issuer = (optionsIssuer ?? ctx.env?.[issuerEnvKey]) as
@@ -78,7 +80,7 @@ export function jwt(options?: JwtOptionsOptional) {
     const audience = (optionsAudience ?? ctx.env?.[audienceEnvKey]) as
       | string
       | undefined;
-    const user = ctx.get("user") ?? null;
+    const user: User | null = ctx.get("user") ?? null;
 
     if (user === null && (secret || jwks)) {
       const authHeader = ctx.req.headers.get("Authorization");

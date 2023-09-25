@@ -7,33 +7,30 @@ import { type Context } from "../../types.js";
 
 const router = createRouter<Context>();
 
-router.get(
-  "/",
-  validate(
-    "query",
-    z.object({
-      include_disabled: z
-        .enum(["1", "0", "true", "false"])
-        .optional()
-        .transform((val) => val === "1" || val === "true"),
-    }),
-  ),
-  async (ctx) => {
-    const cache = ctx.get("cache");
-    const storage = ctx.get("storage");
-    const { include_disabled: includeDisabled } = ctx.req.valid("query");
-    const cacheKey = includeDisabled ? CACHE.FLAGS.ALL : CACHE.FLAGS.ENABLED;
-    let flags: Flag[] | null = await cache.get(cacheKey);
+const getFlagsQuerySchema = z.object({
+  include_disabled: z
+    .enum(["1", "0", "true", "false"])
+    .optional()
+    .transform((val) => val === "1" || val === "true"),
+});
 
-    if (!flags) {
-      flags = await storage.getFlags(includeDisabled);
+router.get("/", validate("query", getFlagsQuerySchema), async (ctx) => {
+  const cache = ctx.get("cache");
+  const storage = ctx.get("storage");
+  const { include_disabled: includeDisabled } = ctx.req.valid(
+    "query" as never,
+  ) as z.infer<typeof getFlagsQuerySchema>;
+  const cacheKey = includeDisabled ? CACHE.FLAGS.ALL : CACHE.FLAGS.ENABLED;
+  let flags: Flag[] | null = await cache.get(cacheKey);
 
-      await cache.set(cacheKey, flags);
-    }
+  if (!flags) {
+    flags = await storage.getFlags(includeDisabled);
 
-    return ctx.json({ status: 200, success: true, data: flags });
-  },
-);
+    await cache.set(cacheKey, flags);
+  }
+
+  return ctx.json({ status: 200, success: true, data: flags });
+});
 
 router.get("/:name", async (ctx) => {
   const storage = ctx.get("storage");
@@ -44,59 +41,47 @@ router.get("/:name", async (ctx) => {
   return ctx.json({ status, success: true, data: flag }, status);
 });
 
-router.put(
-  "/:name",
-  validate(
-    "json",
-    z.object({
-      description: z.string().optional(),
-      enabled: z.boolean().optional().default(true),
-      conditions: z
-        .array(
-          z.object({
-            field: z.string(),
-            operator: z.enum([
-              "eq",
-              "neq",
-              "gt",
-              "gte",
-              "lt",
-              "lte",
-              "in",
-              "nin",
-            ]),
-            value: z.union([
-              z.string(),
-              z.number(),
-              z.boolean(),
-              z.array(z.string()),
-              z.array(z.number()),
-              z.array(z.boolean()),
-            ]),
-          }),
-        )
-        .nonempty()
-        .optional(),
-    }),
-  ),
-  async (ctx) => {
-    const cache = ctx.get("cache");
-    const storage = ctx.get("storage");
-    const name = ctx.req.param("name");
-    const { description, enabled, conditions } = ctx.req.valid("json");
-    const flag = await storage.upsertFlag({
-      name,
-      description,
-      enabled: enabled ?? true,
-      conditions,
-    });
+const createFlagBodySchema = z.object({
+  description: z.string().optional(),
+  enabled: z.boolean().optional().default(true),
+  conditions: z
+    .array(
+      z.object({
+        field: z.string(),
+        operator: z.enum(["eq", "neq", "gt", "gte", "lt", "lte", "in", "nin"]),
+        value: z.union([
+          z.string(),
+          z.number(),
+          z.boolean(),
+          z.array(z.string()),
+          z.array(z.number()),
+          z.array(z.boolean()),
+        ]),
+      }),
+    )
+    .nonempty()
+    .optional(),
+});
 
-    await cache.delete(CACHE.FLAGS.ALL);
-    await cache.delete(CACHE.FLAGS.ENABLED);
+router.put("/:name", validate("json", createFlagBodySchema), async (ctx) => {
+  const cache = ctx.get("cache");
+  const storage = ctx.get("storage");
+  const name = ctx.req.param("name");
+  const { description, enabled, conditions } = ctx.req.valid(
+    "json" as never,
+  ) as z.infer<typeof createFlagBodySchema>;
+  const flag = await storage.upsertFlag({
+    name,
+    description,
+    enabled: enabled ?? true,
+    conditions,
+  });
 
-    return ctx.json({ status: 200, success: true, data: flag });
-  },
-);
+  await cache.delete(CACHE.FLAGS.ALL);
+  await cache.delete(CACHE.FLAGS.ENABLED);
+
+  return ctx.json({ status: 200, success: true, data: flag });
+});
 
 router.delete("/:name", async (ctx) => {
   const cache = ctx.get("cache");

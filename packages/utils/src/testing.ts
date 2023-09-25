@@ -7,7 +7,7 @@ export async function request(
 ) {
   return service.request(path, {
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,

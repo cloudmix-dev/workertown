@@ -12,7 +12,9 @@ export interface PlanetscaleStorageAdapterOptions {
   migrationsPrefix?: string;
 }
 
-export class PlanetscaleStorageAdapter<T = {}> extends StorageAdapter {
+export class PlanetscaleStorageAdapter<
+  T = Record<string, unknown>,
+> extends StorageAdapter {
   public readonly client: Kysely<T>;
 
   public readonly migrationsPrefix: string = "wt";

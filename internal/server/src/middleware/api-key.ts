@@ -1,7 +1,8 @@
 import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 
-import { type Middleware, type User } from "../types.js";
+import { type MiddlewareHandler } from "../router.js";
+import { type User } from "../types.js";
 
 interface ApiKeyOptions {
   apiKey?: string;
@@ -38,9 +39,10 @@ export function apiKey(options?: ApiKeyOptionsOptional) {
     getCredentials,
     verifyCredentials,
   } = merge({}, DEFAULT_OPTIONS, options);
-  const handler: Middleware = async (ctx, next) => {
+  // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+  const handler: MiddlewareHandler<any> = async (ctx, next) => {
     const apiKey = (optionsApiKey ?? ctx.env?.[apiKeyEnvKey]) as string;
-    const user = ctx.get("user") ?? null;
+    const user: User | null = ctx.get("user") ?? null;
 
     if (user === null) {
       const credentials = getCredentials(ctx.req as unknown as Request);

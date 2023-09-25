@@ -3,13 +3,13 @@ import { type D1Database, type KVNamespace } from "@cloudflare/workers-types";
 import { KVCacheAdapter } from "../cache/kv.js";
 import { D1StorageAdapter } from "../storage/d1.js";
 import {
-  type CreateServerOptions,
   type GetRuntimeOptions,
   type Runtime,
+  type ServerOptions,
 } from "../types.js";
 
 export function runtime(
-  config: CreateServerOptions,
+  config: ServerOptions,
   env: Record<string, unknown>,
   options: GetRuntimeOptions = { cache: true },
 ): Runtime {

@@ -1,4 +1,4 @@
-import featureFlags, { type CreateServerOptions } from "../src";
+import featureFlags, { type ServerOptions } from "../src";
 import { runtime } from "../src/runtime/test";
 import { type Flag } from "../src/storage";
 
@@ -128,7 +128,7 @@ const FLAGS: Flag[] = [
 ];
 
 export function createTestService(
-  options: CreateServerOptions = {},
+  options: ServerOptions = {},
   initialFlags: Flag[] = FLAGS,
 ) {
   return featureFlags({
@@ -151,8 +151,8 @@ export function makeRequest(
   return service.request(path, {
     method,
     headers: {
-      authorization: "Bearer test",
-      "content-type": "application/json",
+      Authorization: "Bearer test",
+      "Content-Type": "application/json",
     },
     body: body ? JSON.stringify(body) : undefined,
   });

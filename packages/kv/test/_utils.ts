@@ -1,4 +1,4 @@
-import kv, { type CreateServerOptions } from "../src";
+import kv, { type ServerOptions } from "../src";
 import { runtime } from "../src/runtime/test";
 
 const VALUES = {
@@ -9,7 +9,7 @@ const VALUES = {
 };
 
 export function createTestService(
-  options: CreateServerOptions = {},
+  options: ServerOptions = {},
   initialValues: Record<string, unknown> = VALUES,
 ) {
   return kv({
@@ -32,8 +32,8 @@ export function makeRequest(
   return service.request(path, {
     method,
     headers: {
-      authorization: "Bearer test",
-      "content-type": "application/json",
+      Authorization: "Bearer test",
+      "Content-Type": "application/json",
     },
     body: body ? JSON.stringify(body) : undefined,
   });

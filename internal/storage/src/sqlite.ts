@@ -9,7 +9,9 @@ export interface SqliteStorageAdapterOptions {
   migrationsPrefix?: string;
 }
 
-export class SqliteStorageAdapter<T = {}> extends StorageAdapter {
+export class SqliteStorageAdapter<
+  T = Record<string, unknown>,
+> extends StorageAdapter {
   public readonly client: Kysely<T>;
 
   public readonly migrationsPrefix: string = "wt";

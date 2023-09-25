@@ -9,6 +9,9 @@ import {
 
 type Targets = keyof Omit<ValidationTargets, "header" | "cookie">;
 
+// TODO: fix the typings for this (and Server/Router) so that we can infer the
+// req.valid values properly
+
 // This is just a dumb copy/paste (and modification) of the types found at
 // @hono/zod-validator/dist/esm/index.d.ts
 export const validate = <
@@ -36,7 +39,7 @@ export const validate = <
           success: false,
           data: null,
           errors: result.error.issues.map((issue) => ({
-            location: input === "json" ? "body" : "query",
+            location: input === "query" ? input : "body",
             path: issue.path,
             message: issue.message,
           })),

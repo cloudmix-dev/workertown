@@ -1,8 +1,8 @@
 import test from "ava";
-import { Hono } from "hono";
 
 import { authenticated } from "../../src/middleware/authenticated";
 import { basic } from "../../src/middleware/basic";
+import { Router } from "../../src/router";
 import { makeRequest } from "../_utils";
 
 interface SuccessfulResponse {
@@ -17,20 +17,20 @@ interface ErrorResponse {
 }
 
 test("allows authenticated requests", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use(
+  router.use(
     "*",
     basic({ username: "test_username", password: "test_password" }),
+    authenticated(),
   );
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
-      authorization: `Basic ${btoa("test_username:test_password")}`,
+      Authorization: `Basic ${btoa("test_username:test_password")}`,
     },
   });
 
@@ -42,15 +42,14 @@ test("allows authenticated requests", async (t) => {
 });
 
 test("doesn't allow unauthenticated requests", async (t) => {
-  const server = new Hono();
+  const router = new Router();
 
-  server.use("*", basic());
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", basic(), authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/");
+  const res = await makeRequest(router, "/");
 
   t.is(res.status, 401);
 
@@ -63,9 +62,9 @@ test("doesn't allow unauthenticated requests", async (t) => {
 });
 
 test("gets the username/password from ctx.env correctly", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", (ctx, next) => {
+  router.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
     // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).AUTH_USERNAME = "test_username";
@@ -74,15 +73,14 @@ test("gets the username/password from ctx.env correctly", async (t) => {
 
     return next();
   });
-  server.use("*", basic());
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", basic(), authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
-      authorization: `Basic ${btoa("test_username:test_password")}`,
+      Authorization: `Basic ${btoa("test_username:test_password")}`,
     },
   });
 
@@ -94,9 +92,9 @@ test("gets the username/password from ctx.env correctly", async (t) => {
 });
 
 test("gets the username/password from a custom ctx.env value", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", (ctx, next) => {
+  router.use("*", (ctx, next) => {
     ctx.env = ctx.env ?? {};
     // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
     (ctx.env as any).TEST_USERNAME = "test_username";
@@ -105,7 +103,7 @@ test("gets the username/password from a custom ctx.env value", async (t) => {
 
     return next();
   });
-  server.use(
+  router.use(
     "*",
     basic({
       env: {
@@ -113,15 +111,15 @@ test("gets the username/password from a custom ctx.env value", async (t) => {
         password: "TEST_PASSWORD",
       },
     }),
+    authenticated(),
   );
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
-      authorization: `Basic ${btoa("test_username:test_password")}`,
+      Authorization: `Basic ${btoa("test_username:test_password")}`,
     },
   });
 

@@ -2,7 +2,7 @@ import { type DeepPartial } from "@workertown/internal-types";
 import merge from "lodash.merge";
 import { inRange } from "range_check";
 
-import { type Middleware } from "../types.js";
+import { type MiddlewareHandler } from "../router.js";
 
 interface IpOptions {
   ips: string[];
@@ -17,7 +17,8 @@ const DEFAULT_OPTIONS: IpOptions = {
 export function ip(options?: IpOptionsOptional) {
   const { ips } = merge({}, DEFAULT_OPTIONS, options);
 
-  const handler: Middleware = async (ctx, next) => {
+  // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+  const handler: MiddlewareHandler<any> = async (ctx, next) => {
     const ip =
       ctx.req.headers.get("cf-connecting-ip") ??
       ctx.req.headers.get("x-forwarded-for") ??
@@ -43,7 +44,7 @@ export function ip(options?: IpOptionsOptional) {
         },
         403,
         {
-          "x-workertown-hint": "The origin IP is not authorized",
+          "X-Workertown-Hint": "The origin IP is not authorized",
         },
       );
     }

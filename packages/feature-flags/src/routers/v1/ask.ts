@@ -95,7 +95,12 @@ router.post(
   async (ctx) => {
     const cache = ctx.get("cache");
     const storage = ctx.get("storage");
-    const { flags: proposedFlags, context } = ctx.req.valid("json");
+    const { flags: proposedFlags, context } = ctx.req.valid(
+      "json" as never,
+    ) as {
+      flags?: string[];
+      context?: Record<string, unknown>;
+    };
     let flags: Flag[] | null = await cache.get(CACHE.FLAGS.ENABLED);
 
     if (!flags) {

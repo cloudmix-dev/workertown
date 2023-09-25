@@ -1,7 +1,7 @@
 import test from "ava";
-import { Hono } from "hono";
 
 import { authenticated } from "../../src/middleware/authenticated";
+import { Router } from "../../src/router";
 import { makeRequest } from "../_utils";
 
 interface SuccessfulResponse {
@@ -16,19 +16,19 @@ interface ErrorResponse {
 }
 
 test("allows authenticated requests", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router<{ user: { id: string } }>();
 
-  server.use("*", (ctx, next) => {
+  router.use("*", (ctx, next) => {
     ctx.set("user", { id: "test" });
 
     return next();
   });
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/");
+  const res = await makeRequest(router, "/");
 
   t.is(res.status, 200);
 
@@ -38,14 +38,14 @@ test("allows authenticated requests", async (t) => {
 });
 
 test("doesn't allow unauthenticated requests", async (t) => {
-  const server = new Hono();
+  const router = new Router();
 
-  server.use("*", authenticated());
-  server.get("*", (ctx) => {
+  router.use("*", authenticated());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/");
+  const res = await makeRequest(router, "/");
 
   t.is(res.status, 401);
 

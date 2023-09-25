@@ -3,14 +3,15 @@ import {
   sentry as sentryMiddleware,
 } from "@hono/sentry";
 
-import { type Middleware } from "../types.js";
+import { type MiddlewareHandler } from "../router.js";
 
 export { type SentryOptions };
 
 export function sentry(options?: SentryOptions) {
-  const handler: Middleware = sentryMiddleware(
+  // biome-ignore lint/suspicious/noExplicitAny: We're overriding the default type of ctx here
+  const handler: MiddlewareHandler<any> = sentryMiddleware(
     options,
-  ) as unknown as Middleware;
+  ) as unknown as MiddlewareHandler;
 
   return handler;
 }

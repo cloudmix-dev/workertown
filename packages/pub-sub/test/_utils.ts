@@ -1,4 +1,4 @@
-import pubSub, { type CreateServerOptions } from "../src";
+import pubSub, { type ServerOptions } from "../src";
 import { runtime } from "../src/runtime/test";
 import { type Subscription } from "../src/storage";
 
@@ -13,7 +13,7 @@ const SUBSCRIPTIONS: Subscription[] = [
 ];
 
 export function createTestService(
-  options: CreateServerOptions = {},
+  options: ServerOptions = {},
   initialSubscriptions: Subscription[] = SUBSCRIPTIONS,
 ) {
   return pubSub({
@@ -38,8 +38,8 @@ export function makeRequest(
   return service.request(path, {
     method,
     headers: {
-      authorization: "Bearer test",
-      "content-type": "application/json",
+      Authorization: "Bearer test",
+      "Content-Type": "application/json",
     },
     body: body ? JSON.stringify(body) : undefined,
   });

@@ -1,7 +1,7 @@
 import test from "ava";
-import { Hono } from "hono";
 
 import { ip } from "../../src/middleware/ip";
+import { Router } from "../../src/router";
 import { makeRequest } from "../_utils";
 
 interface SuccessfulResponse {
@@ -16,14 +16,14 @@ interface ErrorResponse {
 }
 
 test("only allows requests from whitelisted IPv4s", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", ip({ ips: ["10.0.0.0/24", "11.0.0.0"] }));
-  server.get("*", (ctx) => {
+  router.use("*", ip({ ips: ["10.0.0.0/24", "11.0.0.0"] }));
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res1 = await makeRequest(server, "/", {
+  const res1 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "10.0.0.0",
     },
@@ -35,7 +35,7 @@ test("only allows requests from whitelisted IPv4s", async (t) => {
 
   t.is(result1.success, true);
 
-  const res2 = await makeRequest(server, "/", {
+  const res2 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "11.0.0.0",
     },
@@ -47,7 +47,7 @@ test("only allows requests from whitelisted IPv4s", async (t) => {
 
   t.is(result2.success, true);
 
-  const res3 = await makeRequest(server, "/", {
+  const res3 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "11.0.0.1",
     },
@@ -64,14 +64,14 @@ test("only allows requests from whitelisted IPv4s", async (t) => {
 });
 
 test("only allows requests from whitelisted IPv6s", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", ip({ ips: ["2001:db8::/24", "2001:4860:8006::62"] }));
-  server.get("*", (ctx) => {
+  router.use("*", ip({ ips: ["2001:db8::/24", "2001:4860:8006::62"] }));
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res1 = await makeRequest(server, "/", {
+  const res1 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "2001:db8:1234::1",
     },
@@ -83,7 +83,7 @@ test("only allows requests from whitelisted IPv6s", async (t) => {
 
   t.is(result1.success, true);
 
-  const res2 = await makeRequest(server, "/", {
+  const res2 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "2001:4860:8006::62",
     },
@@ -95,7 +95,7 @@ test("only allows requests from whitelisted IPv6s", async (t) => {
 
   t.is(result2.success, true);
 
-  const res3 = await makeRequest(server, "/", {
+  const res3 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "2001:4860:8006::63",
     },
@@ -112,14 +112,14 @@ test("only allows requests from whitelisted IPv6s", async (t) => {
 });
 
 test("gets the IP correctly", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", ip({ ips: ["10.0.0.0/24"] }));
-  server.get("*", (ctx) => {
+  router.use("*", ip({ ips: ["10.0.0.0/24"] }));
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res1 = await makeRequest(server, "/", {
+  const res1 = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "10.0.0.0",
     },
@@ -131,7 +131,7 @@ test("gets the IP correctly", async (t) => {
 
   t.is(result1.success, true);
 
-  const res2 = await makeRequest(server, "/", {
+  const res2 = await makeRequest(router, "/", {
     headers: {
       "x-forwarded-for": "10.0.0.0",
     },
@@ -143,7 +143,7 @@ test("gets the IP correctly", async (t) => {
 
   t.is(result2.success, true);
 
-  const res3 = await makeRequest(server, "/", {
+  const res3 = await makeRequest(router, "/", {
     headers: {
       "x-real-ip": "10.0.0.0",
     },
@@ -157,14 +157,14 @@ test("gets the IP correctly", async (t) => {
 });
 
 test("allows requests from nowhere by default", async (t) => {
-  const server = new Hono<{ Variables: { user: { id: string } } }>();
+  const router = new Router();
 
-  server.use("*", ip());
-  server.get("*", (ctx) => {
+  router.use("*", ip());
+  router.get("*", (ctx) => {
     return ctx.json({ success: true });
   });
 
-  const res = await makeRequest(server, "/", {
+  const res = await makeRequest(router, "/", {
     headers: {
       "cf-connecting-ip": "10.0.0.0",
     },

@@ -21,7 +21,7 @@ export interface CloudFrontResponse {
   statusDescription?: string;
 }
 
-declare type CloudFrontContext = {};
+declare type CloudFrontContext = Record<string, unknown>;
 
 export interface CloudFrontResult {
   status: string;
@@ -46,5 +46,5 @@ export function serve(
   context?: CloudFrontContext,
   callback?: Callback,
 ) => Promise<CloudFrontResult> {
-  return handle(server);
+  return handle(server.server);
 }

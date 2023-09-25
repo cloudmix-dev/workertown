@@ -10,7 +10,9 @@ interface D1StorageAdapterOptions {
   migrationsPrefix?: string;
 }
 
-export class D1StorageAdapter<T = {}> extends StorageAdapter {
+export class D1StorageAdapter<
+  T = Record<string, unknown>,
+> extends StorageAdapter {
   public readonly client: Kysely<T>;
 
   public readonly migrationsPrefix: string = "wt";

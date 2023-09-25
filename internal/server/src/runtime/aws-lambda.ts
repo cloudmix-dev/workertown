@@ -128,5 +128,5 @@ export function serve(
 ): (
   event: APIGatewayProxyEventV2 | APIGatewayProxyEvent | LambdaFunctionUrlEvent,
 ) => Promise<APIGatewayProxyResult> {
-  return handle(server);
+  return handle(server.server);
 }

@@ -44,8 +44,8 @@ const server = search();
 //...probably `export default server;`
 ```
 
-Like all Workertown services, the created server is a [Hono](https://hono.dev)
-instance with a `fetch` method.
+Like all Workertown services, the created server (based on
+[Hono](https://hono.dev)) instance with a `fetch` method.
 
 The `server` function accepts a single argument, an optional options object.
 This options object allows you to customise the search service to fit your

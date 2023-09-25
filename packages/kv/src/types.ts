@@ -1,11 +1,8 @@
-import {
-  type Context as WorkertownContext,
-  type CreateServerOptions as BaseCreateServerOptions,
-} from "@workertown/internal-server";
+import { type ServerOptions as BaseServerOptions } from "@workertown/internal-server";
 
 import { type StorageAdapter } from "./storage/index.js";
 
-export interface CreateServerOptions extends BaseCreateServerOptions {
+export interface ServerOptions extends BaseServerOptions {
   endpoints: {
     v1: {
       admin: string | false;
@@ -19,10 +16,10 @@ export interface CreateServerOptions extends BaseCreateServerOptions {
   runtime?: RuntimeResolver;
 }
 
-export type Context = WorkertownContext<{
-  config: CreateServerOptions;
+export type Context = {
+  config: ServerOptions;
   storage: StorageAdapter;
-}>;
+};
 
 export interface Runtime {
   storage: StorageAdapter;
@@ -30,4 +27,4 @@ export interface Runtime {
 
 export type RuntimeResolver =
   | Runtime
-  | ((config: CreateServerOptions, env: Record<string, unknown>) => Runtime);
+  | ((config: ServerOptions, env: Record<string, unknown>) => Runtime);

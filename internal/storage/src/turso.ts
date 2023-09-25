@@ -10,7 +10,9 @@ export interface TursoStorageAdapterOptions {
   migrationsPrefix?: string;
 }
 
-export class TursoStorageAdapter<T = {}> extends StorageAdapter {
+export class TursoStorageAdapter<
+  T = Record<string, unknown>,
+> extends StorageAdapter {
   public readonly client: Kysely<T>;
 
   public readonly migrationsPrefix: string = "wt";

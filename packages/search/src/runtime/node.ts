@@ -1,13 +1,13 @@
 import { MemoryCacheAdapter } from "../cache/memory.js";
 import { SqliteStorageAdapter } from "../storage/sqlite.js";
 import {
-  type CreateServerOptions,
   type GetRuntimeOptions,
   type Runtime,
+  type ServerOptions,
 } from "../types.js";
 
 export function runtime(
-  config: CreateServerOptions,
+  config: ServerOptions,
   env: Record<string, unknown>,
   options: GetRuntimeOptions = { cache: true },
 ): Runtime {

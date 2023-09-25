@@ -15,22 +15,23 @@ router.get("/:id", async (ctx) => {
   return ctx.json({ status: status, success: true, data: document }, status);
 });
 
+const createSearchItemBodySchema = z.object({
+  tenant: z.string(),
+  index: z.string(),
+  data: z.record(z.unknown()),
+  tags: z.array(z.string()).optional(),
+});
+
 router.put(
   "/:id",
-  validate(
-    "json",
-    z.object({
-      tenant: z.string(),
-      index: z.string(),
-      data: z.record(z.unknown()),
-      tags: z.array(z.string()).optional(),
-    }),
-  ),
+  validate("json", createSearchItemBodySchema),
   async (ctx) => {
     const id = ctx.req.param("id");
     const storage = ctx.get("storage");
     const cache = ctx.get("cache");
-    const { tenant, index, data, tags } = ctx.req.valid("json");
+    const { tenant, index, data, tags } = ctx.req.valid(
+      "json" as never,
+    ) as z.infer<typeof createSearchItemBodySchema>;
     const document = await storage.upsertDocument(
       { id, tenant, index, data },
       tags,

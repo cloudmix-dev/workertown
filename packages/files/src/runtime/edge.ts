@@ -1,13 +1,13 @@
 import { S3FilesAdapter } from "../files/s3.js";
 import { PlanetscaleStorageAdapter } from "../storage/planetscale.js";
-import { type CreateServerOptions, type Runtime } from "../types.js";
+import { type Runtime, type ServerOptions } from "../types.js";
 
 function generateUrl(url: URL) {
   return `${url.protocol}//${url.host}/${url.pathname}${url.search}`;
 }
 
 export function runtime(
-  config: CreateServerOptions,
+  config: ServerOptions,
   env: Record<string, unknown>,
 ): Runtime {
   const s3UrlString = env[config.env.files] as string;

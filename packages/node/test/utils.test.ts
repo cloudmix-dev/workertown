@@ -48,6 +48,7 @@ test("parseOptionsFromEnv parses options with a custom delimeter", (t) => {
 });
 
 test("exitOnSignals exits on signals", (t) => {
+  // biome-ignore lint/complexity/noBannedTypes: OK for testing purposes
   const onCalls: [string | symbol, Function][] = [];
   const exitCalls: [number?][] = [];
 
@@ -79,6 +80,7 @@ test("exitOnSignals exits on signals", (t) => {
 });
 
 test("exitOnSignals exits on signals w/ custom signals", (t) => {
+  // biome-ignore lint/complexity/noBannedTypes: OK for testing purposes
   const onCalls: [string | symbol, Function][] = [];
   const exitCalls: [number?][] = [];
 
@@ -99,6 +101,7 @@ test("exitOnSignals exits on signals w/ custom signals", (t) => {
 });
 
 test("exitOnSignals exits on signals w/ custom code", (t) => {
+  // biome-ignore lint/complexity/noBannedTypes: OK for testing purposes
   const onCalls: [string | symbol, Function][] = [];
   const exitCalls: [number?][] = [];
 

@@ -1,4 +1,4 @@
-import files, { type CreateServerOptions } from "../src";
+import files, { type ServerOptions } from "../src";
 import { runtime } from "../src/runtime/test";
 import { type UploadUrl } from "../src/storage";
 
@@ -16,7 +16,7 @@ const UPLOAD_URLS: UploadUrl[] = [
 ];
 
 export function createTestService(
-  options: CreateServerOptions = {},
+  options: ServerOptions = {},
   initialUploadUrls: UploadUrl[] = UPLOAD_URLS,
 ) {
   return files({
@@ -45,7 +45,7 @@ export function makeRequest(
   } = {},
 ) {
   const headers: Record<string, string> = {
-    authorization: "Bearer test",
+    Authorization: "Bearer test",
   };
   let bodyData: string | FormData | undefined;
 
@@ -53,7 +53,7 @@ export function makeRequest(
     bodyData = body;
   } else if (body) {
     bodyData = JSON.stringify(body);
-    headers["content-type"] = "application/json";
+    headers["Content-Type"] = "application/json";
   }
 
   return service.request(path, {

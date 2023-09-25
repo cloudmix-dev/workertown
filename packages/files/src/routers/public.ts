@@ -19,92 +19,88 @@ router.options("/upload/:id", (ctx) =>
   }),
 );
 
-router.post(
-  "/upload/:id",
-  validate(
-    "form",
-    z.object({
-      file: z.any(),
-    }),
-  ),
-  async (ctx) => {
-    const config = ctx.get("config");
-    const storage = ctx.get("storage");
-    const files = ctx.get("files");
-    const id = ctx.req.param("id");
-    const { file: fileData } = ctx.req.valid("form");
-    const uploadUrl = await storage.getUploadUrl(id);
-    const signingKey =
-      config.files.uploadSigningKey ??
-      (ctx.env[config.env.signingKey] as string);
+const uploadBodySchema = z.object({
+  file: z.any(),
+});
 
-    if (!uploadUrl) {
-      return ctx.json(
-        { status: 404, success: false, data: null, error: "Not found" },
-        404,
-      );
-    }
+router.post("/upload/:id", validate("form", uploadBodySchema), async (ctx) => {
+  const config = ctx.get("config");
+  const storage = ctx.get("storage");
+  const files = ctx.get("files");
+  const id = ctx.req.param("id");
+  const { file: fileData } = ctx.req.valid("form" as never) as z.infer<
+    typeof uploadBodySchema
+  >;
+  const uploadUrl = await storage.getUploadUrl(id);
+  const signingKey =
+    config.files.uploadSigningKey ?? (ctx.env[config.env.signingKey] as string);
 
-    await files.put(uploadUrl.path, fileData, uploadUrl.metadata);
+  if (!uploadUrl) {
+    return ctx.json(
+      { status: 404, success: false, data: null, error: "Not found" },
+      404,
+    );
+  }
 
-    if (uploadUrl.callbackUrl) {
-      const encoder = new TextEncoder();
-      const decoder = new TextDecoder();
-      const key = await crypto.subtle.importKey(
-        "raw",
-        encoder.encode(signingKey),
-        "HMAC",
-        false,
-        ["sign"],
-      );
-      const signature = await crypto.subtle.sign(
-        "HMAC",
-        key,
-        new TextEncoder().encode(
-          JSON.stringify({
+  await files.put(uploadUrl.path, fileData, uploadUrl.metadata);
+
+  if (uploadUrl.callbackUrl) {
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(signingKey),
+      "HMAC",
+      false,
+      ["sign"],
+    );
+    const signature = await crypto.subtle.sign(
+      "HMAC",
+      key,
+      new TextEncoder().encode(
+        JSON.stringify({
+          id,
+          path: uploadUrl.path,
+          callbackUrl: uploadUrl.callbackUrl,
+          metadata: uploadUrl.metadata,
+        }),
+      ),
+    );
+    let attempts = 0;
+
+    while (attempts < 3) {
+      attempts += 1;
+
+      try {
+        const res = await fetch(uploadUrl.callbackUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Workertown-Signature": decoder.decode(signature),
+          },
+          body: JSON.stringify({
             id,
             path: uploadUrl.path,
             callbackUrl: uploadUrl.callbackUrl,
             metadata: uploadUrl.metadata,
           }),
-        ),
-      );
-      let attempts = 0;
+        });
 
-      while (attempts < 3) {
-        attempts += 1;
-
-        try {
-          const res = await fetch(uploadUrl.callbackUrl, {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-              "x-workertown-signature": decoder.decode(signature),
-            },
-            body: JSON.stringify({
-              id,
-              path: uploadUrl.path,
-              callbackUrl: uploadUrl.callbackUrl,
-              metadata: uploadUrl.metadata,
-            }),
-          });
-
-          if (res.ok) {
-            break;
-          }
-        } catch (_) {}
-      }
+        if (res.ok) {
+          break;
+        }
+      } catch (_) {}
     }
+  }
 
-    await storage.deleteUploadUrl(id);
+  await storage.deleteUploadUrl(id);
 
-    return ctx.json({
-      status: 200,
-      success: true,
-      data: { path: uploadUrl.path },
-    });
-  },
-);
+  return ctx.json({
+    status: 200,
+    success: true,
+    data: { path: uploadUrl.path },
+  });
+});
 
 router.options("/open-api.json", (ctx) =>
   ctx.text("OK", {

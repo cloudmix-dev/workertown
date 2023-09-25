@@ -1,9 +1,9 @@
 import { UpstashRedisCacheAdapter } from "../cache/upstash-redis.js";
 import { PlanetscaleStorageAdapter } from "../storage/planetscale.js";
 import {
-  type CreateServerOptions,
   type GetRuntimeOptions,
   type Runtime,
+  type ServerOptions,
 } from "../types.js";
 
 function generateUrl(url: URL) {
@@ -11,7 +11,7 @@ function generateUrl(url: URL) {
 }
 
 export function runtime(
-  config: CreateServerOptions,
+  config: ServerOptions,
   env: Record<string, unknown>,
   options: GetRuntimeOptions = { cache: true },
 ): Runtime {
