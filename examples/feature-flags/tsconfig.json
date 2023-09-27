@@ -5,7 +5,7 @@
       "es2021"
     ],
     "jsx": "react",
-    "module": "es2022",
+    "module": "node16",
     "moduleResolution": "node16",
     "resolveJsonModule": true,
     "allowJs": true,
