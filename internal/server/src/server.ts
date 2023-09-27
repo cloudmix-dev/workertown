@@ -75,6 +75,12 @@ export class Server<
       this._server = this._server.basePath(options.basePath);
     }
 
+    this.fetch = this.fetch.bind(this);
+    this.request = this.request.bind(this);
+    this.use = this.use.bind(this);
+    this.route = this.route.bind(this);
+    this.asRouter = this.asRouter.bind(this);
+
     this._init(options);
   }
 
