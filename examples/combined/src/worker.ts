@@ -73,14 +73,15 @@ const searchService = search({
     db: D1_KEY,
   },
 });
+const server = combine(
+  featureFlagsService,
+  filesService,
+  kvService,
+  pubSubService,
+  searchService,
+);
 
 export default {
-  ...combine(
-    featureFlagsService,
-    filesService,
-    kvService,
-    pubSubService,
-    searchService,
-  ),
-  queue: pubSubService.queue,
+  fetch: server.fetch.bind(server),
+  queue: pubSubService.queue?.bind(pubSubService),
 };
