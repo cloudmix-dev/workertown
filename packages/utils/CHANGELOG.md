@@ -1,5 +1,13 @@
 # @workertown/utils
 
+## 0.0.2-alpha.23
+
+### Patch Changes
+
+- Alpha.23 Release
+- Updated dependencies
+  - @workertown/internal-server@0.0.2-alpha.23
+
 ## 0.0.2-alpha.22
 
 ### Patch Changes

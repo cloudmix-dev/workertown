@@ -7,11 +7,11 @@
     "start": "export NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/feature-flags": "workspace:~0.0.2-alpha.22",
-    "@workertown/files": "workspace:~0.0.2-alpha.22",
-    "@workertown/kv": "workspace:~0.0.2-alpha.22",
-    "@workertown/pub-sub": "workspace:~0.0.2-alpha.22",
-    "@workertown/search": "workspace:~0.0.2-alpha.22",
-    "@workertown/utils": "workspace:~0.0.2-alpha.22"
+    "@workertown/feature-flags": "workspace:~0.0.2-alpha.23",
+    "@workertown/files": "workspace:~0.0.2-alpha.23",
+    "@workertown/kv": "workspace:~0.0.2-alpha.23",
+    "@workertown/pub-sub": "workspace:~0.0.2-alpha.23",
+    "@workertown/search": "workspace:~0.0.2-alpha.23",
+    "@workertown/utils": "workspace:~0.0.2-alpha.23"
   }
 }

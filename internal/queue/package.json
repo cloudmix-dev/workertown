@@ -1,7 +1,7 @@
 {
   "name": "@workertown/internal-queue",
   "description": "Internal queue implementations for WorkerTown",
-  "version": "0.0.2-alpha.22",
+  "version": "0.0.2-alpha.23",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@libsql/kysely-libsql": "~0.3.0",
-    "@workertown/internal-storage": "workspace:~0.0.2-alpha.22",
+    "@workertown/internal-storage": "workspace:~0.0.2-alpha.23",
     "kysely": "~0.26.1",
     "kysely-planetscale": "~1.4.0"
   },

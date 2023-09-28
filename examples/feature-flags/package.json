@@ -7,6 +7,6 @@
     "start": "export NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/feature-flags": "workspace:~0.0.2-alpha.22"
+    "@workertown/feature-flags": "workspace:~0.0.2-alpha.23"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@workertown/internal-server",
   "description": "Internal server implementation for WorkerTown",
-  "version": "0.0.2-alpha.22",
+  "version": "0.0.2-alpha.23",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -54,7 +54,7 @@
     "@cloudflare/workers-types": "~4.20230904.0",
     "@types/lodash.merge": "~4.6.7",
     "@upstash/redis": "~1.22.0",
-    "@workertown/internal-types": "workspace:~0.0.2-alpha.22"
+    "@workertown/internal-types": "workspace:~0.0.2-alpha.23"
   },
   "peerDependencies": {
     "@upstash/redis": "~1.22.0"
