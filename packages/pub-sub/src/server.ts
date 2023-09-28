@@ -148,5 +148,7 @@ export function createPubSubServer(
     }
   };
 
+  server.queue = server.queue.bind(server);
+
   return server;
 }

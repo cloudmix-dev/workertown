@@ -82,6 +82,6 @@ const server = combine(
 );
 
 export default {
-  fetch: server.fetch.bind(server),
-  queue: pubSubService.queue?.bind(pubSubService),
+  fetch: server.fetch,
+  queue: pubSubService.queue,
 };
