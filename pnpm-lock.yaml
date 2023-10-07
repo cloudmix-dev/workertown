@@ -194,7 +194,7 @@ importers:
         version: 0.2.2(hono@3.5.8)
       '@hono/zod-validator':
         specifier: ~0.1.8
-        version: 0.1.8(hono@3.5.8)(zod@3.22.2)
+        version: 0.1.8(hono@3.5.8)(zod@3.22.3)
       '@whatwg-node/server':
         specifier: ~0.9.12
         version: 0.9.14
@@ -211,8 +211,8 @@ importers:
         specifier: ~2.0.4
         version: 2.0.4
       zod:
-        specifier: ~3.22.2
-        version: 3.22.2
+        specifier: ~3.22.3
+        version: 3.22.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230904.0
@@ -320,8 +320,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.22.2
-        version: 3.22.2
+        specifier: ~3.22.3
+        version: 3.22.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230904.0
@@ -375,8 +375,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.22.2
-        version: 3.22.2
+        specifier: ~3.22.3
+        version: 3.22.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230904.0
@@ -421,8 +421,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.22.2
-        version: 3.22.2
+        specifier: ~3.22.3
+        version: 3.22.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230904.0
@@ -474,8 +474,8 @@ importers:
         specifier: ~4.6.2
         version: 4.6.2
       zod:
-        specifier: ~3.22.2
-        version: 3.22.2
+        specifier: ~3.22.3
+        version: 3.22.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230904.0
@@ -523,8 +523,8 @@ importers:
         specifier: ~6.1.0
         version: 6.1.0
       zod:
-        specifier: ~3.22.2
-        version: 3.22.2
+        specifier: ~3.22.3
+        version: 3.22.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ~4.20230904.0
@@ -617,6 +617,9 @@ importers:
       simple-functional-loader:
         specifier: ~1.2.1
         version: 1.2.1
+      tailwind-merge:
+        specifier: ~1.14.0
+        version: 1.14.0
     devDependencies:
       '@markdoc/markdoc':
         specifier: 0.3.2
@@ -638,31 +641,28 @@ importers:
         version: 18.2.21
       autoprefixer:
         specifier: ~10.4.12
-        version: 10.4.15(postcss@8.4.29)
+        version: 10.4.15(postcss@8.4.31)
       js-yaml:
         specifier: ~4.1.0
         version: 4.1.0
+      postcss:
+        specifier: ~8.4.31
+        version: 8.4.31
       postcss-focus-visible:
         specifier: ~9.0.0
-        version: 9.0.0(postcss@8.4.29)
+        version: 9.0.0(postcss@8.4.31)
       postcss-import:
         specifier: ~15.1.0
-        version: 15.1.0(postcss@8.4.29)
+        version: 15.1.0(postcss@8.4.31)
       sharp:
         specifier: ~0.32.4
         version: 0.32.5
-      tailwind-merge:
-        specifier: ~1.14.0
-        version: 1.14.0
       tailwindcss:
-        specifier: ~3.3.0
+        specifier: ~3.3.3
         version: 3.3.3(ts-node@10.9.1)
       tailwindcss-animate:
-        specifier: ~1.0.6
+        specifier: ~1.0.7
         version: 1.0.7(tailwindcss@3.3.3)
-      typescript:
-        specifier: ~5.2.2
-        version: 5.2.2
 
 packages:
 
@@ -2450,14 +2450,14 @@ packages:
       toucan-js: 2.7.0
     dev: false
 
-  /@hono/zod-validator@0.1.8(hono@3.5.8)(zod@3.22.2):
+  /@hono/zod-validator@0.1.8(hono@3.5.8)(zod@3.22.3):
     resolution: {integrity: sha512-/Kd/p/dUVKM7/1TY3jafTV+ngwEh3fOLmXCJQKb9esWsCom5WOJaNmZYv8jeRhyipu1xBvmN5jceRA3Ev3rmQw==}
     peerDependencies:
       hono: 3.*
       zod: ^3.19.1
     dependencies:
       hono: 3.5.8
-      zod: 3.22.2
+      zod: 3.22.3
     dev: false
 
   /@iarna/toml@2.2.5:
@@ -4247,7 +4247,7 @@ packages:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
     dev: false
 
-  /autoprefixer@10.4.15(postcss@8.4.29):
+  /autoprefixer@10.4.15(postcss@8.4.31):
     resolution: {integrity: sha512-KCuPB8ZCIqFdA4HwKXsvz7j6gvSDNhDP7WnUjBleRkKjPdvCmHFuQ77ocavI8FT6NdvlBnE2UFr2H4Mycn8Vew==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
@@ -4259,7 +4259,7 @@ packages:
       fraction.js: 4.3.6
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.29
+      postcss: 8.4.31
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -6941,39 +6941,39 @@ packages:
       irregular-plurals: 3.5.0
     dev: true
 
-  /postcss-focus-visible@9.0.0(postcss@8.4.29):
+  /postcss-focus-visible@9.0.0(postcss@8.4.31):
     resolution: {integrity: sha512-zA4TbVaIaT8npZBEROhZmlc+GBKE8AELPHXE7i4TmIUEQhw/P/mSJfY9t6tBzpQ1rABeGtEOHYrW4SboQeONMQ==}
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss: ^8.4
     dependencies:
-      postcss: 8.4.29
+      postcss: 8.4.31
       postcss-selector-parser: 6.0.13
     dev: true
 
-  /postcss-import@15.1.0(postcss@8.4.29):
+  /postcss-import@15.1.0(postcss@8.4.31):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       postcss: ^8.0.0
     dependencies:
-      postcss: 8.4.29
+      postcss: 8.4.31
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.4
     dev: true
 
-  /postcss-js@4.0.1(postcss@8.4.29):
+  /postcss-js@4.0.1(postcss@8.4.31):
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.4.21
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.29
+      postcss: 8.4.31
     dev: true
 
-  /postcss-load-config@4.0.1(postcss@8.4.29)(ts-node@10.9.1):
+  /postcss-load-config@4.0.1(postcss@8.4.31)(ts-node@10.9.1):
     resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
     engines: {node: '>= 14'}
     peerDependencies:
@@ -6986,18 +6986,18 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.1.0
-      postcss: 8.4.29
+      postcss: 8.4.31
       ts-node: 10.9.1(@types/node@20.4.7)(typescript@5.2.2)
       yaml: 2.3.2
     dev: true
 
-  /postcss-nested@6.0.1(postcss@8.4.29):
+  /postcss-nested@6.0.1(postcss@8.4.31):
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.29
+      postcss: 8.4.31
       postcss-selector-parser: 6.0.13
     dev: true
 
@@ -7029,8 +7029,8 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  /postcss@8.4.29:
-    resolution: {integrity: sha512-cbI+jaqIeu/VGqXEarWkRCCffhjgXc0qjBtXpqJhTBohMUjUQnbBr0xqX3vEKudc4iviTewcJo5ajcec5+wdJw==}
+  /postcss@8.4.31:
+    resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.6
@@ -7916,7 +7916,7 @@ packages:
 
   /tailwind-merge@1.14.0:
     resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==}
-    dev: true
+    dev: false
 
   /tailwindcss-animate@1.0.7(tailwindcss@3.3.3):
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
@@ -7945,11 +7945,11 @@ packages:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.0
-      postcss: 8.4.29
-      postcss-import: 15.1.0(postcss@8.4.29)
-      postcss-js: 4.0.1(postcss@8.4.29)
-      postcss-load-config: 4.0.1(postcss@8.4.29)(ts-node@10.9.1)
-      postcss-nested: 6.0.1(postcss@8.4.29)
+      postcss: 8.4.31
+      postcss-import: 15.1.0(postcss@8.4.31)
+      postcss-js: 4.0.1(postcss@8.4.31)
+      postcss-load-config: 4.0.1(postcss@8.4.31)(ts-node@10.9.1)
+      postcss-nested: 6.0.1(postcss@8.4.31)
       postcss-selector-parser: 6.0.13
       resolve: 1.22.4
       sucrase: 3.34.0
@@ -8653,6 +8653,6 @@ packages:
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
 
-  /zod@3.22.2:
-    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
+  /zod@3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
     dev: false
