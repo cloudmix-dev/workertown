@@ -52,13 +52,13 @@
     "@planetscale/database": "~1.11.0",
     "@types/better-sqlite3": "~7.6.5",
     "@workertown/internal-types": "workspace:~0.0.2-alpha.23",
-    "better-sqlite3": "~8.6.0"
+    "better-sqlite3": "~8.7.0"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.388.0",
     "@aws-sdk/lib-dynamodb": "~3.388.0",
     "@planetscale/database": "~1.11.0",
-    "better-sqlite3": "~8.6.0"
+    "better-sqlite3": "~8.7.0"
   },
   "engines": {
     "node": ">=18.0.0"
