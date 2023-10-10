@@ -45,11 +45,11 @@
     "@cloudflare/workers-types": "~4.20230904.0",
     "@planetscale/database": "~1.11.0",
     "@types/better-sqlite3": "~7.6.5",
-    "better-sqlite3": "~8.6.0"
+    "better-sqlite3": "~8.7.0"
   },
   "peerDependencies": {
     "@planetscale/database": "~1.11.0",
-    "better-sqlite3": "~8.6.0"
+    "better-sqlite3": "~8.7.0"
   },
   "engines": {
     "node": ">=18.0.0"
