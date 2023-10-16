@@ -440,8 +440,8 @@ importers:
   packages/node:
     dependencies:
       '@hono/node-server':
-        specifier: ~1.1.0
-        version: 1.1.1
+        specifier: ~1.2.0
+        version: 1.2.0
       lodash.set:
         specifier: ~4.3.2
         version: 4.3.2
@@ -2858,8 +2858,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@hono/node-server@1.1.1:
-    resolution: {integrity: sha512-0ZfrcW8Y+TAGNzKGoDB1iQ7Gv7uGsGDOYlz7nckXcHRpK60Oxuz1ttiFmdHYmI6kGO+/VJ8Iy58LDhoTPqkiow==}
+  /@hono/node-server@1.2.0:
+    resolution: {integrity: sha512-aHT8lDMLpd7ioXJ1/057+h+oE/k7rCOWmjklYDsE0jE4CoNB9XzG4f8dRHvw4s5HJFocaYDiGgYM/V0kYbQ0ww==}
     engines: {node: '>=18.0.0'}
     dev: false
 
