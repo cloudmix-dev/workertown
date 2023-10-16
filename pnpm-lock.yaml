@@ -142,8 +142,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@upstash/redis':
-        specifier: ~1.22.0
-        version: 1.22.0
+        specifier: ~1.23.3
+        version: 1.23.3
 
   internal/files:
     devDependencies:
@@ -221,8 +221,8 @@ importers:
         specifier: ~4.6.7
         version: 4.6.7
       '@upstash/redis':
-        specifier: ~1.22.0
-        version: 1.22.0
+        specifier: ~1.23.3
+        version: 1.23.3
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.23
         version: link:../types
@@ -431,8 +431,8 @@ importers:
         specifier: ~4.6.7
         version: 4.6.7
       '@upstash/redis':
-        specifier: ~1.22.0
-        version: 1.22.0
+        specifier: ~1.23.3
+        version: 1.23.3
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.23
         version: link:../../internal/types
@@ -4629,6 +4629,15 @@ packages:
       isomorphic-fetch: 3.0.0
     transitivePeerDependencies:
       - encoding
+    dev: false
+
+  /@upstash/redis@1.23.3:
+    resolution: {integrity: sha512-6b66nGdkbWl/BZ4Hs9cG9szNNXF8UDgPTUyC/4fcZvDLTs552SlItMSQnmwAKMz0EHjpbVH51VQ4waHNnDy/Xw==}
+    dependencies:
+      isomorphic-fetch: 3.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: true
 
   /@whatwg-node/events@0.1.1:
     resolution: {integrity: sha512-AyQEn5hIPV7Ze+xFoXVU3QTHXVbWPrzaOkxtENMPMuNL6VVHrp4hHfDt9nrQpjO7BgvuM95dMtkycX5M/DZR3w==}
