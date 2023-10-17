@@ -42,7 +42,7 @@
   "dependencies": {
     "@google-cloud/functions-framework": "~3.3.0",
     "@hono/sentry": "~1.0.0",
-    "@hono/zod-validator": "~0.1.8",
+    "@hono/zod-validator": "~0.1.9",
     "@whatwg-node/server": "~0.9.12",
     "hono": "~3.5.8",
     "jose": "~4.14.4",
