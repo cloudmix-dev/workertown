@@ -625,8 +625,8 @@ importers:
         specifier: 0.3.2
         version: 0.3.2(@types/react@18.2.21)(react@18.2.0)
       '@markdoc/next.js':
-        specifier: ~0.3.1
-        version: 0.3.3(@markdoc/markdoc@0.3.2)(next@13.5.6)(react@18.2.0)
+        specifier: ~0.3.4
+        version: 0.3.4(@markdoc/markdoc@0.3.2)(next@13.5.6)(react@18.2.0)
       '@sindresorhus/slugify':
         specifier: ~2.2.1
         version: 2.2.1
@@ -2611,8 +2611,8 @@ packages:
       '@types/markdown-it': 12.2.3
     dev: true
 
-  /@markdoc/next.js@0.3.3(@markdoc/markdoc@0.3.2)(next@13.5.6)(react@18.2.0):
-    resolution: {integrity: sha512-BmrEv76DiGpybTUzDNl6cQNZq7n4rQ+G4AWmpd/+2VlwVTgpT0M165No+Rl4Z3TEeaM66c54n4TdyRh/yY2YwA==}
+  /@markdoc/next.js@0.3.4(@markdoc/markdoc@0.3.2)(next@13.5.6)(react@18.2.0):
+    resolution: {integrity: sha512-HXgrdWem9FZfhQ2jI/o3vlqh8b7vYAgdeNiULIrYsd2qaSwF5e5MXgWkpVmJjslPIrGkdnaWzwAB8G/wTgHMjQ==}
     peerDependencies:
       '@markdoc/markdoc': '*'
       next: '*'
