@@ -63,55 +63,55 @@ importers:
   examples/combined:
     dependencies:
       '@workertown/feature-flags':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/feature-flags
       '@workertown/files':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/files
       '@workertown/kv':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/kv
       '@workertown/pub-sub':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/pub-sub
       '@workertown/search':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/search
       '@workertown/utils':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/utils
 
   examples/feature-flags:
     dependencies:
       '@workertown/feature-flags':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/feature-flags
 
   examples/kv:
     dependencies:
       '@workertown/kv':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/kv
 
   examples/node:
     dependencies:
       '@workertown/feature-flags':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/feature-flags
       '@workertown/kv':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/kv
       '@workertown/node':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/node
       '@workertown/pub-sub':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/pub-sub
       '@workertown/search':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/search
       '@workertown/utils':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/utils
     devDependencies:
       '@types/node':
@@ -127,13 +127,13 @@ importers:
   examples/pub-sub:
     dependencies:
       '@workertown/pub-sub':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/pub-sub
 
   examples/search:
     dependencies:
       '@workertown/search':
-        specifier: workspace:~0.0.2-alpha.23
+        specifier: ~0.0.2-alpha.23
         version: link:../../packages/search
 
   internal/cache:

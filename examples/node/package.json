@@ -7,12 +7,12 @@
     "start": "ts-node --esm ./src/index.ts"
   },
   "dependencies": {
-    "@workertown/feature-flags": "workspace:~0.0.2-alpha.23",
-    "@workertown/kv": "workspace:~0.0.2-alpha.23",
-    "@workertown/node": "workspace:~0.0.2-alpha.23",
-    "@workertown/pub-sub": "workspace:~0.0.2-alpha.23",
-    "@workertown/search": "workspace:~0.0.2-alpha.23",
-    "@workertown/utils": "workspace:~0.0.2-alpha.23"
+    "@workertown/feature-flags": "~0.0.2-alpha.23",
+    "@workertown/kv": "~0.0.2-alpha.23",
+    "@workertown/node": "~0.0.2-alpha.23",
+    "@workertown/pub-sub": "~0.0.2-alpha.23",
+    "@workertown/search": "~0.0.2-alpha.23",
+    "@workertown/utils": "~0.0.2-alpha.23"
   },
   "devDependencies": {
     "@types/node": "~20.6.4",

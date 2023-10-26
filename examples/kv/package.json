@@ -7,6 +7,6 @@
     "start": "export NO_D1_WARNING=true && wrangler dev"
   },
   "dependencies": {
-    "@workertown/kv": "workspace:~0.0.2-alpha.23"
+    "@workertown/kv": "~0.0.2-alpha.23"
   }
 }
