@@ -39,7 +39,7 @@
     "@tailwindcss/typography": "~0.5.10",
     "@types/node": "~20.6.4",
     "@types/react": "18.2.21",
-    "autoprefixer": "~10.4.12",
+    "autoprefixer": "~10.4.16",
     "js-yaml": "~4.1.0",
     "postcss": "~8.4.31",
     "postcss-focus-visible": "~9.0.0",
