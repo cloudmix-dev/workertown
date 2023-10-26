@@ -221,9 +221,10 @@ export class Server<
     return new Router<E>({ hono: this._server });
   }
 
-  queue?: ExportedHandlerQueueHandler<{ [x: string]: unknown }, M>;
+  queue: ExportedHandlerQueueHandler<{ [x: string]: unknown }, M> = () => {};
 
-  scheduled?: ExportedHandlerScheduledHandler<{ [x: string]: unknown }>;
+  scheduled: ExportedHandlerScheduledHandler<{ [x: string]: unknown }> =
+    () => {};
 }
 
 export function createServer<
