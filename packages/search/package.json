@@ -102,14 +102,14 @@
     "zod": "~3.22.4"
   },
   "devDependencies": {
-    "@aws-sdk/lib-dynamodb": "~3.427.0",
+    "@aws-sdk/lib-dynamodb": "~3.438.0",
     "@cloudflare/workers-types": "~4.20230904.0",
     "@types/lodash.merge": "~4.6.7",
     "@workertown/internal-types": "workspace:~0.0.2-alpha.23"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.427.0",
-    "@aws-sdk/lib-dynamodb": "~3.427.0",
+    "@aws-sdk/lib-dynamodb": "~3.438.0",
     "@planetscale/database": "~1.8.0",
     "@upstash/redis": "~1.22.0",
     "better-sqlite3": "~8.6.0"
