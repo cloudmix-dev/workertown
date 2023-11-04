@@ -193,8 +193,8 @@ importers:
         specifier: ~1.0.0
         version: 1.0.0(hono@3.9.0)
       '@hono/zod-validator':
-        specifier: ~0.1.9
-        version: 0.1.9(hono@3.9.0)(zod@3.22.4)
+        specifier: ~0.1.11
+        version: 0.1.11(hono@3.9.0)(zod@3.22.4)
       '@whatwg-node/server':
         specifier: ~0.9.12
         version: 0.9.14
@@ -2491,10 +2491,10 @@ packages:
       toucan-js: 3.3.0
     dev: false
 
-  /@hono/zod-validator@0.1.9(hono@3.9.0)(zod@3.22.4):
-    resolution: {integrity: sha512-qEG5xagKzyif283ldCKzp+aF9Aebclg0sfrgyRQQNAizmXpicZ3UGduST/Jp+a9bjt3mI+VyEXMftb4rogLxQA==}
+  /@hono/zod-validator@0.1.11(hono@3.9.0)(zod@3.22.4):
+    resolution: {integrity: sha512-PQXeHUP0+36qpRt8yfeD7N2jbK3ETlGvSN6dMof/HwUC/APRokQRjpXZm4rrlG71Ft0aWE01+Bm4XejqPie5Uw==}
     peerDependencies:
-      hono: 3.*
+      hono: '>=3.9.0'
       zod: ^3.19.1
     dependencies:
       hono: 3.9.0
