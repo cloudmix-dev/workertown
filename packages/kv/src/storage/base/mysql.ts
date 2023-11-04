@@ -1,7 +1,7 @@
 import { type ColumnType, type Migrations } from "@workertown/internal-storage";
 import { SqlStorageAdapter } from "@workertown/internal-storage/sql";
 
-import { type StorageAdapter } from "./storage-adapter.js";
+import { type StorageAdapter } from "../storage-adapter.js";
 
 interface KeyValueTable {
   name: string;

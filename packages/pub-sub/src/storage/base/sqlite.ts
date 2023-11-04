@@ -9,7 +9,7 @@ import {
   type CreateSubscriptionBody,
   type StorageAdapter,
   type Subscription,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface SubscriptionsTable {
   id: string;

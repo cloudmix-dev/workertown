@@ -3,7 +3,7 @@ import {
   type TursoDialectOptions,
 } from "@workertown/internal-storage/dialects/turso";
 
-import { BaseSqliteStorageAdapter } from "./base-sqlite.js";
+import { BaseSqliteStorageAdapter } from "./base/sqlite.js";
 
 export interface TursoStorageAdapterOptions extends TursoDialectOptions {
   migrationsPrefix?: string;

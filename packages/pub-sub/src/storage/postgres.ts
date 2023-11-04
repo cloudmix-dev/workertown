@@ -3,7 +3,7 @@ import {
   type PostgresDialectOptions,
 } from "@workertown/internal-storage/dialects/postgres";
 
-import { BasePostgresStorageAdapter } from "./base-postgres.js";
+import { BasePostgresStorageAdapter } from "./base/postgres.js";
 
 export interface PostgresStorageAdapterOptions extends PostgresDialectOptions {
   migrationsPrefix?: string;

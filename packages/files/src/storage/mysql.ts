@@ -3,7 +3,7 @@ import {
   type MysqlDialectOptions,
 } from "@workertown/internal-storage/dialects/mysql";
 
-import { BaseMysqlStorageAdapter } from "./base-mysql.js";
+import { BaseMysqlStorageAdapter } from "./base/mysql.js";
 
 export interface MysqlStorageAdapterOptions extends MysqlDialectOptions {
   migrationsPrefix?: string;

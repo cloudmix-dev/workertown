@@ -1,12 +1,12 @@
 import { type ColumnType, type Migrations } from "@workertown/internal-storage";
 import { SqlStorageAdapter } from "@workertown/internal-storage/sql";
 
-import { type StorageAdapter } from "./storage-adapter.js";
+import { type StorageAdapter } from "../storage-adapter.js";
 
 interface KeyValueTable {
   name: string;
   value: string;
-  updated_at: ColumnType<string, string, string>;
+  updated_at: ColumnType<number, number, number>;
 }
 
 export interface DatabaseSchema {
@@ -20,9 +20,9 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_kv_key_values")
-          .addColumn("name", "varchar(255)", (col) => col.notNull())
-          .addColumn("value", "varchar(255)", (col) => col.notNull())
-          .addColumn("updated_at", "timestamp", (col) => col.notNull())
+          .addColumn("name", "text", (col) => col.notNull())
+          .addColumn("value", "text", (col) => col.notNull())
+          .addColumn("updated_at", "integer", (col) => col.notNull())
           .execute();
 
         await db.schema
@@ -41,7 +41,7 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class BasePostgresStorageAdapter
+export class BaseSqliteStorageAdapter
   extends SqlStorageAdapter<DatabaseSchema>
   implements StorageAdapter
 {
@@ -64,7 +64,6 @@ export class BasePostgresStorageAdapter
   }
 
   public async setValue<T = unknown>(key: string, value: T) {
-    const now = new Date();
     const existing = await this.client
       .selectFrom("wt_kv_key_values")
       .where("name", "=", key)
@@ -76,7 +75,7 @@ export class BasePostgresStorageAdapter
         .updateTable("wt_kv_key_values")
         .set({
           value: JSON.stringify(value),
-          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
+          updated_at: Date.now(),
         })
         .where("name", "=", key)
         .execute();
@@ -86,7 +85,7 @@ export class BasePostgresStorageAdapter
         .values({
           name: key,
           value: JSON.stringify(value),
-          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
+          updated_at: Date.now(),
         })
         .execute();
     }

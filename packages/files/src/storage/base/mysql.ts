@@ -10,7 +10,7 @@ import {
   type CreateUploadUrlBody,
   StorageAdapter,
   type UploadUrl,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface UploadUrlTable {
   id: string;
@@ -60,7 +60,7 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class BasePostgresStorageAdapter
+export class BaseMysqlStorageAdapter
   extends SqlStorageAdapter<DatabaseSchema>
   implements StorageAdapter
 {

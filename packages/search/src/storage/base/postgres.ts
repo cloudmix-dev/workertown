@@ -1,29 +1,31 @@
 import {
   type ColumnType,
-  type Migrations,
   type Selectable,
   sql,
 } from "@workertown/internal-storage";
+import { type Migrations } from "@workertown/internal-storage";
 import { SqlStorageAdapter } from "@workertown/internal-storage/sql";
 
-import { DEFAULT_SORT_FIELD } from "../constants.js";
+import { DEFAULT_SORT_FIELD } from "../../constants.js";
 import {
   type GetDocumentsOptions,
   type SearchDocument,
   type StorageAdapter,
   type UpsertSearchDocumentBody,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface SearchDocumentTable {
   id: string;
   tenant: string;
   index: string;
   data: string;
-  created_at: ColumnType<number, number, never>;
-  updated_at: ColumnType<number, number, number>;
+  created_at: ColumnType<string, string, never>;
+  updated_at: ColumnType<string, string, string>;
 }
 
-type SearchDocumentRow = Selectable<SearchDocumentTable> & { tags?: string };
+export type SearchDocumentRow = Selectable<SearchDocumentTable> & {
+  tags?: string;
+};
 
 interface SearchTagTable {
   tag: string;
@@ -42,25 +44,31 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_search_documents")
-          .addColumn("id", "text", (col) => col.notNull())
-          .addColumn("tenant", "text", (col) => col.notNull())
-          .addColumn("index", "text", (col) => col.notNull())
-          .addColumn("data", "text", (col) => col.notNull())
-          .addColumn("created_at", "integer", (col) => col.notNull())
-          .addColumn("updated_at", "integer", (col) => col.notNull())
+          .addColumn("id", "varchar(255)", (col) => col.notNull())
+          .addColumn("tenant", "varchar(255)", (col) => col.notNull())
+          .addColumn("index", "varchar(255)", (col) => col.notNull())
+          .addColumn("data", "varchar(255)", (col) => col.notNull())
+          .addColumn("created_at", "timestamp", (col) =>
+            col.defaultTo(sql`now()`).notNull(),
+          )
+          .addColumn("updated_at", "timestamp", (col) =>
+            col.defaultTo(sql`now()`).notNull(),
+          )
           .execute();
 
         await db.schema
           .createTable("wt_search_tags")
-          .addColumn("tag", "text", (col) => col.notNull())
-          .addColumn("search_document_id", "text", (col) => col.notNull())
+          .addColumn("tag", "varchar(255)", (col) => col.notNull())
+          .addColumn("search_document_id", "varchar(255)", (col) =>
+            col.notNull(),
+          )
           .execute();
 
         await db.schema
           .createIndex("wt_search_documents_id_idx")
           .unique()
           .on("wt_search_documents")
-          .columns(["id"])
+          .column("id")
           .execute();
 
         await db.schema
@@ -101,7 +109,7 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class BaseSqliteStorageAdapter
+export class BasePostgresStorageAdapter
   extends SqlStorageAdapter<DatabaseSchema>
   implements StorageAdapter
 {
@@ -116,8 +124,8 @@ export class BaseSqliteStorageAdapter
       index: document.index,
       data: JSON.parse(document.data),
       tags: document.tags ? document.tags.split(",") : [],
-      createdAt: new Date(document.created_at),
-      updatedAt: new Date(document.updated_at),
+      createdAt: new Date(document.created_at as unknown as string),
+      updatedAt: new Date(document.updated_at as unknown as string),
     };
   }
 
@@ -141,9 +149,16 @@ export class BaseSqliteStorageAdapter
         "wt_search_documents.data",
         "wt_search_documents.created_at",
         "wt_search_documents.updated_at",
-        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
+        sql<string>`string_agg(wt_search_tags.tag, ',')`.as("tags"),
       ])
-      .groupBy("wt_search_documents.id")
+      .groupBy([
+        "wt_search_documents.id",
+        "wt_search_documents.tenant",
+        "wt_search_documents.index",
+        "wt_search_documents.data",
+        "wt_search_documents.created_at",
+        "wt_search_documents.updated_at",
+      ])
       .orderBy("wt_search_documents.updated_at", "desc")
       .limit(options.limit)
       .execute();
@@ -177,9 +192,16 @@ export class BaseSqliteStorageAdapter
         "wt_search_documents.data",
         "wt_search_documents.created_at",
         "wt_search_documents.updated_at",
-        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
+        sql<string>`string_agg(wt_search_tags.tag, ',')`.as("tags"),
       ])
-      .groupBy("wt_search_documents.id")
+      .groupBy([
+        "wt_search_documents.id",
+        "wt_search_documents.tenant",
+        "wt_search_documents.index",
+        "wt_search_documents.data",
+        "wt_search_documents.created_at",
+        "wt_search_documents.updated_at",
+      ])
       .having((eb) => eb.fn.count("wt_search_documents.id"), "=", tags.length)
       .orderBy("wt_search_documents.updated_at", "desc")
       .limit(options.limit)
@@ -205,9 +227,16 @@ export class BaseSqliteStorageAdapter
         "wt_search_documents.data",
         "wt_search_documents.created_at",
         "wt_search_documents.updated_at",
-        sql<string>`group_concat(wt_search_tags.tag, ',')`.as("tags"),
+        sql<string>`string_agg(wt_search_tags.tag, ',')`.as("tags"),
       ])
-      .groupBy("wt_search_documents.id")
+      .groupBy([
+        "wt_search_documents.id",
+        "wt_search_documents.tenant",
+        "wt_search_documents.index",
+        "wt_search_documents.data",
+        "wt_search_documents.created_at",
+        "wt_search_documents.updated_at",
+      ])
       .where("id", "=", id)
       .executeTakeFirst();
 
@@ -237,17 +266,19 @@ export class BaseSqliteStorageAdapter
         .values({
           ...document,
           data: JSON.stringify(document.data),
-          created_at: now.getTime(),
-          updated_at: now.getTime(),
+          created_at: now.toISOString().slice(0, 19).replace("T", " "),
+          updated_at: now.toISOString().slice(0, 19).replace("T", " "),
         })
         .execute();
     } else {
       await this.client
         .updateTable("wt_search_documents")
         .where("id", "=", document.id)
+        .where("tenant", "=", document.tenant)
+        .where("index", "=", document.index)
         .set({
           data: JSON.stringify(document.data),
-          updated_at: now.getTime(),
+          updated_at: now.toISOString().slice(0, 19).replace("T", " "),
         })
         .execute();
     }
@@ -267,9 +298,7 @@ export class BaseSqliteStorageAdapter
       if (tagsToAdd.length > 0) {
         await this.client
           .insertInto("wt_search_tags")
-          .values(
-            tagsToAdd.map((tag) => ({ tag, search_document_id: document.id })),
-          )
+          .values(tags.map((tag) => ({ tag, search_document_id: document.id })))
           .execute();
       }
 
@@ -289,7 +318,7 @@ export class BaseSqliteStorageAdapter
     return {
       ...document,
       tags,
-      createdAt: existing?.created_at ? new Date(existing.created_at) : now,
+      createdAt: now,
       updatedAt: now,
     };
   }

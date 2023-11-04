@@ -3,7 +3,7 @@ import {
   type PlanetscaleDialectOptions,
 } from "@workertown/internal-storage/dialects/planetscale";
 
-import { BaseMysqlStorageAdapter } from "./base-mysql.js";
+import { BaseMysqlStorageAdapter } from "./base/mysql.js";
 
 export interface PlanetscaleStorageAdapterOptions
   extends PlanetscaleDialectOptions {

@@ -10,15 +10,15 @@ import {
   type FlagCondition,
   StorageAdapter,
   type UpsertFlagBody,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface FlagTable {
   name: string;
   description: string | null;
   conditions: string | null;
-  disabled_at: ColumnType<string, string, string> | null;
-  created_at: ColumnType<string, string, never>;
-  updated_at: ColumnType<string, string, string>;
+  disabled_at: ColumnType<number, number, number> | null;
+  created_at: ColumnType<number, number, never>;
+  updated_at: ColumnType<number, number, number>;
 }
 
 type FlagRow = Selectable<FlagTable>;
@@ -34,12 +34,12 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_flags_flags")
-          .addColumn("name", "varchar(255)", (col) => col.notNull())
-          .addColumn("description", "varchar(255)")
-          .addColumn("conditions", "varchar(255)")
-          .addColumn("disabled_at", "timestamp")
-          .addColumn("created_at", "timestamp", (col) => col.notNull())
-          .addColumn("updated_at", "timestamp", (col) => col.notNull())
+          .addColumn("name", "text", (col) => col.notNull())
+          .addColumn("description", "text")
+          .addColumn("conditions", "text")
+          .addColumn("disabled_at", "integer")
+          .addColumn("created_at", "integer", (col) => col.notNull())
+          .addColumn("updated_at", "integer", (col) => col.notNull())
           .execute();
 
         await db.schema
@@ -66,7 +66,7 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class BasePostgresStorageAdapter
+export class BaseSqliteStorageAdapter
   extends SqlStorageAdapter<DatabaseSchema>
   implements StorageAdapter
 {
@@ -130,11 +130,9 @@ export class BasePostgresStorageAdapter
           conditions: flag.conditions
             ? JSON.stringify(flag.conditions)
             : undefined,
-          disabled_at: flag.enabled
-            ? undefined
-            : now.toISOString().substring(0, 19).replace("T", " "),
-          created_at: now.toISOString().substring(0, 19).replace("T", " "),
-          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
+          disabled_at: flag.enabled ? undefined : now.getTime(),
+          created_at: now.getTime(),
+          updated_at: now.getTime(),
         })
         .execute();
     } else {
@@ -146,10 +144,8 @@ export class BasePostgresStorageAdapter
           conditions: flag.conditions
             ? JSON.stringify(flag.conditions)
             : undefined,
-          disabled_at: flag.enabled
-            ? undefined
-            : now.toISOString().substring(0, 19).replace("T", " "),
-          updated_at: now.toISOString().substring(0, 19).replace("T", " "),
+          disabled_at: flag.enabled ? undefined : now.getTime(),
+          updated_at: now.getTime(),
         })
         .execute();
     }

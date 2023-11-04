@@ -2,7 +2,6 @@ import {
   type ColumnType,
   type Migrations,
   type Selectable,
-  sql,
 } from "@workertown/internal-storage";
 import { SqlStorageAdapter } from "@workertown/internal-storage/sql";
 
@@ -10,15 +9,15 @@ import {
   type CreateUploadUrlBody,
   StorageAdapter,
   type UploadUrl,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface UploadUrlTable {
   id: string;
   path: string;
   callback_url: string | null;
   metadata: string | null;
-  expires_at: ColumnType<string, string, never>;
-  created_at: ColumnType<string, string, string>;
+  expires_at: ColumnType<number, number, number>;
+  created_at: ColumnType<number, number, never>;
 }
 
 type UploadUrlTableRow = Selectable<UploadUrlTable>;
@@ -34,14 +33,12 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_files_upload_urls")
-          .addColumn("id", "varchar(255)", (col) => col.notNull())
-          .addColumn("path", "varchar(255)", (col) => col.notNull())
-          .addColumn("callback_url", "varchar(255)")
-          .addColumn("metadata", "varchar(255)")
-          .addColumn("expires_at", "timestamp", (col) => col.notNull())
-          .addColumn("created_at", "timestamp", (col) =>
-            col.defaultTo(sql`now()`).notNull(),
-          )
+          .addColumn("id", "text", (col) => col.notNull())
+          .addColumn("path", "text", (col) => col.notNull())
+          .addColumn("callback_url", "text")
+          .addColumn("metadata", "text")
+          .addColumn("expires_at", "integer", (col) => col.notNull())
+          .addColumn("created_at", "integer", (col) => col.notNull())
           .execute();
 
         await db.schema
@@ -60,7 +57,7 @@ const MIGRATIONS: Migrations = [
   },
 ];
 
-export class BaseMysqlStorageAdapter
+export class BaseSqliteStorageAdapter
   extends SqlStorageAdapter<DatabaseSchema>
   implements StorageAdapter
 {
@@ -104,8 +101,8 @@ export class BaseMysqlStorageAdapter
         path: url.path,
         callback_url: url.callbackUrl,
         metadata: url.metadata ? JSON.stringify(url.metadata) : null,
-        expires_at: url.expiresAt.toISOString().slice(0, 19).replace("T", " "),
-        created_at: now.toISOString().slice(0, 19).replace("T", " "),
+        expires_at: url.expiresAt.getTime(),
+        created_at: now.getTime(),
       })
       .execute();
 

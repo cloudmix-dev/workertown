@@ -10,7 +10,7 @@ import {
   type FlagCondition,
   StorageAdapter,
   type UpsertFlagBody,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface FlagTable {
   name: string;

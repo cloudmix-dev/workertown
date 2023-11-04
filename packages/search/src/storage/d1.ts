@@ -3,7 +3,7 @@ import {
   type D1DialectOptions,
 } from "@workertown/internal-storage/dialects/d1";
 
-import { BaseSqliteStorageAdapter } from "./base-sqlite.js";
+import { BaseSqliteStorageAdapter } from "./base/sqlite.js";
 
 export interface D1StorageAdapterOptions extends D1DialectOptions {
   migrationsPrefix?: string;

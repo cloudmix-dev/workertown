@@ -6,13 +6,13 @@ import {
 import { type Migrations } from "@workertown/internal-storage";
 import { SqlStorageAdapter } from "@workertown/internal-storage/sql";
 
-import { DEFAULT_SORT_FIELD } from "../constants.js";
+import { DEFAULT_SORT_FIELD } from "../../constants.js";
 import {
   type GetDocumentsOptions,
   type SearchDocument,
   type StorageAdapter,
   type UpsertSearchDocumentBody,
-} from "./storage-adapter.js";
+} from "../storage-adapter.js";
 
 interface SearchDocumentTable {
   id: string;
