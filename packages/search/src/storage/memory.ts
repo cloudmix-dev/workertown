@@ -34,13 +34,13 @@ export class MemoryStorageAdapter
 
     const { initialDocuments = [], initialTags = {} } = options;
 
-    initialDocuments.forEach((document) => {
+    for (const document of initialDocuments) {
       this._storeDocument(document);
-    });
+    }
 
-    Object.keys(initialTags).forEach((tag) => {
+    for (const tag of Object.keys(initialTags)) {
       this._tags.set(tag, new Set(initialTags[tag]));
-    });
+    }
   }
 
   private _storeDocument(document: Omit<SearchDocument, "tags">) {
@@ -94,7 +94,7 @@ export class MemoryStorageAdapter
       null,
     );
 
-    ids.forEach((id) => {
+    for (const id of ids) {
       if (!this._deleted.has(id)) {
         const document = this._documentStore.get(id);
         const index = sortedDocuments.findIndex(
@@ -108,7 +108,7 @@ export class MemoryStorageAdapter
           };
         }
       }
-    });
+    }
 
     return bucket.filter((document) => document !== null).slice(0, limit);
   }
@@ -139,7 +139,7 @@ export class MemoryStorageAdapter
       null,
     );
 
-    ids.forEach((id) => {
+    for (const id of ids) {
       if (!this._deleted.has(id) && tagSet.has(id)) {
         const document = this._documentStore.get(id);
         const index = sortedDocuments.findIndex(
@@ -153,7 +153,7 @@ export class MemoryStorageAdapter
           };
         }
       }
-    });
+    }
 
     return bucket.filter((document) => document !== null).slice(0, limit);
   }
@@ -186,7 +186,7 @@ export class MemoryStorageAdapter
     this._storeDocument(searchDocument);
 
     if (tags.length) {
-      tags.forEach((tag) => {
+      for (const tag of tags) {
         if (!this._tags.has(tag)) {
           this._tags.set(tag, new Set<string>());
         }
@@ -194,7 +194,7 @@ export class MemoryStorageAdapter
         const tagSet = this._tags.get(tag);
 
         tagSet?.add(document.id);
-      });
+      }
     }
 
     this._deleted.delete(document.id);

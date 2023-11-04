@@ -34,6 +34,14 @@
       "default": "./dist/storage/sqlite.js",
       "types": "./dist/storage/sqlite.d.ts"
     },
+    "./storage/planetscale": {
+      "default": "./dist/storage/planetscale.js",
+      "types": "./dist/storage/planetscale.d.ts"
+    },
+    "./storage/turso": {
+      "default": "./dist/storage/turso.js",
+      "types": "./dist/storage/turso.d.ts"
+    },
     "./storage/migrations": {
       "default": "./dist/storage/migrations.js",
       "types": "./dist/storage/migrations.d.ts"

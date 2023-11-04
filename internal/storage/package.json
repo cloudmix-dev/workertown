@@ -10,29 +10,45 @@
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./d1": {
-      "default": "./dist/d1.js",
-      "types": "./dist/d1.d.ts"
+    "./deno-kv": {
+      "default": "./dist/adapters/deno-kv.js",
+      "types": "./dist/adapters/deno-kv.d.ts"
     },
     "./dynamodb": {
-      "default": "./dist/dynamodb.js",
-      "types": "./dist/dynamodb.d.ts"
-    },
-    "./planetscale": {
-      "default": "./dist/planetscale.js",
-      "types": "./dist/planetscale.d.ts"
-    },
-    "./sqlite": {
-      "default": "./dist/sqlite.js",
-      "types": "./dist/sqlite.d.ts"
-    },
-    "./turso": {
-      "default": "./dist/turso.js",
-      "types": "./dist/turso.d.ts"
+      "default": "./dist/adapters/dynamodb.js",
+      "types": "./dist/adapters/dynamodb.d.ts"
     },
     "./memory": {
-      "default": "./dist/memory.js",
-      "types": "./dist/memory.d.ts"
+      "default": "./dist/adapters/memory.js",
+      "types": "./dist/adapters/memory.d.ts"
+    },
+    "./sql": {
+      "default": "./dist/adapters/sql.js",
+      "types": "./dist/adapters/sql.d.ts"
+    },
+    "./dialects/d1": {
+      "default": "./dist/dialects/d1.js",
+      "types": "./dist/dialects/d1.d.ts"
+    },
+    "./dialects/mysql": {
+      "default": "./dist/dialects/mysql.js",
+      "types": "./dist/dialects/mysql.d.ts"
+    },
+    "./dialects/planetscale": {
+      "default": "./dist/dialects/planetscale.js",
+      "types": "./dist/dialects/planetscale.d.ts"
+    },
+    "./dialects/postgres": {
+      "default": "./dist/dialects/postgres.js",
+      "types": "./dist/dialects/postgres.d.ts"
+    },
+    "./dialects/sqlite": {
+      "default": "./dist/dialects/sqlite.js",
+      "types": "./dist/dialects/sqlite.d.ts"
+    },
+    "./dialects/turso": {
+      "default": "./dist/dialects/turso.js",
+      "types": "./dist/dialects/turso.d.ts"
     }
   },
   "scripts": {
@@ -51,14 +67,19 @@
     "@cloudflare/workers-types": "~4.20230904.0",
     "@planetscale/database": "~1.11.0",
     "@types/better-sqlite3": "~7.6.5",
+    "@types/pg": "~8.10.7",
     "@workertown/internal-types": "workspace:~0.0.2-alpha.23",
-    "better-sqlite3": "~8.7.0"
+    "better-sqlite3": "~8.7.0",
+    "mysql2": "~3.6.3",
+    "pg": "~8.11.3"
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.427.0",
     "@aws-sdk/lib-dynamodb": "~3.427.0",
     "@planetscale/database": "~1.11.0",
-    "better-sqlite3": "~8.7.0"
+    "better-sqlite3": "~8.7.0",
+    "mysql2": "~3.6.3",
+    "pg": "~8.11.3"
   },
   "engines": {
     "node": ">=18.0.0"

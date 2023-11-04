@@ -1,30 +1,25 @@
-import { Kysely, type MigrationResult, Migrator } from "kysely";
-import { PlanetScaleDialect } from "kysely-planetscale";
+import { type Kysely, type MigrationResult, Migrator } from "kysely";
 
-import { MigrationProvider } from "./migrations.js";
+import { type Dialect } from "../dialects/dialect.js";
+import { MigrationProvider } from "../migrations/migrations.js";
 import { StorageAdapter } from "./storage-adapter.js";
 
-export interface PlanetscaleStorageAdapterOptions {
-  url?: string;
-  host?: string;
-  username?: string;
-  password?: string;
+interface SqlAdapterOptions<T> {
+  dialect: Dialect<T>;
   migrationsPrefix?: string;
 }
 
-export class PlanetscaleStorageAdapter<
+export class SqlStorageAdapter<
   T = Record<string, unknown>,
 > extends StorageAdapter {
   public readonly client: Kysely<T>;
 
   public readonly migrationsPrefix: string = "wt";
 
-  constructor(options: PlanetscaleStorageAdapterOptions = {}) {
+  constructor(options: SqlAdapterOptions<T>) {
     super();
 
-    this.client = new Kysely<T>({
-      dialect: new PlanetScaleDialect(options),
-    });
+    this.client = options.dialect.client;
     this.migrationsPrefix = options.migrationsPrefix ?? this.migrationsPrefix;
   }
 

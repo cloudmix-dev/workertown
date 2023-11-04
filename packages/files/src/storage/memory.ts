@@ -21,9 +21,9 @@ export class MemoryStorageAdapter
 
     const { initialUploadUrls = [] } = options;
 
-    initialUploadUrls.forEach((url) => {
+    for (const url of initialUploadUrls) {
       this._uploadUrlStore.set(url.id, url);
-    });
+    }
   }
 
   public async getUploadUrl(id: string) {

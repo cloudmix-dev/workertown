@@ -43,8 +43,7 @@ export class DynamoDBStorageAdapter extends StorageAdapter {
     // The AWS SDK tries to use crypto from off of the window, so we need to
     // trick it into finding it where it expects it
     if (!globalThis.window) {
-      // @ts-ignore
-      globalThis.window = {};
+      globalThis.window = {} as Window & typeof globalThis;
     }
 
     if (!globalThis.window.crypto) {

@@ -21,9 +21,9 @@ export class MemoryStorageAdapter
 
     const { initialFlags = [] } = options;
 
-    initialFlags.forEach((flag) => {
+    for (const flag of initialFlags) {
       this._flagStore.set(flag.name, flag);
-    });
+    }
   }
 
   public async getFlags(disabled = false): Promise<Flag[]> {

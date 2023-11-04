@@ -1,9 +1,9 @@
+import { StorageAdapter } from "./adapters/storage-adapter.js";
 import {
   type Migration,
   MigrationProvider,
   type Migrations,
-} from "./migrations.js";
-import { StorageAdapter } from "./storage-adapter.js";
+} from "./migrations/migrations.js";
 
 export * from "kysely";
 

@@ -1,6 +1,6 @@
 import { type MigrationResultSet } from "kysely";
 
-import { type Migrations } from "./migrations.js";
+import { type Migrations } from "../migrations/migrations.js";
 
 export class StorageAdapter {
   public readonly migrations: Migrations = [] as Migrations;

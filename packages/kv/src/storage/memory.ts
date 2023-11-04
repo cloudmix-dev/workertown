@@ -16,9 +16,9 @@ export class MemoryStorageAdapter
 
     const { initialValues = {} } = options;
 
-    Object.entries(initialValues).forEach(([key, value]) => {
-      this._valueStore.set(key, JSON.stringify(value));
-    });
+    for (const key of Object.keys(initialValues)) {
+      this._valueStore.set(key, JSON.stringify(initialValues[key]));
+    }
   }
 
   public async getValue<T = unknown>(key: string): Promise<T | null> {

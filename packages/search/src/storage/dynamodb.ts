@@ -120,18 +120,24 @@ export class DynamoDBStorageAdapter
     const filterExpression = `${tags
       .map((_, i) => `contains (#tags, :tag_${i + 1})`)
       .join(" AND")}`;
-    const expressionAttributeNames = {
+    const expressionAttributeNames: {
+      [x: string]: string;
+    } = {
       "#pk": this.getGsiKey(2, "pk"),
       "#tags": "tags",
     };
-    const expressionAttributeValues = {
+    const expressionAttributeValues: {
+      [x: string]: string;
+    } = {
       ":pk": key,
     };
 
-    tags.forEach((tag, i) => {
-      // @ts-ignore
+    for (const [i, tag] of tags.entries()) {
       expressionAttributeValues[`:tag_${i + 1}`] = tag;
-    });
+    }
+
+    console.log(JSON.stringify(expressionAttributeNames, null, 2));
+    console.log(JSON.stringify(expressionAttributeValues, null, 2));
 
     const result = await this.client.send(
       new QueryCommand({

@@ -21,9 +21,9 @@ export class MemoryStorageAdapter
 
     const { initialSubscriptions = [] } = options;
 
-    initialSubscriptions.forEach((subscription) => {
+    for (const subscription of initialSubscriptions) {
       this._subscriptionStore.set(subscription.id, subscription);
-    });
+    }
   }
 
   async getSubscriptions() {
