@@ -82,7 +82,7 @@ test.serial("v1 create subscription", async (t) => {
   const result1 = (await res1.json()) as CreateSubscriptionResponse;
 
   // Check if the ID is a random short ID (see MemoryStorageAdapter)
-  t.true(/^[a-z,0-9]{7,7}$/.test(result1.data.id));
+  t.assert(/^[a-z,0-9]{7,7}$/.test(result1.data.id));
 
   const res2 = await makeRequest(service, "/v1/subscriptions?topic=OTHER");
 

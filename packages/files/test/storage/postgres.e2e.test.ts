@@ -1,15 +1,17 @@
 import test from "ava";
 
 import { type StorageAdapter } from "../../src/storage";
-import { PlanetscaleStorageAdapter } from "../../src/storage/planetscale";
+import { PostgresStorageAdapter } from "../../src/storage/postgres";
 import { testStorageAdapterE2E } from "./_e2e";
 
-test("PlanetscaleStorageAdapter", async (t) => {
+test("PostgresStorageAdapter", async (t) => {
   // @ts-ignore - weird test TS issues
-  const storage = new PlanetscaleStorageAdapter({
+  const storage = new PostgresStorageAdapter({
     // @ts-ignore - weird test TS issues
-    url: "http://localhost:3004",
-    username: "workertown",
+    host: "127.0.0.1",
+    port: 3008,
+    database: "workertown",
+    user: "workertown",
     password: "workertown",
   }) as unknown as StorageAdapter;
 

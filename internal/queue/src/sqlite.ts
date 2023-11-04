@@ -34,7 +34,6 @@ const MIGRATIONS: MigrationInfo[] = [
       async up(db) {
         await db.schema
           .createTable("queue_messages")
-          .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("body", "text", (col) => col.notNull())
           .addColumn("attempts", "integer", (col) => col.notNull())
@@ -45,7 +44,6 @@ const MIGRATIONS: MigrationInfo[] = [
         await db.schema
           .createIndex("queue_messages_id_idx")
           .unique()
-          .ifNotExists()
           .on("queue_messages")
           .columns(["id"])
           .execute();
@@ -53,7 +51,6 @@ const MIGRATIONS: MigrationInfo[] = [
         await db.schema
           .createIndex("queue_messages_dlq_at_timestamp_id_idx")
           .unique()
-          .ifNotExists()
           .on("queue_messages")
           .columns(["dlq_at", "timestamp", "id"])
           .execute();
@@ -61,7 +58,6 @@ const MIGRATIONS: MigrationInfo[] = [
       async down(db) {
         await db.schema
           .dropIndex("queue_messages_dlq_at_timestamp_id_idx")
-          .ifExists()
           .execute();
 
         await db.schema.dropIndex("queue_messages_id_idx").ifExists().execute();

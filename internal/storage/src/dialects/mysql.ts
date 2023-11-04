@@ -6,6 +6,9 @@ import { Dialect } from "./dialect.js";
 export interface MysqlDialectOptions {
   database: string;
   host: string;
+  port?: number;
+  password: string;
+  user: string;
 }
 
 export class MysqlDialect<T> extends Dialect<T> {

@@ -34,7 +34,6 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_flags_flags")
-          .ifNotExists()
           .addColumn("name", "varchar(255)", (col) => col.notNull())
           .addColumn("description", "varchar(255)")
           .addColumn("conditions", "varchar(255)")
@@ -46,28 +45,20 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createIndex("wt_flags_flags_name_idx")
           .unique()
-          .ifNotExists()
           .on("wt_flags_flags")
           .columns(["name"])
           .execute();
 
         await db.schema
           .createIndex("wt_flags_flags_disabled_at_idx")
-          .ifNotExists()
           .on("wt_flags_flags")
           .columns(["disabled_at"])
           .execute();
       },
       async down(db) {
-        await db.schema
-          .dropIndex("wt_flags_flags_disabled_at_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_flags_flags_disabled_at_idx").execute();
 
-        await db.schema
-          .dropIndex("wt_flags_flags_name_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_flags_flags_name_idx").execute();
 
         await db.schema.dropTable("wt_flags_flags").ifExists().execute();
       },

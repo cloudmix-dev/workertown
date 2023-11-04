@@ -20,7 +20,6 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_kv_key_values")
-          .ifNotExists()
           .addColumn("name", "text", (col) => col.notNull())
           .addColumn("value", "text", (col) => col.notNull())
           .addColumn("updated_at", "integer", (col) => col.notNull())
@@ -29,16 +28,12 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createIndex("wt_kv_key_values_name_idx")
           .unique()
-          .ifNotExists()
           .on("wt_kv_key_values")
           .columns(["name"])
           .execute();
       },
       async down(db) {
-        await db.schema
-          .dropIndex("wt_kv_key_values_name_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_kv_key_values_name_idx").execute();
 
         await db.schema.dropTable("wt_kv_key_values").ifExists().execute();
       },

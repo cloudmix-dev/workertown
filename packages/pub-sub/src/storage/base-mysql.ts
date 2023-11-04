@@ -34,7 +34,6 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_pub_sub_subscriptions")
-          .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("topic", "text", (col) => col.notNull())
           .addColumn("endpoint", "text", (col) => col.notNull())
@@ -47,14 +46,12 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createIndex("wt_pub_sub_subscriptions_id_idx")
           .unique()
-          .ifNotExists()
           .on("wt_pub_sub_subscriptions")
           .columns(["id"])
           .execute();
 
         await db.schema
           .createIndex("wt_pub_sub_subscriptions_topic_idx")
-          .ifNotExists()
           .on("wt_pub_sub_subscriptions")
           .columns(["topic"])
           .execute();
@@ -62,18 +59,11 @@ const MIGRATIONS: Migrations = [
       async down(db) {
         await db.schema
           .dropIndex("wt_pub_sub_subscriptions_topic_idx")
-          .ifExists()
           .execute();
 
-        await db.schema
-          .dropIndex("wt_pub_sub_subscriptions_id_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_pub_sub_subscriptions_id_idx").execute();
 
-        await db.schema
-          .dropTable("wt_pub_sub_subscriptions")
-          .ifExists()
-          .execute();
+        await db.schema.dropTable("wt_pub_sub_subscriptions").execute();
       },
     },
   },

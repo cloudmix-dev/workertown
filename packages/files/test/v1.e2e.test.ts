@@ -179,7 +179,7 @@ test("v1 create upload", async (t) => {
   const result = (await res.json()) as CretaeUploadUrlResponse;
 
   t.is(res.status, 200);
-  t.true(typeof result.data.id === "string");
+  t.assert(typeof result.data.id === "string");
 });
 
 test("v1 public upload", async (t) => {
@@ -238,7 +238,7 @@ test("v1 uploads w/ custom endpoint", async (t) => {
   const result = (await res.json()) as CretaeUploadUrlResponse;
 
   t.is(res.status, 200);
-  t.true(typeof result.data.id === "string");
+  t.assert(typeof result.data.id === "string");
 });
 
 // Admin

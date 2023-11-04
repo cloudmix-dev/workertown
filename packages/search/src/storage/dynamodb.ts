@@ -136,9 +136,6 @@ export class DynamoDBStorageAdapter
       expressionAttributeValues[`:tag_${i + 1}`] = tag;
     }
 
-    console.log(JSON.stringify(expressionAttributeNames, null, 2));
-    console.log(JSON.stringify(expressionAttributeValues, null, 2));
-
     const result = await this.client.send(
       new QueryCommand({
         TableName: this.table,

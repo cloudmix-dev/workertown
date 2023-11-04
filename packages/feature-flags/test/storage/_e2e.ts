@@ -7,7 +7,9 @@ export async function testStorageAdapterE2E(
   storage: StorageAdapter,
 ) {
   // Create tables
-  await storage.runMigrations();
+  const { error } = await storage.runMigrations();
+
+  t.assert(!error, error as string);
 
   const featureFlags = [
     {

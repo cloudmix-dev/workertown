@@ -1,5 +1,6 @@
-import { type ExecutionContext } from "ava";
+// @ts-ignore
 import crypto from "node:crypto";
+import { type ExecutionContext } from "ava";
 
 import { type CreateUploadUrlBody, StorageAdapter } from "../../src/storage";
 
@@ -10,7 +11,9 @@ export async function testStorageAdapterE2E(
   storage: StorageAdapter,
 ) {
   // Create tables
-  await storage.runMigrations();
+  const { error } = await storage.runMigrations();
+
+  t.assert(!error, error as string);
 
   const uploadUrls: CreateUploadUrlBody[] = [
     {

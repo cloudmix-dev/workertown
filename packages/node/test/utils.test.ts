@@ -17,7 +17,7 @@ test("parseOptionsFromEnv parses options from env", (t) => {
   t.is(result.string, "test");
   t.is(result.boolean, true);
   t.is(result.number, 1);
-  t.true(typeof result.function === "function");
+  t.assert(typeof result.function === "function");
   t.deepEqual(result.array, [1, 2, 3]);
   t.deepEqual(result.object, { test: true });
   t.is(result.nested.value, "test");
@@ -41,7 +41,7 @@ test("parseOptionsFromEnv parses options with a custom delimeter", (t) => {
   t.is(result.string, "test");
   t.is(result.boolean, true);
   t.is(result.number, 1);
-  t.true(typeof result.function === "function");
+  t.assert(typeof result.function === "function");
   t.deepEqual(result.array, [1, 2, 3]);
   t.deepEqual(result.object, { test: true });
   t.is(result.nested.value, "test");

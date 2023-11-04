@@ -44,7 +44,6 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_search_documents")
-          .ifNotExists()
           .addColumn("id", "varchar(255)", (col) => col.notNull())
           .addColumn("tenant", "varchar(255)", (col) => col.notNull())
           .addColumn("index", "varchar(255)", (col) => col.notNull())
@@ -59,7 +58,6 @@ const MIGRATIONS: Migrations = [
 
         await db.schema
           .createTable("wt_search_tags")
-          .ifNotExists()
           .addColumn("tag", "varchar(255)", (col) => col.notNull())
           .addColumn("search_document_id", "varchar(255)", (col) =>
             col.notNull(),
@@ -93,25 +91,15 @@ const MIGRATIONS: Migrations = [
           .execute();
       },
       async down(db) {
-        await db.schema
-          .dropIndex("wt_search_tags_unique_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_search_tags_unique_idx").execute();
 
         await db.schema
           .dropIndex("wt_search_documents_tenant_index_idx")
-          .ifExists()
           .execute();
 
-        await db.schema
-          .dropIndex("wt_search_documents_tenant_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_search_documents_tenant_idx").execute();
 
-        await db.schema
-          .dropIndex("wt_search_documents_id_idx")
-          .ifExists()
-          .execute();
+        await db.schema.dropIndex("wt_search_documents_id_idx").execute();
 
         await db.schema.dropTable("wt_search_tags").ifExists().execute();
 

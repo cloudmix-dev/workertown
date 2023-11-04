@@ -38,9 +38,17 @@
       "default": "./dist/storage/d1.js",
       "types": "./dist/storage/d1.d.ts"
     },
+    "./storage/mysql": {
+      "default": "./dist/storage/mysql.js",
+      "types": "./dist/storage/mysql.d.ts"
+    },
     "./storage/planetscale": {
       "default": "./dist/storage/planetscale.js",
       "types": "./dist/storage/planetscale.d.ts"
+    },
+    "./storage/postgres": {
+      "default": "./dist/storage/postgres.js",
+      "types": "./dist/storage/postgres.d.ts"
     },
     "./storage/sqlite": {
       "default": "./dist/storage/sqlite.js",
@@ -111,7 +119,9 @@
     "@aws-sdk/lib-dynamodb": "~3.427.0",
     "@planetscale/database": "~1.8.0",
     "@upstash/redis": "~1.22.0",
-    "better-sqlite3": "~8.5.0"
+    "better-sqlite3": "~8.5.0",
+    "mysql2": "~3.6.3",
+    "pg": "~8.11.3"
   },
   "engines": {
     "node": ">=18.0.0"

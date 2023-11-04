@@ -33,7 +33,6 @@ const MIGRATIONS: Migrations = [
       async up(db) {
         await db.schema
           .createTable("wt_files_upload_urls")
-          .ifNotExists()
           .addColumn("id", "text", (col) => col.notNull())
           .addColumn("path", "text", (col) => col.notNull())
           .addColumn("callback_url", "text")
@@ -45,7 +44,6 @@ const MIGRATIONS: Migrations = [
         await db.schema
           .createIndex("wt_files_id_idx")
           .unique()
-          .ifNotExists()
           .on("wt_files_upload_urls")
           .columns(["id"])
           .execute();
