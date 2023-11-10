@@ -218,8 +218,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@types/lodash.merge':
-        specifier: ~4.6.7
-        version: 4.6.7
+        specifier: ~4.6.8
+        version: 4.6.8
       '@upstash/redis':
         specifier: ~1.23.3
         version: 1.23.3
@@ -342,8 +342,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@types/lodash.merge':
-        specifier: ~4.6.7
-        version: 4.6.7
+        specifier: ~4.6.8
+        version: 4.6.8
       '@workertown/files':
         specifier: workspace:0.0.2-alpha.23
         version: link:../files
@@ -397,8 +397,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@types/lodash.merge':
-        specifier: ~4.6.7
-        version: 4.6.7
+        specifier: ~4.6.8
+        version: 4.6.8
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.23
         version: link:../../internal/types
@@ -443,8 +443,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@types/lodash.merge':
-        specifier: ~4.6.7
-        version: 4.6.7
+        specifier: ~4.6.8
+        version: 4.6.8
       '@upstash/redis':
         specifier: ~1.23.3
         version: 1.23.3
@@ -496,8 +496,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@types/lodash.merge':
-        specifier: ~4.6.7
-        version: 4.6.7
+        specifier: ~4.6.8
+        version: 4.6.8
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.23
         version: link:../../internal/types
@@ -545,8 +545,8 @@ importers:
         specifier: ~4.20230904.0
         version: 4.20230904.0
       '@types/lodash.merge':
-        specifier: ~4.6.7
-        version: 4.6.7
+        specifier: ~4.6.8
+        version: 4.6.8
       '@workertown/internal-types':
         specifier: workspace:~0.0.2-alpha.23
         version: link:../../internal/types
@@ -3924,8 +3924,8 @@ packages:
     dev: true
     optional: true
 
-  /@types/lodash.merge@4.6.7:
-    resolution: {integrity: sha512-OwxUJ9E50gw3LnAefSHJPHaBLGEKmQBQ7CZe/xflHkyy/wH2zVyEIAKReHvVrrn7zKdF58p16We9kMfh7v0RRQ==}
+  /@types/lodash.merge@4.6.8:
+    resolution: {integrity: sha512-He1g+VBmRclP+6hT6P6zKlzpFoeOLMgPpMGChgINuxbdPumZCIJsITbqSq2cWXzJu2ltmwVN5TfQ6kj0X06rFQ==}
     dependencies:
       '@types/lodash': 4.14.197
     dev: true
