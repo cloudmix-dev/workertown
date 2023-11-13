@@ -15,7 +15,7 @@
     "@workertown/utils": "~0.0.2-alpha.23"
   },
   "devDependencies": {
-    "@types/node": "~20.6.4",
+    "@types/node": "~20.9.0",
     "ts-node": "~10.9.1",
     "typescript": "~5.2.2"
   }
