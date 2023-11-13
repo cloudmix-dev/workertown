@@ -25,7 +25,7 @@
     "@miniflare/queues": "~2.14.1",
     "@miniflare/r2": "~2.14.1",
     "@miniflare/storage-memory": "~2.14.1",
-    "@types/sinon": "~10.0.20",
+    "@types/sinon": "~17.0.1",
     "ava": "~5.3.1",
     "changeset": "~0.2.6",
     "husky": "~8.0.3",

@@ -36,8 +36,8 @@ importers:
         specifier: ~2.14.1
         version: 2.14.1
       '@types/sinon':
-        specifier: ~10.0.20
-        version: 10.0.20
+        specifier: ~17.0.1
+        version: 17.0.1
       ava:
         specifier: ~5.3.1
         version: 5.3.1
@@ -4048,8 +4048,8 @@ packages:
       '@types/node': 20.6.4
     dev: false
 
-  /@types/sinon@10.0.20:
-    resolution: {integrity: sha512-2APKKruFNCAZgx3daAyACGzWuJ028VVCUDk6o2rw/Z4PXT0ogwdV4KUegW0MwVs0Zu59auPXbbuBJHF12Sx1Eg==}
+  /@types/sinon@17.0.1:
+    resolution: {integrity: sha512-Q2Go6TJetYn5Za1+RJA1Aik61Oa2FS8SuJ0juIqUuJ5dZR4wvhKfmSdIqWtQ3P6gljKWjW0/R7FZkA4oXVL6OA==}
     dependencies:
       '@types/sinonjs__fake-timers': 8.1.4
     dev: true
