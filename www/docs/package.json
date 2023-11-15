@@ -37,7 +37,7 @@
     "@markdoc/next.js": "~0.3.4",
     "@sindresorhus/slugify": "~2.2.1",
     "@tailwindcss/typography": "~0.5.10",
-    "@types/node": "~20.6.4",
+    "@types/node": "~20.9.0",
     "@types/react": "18.2.21",
     "autoprefixer": "~10.4.16",
     "js-yaml": "~4.1.0",
