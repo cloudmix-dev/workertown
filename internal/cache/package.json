@@ -33,7 +33,7 @@
     "test": "ava"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "~4.20230904.0",
+    "@cloudflare/workers-types": "~4.20231121.0",
     "@upstash/redis": "~1.23.3"
   },
   "peerDependencies": {

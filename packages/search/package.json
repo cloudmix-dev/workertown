@@ -103,7 +103,7 @@
   },
   "devDependencies": {
     "@aws-sdk/lib-dynamodb": "~3.427.0",
-    "@cloudflare/workers-types": "~4.20230904.0",
+    "@cloudflare/workers-types": "~4.20231121.0",
     "@types/lodash.merge": "~4.6.8",
     "@workertown/internal-types": "workspace:~0.0.2-alpha.23"
   },
