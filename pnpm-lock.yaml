@@ -139,8 +139,8 @@ importers:
   internal/cache:
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@upstash/redis':
         specifier: ~1.23.3
         version: 1.23.3
@@ -151,8 +151,8 @@ importers:
         specifier: ~3.474.0
         version: 3.474.0
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
 
   internal/open-api: {}
 
@@ -172,8 +172,8 @@ importers:
         version: 1.4.0(@planetscale/database@1.11.0)(kysely@0.26.3)
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@planetscale/database':
         specifier: ~1.11.0
         version: 1.11.0
@@ -215,8 +215,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@types/lodash.merge':
         specifier: ~4.6.8
         version: 4.6.8
@@ -249,8 +249,8 @@ importers:
         specifier: ~3.427.0
         version: 3.427.0(@aws-sdk/client-dynamodb@3.427.0)
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@planetscale/database':
         specifier: ~1.11.0
         version: 1.11.0
@@ -296,8 +296,8 @@ importers:
   packages/cloudflare-workers:
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
 
   packages/feature-flags:
     dependencies:
@@ -339,8 +339,8 @@ importers:
         specifier: ~3.427.0
         version: 3.427.0(@aws-sdk/client-dynamodb@3.427.0)
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@types/lodash.merge':
         specifier: ~4.6.8
         version: 4.6.8
@@ -394,8 +394,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@types/lodash.merge':
         specifier: ~4.6.8
         version: 4.6.8
@@ -440,8 +440,8 @@ importers:
         specifier: ~3.427.0
         version: 3.427.0(@aws-sdk/client-dynamodb@3.427.0)
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@types/lodash.merge':
         specifier: ~4.6.8
         version: 4.6.8
@@ -493,8 +493,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@types/lodash.merge':
         specifier: ~4.6.8
         version: 4.6.8
@@ -542,8 +542,8 @@ importers:
         specifier: ~3.427.0
         version: 3.427.0(@aws-sdk/client-dynamodb@3.427.0)
       '@cloudflare/workers-types':
-        specifier: ~4.20230904.0
-        version: 4.20230904.0
+        specifier: ~4.20231218.0
+        version: 4.20231218.0
       '@types/lodash.merge':
         specifier: ~4.6.8
         version: 4.6.8
@@ -2060,8 +2060,8 @@ packages:
       prettier: 2.8.8
     dev: true
 
-  /@cloudflare/workers-types@4.20230904.0:
-    resolution: {integrity: sha512-IX4oJCe14ctblSPZBlW64BVZ9nYLUo6sD2I5gu3hX0ywByYWm1OuoKm9Xb/Zpbj8Ph18Z7Ryii6u2/ocnncXdA==}
+  /@cloudflare/workers-types@4.20231218.0:
+    resolution: {integrity: sha512-Vs1FKjfUjXYGbCsXzkl+ITp0Iyb6QiW6+vTERTNThC+v96T0IvPVAioH4tT20rXwoxAfxh380mAaxYtTrJUNVg==}
     dev: true
 
   /@commitlint/cli@18.0.0(typescript@5.2.2):
