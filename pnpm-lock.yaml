@@ -191,16 +191,16 @@ importers:
         version: 3.3.0
       '@hono/sentry':
         specifier: ~1.0.0
-        version: 1.0.0(hono@3.9.0)
+        version: 1.0.0(hono@3.11.12)
       '@hono/zod-validator':
         specifier: ~0.1.11
-        version: 0.1.11(hono@3.9.0)(zod@3.22.4)
+        version: 0.1.11(hono@3.11.12)(zod@3.22.4)
       '@whatwg-node/server':
         specifier: ~0.9.12
         version: 0.9.14
       hono:
-        specifier: ~3.9.0
-        version: 3.9.0
+        specifier: ~3.11.12
+        version: 3.11.12
       jose:
         specifier: ~4.14.4
         version: 4.14.5
@@ -2495,22 +2495,22 @@ packages:
     engines: {node: '>=18.0.0'}
     dev: false
 
-  /@hono/sentry@1.0.0(hono@3.9.0):
+  /@hono/sentry@1.0.0(hono@3.11.12):
     resolution: {integrity: sha512-GbPxgpGuasM2zRCSaA77MPWu4KDcuk/EMf7JJykjCvnOTbjmtr7FovNxsvg7xlXCIjZDgLmqBaoJMi3AxbeIAA==}
     peerDependencies:
       hono: 3.*
     dependencies:
-      hono: 3.9.0
+      hono: 3.11.12
       toucan-js: 3.3.0
     dev: false
 
-  /@hono/zod-validator@0.1.11(hono@3.9.0)(zod@3.22.4):
+  /@hono/zod-validator@0.1.11(hono@3.11.12)(zod@3.22.4):
     resolution: {integrity: sha512-PQXeHUP0+36qpRt8yfeD7N2jbK3ETlGvSN6dMof/HwUC/APRokQRjpXZm4rrlG71Ft0aWE01+Bm4XejqPie5Uw==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
     dependencies:
-      hono: 3.9.0
+      hono: 3.11.12
       zod: 3.22.4
     dev: false
 
@@ -6185,8 +6185,8 @@ packages:
     resolution: {integrity: sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==}
     dev: false
 
-  /hono@3.9.0:
-    resolution: {integrity: sha512-MSGmerYD69jwDkBa631lY7y3xtEwbKFg2huFZ0TruzCdfJlmPd/rFzyvmMheePKsiA7CZp/KqL3mflBOzEmjLA==}
+  /hono@3.11.12:
+    resolution: {integrity: sha512-TrxH75bc0m2UbvrhaXkoo32A9OhkJtvICAYgYWtxqLDOxBjRqSikyp4K7HTbnWkPeg9Z+2Q3nv0dN4o8kL6yLg==}
     engines: {node: '>=16.0.0'}
     dev: false
 
