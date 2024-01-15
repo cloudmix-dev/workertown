@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "~3.427.0",
-    "@aws-sdk/lib-dynamodb": "~3.427.0",
+    "@aws-sdk/lib-dynamodb": "~3.490.0",
     "@cloudflare/workers-types": "~4.20230904.0",
     "@planetscale/database": "~1.11.0",
     "@types/better-sqlite3": "~7.6.5",
@@ -75,7 +75,7 @@
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "~3.427.0",
-    "@aws-sdk/lib-dynamodb": "~3.427.0",
+    "@aws-sdk/lib-dynamodb": "~3.490.0",
     "@planetscale/database": "~1.11.0",
     "better-sqlite3": "~8.7.0",
     "mysql2": "~3.6.3",
