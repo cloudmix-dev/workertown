@@ -62,7 +62,7 @@
     "zod": "~3.22.4"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "~4.20230904.0",
+    "@cloudflare/workers-types": "~4.20240222.0",
     "@types/lodash.merge": "~4.6.8",
     "@workertown/internal-types": "workspace:~0.0.2-alpha.23"
   },
