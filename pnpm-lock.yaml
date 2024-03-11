@@ -202,8 +202,8 @@ importers:
         specifier: ~3.9.0
         version: 3.9.0
       jose:
-        specifier: ~4.14.4
-        version: 4.14.5
+        specifier: ~5.2.3
+        version: 5.2.3
       lodash.merge:
         specifier: ~4.6.2
         version: 4.6.2
@@ -6565,8 +6565,8 @@ packages:
     hasBin: true
     dev: true
 
-  /jose@4.14.5:
-    resolution: {integrity: sha512-56ns1XlSI8d5V0t7hilPu8dMbE4YIwrTJU6e7bV1Abyu6oel4tSc4YmD742MoWV3U+vn7O0WlKpinzu2DP0HWw==}
+  /jose@5.2.3:
+    resolution: {integrity: sha512-KUXdbctm1uHVL8BYhnyHkgp3zDX5KW8ZhAKVFEfUbU2P8Alpzjb+48hHvjOdQIyPshoblhzsuqOwEEAbtHVirA==}
     dev: false
 
   /js-base64@3.7.5:
